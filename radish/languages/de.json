@@ -1,0 +1,8 @@
+{
+  "keywords": {
+    "feature": "Feature",
+    "scenario": "Szenario",
+    "scenario_outline": "Szenario Auslagerung",
+    "examples": "Beispiele"
+  }
+}

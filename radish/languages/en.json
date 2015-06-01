@@ -1,0 +1,8 @@
+{
+  "keywords": {
+    "feature": "Feature",
+    "scenario": "Scenario",
+    "scenario_outline": "Scenario Outline",
+    "examples": "Examples"
+  }
+}

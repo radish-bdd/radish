@@ -145,24 +145,6 @@ class FeatureParser(object):
         self._current_state = FeatureParser.State.STEP
         return True
 
-    def _parse_step(self, line):
-        """
-            Parses a single step
-
-            :param string line: the line to parse from
-        """
-        # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line):
-            return self._parse_scenario(line)
-
-        if self._detect_examples(line):
-            self._current_state = FeatureParser.State.EXAMPLES
-            return True
-
-        step = Step(line, self._featurefile, self._current_line)
-        self.feature.scenarios[-1].steps.append(step)
-        return True
-
     def _parse_examples(self, line):
         """
             Parses the Examples header line
@@ -187,6 +169,40 @@ class FeatureParser(object):
             return self._parse_scenario(line)
 
         self.feature.scenarios[-1].examples.rows.append([x.strip() for x in line.split("|")[1:-1]])
+        return True
+
+    def _parse_step(self, line):
+        """
+            Parses a single step
+
+            :param string line: the line to parse from
+        """
+        # detect next keyword
+        if self._detect_scenario(line) or self._detect_scenario_outline(line):
+            return self._parse_scenario(line)
+
+        if self._detect_table(line):
+            self._parse_table(line)
+            return True
+
+        if self._detect_examples(line):
+            self._current_state = FeatureParser.State.EXAMPLES
+            return True
+
+        step = Step(line, self._featurefile, self._current_line)
+        self.feature.scenarios[-1].steps.append(step)
+        return True
+
+    def _parse_table(self, line):
+        """
+            Parses a step table row
+
+            :param string line: the line to parse from
+        """
+        if not self.feature.scenarios[-1].steps:
+            raise RadishError("Found step table without previous step definition on line {}".format(self._current_line))
+
+        self.feature.scenarios[-1].steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
         return True
 
     def _detect_feature(self, line):
@@ -244,3 +260,17 @@ class FeatureParser(object):
             return True
 
         return None
+
+    def _detect_table(self, line):
+        """
+            Detects a step table row on the given line
+
+            :param string line: the line to detect the table row
+
+            :returns: if an step table row was found or not
+            :rtype: bool
+        """
+        if line.startswith("|"):
+            return True
+
+        return False

@@ -14,3 +14,4 @@ class Step(object):
         self.sentence = sentence
         self.path = path
         self.line = line
+        self.table = []

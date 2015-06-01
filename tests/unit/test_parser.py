@@ -42,7 +42,7 @@ class ParserTestCase(RadishTestCase):
         """
             Test parsing of an empty feature file
         """
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             parser = FeatureParser(featurefile.name)
             parser.parse.when.called_with().should.throw(RadishError, "No Feature found in file {}".format(featurefile.name))
 
@@ -52,7 +52,7 @@ class ParserTestCase(RadishTestCase):
         """
         feature = """Feature: some empty feature"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -72,7 +72,7 @@ class ParserTestCase(RadishTestCase):
     In order to support cool software
     I do fancy BDD testing with radish"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -94,7 +94,7 @@ class ParserTestCase(RadishTestCase):
         feature = """Feature: some empty feature
 Feature: another empty feature"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -108,7 +108,7 @@ Feature: another empty feature"""
         feature = """Feature: some feature
     Scenario: some empty scenario"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -132,7 +132,7 @@ Feature: another empty feature"""
         When I add 2 to my number
         Then I expect my number to be 7 """
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -169,7 +169,7 @@ Feature: another empty feature"""
         When I add 20 to my number
         Then I expect my number to be 70"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -222,7 +222,7 @@ Feature: another empty feature"""
         Then I expect my number to be 70
         # another stupid comment"""
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -275,7 +275,7 @@ Feature: another empty feature"""
         | 15     | 6     | 21     |
     """
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -331,7 +331,7 @@ Feature: another empty feature"""
         Then I expect something else
     """
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
@@ -385,9 +385,48 @@ Feature: another empty feature"""
         | 15     | 6     | 21     |
     """
 
-        with NamedTemporaryFile() as featurefile:
+        with NamedTemporaryFile("w+") as featurefile:
             featurefile.write(feature)
             featurefile.flush()
 
             parser = FeatureParser(featurefile.name)
             parser.parse.when.called_with().should.throw(RadishError, "Scenario does not support Examples. Use 'Scenario Outline'")
+
+    def test_parse_steps_with_table(self):
+        """
+            Test parsing of a feature with a scenario and steps with a table
+        """
+        feature = """Feature: some feature
+    Scenario: some normal scenario
+        Given I have the user
+            | Bruce     | Wayne      | Batman      |
+            | Chuck     | Norris     | PureAwesome |
+            | Peter     | Parker     | Spiderman   |
+        When I register them in the database
+        Then I expect 3 entries in the database
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name)
+            parser.parse()
+
+            parser.feature.sentence.should.be.equal("some feature")
+            parser.feature.scenarios.should.have.length_of(1)
+
+            parser.feature.scenarios[0].should.be.a(Scenario)
+            parser.feature.scenarios[0].sentence.should.be.equal("some normal scenario")
+            parser.feature.scenarios[0].steps.should.have.length_of(3)
+            parser.feature.scenarios[0].steps[0].sentence.should.be.equal("Given I have the user")
+            parser.feature.scenarios[0].steps[0].table.should.have.length_of(3)
+            parser.feature.scenarios[0].steps[0].table[0].should.be.equal(["Bruce", "Wayne", "Batman"])
+            parser.feature.scenarios[0].steps[0].table[1].should.be.equal(["Chuck", "Norris", "PureAwesome"])
+            parser.feature.scenarios[0].steps[0].table[2].should.be.equal(["Peter", "Parker", "Spiderman"])
+
+            parser.feature.scenarios[0].steps[1].sentence.should.be.equal("When I register them in the database")
+            parser.feature.scenarios[0].steps[1].table.should.have.length_of(0)
+
+            parser.feature.scenarios[0].steps[2].sentence.should.be.equal("Then I expect 3 entries in the database")
+            parser.feature.scenarios[0].steps[2].table.should.have.length_of(0)

@@ -2,3 +2,4 @@ coverage
 nose
 rednose
 sure
+pysingleton

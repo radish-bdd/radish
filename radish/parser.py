@@ -12,6 +12,9 @@ from radish.step import Step
 
 
 class Keywords(object):
+    """
+        Represent config object for gherkin keywords.
+    """
     def __init__(self, feature, scenario, scenario_outline, examples):
         self.feature = feature
         self.scenario = scenario
@@ -29,6 +32,9 @@ class FeatureParser(object):
     DEFAULT_LANGUAGE = "en"
 
     class State(object):
+        """
+            Represents the parser state
+        """
         INIT = "init"
         FEATURE = "feature"
         SCENARIO = "scenario"

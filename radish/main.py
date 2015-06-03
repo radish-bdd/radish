@@ -3,6 +3,7 @@
 import sys
 
 from radish.parser import FeatureParser
+from radish.loader import Loader
 
 
 def main(args):
@@ -11,6 +12,11 @@ def main(args):
     """
     featurefile = args[0]
     featureparser = FeatureParser(featurefile)
+    featureparser.parse()
+
+    # load user's custom python files
+    loader = Loader(args[1])
+    loader.load_all()
 
 
 if __name__ == "__main__":

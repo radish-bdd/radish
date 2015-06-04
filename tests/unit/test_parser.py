@@ -284,25 +284,43 @@ Feature: another empty feature"""
 
             parser.feature.sentence.should.be.equal("some feature")
             parser.feature.scenarios.should.have.length_of(1)
-            parser.feature.scenarios[0].should.be.a(ScenarioOutline)
-            parser.feature.scenarios[0].sentence.should.be.equal("some fancy scenario")
 
-            parser.feature.scenarios[0].steps.should.have.length_of(3)
-            parser.feature.scenarios[0].steps[0].sentence.should.be.equal("Given I have the number <number>")
-            parser.feature.scenarios[0].steps[0].path.should.be.equal(featurefile.name)
-            parser.feature.scenarios[0].steps[0].line.should.be.equal(3)
-            parser.feature.scenarios[0].steps[1].sentence.should.be.equal("When I add <delta> to my number")
-            parser.feature.scenarios[0].steps[1].path.should.be.equal(featurefile.name)
-            parser.feature.scenarios[0].steps[1].line.should.be.equal(4)
-            parser.feature.scenarios[0].steps[2].sentence.should.be.equal("Then I expect my number to be <result>")
-            parser.feature.scenarios[0].steps[2].path.should.be.equal(featurefile.name)
-            parser.feature.scenarios[0].steps[2].line.should.be.equal(5)
+            scenario = parser.feature.scenarios[0]
+            scenario.should.be.a(ScenarioOutline)
+            scenario.sentence.should.be.equal("some fancy scenario")
 
-            parser.feature.scenarios[0].examples.header.should.be.equal(["number", "delta", "result"])
-            parser.feature.scenarios[0].examples.rows.should.have.length_of(3)
-            parser.feature.scenarios[0].examples.rows[0].should.be.equal(["5", "2", "7"])
-            parser.feature.scenarios[0].examples.rows[1].should.be.equal(["10", "3", "13"])
-            parser.feature.scenarios[0].examples.rows[2].should.be.equal(["15", "6", "21"])
+            scenario.steps.should.have.length_of(3)
+            scenario.steps[0].sentence.should.be.equal("Given I have the number <number>")
+            scenario.steps[0].path.should.be.equal(featurefile.name)
+            scenario.steps[0].line.should.be.equal(3)
+            scenario.steps[1].sentence.should.be.equal("When I add <delta> to my number")
+            scenario.steps[1].path.should.be.equal(featurefile.name)
+            scenario.steps[1].line.should.be.equal(4)
+            scenario.steps[2].sentence.should.be.equal("Then I expect my number to be <result>")
+            scenario.steps[2].path.should.be.equal(featurefile.name)
+            scenario.steps[2].line.should.be.equal(5)
+
+            scenario.examples_header.should.be.equal(["number", "delta", "result"])
+            scenario.examples.should.have.length_of(3)
+            scenario.examples[0].data.should.be.equal(["5", "2", "7"])
+            scenario.examples[1].data.should.be.equal(["10", "3", "13"])
+            scenario.examples[2].data.should.be.equal(["15", "6", "21"])
+
+            scenario.scenarios.should.have.length_of(3)
+            scenario.scenarios[0].steps.should.have.length_of(3)
+            scenario.scenarios[0].steps[0].sentence.should.be.equal("Given I have the number 5")
+            scenario.scenarios[0].steps[1].sentence.should.be.equal("When I add 2 to my number")
+            scenario.scenarios[0].steps[2].sentence.should.be.equal("Then I expect my number to be 7")
+
+            scenario.scenarios[1].steps.should.have.length_of(3)
+            scenario.scenarios[1].steps[0].sentence.should.be.equal("Given I have the number 10")
+            scenario.scenarios[1].steps[1].sentence.should.be.equal("When I add 3 to my number")
+            scenario.scenarios[1].steps[2].sentence.should.be.equal("Then I expect my number to be 13")
+
+            scenario.scenarios[2].steps.should.have.length_of(3)
+            scenario.scenarios[2].steps[0].sentence.should.be.equal("Given I have the number 15")
+            scenario.scenarios[2].steps[1].sentence.should.be.equal("When I add 6 to my number")
+            scenario.scenarios[2].steps[2].sentence.should.be.equal("Then I expect my number to be 21")
 
     def test_parse_feature_with_scenario_and_scenario_outline(self):
         """
@@ -355,11 +373,11 @@ Feature: another empty feature"""
             parser.feature.scenarios[1].steps[1].sentence.should.be.equal("When I add <delta> to my number")
             parser.feature.scenarios[1].steps[2].sentence.should.be.equal("Then I expect my number to be <result>")
 
-            parser.feature.scenarios[1].examples.header.should.be.equal(["number", "delta", "result"])
-            parser.feature.scenarios[1].examples.rows.should.have.length_of(3)
-            parser.feature.scenarios[1].examples.rows[0].should.be.equal(["5", "2", "7"])
-            parser.feature.scenarios[1].examples.rows[1].should.be.equal(["10", "3", "13"])
-            parser.feature.scenarios[1].examples.rows[2].should.be.equal(["15", "6", "21"])
+            parser.feature.scenarios[1].examples_header.should.be.equal(["number", "delta", "result"])
+            parser.feature.scenarios[1].examples.should.have.length_of(3)
+            parser.feature.scenarios[1].examples[0].data.should.be.equal(["5", "2", "7"])
+            parser.feature.scenarios[1].examples[1].data.should.be.equal(["10", "3", "13"])
+            parser.feature.scenarios[1].examples[2].data.should.be.equal(["15", "6", "21"])
 
             parser.feature.scenarios[2].should.be.a(Scenario)
             parser.feature.scenarios[2].sentence.should.be.equal("some other normal scenario")

@@ -100,9 +100,12 @@ class FeatureParser(object):
 
                 if not self._parse_context(line):
                     raise RadishError("Syntax error in feature file {} on line {}".format(self._featurefile, self._current_line))
-
         if not self.feature:
             raise RadishError("No Feature found in file {}".format(self._featurefile))
+
+        if self.feature.scenarios and isinstance(self.feature.scenarios[-1], ScenarioOutline):
+            # last scenario was a ScenarioOutline but the inner Scenarios could not be build yet - do it now! FIXME: fix this
+            self.feature.scenarios[-1].build_scenarios()
 
     def _parse_context(self, line):
         """
@@ -160,7 +163,7 @@ class FeatureParser(object):
         if not isinstance(self.feature.scenarios[-1], ScenarioOutline):
             raise RadishError("Scenario does not support Examples. Use 'Scenario Outline'")
 
-        self.feature.scenarios[-1].examples.header = [x.strip() for x in line.split("|")[1:-1]]
+        self.feature.scenarios[-1].examples_header = [x.strip() for x in line.split("|")[1:-1]]
         self._current_state = FeatureParser.State.EXAMPLES_ROW
         return True
 
@@ -172,9 +175,12 @@ class FeatureParser(object):
         """
         # detect next keyword
         if self._detect_scenario(line) or self._detect_scenario_outline(line):
+            # the current Examples are finished so build the scenarios in the scenario outline
+            self.feature.scenarios[-1].build_scenarios()
             return self._parse_scenario(line)
 
-        self.feature.scenarios[-1].examples.rows.append([x.strip() for x in line.split("|")[1:-1]])
+        example = ScenarioOutline.Example([x.strip() for x in line.split("|")[1:-1]], self._featurefile, self._current_line)
+        self.feature.scenarios[-1].examples.append(example)
         return True
 
     def _parse_step(self, line):

@@ -1,18 +1,21 @@
 # -*- coding: utf-8 -*-
 
 from radish.step import step
+from radish.terrain import world
+
+world.number = 0
 
 
-@step(r"I have the number \d+")
+@step(r"I have the number (\d+)")
 def have_number(number):
-    pass
+    world.number = number
 
 
-@step(r"I add \d+ to my number")
+@step(r"I add (\d+) to my number")
 def add_to_number(addition):
-    pass
+    world.number += addition
 
 
-@step(r"I expect the number to be 7")
+@step(r"I expect the number to be (\d+)")
 def expect_number(number):
-    pass
+    assert world.number == number, "Expected number to be {}. Actual number is: {}".format(number, world.number)

@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import re
+import threading
+
 from tests.base import *
 
-from radish.step import step, given, then
+from radish.step import Step, step, given, then
 from radish.stepregistry import StepRegistry
 from radish.exceptions import StepRegexError
 
@@ -70,3 +73,90 @@ class StepTestCase(RadishTestCase):
         then(r"I expect my number to be \d+")(step_then)
         registry.steps.should.have.length_of(2)
         registry.steps[r"Then I expect my number to be \d+"] = step_then
+
+    def test_run_step_passed(self):
+        """
+            Test running a passing step
+        """
+        data = threading.local()
+        data.step_was_run = False
+
+        def step_passed(step):
+            data.step_was_run = True
+
+        step = Step("I call a passing step", "somefile.feature", 3)
+        step.definition_func = step_passed
+        step.arguments = re.search(step.sentence, step.sentence)
+
+        step.state.should.be.equal(Step.State.UNTESTED)
+        step.run.when.called_with().should.return_value(Step.State.PASSED)
+        data.step_was_run.should.be.true
+
+    def test_run_step_with_arguments_passed(self):
+        """
+            Test running a passing step with arguments
+        """
+        data = threading.local()
+        data.step_was_run = False
+        data.number = None
+        data.string = None
+
+        def step_passed(step, number, string):
+            data.step_was_run = True
+            data.number = int(number)
+            data.string = string
+
+        step = Step("I call a passing step with number argument 42 and string argument 'Tschau'", "somefile.feature", 3)
+        step.definition_func = step_passed
+        step.arguments = re.search("I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence)
+
+        step.state.should.be.equal(Step.State.UNTESTED)
+        step.run.when.called_with().should.return_value(Step.State.PASSED)
+        data.step_was_run.should.be.true
+        data.number.should.be.equal(42)
+        data.string.should.be.equal("Tschau")
+
+    def test_run_step_with_keyword_arguments_passed(self):
+        """
+            Test running a passing step with keyword arguments
+        """
+        data = threading.local()
+        data.step_was_run = False
+        data.number = None
+        data.string = None
+
+        def step_passed(step, number, string):
+            data.step_was_run = True
+            data.number = int(number)
+            data.string = string
+
+        step = Step("I call a passing step with string argument 'Tschau' and number argument 42", "somefile.feature", 3)
+        step.definition_func = step_passed
+        step.arguments = re.search("I call a passing step with string argument '(?P<string>.*?)' and number argument (?P<number>\d+)", step.sentence)
+
+        step.state.should.be.equal(Step.State.UNTESTED)
+        step.run.when.called_with().should.return_value(Step.State.PASSED)
+        data.step_was_run.should.be.true
+        data.number.should.be.equal(42)
+        data.string.should.be.equal("Tschau")
+
+    def test_run_step_failed(self):
+        """
+            Test running a failing step
+        """
+        data = threading.local()
+        data.step_was_run = False
+
+        def step_failed(step):
+            data.step_was_run = True
+            assert False, "This step fails by design"
+
+        step = Step("I call a failing step", "somefile.feature", 3)
+        step.definition_func = step_failed
+        step.arguments = re.search(step.sentence, step.sentence)
+
+        step.state.should.be.equal(Step.State.UNTESTED)
+        step.run.when.called_with().should.return_value(Step.State.FAILED)
+        step.failure.shouldnt.be.none
+        step.failure.reason.should.be.equal("This step fails by design")
+        data.step_was_run.should.be.true

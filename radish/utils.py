@@ -14,12 +14,3 @@ def expandpath(path):
         :param string path: the path to expand
     """
     return os.path.expanduser(os.path.expandvars(path))
-
-
-def dirname(path):
-    """
-        Returns the dirname of the given path
-
-        :param string path: the path to get the dirname
-    """
-    return os.path.dirname(expandpath(path))

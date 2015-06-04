@@ -64,7 +64,7 @@ class Step(object):
             raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
 
         if not self.arguments:
-            raise RadishError("the step '{}' does not have a match with registered steps".format(self.sentence))
+            raise RadishError("The step '{}' does not have a match with registered steps".format(self.sentence))
 
         keyword_arguments = self.arguments.groupdict()
         try:

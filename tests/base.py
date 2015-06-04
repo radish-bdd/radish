@@ -2,6 +2,7 @@
 
 import sure
 from unittest import TestCase
+from mock import Mock
 
 from radish.stepregistry import StepRegistry
 

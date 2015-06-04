@@ -36,7 +36,7 @@ class Loader(object):
 
             :param string path: the path to the module to load
         """
-        parent = utils.dirname(path)
+        parent = os.path.dirname(utils.expandpath(path))
         sys.path.insert(0, parent)
         module_name = os.path.splitext(os.path.split(path)[1])[0]
         try:

@@ -7,7 +7,7 @@ from tests.base import *
 
 from radish.step import Step, step, given, then
 from radish.stepregistry import StepRegistry
-from radish.exceptions import StepRegexError
+from radish.exceptions import RadishError, StepRegexError
 
 
 class StepTestCase(RadishTestCase):
@@ -160,3 +160,21 @@ class StepTestCase(RadishTestCase):
         step.failure.shouldnt.be.none
         step.failure.reason.should.be.equal("This step fails by design")
         data.step_was_run.should.be.true
+
+    def test_run_a_step_without_definition(self):
+        """
+            Test running a step without assining a definition
+        """
+        step = Step("I call an invalid step", "somefile.feature", 3)
+        step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a step definition")
+
+    def test_run_a_step_arguments_match(self):
+        """
+            Test running a step without matched arguments
+        """
+        def some_step(step):
+            pass
+
+        step = Step("I call an invalid step", "somefile.feature", 3)
+        step.definition_func = some_step
+        step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a match with registered steps")

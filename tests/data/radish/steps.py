@@ -16,6 +16,10 @@ def add_to_number(step, addition):
     world.number += int(addition)
     if int(addition) == 3:
         world.number += 1
+    if int(addition) == 32:
+        assert False, "SOME FAILURE"
+    if int(addition) == 11:
+        assert False, "ANTOHER ERROR"
 
 
 @step(r"I expect the number to be (\d+)")

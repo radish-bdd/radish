@@ -4,83 +4,101 @@
     Providing radish core functionality like the feature file Runner.
 """
 
-from radish.exceptions import RunnerEarlyExit
+from radish.step import Step
 
 
 class Runner(object):
     """
         Represents a class which is able to run features.
     """
-    def __init__(self, features, hooks, early_exit=False):
-        self._features = features
+
+    def handle_exit(func):  # pylint: disable=no-self-argument
+        """
+            Handles an runner exit
+        """
+        def _decorator(self, *args, **kwargs):
+            """
+                Actual decorator
+            """
+            if self._required_exit:  # pylint: disable=protected-access
+                return None
+
+            return func(self, *args, **kwargs)  # pylint: disable=not-callable
+        return _decorator
+
+    def call_hooks(model):  # pylint: disable=no-self-argument
+        """
+            Call hooks for a specific model
+        """
+        def _decorator(func):
+            """
+                The actual decorator
+            """
+            def _wrapper(self, model_instance, *args, **kwargs):
+                """
+                    Decorator wrapper
+                """
+                self._hooks.call("before", model, model_instance)  # pylint: disable=protected-access
+                try:
+                    return func(self, model_instance, *args, **kwargs)
+                finally:
+                    self._hooks.call("after", model, model_instance)  # pylint: disable=protected-access
+            return _wrapper
+        return _decorator
+
+    def __init__(self, hooks, early_exit=False):
         self._hooks = hooks
         self._early_exit = early_exit
+        self._required_exit = False
 
-    def start(self):
+    @handle_exit
+    @call_hooks("all")
+    def start(self, features):
         """
             Start running features
         """
-        self._hooks.call("before", "all", self._features)
-        try:
-            for feature in self._features:
-                self.run_feature(feature)
-        except RunnerEarlyExit:
-            return
-        finally:
-            self._hooks.call("after", "all", self._features)
+        for feature in features:
+            self.run_feature(feature)
 
+    @handle_exit
+    @call_hooks("each_feature")
     def run_feature(self, feature):
         """
             Runs the given feature
 
             :param Feature feature: the feature to run
         """
-        self._hooks.call("before", "each_feature", feature)
-        try:
-            for scenario in feature.all_scenarios:
-                self.run_scenario(scenario)
-        except RunnerEarlyExit:
-            raise
-        finally:
-            self._hooks.call("after", "each_feature", feature)
+        for scenario in feature.all_scenarios:
+            self.run_scenario(scenario)
 
+    @handle_exit
+    @call_hooks("each_scenario")
     def run_scenario(self, scenario):
         """
             Runs the given scenario
 
             :param Scenario scenario: the scnenario to run
         """
-        # inidicates wheiter the steps should be skipped instead of running it
-        skip_next = False
+        for step in scenario.steps:
+            if scenario.state == Step.State.FAILED:
+                self.skip_step(step)
+                continue
 
-        self._hooks.call("before", "each_scenario", scenario)
-        try:
-            for step in scenario.steps:
-                if skip_next:
-                    self.skip_step(step)
-                    continue
+            self.run_step(step)
 
-                self.run_step(step)
+            if step.state == step.State.FAILED and self._early_exit:
+                self.exit()
+                return
 
-                if step.state == step.State.FAILED:
-                    if self._early_exit:
-                        raise RunnerEarlyExit()
-
-                    skip_next = True
-        except RunnerEarlyExit:
-            raise
-        finally:
-            self._hooks.call("after", "each_scenario", scenario)
-
+    @handle_exit
+    @call_hooks("each_step")
     def run_step(self, step):
         """
             Runs the given step
 
             :param Step step: the step to run
         """
-        self._hooks.call("before", "each_step", step)
         step.run()
-        self._hooks.call("after", "each_step", step)
 
     def skip_step(self, step):
         """
@@ -91,3 +109,9 @@ class Runner(object):
         self._hooks.call("before", "each_step", step)
         step.skip()
         self._hooks.call("after", "each_step", step)
+
+    def exit(self):
+        """
+            Exits the runner
+        """
+        self._required_exit = True

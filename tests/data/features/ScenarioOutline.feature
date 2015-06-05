@@ -20,5 +20,5 @@ Feature: Feature with Scenario and ScenarioOutlines
 
     Scenario: some other normal scenario
         Given I have the number 5
-        When I add 2 to my number
-        Then I expect the number to be 7
+        When I add 11 to my number
+        Then I expect the number to be 16

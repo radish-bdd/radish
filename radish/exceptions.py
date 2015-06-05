@@ -17,6 +17,15 @@ class LanguageNotSupportedError(RadishError):
         super(LanguageNotSupportedError, self).__init__("Language {} could not be found".format(language))
 
 
+class FeatureFileNotFoundError(RadishError):
+    """
+        Raised if a given feature file does not exist
+    """
+    def __init__(self, featurefile):
+        self.featurefile = featurefile
+        super(FeatureFileNotFoundError, self).__init__("Feature file '{}': No such file".format(featurefile))
+
+
 class StepRegexError(RadishError, SyntaxError):
     """
         Raised if the step regex cannot be compiled.

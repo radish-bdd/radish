@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 from docopt import docopt
 
@@ -10,12 +11,16 @@ from radish.matcher import Matcher
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 from radish.core import Runner
+from radish.exceptions import RadishError, FeatureFileNotFoundError
+from radish.errororacle import error_oracle
+import radish.utils as utils
 
 # extensions
 # FIXME: load dynamically
 import radish.extensions.console_writer
 
 
+@error_oracle
 def main(args):
     """
 Usage:
@@ -40,8 +45,19 @@ Options:
 
     arguments = docopt("radish {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
 
+    feature_files = []
+    for given_feature in arguments["<features>"]:
+        if not os.path.exists(given_feature):
+            raise FeatureFileNotFoundError(given_feature)
+
+        if os.path.isdir(given_feature):
+            feature_files.extend(utils.recursive_glob(given_feature, "*.feature"))
+            continue
+
+        feature_files.append(given_feature)
+
     features = []
-    for featureid, featurefile in enumerate(arguments["<features>"]):
+    for featureid, featurefile in enumerate(feature_files):
         featureparser = FeatureParser(featurefile, featureid)
         featureparser.parse()
         features.append(featureparser.feature)
@@ -54,11 +70,13 @@ Options:
     loader = Loader(arguments["--basedir"])
     loader.load_all()
 
+    # match feature file steps with user's step definitions
     matcher = Matcher()
     matcher.merge_steps(features, StepRegistry().steps)
 
-    runner = Runner(features, HookRegistry(), early_exit=arguments["--early-exit"])
-    runner.start()
+    # run parsed features
+    runner = Runner(HookRegistry(), early_exit=arguments["--early-exit"])
+    runner.start(features)
 
 
 if __name__ == "__main__":

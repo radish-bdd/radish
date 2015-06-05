@@ -5,6 +5,7 @@
 """
 
 import os
+import fnmatch
 
 
 def expandpath(path):
@@ -14,3 +15,11 @@ def expandpath(path):
         :param string path: the path to expand
     """
     return os.path.expanduser(os.path.expandvars(path))
+
+
+def recursive_glob(root, pattern):
+    matches = []
+    for root, dirnames, filenames in os.walk(root):
+        for filename in fnmatch.filter(filenames, pattern):
+            matches.append(os.path.join(root, filename))
+    return matches

@@ -26,3 +26,13 @@ class Scenario(Model):
             if step.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
                 return step.state
         return Step.State.PASSED
+
+    @property
+    def failed_step(self):
+        """
+            Returns the first failed step
+        """
+        for step in self.steps:
+            if step.state == Step.State.FAILED:
+                return step
+        return None

@@ -14,6 +14,8 @@ def have_number(step, number):
 @step(r"I add (\d+) to my number")
 def add_to_number(step, addition):
     world.number += int(addition)
+    if int(addition) == 3:
+        world.number += 1
 
 
 @step(r"I expect the number to be (\d+)")

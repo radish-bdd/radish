@@ -140,5 +140,4 @@ class ConsoleWriterTestCase(RadishTestCase):
             HookRegistry().call("after", "each_step", step)
 
             data.console.should.be.equal("""\rI test the console writer
-        AssertionError: Some assertion happend
-""")
+          AssertionError: Some assertion happend""")

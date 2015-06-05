@@ -83,6 +83,12 @@ class Step(Model):
             self.state = Step.State.PASSED
         return self.state
 
+    def skip(self):
+        """
+            Skips the step
+        """
+        self.state = Step.State.SKIPPED
+
 
 def step(regex):
     """

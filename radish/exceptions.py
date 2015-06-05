@@ -46,3 +46,10 @@ class StepDefinitionNotFoundError(RadishError):
     def __init__(self, step):
         self.step = step
         super(StepDefinitionNotFoundError, self).__init__("Cannot find step definition for step '{}' in {}:{}".format(step.sentence, step.path, step.line))
+
+
+class RunnerEarlyExit(RadishError):
+    """
+        Raised if the runner has to exit to run.
+    """
+    pass

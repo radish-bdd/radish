@@ -21,6 +21,7 @@ def main(args):
 Usage:
     radish <features>...
            [-b=<basedir> | --basedir=<basedir>]
+           [--early-exit]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -30,6 +31,7 @@ Arguments:
 Options:
     -h --help                            show this screen
     -v --version                         show version
+    --early-exit                         stop the run after the first failed step
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 
@@ -55,7 +57,7 @@ Options:
     matcher = Matcher()
     matcher.merge_steps(features, StepRegistry().steps)
 
-    runner = Runner(features, HookRegistry())
+    runner = Runner(features, HookRegistry(), early_exit=arguments["--early-exit"])
     runner.start()
 
 

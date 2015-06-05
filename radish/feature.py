@@ -6,6 +6,7 @@
 
 from radish.model import Model
 from radish.scenariooutline import ScenarioOutline
+from radish.step import Step
 
 
 class Feature(Model):
@@ -36,3 +37,16 @@ class Feature(Model):
 
     def __repr__(self):
         return "<Feature: {} from {}:{}>".format(self.sentence, self.path, self.line)
+
+    @property
+    def state(self):
+        """
+            Returns the state of the scenario
+        """
+        for scenario in self.all_scenarios:
+            if isinstance(scenario, ScenarioOutline):  # skip scenario outlines
+                continue
+
+            if scenario.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
+                return scenario.state
+        return Step.State.PASSED

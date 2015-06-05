@@ -86,7 +86,7 @@ def console_writer_after_each_step(step):
     output = "\r\033[A\033[K        {}".format(color_func(step.sentence))
 
     if step.state == step.State.FAILED:
-        output += "\n        {}: {}\n".format(step.failure.name, step.failure.reason)
+        output += "\n          {}: {}".format(colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
 
     write(output)
 
@@ -107,6 +107,10 @@ def console_writer_after_each_scenario(scenario):
         color_func = get_color_func(scenario.state)
         output += "\r\033[A\033[K        {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
 
+        if scenario.state == Step.State.FAILED:
+            failed_step = scenario.failed_step
+            output += "\n          {}: {}".format(colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
+
     if output:
         write(output)
 
@@ -119,3 +123,70 @@ def console_writer_after_each_feature(feature):  # pylint: disable=unused-argume
         :param Feature feature: the feature which was ran.
     """
     write("")
+
+
+@after.all  # pylint: disable=no-member
+def console_write_after_all(features):
+    """
+        Writes the endreport for all features
+
+        :param list features: all features
+    """
+    stats = {
+        "features": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
+        "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
+        "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
+    }
+    for feature in features:
+        stats["features"]["amount"] += 1
+        stats["features"][feature.state] += 1
+        for scenario in feature.all_scenarios:
+            if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines
+                continue
+
+            stats["scenarios"]["amount"] += 1
+            stats["scenarios"][scenario.state] += 1
+            for step in scenario.steps:
+                stats["steps"]["amount"] += 1
+                stats["steps"][step.state] += 1
+
+    colored_closing_paren = colorful.bold_white(")")
+    colored_comma = colorful.bold_white(", ")
+    passed_word = colorful.bold_green("{} passed")
+    failed_word = colorful.bold_red("{} failed")
+    skipped_word = colorful.cyan("{} skipped")
+    untested_word = colorful.cyan("{} untested")
+
+    output = colorful.bold_white("{} features (".format(stats["features"]["amount"]))
+    output += passed_word.format(stats["features"]["passed"])
+    if stats["features"]["failed"]:
+        output += colored_comma + failed_word.format(stats["features"]["failed"])
+    if stats["features"]["skipped"]:
+        output += colored_comma + skipped_word.format(stats["features"]["skipped"])
+    if stats["features"]["untested"]:
+        output += colored_comma + untested_word.format(stats["features"]["untested"])
+    output += colored_closing_paren
+
+    output += "\n"
+    output += colorful.bold_white("{} scenarios (".format(stats["scenarios"]["amount"]))
+    output += passed_word.format(stats["scenarios"]["passed"])
+    if stats["scenarios"]["failed"]:
+        output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
+    if stats["scenarios"]["skipped"]:
+        output += colored_comma + skipped_word.format(stats["scenarios"]["skipped"])
+    if stats["scenarios"]["untested"]:
+        output += colored_comma + untested_word.format(stats["scenarios"]["untested"])
+    output += colored_closing_paren
+
+    output += "\n"
+    output += colorful.bold_white("{} steps (".format(stats["steps"]["amount"]))
+    output += passed_word.format(stats["steps"]["passed"])
+    if stats["steps"]["failed"]:
+        output += colored_comma + failed_word.format(stats["steps"]["failed"])
+    if stats["steps"]["skipped"]:
+        output += colored_comma + skipped_word.format(stats["steps"]["skipped"])
+    if stats["steps"]["untested"]:
+        output += colored_comma + untested_word.format(stats["steps"]["untested"])
+    output += colored_closing_paren
+
+    write(output)

@@ -8,11 +8,12 @@ import re
 import sys
 import traceback
 
+from radish.model import Model
 from radish.exceptions import RadishError, StepRegexError
 from radish.stepregistry import StepRegistry
 
 
-class Step(object):
+class Step(Model):
     """
         Represents a step
     """
@@ -46,10 +47,8 @@ class Step(object):
             self.filename = traceback_info[0]
             self.line = int(traceback_info[1])
 
-    def __init__(self, sentence, path, line, outlined=False):
-        self.sentence = sentence
-        self.path = path
-        self.line = line
+    def __init__(self, id, sentence, path, line, parent, outlined):
+        super(Step, self).__init__(id, None, sentence, path, line, parent)
         self.table = []
         self.definition_func = None
         self.arguments = None
@@ -63,6 +62,7 @@ class Step(object):
         """
         if self.outlined:
             self.state = Step.State.UNTESTED
+            return self.state
 
         if not self.definition_func or not callable(self.definition_func):
             raise RadishError("The step '{}' does not have a step definition".format(self.sentence))

@@ -4,19 +4,17 @@
     This module provides a class to represent a Feature from a parsed feature file.
 """
 
+from radish.model import Model
 from radish.scenariooutline import ScenarioOutline
 
 
-class Feature(object):
+class Feature(Model):
     """
         Represent a Feature
     """
 
-    def __init__(self, keyword, sentence, path, line):
-        self.keyword = keyword
-        self.sentence = sentence
-        self.path = path
-        self.line = line
+    def __init__(self, id, keyword, sentence, path, line):
+        super(Feature, self).__init__(id, keyword, sentence, path, line)
         self.description = []
         self.scenarios = []
 

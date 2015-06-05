@@ -39,10 +39,10 @@ class MatcherTestCase(RadishTestCase):
         matcher = Matcher()
         steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
 
-        feature = Feature("Feature", "Some feature", "test.feature", 1)
-        scenario = Scenario("Scenario", "Adding numbers", "test.feature", 2)
-        scenario.steps.append(Step("Given I have the number 5", "test.feature", 3))
-        scenario.steps.append(Step("When I add 2 to my number", "test.feature", 4))
+        feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
+        scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
+        scenario.steps.append(Step(1, "Given I have the number 5", "test.feature", 3, scenario, False))
+        scenario.steps.append(Step(2, "When I add 2 to my number", "test.feature", 4, scenario, False))
         feature.scenarios.append(scenario)
 
         matcher.merge_steps([feature], steps)
@@ -59,9 +59,9 @@ class MatcherTestCase(RadishTestCase):
         matcher = Matcher()
         steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
 
-        feature = Feature("Feature", "Some feature", "test.feature", 1)
-        scenario = Scenario("Scenario", "Adding numbers", "test.feature", 2)
-        scenario.steps.append(Step("When I call a non-existing step", "test.feature", 3))
+        feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
+        scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
+        scenario.steps.append(Step(1, "When I call a non-existing step", "test.feature", 3, scenario, False))
         feature.scenarios.append(scenario)
 
         matcher.merge_steps.when.called_with([feature], steps).should.throw(StepDefinitionNotFoundError, "Cannot find step definition for step 'When I call a non-existing step' in test.feature:3")

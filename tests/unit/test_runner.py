@@ -28,7 +28,7 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step("Some step", "somefile.feature", 3)
+        step = Step(1, "Some step", "somefile.feature", 3, None, False)
         step.definition_func = some_step
         step.arguments = match_mock
 
@@ -53,11 +53,11 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step("Some step", "somefile.feature", 3)
+        step = Step(1, "Some step", "somefile.feature", 3, None, False)
         step.definition_func = some_step
         step.arguments = match_mock
 
-        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
+        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.steps.append(step)
 
         hook_mock = Mock()
@@ -81,15 +81,15 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step("Some step", "somefile.feature", 3)
+        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
+
+        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
+        feature.scenarios.append(scenario)
+
+        step = Step(1, "Some step", "somefile.feature", 3, scenario, False)
         step.definition_func = some_step
         step.arguments = match_mock
-
-        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
         scenario.steps.append(step)
-
-        feature = Feature("Feature", "Some feature", "somefile.feature", 1)
-        feature.scenarios.append(scenario)
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
@@ -112,15 +112,15 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step("Some step", "somefile.feature", 3)
+        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
+
+        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
+        feature.scenarios.append(scenario)
+
+        step = Step(1, "Some step", "somefile.feature", 3, scenario, False)
         step.definition_func = some_step
         step.arguments = match_mock
-
-        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
         scenario.steps.append(step)
-
-        feature = Feature("Feature", "Some feature", "somefile.feature", 1)
-        feature.scenarios.append(scenario)
 
         hook_mock = Mock()
         hook_mock.call.return_value = True

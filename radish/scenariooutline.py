@@ -5,7 +5,9 @@
 """
 
 from radish.scenario import Scenario
+from radish.examplescenario import ExampleScenario
 from radish.step import Step
+from radish.exceptions import RadishError
 
 
 class ScenarioOutline(Scenario):
@@ -23,8 +25,9 @@ class ScenarioOutline(Scenario):
             self.path = path
             self.line = line
 
-    def __init__(self, keyword, sentence, path, line):
-        super(ScenarioOutline, self).__init__(keyword, sentence, path, line)
+    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent):
+        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent)
+        self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []
         self.examples = []
@@ -37,10 +40,11 @@ class ScenarioOutline(Scenario):
         """
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))
-            scenario = Scenario(self.keyword, "{} - row {}".format(self.sentence, row_id), self.path, self.line)
-            for outlined_step in self.steps:
+            scenario_id = self.id + row_id + 1
+            scenario = ExampleScenario(scenario_id, self.keyword, "{} - row {}".format(self.sentence, row_id), self.path, self.line, self, example)
+            for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
-                step = Step(sentence, outlined_step.path, example.line)
+                step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, False)
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
 
@@ -58,3 +62,14 @@ class ScenarioOutline(Scenario):
         for key, value in examples.items():
             sentence = sentence.replace("<{}>".format(key), value)
         return sentence
+
+    def get_column_width(self, column_index):
+        """
+            Gets the column width from the given column
+
+            :param int column_index: the column index to get the width from
+        """
+        try:
+            return max(max([len(x.data[column_index]) for x in self.examples]), len(self.examples_header[column_index]))
+        except IndexError:
+            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{}'".format(self.sentence))

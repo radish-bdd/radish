@@ -39,8 +39,8 @@ Options:
     arguments = docopt("radish {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
 
     features = []
-    for featurefile in arguments["<features>"]:
-        featureparser = FeatureParser(featurefile)
+    for featureid, featurefile in enumerate(arguments["<features>"]):
+        featureparser = FeatureParser(featurefile, featureid)
         featureparser.parse()
         features.append(featureparser.feature)
 

@@ -41,13 +41,12 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        feature = Feature("Feature", "Some feature", "somefile.feature", 1)
+        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_feature", feature)
 
-            data.console.should.be.equal("""Feature: Some feature
-""")
+            data.console.should.be.equal("Feature: Some feature")
 
         feature.description.append("This is some description")
         feature.description.append("Because I want to test it")
@@ -57,8 +56,7 @@ class ConsoleWriterTestCase(RadishTestCase):
 
             data.console.should.be.equal("""Feature: Some feature
     This is some description
-    Because I want to test it
-""")
+    Because I want to test it""")
 
     def test_before_each_scenario(self):
         """
@@ -71,12 +69,12 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
+        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_scenario", scenario)
 
-            data.console.should.be.equal("    Scenario: Some scenario")
+            data.console.should.be.equal("\n    Scenario: Some scenario")
 
     def test_before_each_step(self):
         """
@@ -89,7 +87,9 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        step = Step("I test the console writer", "somefile.feature", 3)
+        scenario_mock = Mock()
+        scenario_mock.parent = None
+        step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_step", step)
@@ -107,7 +107,9 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        step = Step("I test the console writer", "somefile.feature", 3)
+        scenario_mock = Mock()
+        scenario_mock.parent = None
+        step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("after", "each_step", step)
@@ -125,7 +127,9 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        step = Step("I test the console writer", "somefile.feature", 3)
+        scenario_mock = Mock()
+        scenario_mock.parent = None
+        step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
         step.state = step.State.FAILED
         try:
             assert False, "Some assertion happend"

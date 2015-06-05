@@ -43,10 +43,11 @@ class FeatureParser(object):
         EXAMPLES = "examples"
         EXAMPLES_ROW = "examples_row"
 
-    def __init__(self, featurefile, language="en"):
+    def __init__(self, featurefile, featureid, language="en"):
         if not os.path.exists(featurefile):
             raise OSError("Feature file at '{}' does not exist".format(featurefile))
 
+        self._featureid = featureid
         self._featurefile = featurefile
         self.keywords = {}
         self._keywords_delimiter = ":"
@@ -131,7 +132,7 @@ class FeatureParser(object):
         if not detected_feature:
             return False
 
-        self.feature = Feature(self.keywords.feature, detected_feature, self._featurefile, self._current_line)
+        self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line)
         self._current_state = FeatureParser.State.SCENARIO
         return True
 
@@ -143,16 +144,20 @@ class FeatureParser(object):
         """
         detected_scenario = self._detect_scenario(line)
         scenario = Scenario
-        keyword = self.keywords.scenario
+        keywords = (self.keywords.scenario,)
         if not detected_scenario:
             detected_scenario = self._detect_scenario_outline(line)
             scenario = ScenarioOutline
-            keyword = self.keywords.scenario_outline
+            keywords = (self.keywords.scenario_outline, self.keywords.examples)
             if not detected_scenario:
                 self.feature.description.append(line)
                 return True
 
-        self.feature.scenarios.append(scenario(keyword, detected_scenario, self._featurefile, self._current_line))
+        scenario_id = len(self.feature.scenarios) + 1
+        if self.feature.scenarios and isinstance(self.feature.scenarios[-1], ScenarioOutline):
+            scenario_id += len(self.feature.scenarios[-1].examples)
+
+        self.feature.scenarios.append(scenario(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature))
         self._current_state = FeatureParser.State.STEP
         return True
 
@@ -203,8 +208,9 @@ class FeatureParser(object):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
+        step_id = len(self.feature.scenarios[-1].steps) + 1
         is_outlined = isinstance(self.feature.scenarios[-1], ScenarioOutline)
-        step = Step(line, self._featurefile, self._current_line, is_outlined)
+        step = Step(step_id, line, self._featurefile, self._current_line, self.feature.scenarios[-1], is_outlined)
         self.feature.scenarios[-1].steps.append(step)
         return True
 

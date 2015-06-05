@@ -9,17 +9,18 @@ class Runner(object):
     """
         Represents a class which is able to run features.
     """
-    def __init__(self, features):
+    def __init__(self, features, hooks):
         self._features = features
+        self._hooks = hooks
 
     def start(self):
         """
             Start running features
         """
-        # TODO: call before all hook
+        self._hooks.call("before", "all", self._features)
         for feature in self._features:
             self.run_feature(feature)
-        # TODO: call after all hook
+        self._hooks.call("after", "all", self._features)
 
     def run_feature(self, feature):
         """
@@ -27,10 +28,10 @@ class Runner(object):
 
             :param Feature feature: the feature to run
         """
-        # TODO: call before each feature hook
+        self._hooks.call("before", "each_feature", feature)
         for scenario in feature.all_scenarios:
             self.run_scenario(scenario)
-        # TODO: call after each feature hook
+        self._hooks.call("after", "each_feature", feature)
 
     def run_scenario(self, scenario):
         """
@@ -38,10 +39,10 @@ class Runner(object):
 
             :param Scenario scenario: the scnenario to run
         """
-        # TODO: call before each scenario hook
+        self._hooks.call("before", "each_scenario", scenario)
         for step in scenario.steps:
             self.run_step(step)
-        # TODO: call after each scenario hook
+        self._hooks.call("after", "each_scenario", scenario)
 
     def run_step(self, step):
         """
@@ -49,6 +50,6 @@ class Runner(object):
 
             :param Step step: the step to run
         """
-        # TODO: call before each step hook
+        self._hooks.call("before", "each_step", step)
         step.run()
-        # TODO: call after each step hook
+        self._hooks.call("after", "each_step", step)

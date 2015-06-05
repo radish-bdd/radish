@@ -46,7 +46,7 @@ class Step(object):
             self.filename = traceback_info[0]
             self.line = int(traceback_info[1])
 
-    def __init__(self, sentence, path, line):
+    def __init__(self, sentence, path, line, outlined=False):
         self.sentence = sentence
         self.path = path
         self.line = line
@@ -55,11 +55,15 @@ class Step(object):
         self.arguments = None
         self.state = Step.State.UNTESTED
         self.failure = None
+        self.outlined = outlined
 
     def run(self):
         """
             Runs the step.
         """
+        if self.outlined:
+            self.state = Step.State.UNTESTED
+
         if not self.definition_func or not callable(self.definition_func):
             raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
 

@@ -10,7 +10,8 @@ class Scenario(object):
         Represents a Scenario
     """
 
-    def __init__(self, sentence, path, line):
+    def __init__(self, keyword, sentence, path, line):
+        self.keyword = keyword
         self.sentence = sentence
         self.path = path
         self.line = line

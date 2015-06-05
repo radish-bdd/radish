@@ -2,9 +2,10 @@
 
 import sure
 from unittest import TestCase
-from mock import Mock
+from mock import Mock, patch
 
 from radish.stepregistry import StepRegistry
+from radish.hookregistry import HookRegistry
 
 
 class RadishTestCase(TestCase):
@@ -27,3 +28,4 @@ class RadishTestCase(TestCase):
             Delete all singletons
         """
         StepRegistry().clear()
+        HookRegistry().reset()

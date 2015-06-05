@@ -32,7 +32,9 @@ class RunnerTestCase(RadishTestCase):
         step.definition_func = some_step
         step.arguments = match_mock
 
-        runner = Runner([])
+        hook_mock = Mock()
+        hook_mock.call.return_value = True
+        runner = Runner([], hook_mock)
         runner.run_step(step)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -55,10 +57,12 @@ class RunnerTestCase(RadishTestCase):
         step.definition_func = some_step
         step.arguments = match_mock
 
-        scenario = Scenario("Some scenario", "somefile.feature", 2)
+        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
         scenario.steps.append(step)
 
-        runner = Runner([])
+        hook_mock = Mock()
+        hook_mock.call.return_value = True
+        runner = Runner([], hook_mock)
         runner.run_scenario(scenario)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -81,13 +85,15 @@ class RunnerTestCase(RadishTestCase):
         step.definition_func = some_step
         step.arguments = match_mock
 
-        scenario = Scenario("Some scenario", "somefile.feature", 2)
+        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
         scenario.steps.append(step)
 
-        feature = Feature("Some feature", "somefile.feature", 1)
+        feature = Feature("Feature", "Some feature", "somefile.feature", 1)
         feature.scenarios.append(scenario)
 
-        runner = Runner([])
+        hook_mock = Mock()
+        hook_mock.call.return_value = True
+        runner = Runner([], hook_mock)
         runner.run_feature(feature)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -110,13 +116,15 @@ class RunnerTestCase(RadishTestCase):
         step.definition_func = some_step
         step.arguments = match_mock
 
-        scenario = Scenario("Some scenario", "somefile.feature", 2)
+        scenario = Scenario("Scenario", "Some scenario", "somefile.feature", 2)
         scenario.steps.append(step)
 
-        feature = Feature("Some feature", "somefile.feature", 1)
+        feature = Feature("Feature", "Some feature", "somefile.feature", 1)
         feature.scenarios.append(scenario)
 
-        runner = Runner([feature])
+        hook_mock = Mock()
+        hook_mock.call.return_value = True
+        runner = Runner([feature], hook_mock)
         runner.start()
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true

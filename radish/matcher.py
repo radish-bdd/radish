@@ -6,6 +6,7 @@
 
 import re
 
+from radish.scenariooutline import ScenarioOutline
 from radish.exceptions import StepDefinitionNotFoundError
 
 
@@ -21,7 +22,10 @@ class Matcher(object):
             :param dict steps: the steps
         """
         for feature in features:
-            for scenario in feature.scenarios:
+            for scenario in feature.all_scenarios:
+                if isinstance(scenario, ScenarioOutline):
+                    continue  # ScenarioOutline steps do not have to be merged
+
                 for step in scenario.steps:
                     arguments, func = self.match(step.sentence, steps)
                     if not arguments or not func:

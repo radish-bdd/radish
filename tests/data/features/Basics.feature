@@ -7,3 +7,8 @@ Feature: Some fancy feature
       Given I have the number 5
       When I add 2 to my number
       Then I expect the number to be 7
+
+    Scenario: Test adding numbers
+      Given I have the number 10
+      When I add 32 to my number
+      Then I expect the number to be 42

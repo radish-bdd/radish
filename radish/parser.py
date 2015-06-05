@@ -131,7 +131,7 @@ class FeatureParser(object):
         if not detected_feature:
             return False
 
-        self.feature = Feature(detected_feature, self._featurefile, self._current_line)
+        self.feature = Feature(self.keywords.feature, detected_feature, self._featurefile, self._current_line)
         self._current_state = FeatureParser.State.SCENARIO
         return True
 
@@ -143,14 +143,16 @@ class FeatureParser(object):
         """
         detected_scenario = self._detect_scenario(line)
         scenario = Scenario
+        keyword = self.keywords.scenario
         if not detected_scenario:
             detected_scenario = self._detect_scenario_outline(line)
             scenario = ScenarioOutline
+            keyword = self.keywords.scenario_outline
             if not detected_scenario:
                 self.feature.description.append(line)
                 return True
 
-        self.feature.scenarios.append(scenario(detected_scenario, self._featurefile, self._current_line))
+        self.feature.scenarios.append(scenario(keyword, detected_scenario, self._featurefile, self._current_line))
         self._current_state = FeatureParser.State.STEP
         return True
 
@@ -201,7 +203,8 @@ class FeatureParser(object):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
-        step = Step(line, self._featurefile, self._current_line)
+        is_outlined = isinstance(self.feature.scenarios[-1], ScenarioOutline)
+        step = Step(line, self._featurefile, self._current_line, is_outlined)
         self.feature.scenarios[-1].steps.append(step)
         return True
 

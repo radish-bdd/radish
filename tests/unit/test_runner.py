@@ -34,7 +34,7 @@ class RunnerTestCase(RadishTestCase):
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
-        runner = Runner([], hook_mock)
+        runner = Runner(hook_mock)
         runner.run_step(step)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -62,7 +62,7 @@ class RunnerTestCase(RadishTestCase):
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
-        runner = Runner([], hook_mock)
+        runner = Runner(hook_mock)
         runner.run_scenario(scenario)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -93,7 +93,7 @@ class RunnerTestCase(RadishTestCase):
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
-        runner = Runner([], hook_mock)
+        runner = Runner(hook_mock)
         runner.run_feature(feature)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
@@ -124,7 +124,7 @@ class RunnerTestCase(RadishTestCase):
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
-        runner = Runner([feature], hook_mock)
-        runner.start()
+        runner = Runner(hook_mock)
+        runner.start([feature])
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true

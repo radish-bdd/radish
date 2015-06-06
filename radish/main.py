@@ -17,6 +17,7 @@ import radish.utils as utils
 
 # extensions
 # FIXME: load dynamically
+import radish.extensions.time_recorder
 import radish.extensions.console_writer
 
 

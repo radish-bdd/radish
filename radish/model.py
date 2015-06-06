@@ -10,6 +10,8 @@
         * Step
 """
 
+from radish.exceptions import RadishError
+
 
 # FIXME: make ABC
 class Model(object):
@@ -23,3 +25,15 @@ class Model(object):
         self.path = path
         self.line = line
         self.parent = parent
+        self.starttime = None
+        self.endtime = None
+
+    @property
+    def duration(self):
+        """
+            Returns the duration of this model
+        """
+        if not self.starttime or not self.endtime:
+            raise RadishError("Cannot get duration of {} '{}' because either starttime or endtime is not set".format(self.keyword, self.sentence))
+
+        return self.endtime - self.starttime

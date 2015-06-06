@@ -4,6 +4,7 @@
     This radish extension provides the functionality to write the feature file run to the console.
 """
 
+from datetime import timedelta
 from colorful import colorful
 
 from radish.terrain import before, after
@@ -137,9 +138,14 @@ def console_write_after_all(features):
         "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
         "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
     }
+    duration = timedelta()
     for feature in features:
         stats["features"]["amount"] += 1
         stats["features"][feature.state] += 1
+
+        if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+            duration += feature.duration
+
         for scenario in feature.all_scenarios:
             if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines
                 continue
@@ -188,5 +194,8 @@ def console_write_after_all(features):
     if stats["steps"]["untested"]:
         output += colored_comma + untested_word.format(stats["steps"]["untested"])
     output += colored_closing_paren
+
+    output += "\n"
+    output += colorful.cyan("Run XXX finished within {}:{} minutes".format(int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
 
     write(output)

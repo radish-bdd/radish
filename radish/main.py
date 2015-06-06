@@ -3,6 +3,7 @@
 import os
 import sys
 from docopt import docopt
+from time import time
 
 from radish import __VERSION__
 from radish.parser import FeatureParser
@@ -11,7 +12,7 @@ from radish.matcher import Matcher
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 from radish.core import Runner
-from radish.exceptions import RadishError, FeatureFileNotFoundError
+from radish.exceptions import FeatureFileNotFoundError
 from radish.errororacle import error_oracle
 import radish.utils as utils
 
@@ -77,7 +78,7 @@ Options:
 
     # run parsed features
     runner = Runner(HookRegistry(), early_exit=arguments["--early-exit"])
-    runner.start(features)
+    runner.start(features, marker=int(time()))
 
 
 if __name__ == "__main__":

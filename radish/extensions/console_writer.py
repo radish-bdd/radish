@@ -127,7 +127,7 @@ def console_writer_after_each_feature(feature):  # pylint: disable=unused-argume
 
 
 @after.all  # pylint: disable=no-member
-def console_write_after_all(features):
+def console_write_after_all(features, marker):
     """
         Writes the endreport for all features
 
@@ -196,6 +196,6 @@ def console_write_after_all(features):
     output += colored_closing_paren
 
     output += "\n"
-    output += colorful.cyan("Run XXX finished within {}:{} minutes".format(int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
+    output += colorful.cyan("Run {} finished within {}:{} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
 
     write(output)

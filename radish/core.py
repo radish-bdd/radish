@@ -38,11 +38,11 @@ class Runner(object):
                 """
                     Decorator wrapper
                 """
-                self._hooks.call("before", model, model_instance)  # pylint: disable=protected-access
+                self._hooks.call("before", model, model_instance, *args, **kwargs)  # pylint: disable=protected-access
                 try:
                     return func(self, model_instance, *args, **kwargs)
                 finally:
-                    self._hooks.call("after", model, model_instance)  # pylint: disable=protected-access
+                    self._hooks.call("after", model, model_instance, *args, **kwargs)  # pylint: disable=protected-access
             return _wrapper
         return _decorator
 
@@ -53,7 +53,7 @@ class Runner(object):
 
     @handle_exit
     @call_hooks("all")
-    def start(self, features):
+    def start(self, features, marker):
         """
             Start running features
         """

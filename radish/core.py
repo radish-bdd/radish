@@ -98,7 +98,10 @@ class Runner(object):
 
             :param Step step: the step to run
         """
-        step.run()
+        if step.DEBUG:
+            step.debug()
+        else:
+            step.run()
 
     def skip_step(self, step):
         """

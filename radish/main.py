@@ -14,12 +14,15 @@ from radish.hookregistry import HookRegistry
 from radish.core import Runner
 from radish.exceptions import FeatureFileNotFoundError
 from radish.errororacle import error_oracle
+from radish.step import Step
 import radish.utils as utils
 
 # extensions
 # FIXME: load dynamically
-import radish.extensions.time_recorder
 import radish.extensions.console_writer
+import radish.extensions.time_recorder
+import radish.extensions.failure_inspector
+import radish.extensions.failure_debugger
 
 
 @error_oracle
@@ -29,6 +32,9 @@ Usage:
     radish <features>...
            [-b=<basedir> | --basedir=<basedir>]
            [--early-exit]
+           [--debug-steps]
+           [--debug-after-failure]
+           [--inspect-after-failure]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -39,6 +45,9 @@ Options:
     -h --help                            show this screen
     -v --version                         show version
     --early-exit                         stop the run after the first failed step
+    --debug-steps                        debugs each step
+    --debug-after-failure                start python debugger after failure
+    --inspect-after-failure              start python shell after failure
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 
@@ -67,6 +76,11 @@ Options:
     if not features:
         print("Error: no features given")
         return 1
+
+    # configure step -> FIXME: maybe use config singleton?!
+    Step.DEBUG = arguments["--debug-steps"]
+    Step.USE_DEBUGGER = arguments["--debug-after-failure"]
+    Step.USE_INSPECTOR = arguments["--inspect-after-failure"]
 
     # load user's custom python files
     loader = Loader(arguments["--basedir"])

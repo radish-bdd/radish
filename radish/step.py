@@ -11,12 +11,16 @@ import traceback
 from radish.model import Model
 from radish.exceptions import RadishError, StepRegexError
 from radish.stepregistry import StepRegistry
+import radish.utils as utils
 
 
 class Step(Model):
     """
         Represents a step
     """
+    DEBUG = False
+    USE_DEBUGGER = False
+    USE_INSPECTOR = False
 
     class State(object):
         """
@@ -56,6 +60,17 @@ class Step(Model):
         self.failure = None
         self.outlined = outlined
 
+    def _validate(self):
+        """
+            Checks if the step is valid to run or not
+        """
+
+        if not self.definition_func or not callable(self.definition_func):
+            raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
+
+        if not self.arguments:
+            raise RadishError("The step '{}' does not have a match with registered steps".format(self.sentence))
+
     def run(self):
         """
             Runs the step.
@@ -64,11 +79,7 @@ class Step(Model):
             self.state = Step.State.UNTESTED
             return self.state
 
-        if not self.definition_func or not callable(self.definition_func):
-            raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
-
-        if not self.arguments:
-            raise RadishError("The step '{}' does not have a match with registered steps".format(self.sentence))
+        self._validate()
 
         keyword_arguments = self.arguments.groupdict()
         try:
@@ -76,6 +87,27 @@ class Step(Model):
                 self.definition_func(self, **keyword_arguments)  # pylint: disable=not-callable
             else:
                 self.definition_func(self, *self.arguments.groups())  # pylint: disable=not-callable
+        except Exception as e:  # pylint: disable=broad-except
+            self.state = Step.State.FAILED
+            self.failure = Step.Failure(e)
+        else:
+            self.state = Step.State.PASSED
+        return self.state
+
+    def debug(self):
+        """
+            Debugs the step
+        """
+        if self.outlined:
+            self.state = Step.State.UNTESTED
+            return self.state
+
+        self._validate()
+
+        pdb = utils.get_debugger()
+
+        try:
+            pdb.runcall(self.definition_func, self, *self.arguments.groups(), **self.arguments.groupdict())
         except Exception as e:  # pylint: disable=broad-except
             self.state = Step.State.FAILED
             self.failure = Step.Failure(e)

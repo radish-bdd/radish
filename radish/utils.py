@@ -23,3 +23,23 @@ def recursive_glob(root, pattern):
         for filename in fnmatch.filter(filenames, pattern):
             matches.append(os.path.join(root, filename))
     return matches
+
+
+def get_debugger():
+    """
+        Returns a debugger instance
+    """
+    try:
+        from IPython.core.debugger import Pdb
+        pdb = Pdb()
+    except ImportError:
+        try:
+            from IPython.Debugger import Pdb
+            from IPython.Shell import IPShell
+
+            IPShell(argv=[""])
+            pdb = Pdb()
+        except ImportError:
+            import pdb
+
+    return pdb

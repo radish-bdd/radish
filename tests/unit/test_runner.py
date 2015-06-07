@@ -125,6 +125,6 @@ class RunnerTestCase(RadishTestCase):
         hook_mock = Mock()
         hook_mock.call.return_value = True
         runner = Runner(hook_mock)
-        runner.start([feature])
+        runner.start([feature], None)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true

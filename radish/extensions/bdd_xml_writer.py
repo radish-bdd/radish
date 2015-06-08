@@ -7,6 +7,7 @@
 from getpass import getuser
 from socket import gethostname
 from lxml import etree
+from datetime import timedelta
 import re
 import io
 
@@ -21,6 +22,7 @@ def _get_element_from_model(what, model):
     """
         Create a etree.Element from a given model
     """
+    duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else ""
     return etree.Element(
         what,
         sentence=model.sentence,
@@ -28,7 +30,7 @@ def _get_element_from_model(what, model):
         result=model.state,
         starttime=utils.datetime_to_str(model.starttime),
         endtime=utils.datetime_to_str(model.endtime),
-        duration=str(model.duration.total_seconds()),
+        duration=duration,
         testfile=model.path
     )
 
@@ -48,11 +50,16 @@ def generate_bdd_xml(features):
     if not features:
         raise RadishError("No features given to generate BDD xml file")
 
+    duration = timedelta()
+    for feature in features:
+        if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+            duration += feature.duration
+
     testrun_element = etree.Element(
         "testrun",
         starttime=utils.datetime_to_str(features[0].starttime),
         endtime=utils.datetime_to_str(features[-1].endtime),
-        duration=str((features[-1].endtime - features[0].starttime).total_seconds()),
+        duration=str(duration.total_seconds()),
         agent="{}@{}".format(getuser(), gethostname())
     )
 

@@ -51,4 +51,7 @@ def datetime_to_str(datetime):
 
         :param Datetime datetime: the datetime object
     """
+    if not datetime:
+        return ""
+
     return datetime.strftime("%Y-%m-%dT%H:%M:%S")

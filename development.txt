@@ -3,3 +3,4 @@ nose
 rednose
 sure
 pysingleton
+colorful

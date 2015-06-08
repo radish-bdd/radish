@@ -23,6 +23,7 @@ import radish.extensions.console_writer
 import radish.extensions.time_recorder
 import radish.extensions.failure_inspector
 import radish.extensions.failure_debugger
+import radish.extensions.bdd_xml_writer
 
 
 @error_oracle
@@ -69,7 +70,7 @@ Options:
 
     features = []
     for featureid, featurefile in enumerate(feature_files):
-        featureparser = FeatureParser(featurefile, featureid)
+        featureparser = FeatureParser(featurefile, featureid + 1)
         featureparser.parse()
         features.append(featureparser.feature)
 

@@ -43,3 +43,12 @@ def get_debugger():
             import pdb
 
     return pdb
+
+
+def datetime_to_str(datetime):
+    """
+        Returns the datetime object in a defined human readable format.
+
+        :param Datetime datetime: the datetime object
+    """
+    return datetime.strftime("%Y-%m-%dT%H:%M:%S")

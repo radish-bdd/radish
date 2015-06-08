@@ -155,7 +155,7 @@ class FeatureParser(object):
 
         scenario_id = len(self.feature.scenarios) + 1
         if self.feature.scenarios and isinstance(self.feature.scenarios[-1], ScenarioOutline):
-            scenario_id += len(self.feature.scenarios[-1].examples)
+            scenario_id += len(self.feature.scenarios[-1].examples) - 1
 
         self.feature.scenarios.append(scenario(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature))
         self._current_state = FeatureParser.State.STEP

@@ -7,16 +7,10 @@
 from datetime import timedelta
 from colorful import colorful
 
-from radish.terrain import before, after
+from radish.terrain import world, before, after
 from radish.scenariooutline import ScenarioOutline
 from radish.step import Step
-
-
-def write(text):
-    """
-        Writes the given text to console
-    """
-    print(text)
+from radish.utils import console_write as write
 
 
 def get_color_func(state):
@@ -29,6 +23,16 @@ def get_color_func(state):
         return colorful.bold_red
     elif state:
         return colorful.cyan
+
+
+def get_line_jump_seq():
+    """
+        Returns the line jump ANSI sequence
+    """
+    line_jump_seq = ""
+    if not world.config.no_ansi and not world.config.no_line_jump:
+        line_jump_seq = "\r\033[A\033[K"
+    return line_jump_seq
 
 
 @before.each_feature  # pylint: disable=no-member
@@ -52,6 +56,9 @@ def console_writer_before_each_scenario(scenario):
     """
     output = "\n"
     if isinstance(scenario.parent, ScenarioOutline):
+        if world.config.write_steps_once:
+            return
+
         colored_pipe = colorful.bold_white("|")
         output = "        {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(colorful.bold_brown("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
     else:
@@ -69,6 +76,9 @@ def console_writer_before_each_step(step):
     if isinstance(step.parent.parent, ScenarioOutline):
         return
 
+    if world.config.write_steps_once:
+        return
+
     output = "\r        {}".format(colorful.bold_brown(step.sentence))
     write(output)
 
@@ -84,7 +94,7 @@ def console_writer_after_each_step(step):
         return
 
     color_func = get_color_func(step.state)
-    output = "\r\033[A\033[K        {}".format(color_func(step.sentence))
+    output = "{}        {}".format(get_line_jump_seq(), color_func(step.sentence))
 
     if step.state == step.State.FAILED:
         output += "\n          {}: {}".format(colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
@@ -106,7 +116,7 @@ def console_writer_after_each_scenario(scenario):
     elif isinstance(scenario.parent, ScenarioOutline):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
-        output += "\r\033[A\033[K        {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
+        output += "{0}        {1} {2} {1}".format(get_line_jump_seq(), colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step

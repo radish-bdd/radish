@@ -5,7 +5,23 @@
 """
 
 import os
+import re
 import fnmatch
+
+
+from radish.terrain import world
+
+
+def console_write(text):
+    """
+        Writes the given text to the console
+
+        If the --no-colors flag is given all colors are removed from the text
+    """
+    if world.config.no_ansi:
+        text = re.sub(r"\x1b[^m]*m", "", text)
+
+    print(text)
 
 
 def expandpath(path):

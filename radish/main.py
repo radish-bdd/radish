@@ -47,6 +47,9 @@ Usage:
            [--debug-after-failure]
            [--inspect-after-failure]
            [--bdd-xml]
+           [--no-ansi]
+           [--no-line-jump]
+           [--write-steps-once]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -61,6 +64,9 @@ Options:
     --debug-after-failure                start python debugger after failure
     --inspect-after-failure              start python shell after failure
     --bdd-xml                            write BDD XML result file after run
+    --no-ansi                            print features without any ANSI sequences (like colors, line jump)
+    --no-line-jump                       print features without line jumps (overwriting steps)
+    --write-steps-once                   does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 

@@ -4,3 +4,6 @@ rednose
 sure
 pysingleton
 colorful
+docopt
+ipython
+lxml

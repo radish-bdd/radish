@@ -10,12 +10,29 @@ from radish.hookregistry import HookRegistry
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.step import Step
+from radish.main import setup_config
 
 
 class ConsoleWriterTestCase(RadishTestCase):
     """
         Tests for the runner class
     """
+    @classmethod
+    def setUpClass(cls):
+        """
+            Setup config object
+        """
+        setup_config({
+            "--early_exit": False,
+            "--debug-steps": False,
+            "--debug-after-failure": False,
+            "--inspect-after-failure": False,
+            "--bdd-xml": False,
+            "--no-ansi": False,
+            "--no-line-jump": False,
+            "--write-steps-once": False
+        })
+
     def tearDown(self):
         """
             Overwrite because HookRegistry should not be reset

@@ -10,7 +10,7 @@ from lxml import etree
 import re
 import io
 
-from radish.terrain import after
+from radish.terrain import world, after
 from radish.exceptions import RadishError
 from radish.scenariooutline import ScenarioOutline
 from radish.step import Step
@@ -92,4 +92,7 @@ def bdd_xml_writer_after_all(features, marker):
     """
         Generates a BDD XML file with the results
     """
+    if not world.config.bdd_xml:
+        return
+
     generate_bdd_xml(features)

@@ -4,6 +4,7 @@
     Providing radish core functionality like the feature file Runner.
 """
 
+from radish.terrain import world
 from radish.step import Step
 
 
@@ -98,7 +99,7 @@ class Runner(object):
 
             :param Step step: the step to run
         """
-        if step.DEBUG:
+        if world.config.debug_steps:
             step.debug()
         else:
             step.run()

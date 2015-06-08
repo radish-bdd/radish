@@ -14,7 +14,7 @@ from radish.hookregistry import HookRegistry
 from radish.core import Runner
 from radish.exceptions import FeatureFileNotFoundError
 from radish.errororacle import error_oracle
-from radish.step import Step
+from radish.terrain import world
 import radish.utils as utils
 
 # extensions
@@ -24,6 +24,16 @@ import radish.extensions.time_recorder
 import radish.extensions.failure_inspector
 import radish.extensions.failure_debugger
 import radish.extensions.bdd_xml_writer
+
+
+def setup_config(arguments):
+    """
+        Parses the docopt arguments and creates a configuration object in terrain.world
+    """
+    world.config = lambda: None
+    for key, value in arguments.items():
+        config_key = key.replace("--", "").replace("-", "_").replace("<", "").replace(">", "")
+        setattr(world.config, config_key, value)
 
 
 @error_oracle
@@ -36,6 +46,7 @@ Usage:
            [--debug-steps]
            [--debug-after-failure]
            [--inspect-after-failure]
+           [--bdd-xml]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -49,6 +60,7 @@ Options:
     --debug-steps                        debugs each step
     --debug-after-failure                start python debugger after failure
     --inspect-after-failure              start python shell after failure
+    --bdd-xml                            write BDD XML result file after run
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 
@@ -57,8 +69,11 @@ Options:
 
     arguments = docopt("radish {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
 
+    # store all arguments to configuration dict in terrain.world
+    setup_config(arguments)
+
     feature_files = []
-    for given_feature in arguments["<features>"]:
+    for given_feature in world.config.features:
         if not os.path.exists(given_feature):
             raise FeatureFileNotFoundError(given_feature)
 
@@ -78,13 +93,8 @@ Options:
         print("Error: no features given")
         return 1
 
-    # configure step -> FIXME: maybe use config singleton?!
-    Step.DEBUG = arguments["--debug-steps"]
-    Step.USE_DEBUGGER = arguments["--debug-after-failure"]
-    Step.USE_INSPECTOR = arguments["--inspect-after-failure"]
-
     # load user's custom python files
-    loader = Loader(arguments["--basedir"])
+    loader = Loader(world.config.basedir)
     loader.load_all()
 
     # match feature file steps with user's step definitions
@@ -92,7 +102,7 @@ Options:
     matcher.merge_steps(features, StepRegistry().steps)
 
     # run parsed features
-    runner = Runner(HookRegistry(), early_exit=arguments["--early-exit"])
+    runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
     runner.start(features, marker=int(time()))
 
 

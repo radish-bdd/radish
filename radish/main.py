@@ -54,6 +54,7 @@ Usage:
            [-t | --with-traceback]
            [-m=<marker> | --marker=<marker>]
            [-p=<profile> | --profile=<profile>]
+           [-d | --dry-run]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -74,8 +75,8 @@ Options:
     -t --with-traceback                  show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>        specify the marker for this run [default: time.time()]
     -p=<profile> --profile=<profile>     specify the profile which can be used in the step/hook implementation
-
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
+    -d --dry-run                         make dry run for the given feature files
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """

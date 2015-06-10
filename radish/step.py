@@ -18,10 +18,6 @@ class Step(Model):
     """
         Represents a step
     """
-    DEBUG = False
-    USE_DEBUGGER = False
-    USE_INSPECTOR = False
-
     class State(object):
         """
             Represents the step state

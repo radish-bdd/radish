@@ -154,7 +154,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         step.state = step.State.FAILED
         try:
             assert False, "Some assertion happend"
-        except AssertionError, e:
+        except AssertionError as e:
             step.failure = step.Failure(e)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):

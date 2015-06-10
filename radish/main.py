@@ -19,8 +19,9 @@ import radish.utils as utils
 
 # extensions
 # FIXME: load dynamically
-import radish.extensions.console_writer
 import radish.extensions.time_recorder
+import radish.extensions.syslog_writer
+import radish.extensions.console_writer
 import radish.extensions.failure_inspector
 import radish.extensions.failure_debugger
 import radish.extensions.bdd_xml_writer

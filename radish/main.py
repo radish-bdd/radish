@@ -43,7 +43,7 @@ def main():
 Usage:
     radish <features>...
            [-b=<basedir> | --basedir=<basedir>]
-           [--early-exit]
+           [-e | --early-exit]
            [--debug-steps]
            [--debug-after-failure]
            [--inspect-after-failure]
@@ -63,7 +63,7 @@ Arguments:
 Options:
     -h --help                            show this screen
     -v --version                         show version
-    --early-exit                         stop the run after the first failed step
+    -e --early-exit                      stop the run after the first failed step
     --debug-steps                        debugs each step
     --debug-after-failure                start python debugger after failure
     --inspect-after-failure              start python shell after failure

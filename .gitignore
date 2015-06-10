@@ -9,3 +9,11 @@
 
 # python virtualenv
 env
+
+# python setuptools
+build/
+dist/
+radish_bdd.egg-info/
+
+# generated files by radish (these files could be created during manual tests of radish)
+result.xml

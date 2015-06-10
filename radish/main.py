@@ -38,7 +38,7 @@ def setup_config(arguments):
 
 
 @error_oracle
-def main(args):
+def main():
     """
 Usage:
     radish <features>...
@@ -114,4 +114,4 @@ Options:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main()

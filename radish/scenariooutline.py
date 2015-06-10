@@ -40,7 +40,7 @@ class ScenarioOutline(Scenario):
         """
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))
-            scenario_id = self.id + row_id
+            scenario_id = self.id + row_id + 1
             scenario = ExampleScenario(scenario_id, self.keyword, "{} - row {}".format(self.sentence, row_id), self.path, self.line, self, example)
             for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)

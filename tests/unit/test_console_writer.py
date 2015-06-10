@@ -87,6 +87,7 @@ class ConsoleWriterTestCase(RadishTestCase):
             data.console = text
 
         scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
+        scenario.parent = Mock()
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_scenario", scenario)
@@ -107,6 +108,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         scenario_mock = Mock()
         scenario_mock.parent = None
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
+        step.parent = Mock()
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_step", step)
@@ -127,6 +129,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         scenario_mock = Mock()
         scenario_mock.parent = None
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
+        step.parent = Mock()
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("after", "each_step", step)
@@ -147,6 +150,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         scenario_mock = Mock()
         scenario_mock.parent = None
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
+        step.parent = Mock()
         step.state = step.State.FAILED
         try:
             assert False, "Some assertion happend"

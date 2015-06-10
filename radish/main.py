@@ -53,6 +53,7 @@ Usage:
            [--write-steps-once]
            [-t | --with-traceback]
            [-m=<marker> | --marker=<marker>]
+           [-p=<profile> | --profile=<profile>]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -72,6 +73,7 @@ Options:
     --write-steps-once                   does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
     -t --with-traceback                  show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>        specify the marker for this run [default: time.time()]
+    -p=<profile> --profile=<profile>     specify the profile which can be used in the step/hook implementation
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 

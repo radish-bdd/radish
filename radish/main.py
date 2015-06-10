@@ -52,6 +52,7 @@ Usage:
            [--no-line-jump]
            [--write-steps-once]
            [-t | --with-traceback]
+           [-m=<marker> | --marker=<marker>]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -70,6 +71,7 @@ Options:
     --no-line-jump                       print features without line jumps (overwriting steps)
     --write-steps-once                   does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
     -t --with-traceback                  show the Exception traceback when a step fails
+    -m=<marker> --marker=<marker>        specify the marker for this run [default: time.time()]
 
     -b=<basedir> --basedir=<basedir>     set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
 
@@ -111,8 +113,11 @@ Options:
     matcher.merge_steps(features, StepRegistry().steps)
 
     # run parsed features
+    if world.config.marker == "time.time()":
+        world.config.marker = int(time())
+
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
-    runner.start(features, marker=int(time()))
+    runner.start(features, marker=world.config.marker)
 
 
 if __name__ == "__main__":

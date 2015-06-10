@@ -30,7 +30,8 @@ class ConsoleWriterTestCase(RadishTestCase):
             "--bdd-xml": False,
             "--no-ansi": False,
             "--no-line-jump": False,
-            "--write-steps-once": False
+            "--write-steps-once": False,
+            "--with-traceback": False
         })
 
     def tearDown(self):

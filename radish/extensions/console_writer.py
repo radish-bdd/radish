@@ -97,6 +97,8 @@ def console_writer_after_each_step(step):
     output = "{}        {}".format(get_line_jump_seq(), color_func(step.sentence))
 
     if step.state == step.State.FAILED:
+        if world.config.with_traceback:
+            output += "\n          {}".format("\n          ".join([colorful.red(l) for l in step.failure.traceback.split("\n")[:-2]]))
         output += "\n          {}: {}".format(colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
 
     write(output)
@@ -120,6 +122,8 @@ def console_writer_after_each_scenario(scenario):
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step
+            if world.config.with_traceback:
+                output += "\n          {}".format("\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
             output += "\n          {}: {}".format(colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
 
     if output:

@@ -8,7 +8,7 @@
 .coverage
 
 # python virtualenv
-env
+env*
 
 # python setuptools
 build/

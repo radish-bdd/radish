@@ -7,7 +7,8 @@
 from datetime import timedelta
 from colorful import colorful
 
-from radish.terrain import world, before, after
+from radish.terrain import world
+from radish.hookregistry import before, after
 from radish.scenariooutline import ScenarioOutline
 from radish.step import Step
 from radish.utils import console_write as write

@@ -6,7 +6,7 @@
 
 
 from radish.scenariooutline import ScenarioOutline
-from radish.terrain import before, after
+from radish.hookregistry import before, after
 
 import syslog
 

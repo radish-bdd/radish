@@ -62,3 +62,13 @@ class RunnerEarlyExit(RadishError):
         Raised if the runner has to exit to run.
     """
     pass
+
+
+class HookError(RadishError):
+    """
+        Raised if an exception was raised inside a hook
+    """
+    def __init__(self, hook_function, failure):
+        self.hook_function = hook_function
+        self.failure = failure
+        super(HookError, self).__init__("Hook '{}' from {}:{} raised: '{}: {}'".format(hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))

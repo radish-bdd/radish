@@ -11,6 +11,7 @@ from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.step import Step
 from radish.main import setup_config
+import radish.utils as utils
 
 
 class ConsoleWriterTestCase(RadishTestCase):
@@ -156,7 +157,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         try:
             assert False, "Some assertion happend"
         except AssertionError as e:
-            step.failure = step.Failure(e)
+            step.failure = utils.Failure(e)
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("after", "each_step", step)

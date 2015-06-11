@@ -11,7 +11,8 @@ from datetime import timedelta
 import re
 import io
 
-from radish.terrain import world, after
+from radish.terrain import world
+from radish.hookregistry import after
 from radish.exceptions import RadishError
 from radish.scenariooutline import ScenarioOutline
 from radish.step import Step

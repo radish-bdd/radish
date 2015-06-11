@@ -6,10 +6,31 @@
 
 import os
 import re
+import sys
 import fnmatch
+import traceback
 
 
 from radish.terrain import world
+
+
+class Failure(object):  # pylint: disable=too-few-public-methods
+    """
+        Represents the fail reason for a step
+    """
+    def __init__(self, exception):
+        """
+            Initalizes the Step failure with a given Exception
+
+            :param Exception exception: the exception shrown in the step
+        """
+        self.exception = exception
+        self.reason = unicode(str(exception), "utf-8")
+        self.traceback = traceback.format_exc()
+        self.name = exception.__class__.__name__
+        traceback_info = traceback.extract_tb(sys.exc_info()[2])[-1]
+        self.filename = traceback_info[0]
+        self.line = int(traceback_info[1])
 
 
 def console_write(text):

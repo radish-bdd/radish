@@ -6,7 +6,7 @@
 
 from datetime import datetime
 
-from radish.terrain import after, before
+from radish.hookregistry import after, before
 
 __REQUIRED__ = True
 

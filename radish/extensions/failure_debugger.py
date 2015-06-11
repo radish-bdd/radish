@@ -5,7 +5,8 @@
     This module provides an extension which starts a debugger when a step fails
 """
 
-from radish.terrain import world, after
+from radish.terrain import world
+from radish.hookregistry import after
 from radish.step import Step
 import radish.utils as utils
 

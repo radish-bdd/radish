@@ -4,7 +4,8 @@
     This module provides an extension which starts a python shell after a step failed
 """
 
-from radish.terrain import world, after
+from radish.terrain import world
+from radish.hookregistry import after
 from radish.step import Step
 from radish.exceptions import RadishError
 

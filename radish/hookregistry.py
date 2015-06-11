@@ -6,6 +6,9 @@
 
 from singleton import singleton
 
+import radish.utils as utils
+from radish.exceptions import HookError
+
 
 @singleton()
 class HookRegistry(object):
@@ -81,7 +84,7 @@ class HookRegistry(object):
             try:
                 hook(*args, **kwargs)
             except Exception as e:
-                raise e
+                raise HookError(hook, utils.Failure(e))
         return None
 
 HookRegistry()

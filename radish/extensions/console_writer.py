@@ -9,6 +9,7 @@ from colorful import colorful
 
 from radish.terrain import world
 from radish.hookregistry import before, after
+from radish.feature import Feature
 from radish.scenariooutline import ScenarioOutline
 from radish.step import Step
 from radish.utils import console_write as write
@@ -56,7 +57,7 @@ def console_writer_before_each_scenario(scenario):
         :param Scenario scenario: the scenario to write to the console
     """
     output = "\n"
-    if isinstance(scenario.parent, ScenarioOutline):
+    if not isinstance(scenario.parent, Feature):
         if world.config.write_steps_once:
             return
 
@@ -74,7 +75,7 @@ def console_writer_before_each_step(step):
 
         :param Step step: the step to write to the console
     """
-    if isinstance(step.parent.parent, ScenarioOutline):
+    if not isinstance(step.parent.parent, Feature):
         return
 
     if world.config.write_steps_once:
@@ -91,7 +92,7 @@ def console_writer_after_each_step(step):
 
         :param Step step: the step to write to the console
     """
-    if isinstance(step.parent.parent, ScenarioOutline):
+    if not isinstance(step.parent.parent, Feature):
         return
 
     color_func = get_color_func(step.state)
@@ -116,7 +117,7 @@ def console_writer_after_each_scenario(scenario):
     if isinstance(scenario, ScenarioOutline):
         output += "\n    {}:\n".format(colorful.bold_white(scenario.example_keyword))
         output += colorful.bold_white("        | {} |".format(" | ".join("{1: <{0}}".format(scenario.get_column_width(i), x) for i, x in enumerate(scenario.examples_header))))
-    elif isinstance(scenario.parent, ScenarioOutline):
+    elif not isinstance(scenario.parent, Feature):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
         output += "{0}        {1} {2} {1}".format(get_line_jump_seq(), colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))

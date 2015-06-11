@@ -5,7 +5,7 @@
 """
 
 
-from radish.scenariooutline import ScenarioOutline
+from radish.feature import Feature
 from radish.hookregistry import before, after
 
 import syslog
@@ -15,7 +15,7 @@ def get_scenario_feature(scenario):
     """
         Gets the scenarios feature
     """
-    if isinstance(scenario.parent, ScenarioOutline):
+    if not isinstance(scenario.parent, Feature):
         return scenario.parent.parent
 
     return scenario.parent

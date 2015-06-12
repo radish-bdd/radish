@@ -32,7 +32,8 @@ class ConsoleWriterTestCase(RadishTestCase):
             "--no-ansi": False,
             "--no-line-jump": False,
             "--write-steps-once": False,
-            "--with-traceback": False
+            "--with-traceback": False,
+            "--marker": False
         })
 
     def tearDown(self):

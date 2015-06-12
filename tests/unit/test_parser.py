@@ -487,3 +487,23 @@ Feature: another empty feature"""
 
             parser.feature.scenarios[0].steps[2].sentence.should.be.equal("Then I expect 3 entries in the database")
             parser.feature.scenarios[0].steps[2].table.should.have.length_of(0)
+
+    def test_detect_scenario_loop(self):
+        """
+            Test detecting ScenarioLoop on a given line
+        """
+        line = "Scenario Loop 10: Some fancy scenario loop"
+
+        with NamedTemporaryFile("w+") as featurefile:
+            parser = FeatureParser(featurefile.name, 1)
+            result = parser._detect_scenario_loop(line)
+
+            result.should.be.a(tuple)
+            result[0].should.be.equal("Some fancy scenario loop")
+            result[1].should.be.equal(10)
+
+            parser._detect_scenario_loop.when.called_with("").should.return_value(None)
+            parser._detect_scenario_loop.when.called_with("Scenario: Some fancy scenario").should.return_value(None)
+            parser._detect_scenario_loop.when.called_with("Scenario Outline: Some fancy scenario").should.return_value(None)
+            parser._detect_scenario_loop.when.called_with("Scenario Loop: Some fancy scenario").should.return_value(None)
+            parser._detect_scenario_loop.when.called_with("Scenario Loop 5.5: Some fancy scenario").should.return_value(None)

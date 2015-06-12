@@ -2,6 +2,7 @@
 
 import os
 import io
+import re
 import json
 
 from radish.exceptions import RadishError, LanguageNotSupportedError
@@ -15,11 +16,13 @@ class Keywords(object):
     """
         Represent config object for gherkin keywords.
     """
-    def __init__(self, feature, scenario, scenario_outline, examples):
+    def __init__(self, feature, scenario, scenario_outline, examples, scenario_loop, iterations):
         self.feature = feature
         self.scenario = scenario
         self.scenario_outline = scenario_outline
         self.examples = examples
+        self.scenario_loop = scenario_loop
+        self.iterations = iterations
 
 
 class FeatureParser(object):
@@ -42,6 +45,7 @@ class FeatureParser(object):
         STEP = "step"
         EXAMPLES = "examples"
         EXAMPLES_ROW = "examples_row"
+        SCENARIO_LOOP = "scenario_loop"
 
     def __init__(self, featurefile, featureid, language="en"):
         if not os.path.exists(featurefile):
@@ -279,6 +283,21 @@ class FeatureParser(object):
         """
         if line.startswith(self.keywords.examples + self._keywords_delimiter):
             return True
+
+        return None
+
+    def _detect_scenario_loop(self, line):
+        """
+            Detects a scenario loop on the given line
+
+            :param string line: the line to detect a scenario loop
+
+            :returns: if a scenario loop was found on the given line
+            :rtype: string
+        """
+        match = re.search(r"^{} (\d+):(.*)".format(self.keywords.scenario_loop), line)
+        if match:
+            return match.group(2).strip(), int(match.group(1))
 
         return None
 

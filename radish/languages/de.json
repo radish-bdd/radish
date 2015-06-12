@@ -3,6 +3,8 @@
     "feature": "Feature",
     "scenario": "Szenario",
     "scenario_outline": "Szenario Auslagerung",
-    "examples": "Beispiele"
+    "examples": "Beispiele",
+    "scenario_loop": "Szenario Schleife",
+    "iterations": "Durchläufe"
   }
 }

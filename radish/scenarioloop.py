@@ -13,10 +13,10 @@ class ScenarioLoop(Scenario):
     """
         Represents a scenario loop
     """
-    def __init__(self, id, keyword, iterations_keyword, sentence, path, line, parent, iterations):
+    def __init__(self, id, keyword, iterations_keyword, sentence, path, line, parent):
         super(ScenarioLoop, self).__init__(id, keyword, sentence, path, line, parent)
         self.iterations_keyword = iterations_keyword
-        self.iterations = iterations
+        self.iterations = 0
         self.scenarios = []
 
     def build_scenarios(self):
@@ -29,6 +29,6 @@ class ScenarioLoop(Scenario):
             scenario_id = self.id + i + 1
             scenario = IterationScenario(scenario_id, self.keyword, "{} - iteration {}".format(self.sentence, i), self.path, self.line, self, i)
             for step_id, iteration_step in enumerate(self.steps):
-                step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, False)
+                step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, True)
                 scenario.steps.append(step)
             self.scenarios.append(scenario)

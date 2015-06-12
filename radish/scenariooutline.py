@@ -44,7 +44,7 @@ class ScenarioOutline(Scenario):
             scenario = ExampleScenario(scenario_id, self.keyword, "{} - row {}".format(self.sentence, row_id), self.path, self.line, self, example)
             for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
-                step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, False)
+                step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, True)
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
 

@@ -45,7 +45,7 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step(1, "Some step", "somefile.feature", 3, None, False)
+        step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
         step.arguments = match_mock
 
@@ -70,7 +70,7 @@ class RunnerTestCase(RadishTestCase):
         match_mock.groupdict.return_value = None
         match_mock.groups.return_value = tuple()
 
-        step = Step(1, "Some step", "somefile.feature", 3, None, False)
+        step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
         step.arguments = match_mock
 
@@ -103,7 +103,7 @@ class RunnerTestCase(RadishTestCase):
         scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
         feature.scenarios.append(scenario)
 
-        step = Step(1, "Some step", "somefile.feature", 3, scenario, False)
+        step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
         step.arguments = match_mock
         scenario.steps.append(step)
@@ -134,7 +134,7 @@ class RunnerTestCase(RadishTestCase):
         scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
         feature.scenarios.append(scenario)
 
-        step = Step(1, "Some step", "somefile.feature", 3, scenario, False)
+        step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
         step.arguments = match_mock
         scenario.steps.append(step)

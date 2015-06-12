@@ -7,6 +7,7 @@ from tempfile import NamedTemporaryFile
 from radish.parser import FeatureParser
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.exceptions import RadishError, LanguageNotSupportedError
 
 
@@ -507,3 +508,55 @@ Feature: another empty feature"""
             parser._detect_scenario_loop.when.called_with("Scenario Outline: Some fancy scenario").should.return_value(None)
             parser._detect_scenario_loop.when.called_with("Scenario Loop: Some fancy scenario").should.return_value(None)
             parser._detect_scenario_loop.when.called_with("Scenario Loop 5.5: Some fancy scenario").should.return_value(None)
+
+    def test_parse_feature_with_scenario_loop(self):
+        """
+            Test parsing of a feature file with a scenario loop
+        """
+        feature = """Feature: some feature
+    Scenario Loop 10: some fancy scenario
+        Given I have the number 1
+        When I add 2 to my number
+        Then I expect my number to be 3
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name, 1)
+            parser.parse()
+
+            parser.feature.id.should.be.equal(1)
+            parser.feature.sentence.should.be.equal("some feature")
+            parser.feature.scenarios.should.have.length_of(1)
+
+            scenario = parser.feature.scenarios[0]
+            scenario.should.be.a(ScenarioLoop)
+            scenario.id.should.be.equal(1)
+            scenario.sentence.should.be.equal("some fancy scenario")
+
+            scenario.steps.should.have.length_of(3)
+            scenario.steps[0].id.should.be.equal(1)
+            scenario.steps[0].sentence.should.be.equal("Given I have the number 1")
+            scenario.steps[0].path.should.be.equal(featurefile.name)
+            scenario.steps[0].line.should.be.equal(3)
+            scenario.steps[1].id.should.be.equal(2)
+            scenario.steps[1].sentence.should.be.equal("When I add 2 to my number")
+            scenario.steps[1].path.should.be.equal(featurefile.name)
+            scenario.steps[1].line.should.be.equal(4)
+            scenario.steps[2].id.should.be.equal(3)
+            scenario.steps[2].sentence.should.be.equal("Then I expect my number to be 3")
+            scenario.steps[2].path.should.be.equal(featurefile.name)
+            scenario.steps[2].line.should.be.equal(5)
+
+            scenario.scenarios.should.have.length_of(10)
+            for i in range(10):
+                scenario.scenarios[i].id.should.be.equal(i + 2)
+                scenario.scenarios[i].steps.should.have.length_of(3)
+                scenario.scenarios[i].steps[0].id.should.be.equal(1)
+                scenario.scenarios[i].steps[0].sentence.should.be.equal("Given I have the number 1")
+                scenario.scenarios[i].steps[1].id.should.be.equal(2)
+                scenario.scenarios[i].steps[1].sentence.should.be.equal("When I add 2 to my number")
+                scenario.scenarios[i].steps[2].id.should.be.equal(3)
+                scenario.scenarios[i].steps[2].sentence.should.be.equal("Then I expect my number to be 3")

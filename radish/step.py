@@ -27,14 +27,14 @@ class Step(Model):
         PASSED = "passed"
         FAILED = "failed"
 
-    def __init__(self, id, sentence, path, line, parent, outlined):
+    def __init__(self, id, sentence, path, line, parent, runable):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
         self.table = []
         self.definition_func = None
         self.arguments = None
         self.state = Step.State.UNTESTED
         self.failure = None
-        self.outlined = outlined
+        self.runable = runable
 
     def _validate(self):
         """
@@ -51,7 +51,7 @@ class Step(Model):
         """
             Runs the step.
         """
-        if self.outlined:
+        if not self.runable:
             self.state = Step.State.UNTESTED
             return self.state
 
@@ -74,7 +74,7 @@ class Step(Model):
         """
             Debugs the step
         """
-        if self.outlined:
+        if not self.runable:
             self.state = Step.State.UNTESTED
             return self.state
 

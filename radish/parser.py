@@ -9,6 +9,7 @@ from radish.exceptions import RadishError, LanguageNotSupportedError
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 
 
@@ -108,9 +109,12 @@ class FeatureParser(object):
         if not self.feature:
             raise RadishError("No Feature found in file {}".format(self._featurefile))
 
-        if self.feature.scenarios and isinstance(self.feature.scenarios[-1], ScenarioOutline):
-            # last scenario was a ScenarioOutline but the inner Scenarios could not be build yet - do it now! FIXME: fix this
-            self.feature.scenarios[-1].build_scenarios()
+        if self.feature.scenarios:
+            previous_scenario = self.feature.scenarios[-1]
+            if isinstance(previous_scenario, ScenarioOutline) or isinstance(previous_scenario, ScenarioLoop):
+                # last scenario was a ScenarioOutline or Scenario Loop but the inner Scenarios could not be build yet
+                # - do it now! FIXME: fix this ugly algorithm
+                previous_scenario.build_scenarios()
 
     def _parse_context(self, line):
         """
@@ -147,21 +151,35 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         detected_scenario = self._detect_scenario(line)
-        scenario = Scenario
+        scenario_type = Scenario
         keywords = (self.keywords.scenario,)
         if not detected_scenario:
             detected_scenario = self._detect_scenario_outline(line)
-            scenario = ScenarioOutline
+            scenario_type = ScenarioOutline
             keywords = (self.keywords.scenario_outline, self.keywords.examples)
+
             if not detected_scenario:
-                self.feature.description.append(line)
-                return True
+                detected_scenario = self._detect_scenario_loop(line)
+                if not detected_scenario:
+                    self.feature.description.append(line)
+                    return True
+
+                detected_scenario, iterations = detected_scenario  # pylint: disable=unpacking-non-sequence
+                scenario_type = ScenarioLoop
+                keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
         scenario_id = len(self.feature.scenarios) + 1
-        if self.feature.scenarios and isinstance(self.feature.scenarios[-1], ScenarioOutline):
-            scenario_id += len(self.feature.scenarios[-1].examples)
+        if self.feature.scenarios:
+            previous_scenario = self.feature.scenarios[-1]
+            if isinstance(previous_scenario, ScenarioOutline):
+                scenario_id += len(previous_scenario.examples)
+            elif isinstance(previous_scenario, ScenarioLoop):
+                scenario_id += previous_scenario.iterations
 
-        self.feature.scenarios.append(scenario(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature))
+        self.feature.scenarios.append(scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature))
+
+        if scenario_type == ScenarioLoop:
+            self.feature.scenarios[-1].iterations = iterations
         self._current_state = FeatureParser.State.STEP
         return True
 
@@ -185,7 +203,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line):
+        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
             # the current Examples are finished so build the scenarios in the scenario outline
             self.feature.scenarios[-1].build_scenarios()
             return self._parse_scenario(line)
@@ -201,7 +219,9 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line):
+        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
+            if isinstance(self.feature.scenarios[-1], ScenarioLoop):
+                self.feature.scenarios[-1].build_scenarios()
             return self._parse_scenario(line)
 
         if self._detect_table(line):
@@ -213,8 +233,8 @@ class FeatureParser(object):
             return True
 
         step_id = len(self.feature.scenarios[-1].steps) + 1
-        is_outlined = isinstance(self.feature.scenarios[-1], ScenarioOutline)
-        step = Step(step_id, line, self._featurefile, self._current_line, self.feature.scenarios[-1], is_outlined)
+        not_runable = isinstance(self.feature.scenarios[-1], (ScenarioOutline, ScenarioLoop))
+        step = Step(step_id, line, self._featurefile, self._current_line, self.feature.scenarios[-1], not not_runable)
         self.feature.scenarios[-1].steps.append(step)
         return True
 

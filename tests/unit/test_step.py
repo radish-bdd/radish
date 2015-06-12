@@ -84,7 +84,7 @@ class StepTestCase(RadishTestCase):
         def step_passed(step):
             data.step_was_run = True
 
-        step = Step(1, "I call a passing step", "somefile.feature", 3, None, False)
+        step = Step(1, "I call a passing step", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
         step.arguments = re.search(step.sentence, step.sentence)
 
@@ -106,7 +106,7 @@ class StepTestCase(RadishTestCase):
             data.number = int(number)
             data.string = string
 
-        step = Step(1, "I call a passing step with number argument 42 and string argument 'Tschau'", "somefile.feature", 3, None, False)
+        step = Step(1, "I call a passing step with number argument 42 and string argument 'Tschau'", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
         step.arguments = re.search("I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence)
 
@@ -130,7 +130,7 @@ class StepTestCase(RadishTestCase):
             data.number = int(number)
             data.string = string
 
-        step = Step(1, "I call a passing step with string argument 'Tschau' and number argument 42", "somefile.feature", 3, None, False)
+        step = Step(1, "I call a passing step with string argument 'Tschau' and number argument 42", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
         step.arguments = re.search("I call a passing step with string argument '(?P<string>.*?)' and number argument (?P<number>\d+)", step.sentence)
 
@@ -151,7 +151,7 @@ class StepTestCase(RadishTestCase):
             data.step_was_run = True
             assert False, "This step fails by design"
 
-        step = Step(1, "I call a failing step", "somefile.feature", 3, None, False)
+        step = Step(1, "I call a failing step", "somefile.feature", 3, None, True)
         step.definition_func = step_failed
         step.arguments = re.search(step.sentence, step.sentence)
 
@@ -165,7 +165,7 @@ class StepTestCase(RadishTestCase):
         """
             Test running a step without assining a definition
         """
-        step = Step(1, "I call an invalid step", "somefile.feature", 3, None, False)
+        step = Step(1, "I call an invalid step", "somefile.feature", 3, None, True)
         step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a step definition")
 
     def test_run_a_step_arguments_match(self):
@@ -175,6 +175,6 @@ class StepTestCase(RadishTestCase):
         def some_step(step):
             pass
 
-        step = Step(1, "I call an invalid step", "somefile.feature", 3, None, False)
+        step = Step(1, "I call an invalid step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
         step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a match with registered steps")

@@ -6,6 +6,7 @@
 
 from radish.model import Model
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 
 
@@ -28,7 +29,7 @@ class Feature(Model):
         scenarios = []
         for scenario in self.scenarios:
             scenarios.append(scenario)
-            if isinstance(scenario, ScenarioOutline):
+            if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
                 scenarios.extend(scenario.scenarios)
         return scenarios
 
@@ -44,7 +45,7 @@ class Feature(Model):
             Returns the state of the scenario
         """
         for scenario in self.all_scenarios:
-            if isinstance(scenario, ScenarioOutline):  # skip scenario outlines
+            if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):  # skip scenario outlines
                 continue
 
             if scenario.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:

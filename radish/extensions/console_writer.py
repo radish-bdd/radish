@@ -11,6 +11,7 @@ from radish.terrain import world
 from radish.hookregistry import before, after
 from radish.feature import Feature
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 from radish.utils import console_write as write
 
@@ -57,12 +58,18 @@ def console_writer_before_each_scenario(scenario):
         :param Scenario scenario: the scenario to write to the console
     """
     output = "\n"
-    if not isinstance(scenario.parent, Feature):
+    if isinstance(scenario.parent, ScenarioOutline):
         if world.config.write_steps_once:
             return
 
         colored_pipe = colorful.bold_white("|")
         output = "        {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(colorful.bold_brown("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
+    elif isinstance(scenario.parent, ScenarioLoop):
+        if world.config.write_steps_once:
+            return
+
+        colored_pipe = colorful.bold_white("|")
+        output = "        {0} {1: <18} {0}".format(colored_pipe, colorful.bold_brown(scenario.iteration))
     else:
         output += """    {}: {}""".format(colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
@@ -117,10 +124,22 @@ def console_writer_after_each_scenario(scenario):
     if isinstance(scenario, ScenarioOutline):
         output += "\n    {}:\n".format(colorful.bold_white(scenario.example_keyword))
         output += colorful.bold_white("        | {} |".format(" | ".join("{1: <{0}}".format(scenario.get_column_width(i), x) for i, x in enumerate(scenario.examples_header))))
-    elif not isinstance(scenario.parent, Feature):
+    elif isinstance(scenario, ScenarioLoop):
+        output += "\n    {}: {}".format(colorful.bold_white(scenario.iterations_keyword), colorful.cyan(scenario.iterations))
+    elif isinstance(scenario.parent, ScenarioOutline):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
         output += "{0}        {1} {2} {1}".format(get_line_jump_seq(), colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
+
+        if scenario.state == Step.State.FAILED:
+            failed_step = scenario.failed_step
+            if world.config.with_traceback:
+                output += "\n          {}".format("\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
+            output += "\n          {}: {}".format(colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
+    elif isinstance(scenario.parent, ScenarioLoop):
+        colored_pipe = colorful.bold_white("|")
+        color_func = get_color_func(scenario.state)
+        output += "{0}        {1} {2: <18} {1}".format(get_line_jump_seq(), colored_pipe, color_func(scenario.iteration))
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step

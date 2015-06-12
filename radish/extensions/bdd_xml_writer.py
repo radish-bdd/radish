@@ -15,6 +15,7 @@ from radish.terrain import world
 from radish.hookregistry import after
 from radish.exceptions import RadishError
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 import radish.utils as utils
 
@@ -72,7 +73,7 @@ def generate_bdd_xml(features):
 
         scenarios_element = etree.Element("scenarios")
 
-        for scenario in (s for s in feature.all_scenarios if not isinstance(s, ScenarioOutline)):
+        for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
             scenario_element = _get_element_from_model("scenario", scenario)
 
             for step in scenario.steps:

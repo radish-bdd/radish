@@ -30,7 +30,8 @@ class RunnerTestCase(RadishTestCase):
             "--no-line-jump": False,
             "--write-steps-once": False,
             "--scenarios": None,
-            "--shuffle": False
+            "--shuffle": False,
+            "--write-ids": False
         })
 
     def test_running_a_step(self):

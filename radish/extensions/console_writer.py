@@ -203,7 +203,6 @@ def console_write_after_all(features, marker):
     passed_word = colorful.bold_green("{} passed")
     failed_word = colorful.bold_red("{} failed")
     skipped_word = colorful.cyan("{} skipped")
-    untested_word = colorful.cyan("{} untested")
 
     output = colorful.bold_white("{} features (".format(stats["features"]["amount"]))
     output += passed_word.format(stats["features"]["passed"])
@@ -211,8 +210,6 @@ def console_write_after_all(features, marker):
         output += colored_comma + failed_word.format(stats["features"]["failed"])
     if stats["features"]["skipped"]:
         output += colored_comma + skipped_word.format(stats["features"]["skipped"])
-    if stats["features"]["untested"]:
-        output += colored_comma + untested_word.format(stats["features"]["untested"])
     output += colored_closing_paren
 
     output += "\n"
@@ -222,8 +219,6 @@ def console_write_after_all(features, marker):
         output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
     if stats["scenarios"]["skipped"]:
         output += colored_comma + skipped_word.format(stats["scenarios"]["skipped"])
-    if stats["scenarios"]["untested"]:
-        output += colored_comma + untested_word.format(stats["scenarios"]["untested"])
     output += colored_closing_paren
 
     output += "\n"
@@ -233,8 +228,6 @@ def console_write_after_all(features, marker):
         output += colored_comma + failed_word.format(stats["steps"]["failed"])
     if stats["steps"]["skipped"]:
         output += colored_comma + skipped_word.format(stats["steps"]["skipped"])
-    if stats["steps"]["untested"]:
-        output += colored_comma + untested_word.format(stats["steps"]["untested"])
     output += colored_closing_paren
 
     output += "\n"

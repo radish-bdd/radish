@@ -82,3 +82,10 @@ class ScenarioNotFoundError(RadishError):
         self.scenario_id = scenario_id
         self.amount_of_scenarios = amount_of_scenarios
         super(ScenarioNotFoundError, self).__init__("No scenario with id {} found. Specify a scenario id between 1 and {}".format(scenario_id, amount_of_scenarios))
+
+
+class ValidationError(RadishError):
+    """
+        Raised by the user if a step is somehow not valid
+    """
+    pass

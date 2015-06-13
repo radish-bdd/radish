@@ -8,7 +8,9 @@ import re
 
 from radish.model import Model
 from radish.exceptions import RadishError, StepRegexError
+from radish.terrain import world
 from radish.stepregistry import StepRegistry
+from radish.matcher import Matcher
 import radish.utils as utils
 
 
@@ -96,6 +98,30 @@ class Step(Model):
             Skips the step
         """
         self.state = Step.State.SKIPPED
+
+    def behave_like(self, sentence):
+        """
+            Make step behave like another one
+
+            :param string sentence: the sentence of the step to behave like
+        """
+        # check if this step has already failed from a previous behave_like call
+        if self.state is Step.State.FAILED:
+            return
+
+        # create step according to given sentence
+        new_step = Step(None, sentence, self.path, self.line, self, True)
+        Matcher.merge_step(new_step, StepRegistry().steps)
+
+        # run or debug step
+        if world.config.debug_steps:
+            new_step.debug()
+        else:
+            new_step.run()
+
+        # re-raise exception if the failed
+        if new_step.state is Step.State.FAILED:
+            raise new_step.failure.exception
 
 
 def step(regex):

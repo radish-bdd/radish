@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 from docopt import docopt
 from time import time
 
@@ -118,8 +117,7 @@ Options:
     loader.load_all()
 
     # match feature file steps with user's step definitions
-    matcher = Matcher()
-    matcher.merge_steps(features, StepRegistry().steps)
+    Matcher.merge_steps(features, StepRegistry().steps)
 
     # run parsed features
     if world.config.marker == "time.time()":

@@ -6,7 +6,6 @@
 
 import re
 
-from radish.scenariooutline import ScenarioOutline
 from radish.exceptions import StepDefinitionNotFoundError
 
 
@@ -14,27 +13,41 @@ class Matcher(object):
     """
         Matches steps from the feature files with the registered steps
     """
-    def merge_steps(self, features, steps):
+    @classmethod
+    def merge_steps(cls, features, steps):
         """
             Merges steps from the given features with the given steps
 
             :param list features: the features
             :param dict steps: the steps
         """
+        # FIXME: fix cycle-import ... Matcher -> ScenarioOutline -> Step -> Matcher
+        from radish.scenariooutline import ScenarioOutline
         for feature in features:
             for scenario in feature.all_scenarios:
                 if isinstance(scenario, ScenarioOutline):
                     continue  # ScenarioOutline steps do not have to be merged
 
                 for step in scenario.steps:
-                    arguments, func = self.match(step.sentence, steps)
-                    if not arguments or not func:
-                        raise StepDefinitionNotFoundError(step)
+                    cls.merge_step(step, steps)
 
-                    step.definition_func = func
-                    step.arguments = arguments
+    @classmethod
+    def merge_step(cls, step, steps):
+        """
+            Merges a single step with the registered steps
 
-    def match(self, sentence, steps):
+            :param Step step: the step from a feature file to merge
+            :param list steps: the registered steps
+        """
+        arguments, func = cls.match(step.sentence, steps)
+        if not arguments or not func:
+            raise StepDefinitionNotFoundError(step)
+
+        step.definition_func = func
+        step.arguments = arguments
+
+    @classmethod
+    def match(cls, sentence, steps):
         """
             Tries to find a match from the given sentence with the given steps
 

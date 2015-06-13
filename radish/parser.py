@@ -99,7 +99,15 @@ class FeatureParser(object):
             for line in f.readlines():
                 self._current_line += 1
                 line = line.strip()
-                if not line or line.startswith("#"):  # line is empty or contains comment
+                if not line:  # line is empty
+                    continue
+
+                if line.startswith("#"):
+                    # try to detect feature file language
+                    language = self._detect_language(line)
+                    if language:
+                        self._load_language(language.group(1))
+
                     continue
 
                 if self.feature and self._detect_feature(line):
@@ -336,3 +344,14 @@ class FeatureParser(object):
             return True
 
         return False
+
+    def _detect_language(self, line):
+        """
+            Detects a language on the given line
+
+            :parma string line: the line to detect the language
+
+            :returns: the language or None
+            :rtype: string or None
+        """
+        return re.search("^# language: (.*)", line)

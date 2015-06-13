@@ -26,7 +26,6 @@ class ParserTestCase(RadishTestCase):
         en_feature_parser.keywords.examples.should.be.equal("Examples")
 
         de_feature_parser = FeatureParser("/", 1, 1, language="de")
-        de_feature_parser.keywords.feature.should.be.equal("Feature")
         de_feature_parser.keywords.scenario.should.be.equal("Szenario")
         de_feature_parser.keywords.scenario_outline.should.be.equal("Szenario Auslagerung")
         de_feature_parser.keywords.examples.should.be.equal("Beispiele")

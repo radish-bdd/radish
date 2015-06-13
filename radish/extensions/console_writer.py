@@ -38,6 +38,10 @@ def get_line_jump_seq():
     return line_jump_seq
 
 
+def get_id_sentence_prefix(model, color_func):
+    return color_func("{}. ".format(model.id)) if world.config.write_ids else ""
+
+
 @before.each_feature  # pylint: disable=no-member
 def console_writer_before_each_feature(feature):
     """
@@ -46,7 +50,7 @@ def console_writer_before_each_feature(feature):
         :param Feature feature: the feature to write to the console
     """
     leading = "\n    " if feature.description else ""
-    output = """{}: {}{}{}""".format(colorful.bold_white(feature.keyword), colorful.bold_white(feature.sentence), leading, colorful.white("\n    ".join(feature.description)))
+    output = """{}{}: {}{}{}""".format(get_id_sentence_prefix(feature, colorful.bold_cyan), colorful.bold_white(feature.keyword), colorful.bold_white(feature.sentence), leading, colorful.white("\n    ".join(feature.description)))
     write(output)
 
 
@@ -62,16 +66,19 @@ def console_writer_before_each_scenario(scenario):
         if world.config.write_steps_once:
             return
 
+        id_prefix = get_id_sentence_prefix(scenario, colorful.bold_brown)
         colored_pipe = colorful.bold_white("|")
-        output = "        {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(colorful.bold_brown("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
+        output = "        {0}{1} {2} {1}".format(id_prefix, colored_pipe, (" {} ").format(colored_pipe).join(colorful.bold_brown("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
     elif isinstance(scenario.parent, ScenarioLoop):
         if world.config.write_steps_once:
             return
 
+        id_prefix = get_id_sentence_prefix(scenario, colorful.bold_brown)
         colored_pipe = colorful.bold_white("|")
-        output = "        {0} {1: <18} {0}".format(colored_pipe, colorful.bold_brown(scenario.iteration))
+        output = "        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, colorful.bold_brown(scenario.iteration))
     else:
-        output += """    {}: {}""".format(colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
+        id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
+        output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 
 
@@ -88,7 +95,7 @@ def console_writer_before_each_step(step):
     if world.config.write_steps_once:
         return
 
-    output = "\r        {}".format(colorful.bold_brown(step.sentence))
+    output = "\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
     write(output)
 
 
@@ -103,7 +110,7 @@ def console_writer_after_each_step(step):
         return
 
     color_func = get_color_func(step.state)
-    output = "{}        {}".format(get_line_jump_seq(), color_func(step.sentence))
+    output = "{}        {}{}".format(get_line_jump_seq(), get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
 
     if step.state == step.State.FAILED:
         if world.config.with_traceback:
@@ -129,7 +136,7 @@ def console_writer_after_each_scenario(scenario):
     elif isinstance(scenario.parent, ScenarioOutline):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
-        output += "{0}        {1} {2} {1}".format(get_line_jump_seq(), colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
+        output += "{0}        {1}{2} {3} {2}".format(get_line_jump_seq(), get_id_sentence_prefix(scenario, colorful.bold_cyan), colored_pipe, (" {} ").format(colored_pipe).join(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)))
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step
@@ -139,7 +146,7 @@ def console_writer_after_each_scenario(scenario):
     elif isinstance(scenario.parent, ScenarioLoop):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
-        output += "{0}        {1} {2: <18} {1}".format(get_line_jump_seq(), colored_pipe, color_func(scenario.iteration))
+        output += "{0}        {1}{2} {3: <18} {2}".format(get_line_jump_seq(), get_id_sentence_prefix(scenario, colorful.bold_cyan), colored_pipe, color_func(scenario.iteration))
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step

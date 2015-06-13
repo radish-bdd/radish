@@ -50,6 +50,7 @@ Usage:
            [--no-ansi]
            [--no-line-jump]
            [--write-steps-once]
+           [--write-ids]
            [-t | --with-traceback]
            [-m=<marker> | --marker=<marker>]
            [-p=<profile> | --profile=<profile>]
@@ -73,6 +74,7 @@ Options:
     --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
     --no-line-jump                              print features without line jumps (overwriting steps)
     --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
+    --write-ids                                 write the feature, scenario and step id before the sentences
     -t --with-traceback                         show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
     -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation

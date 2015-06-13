@@ -66,6 +66,9 @@ def generate_bdd_xml(features):
     )
 
     for feature in features:
+        if not feature.has_to_run(world.config.scenarios):
+            continue
+
         feature_element = _get_element_from_model("feature", feature)
 
         description_element = etree.Element("description")
@@ -74,6 +77,8 @@ def generate_bdd_xml(features):
         scenarios_element = etree.Element("scenarios")
 
         for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+            if not scenario.has_to_run(world.config.scenarios):
+                continue
             scenario_element = _get_element_from_model("scenario", scenario)
 
             for step in scenario.steps:
@@ -97,7 +102,7 @@ def generate_bdd_xml(features):
 
 
 @after.all  # pylint: disable=no-member
-def bdd_xml_writer_after_all(features, marker):
+def bdd_xml_writer_after_all(features, marker):  # pylint: disable=unused-argument
     """
         Generates a BDD XML file with the results
     """

@@ -56,6 +56,7 @@ Usage:
            [-p=<profile> | --profile=<profile>]
            [-d | --dry-run]
            [-s=<scenarios> | --scenarios=<scenarios>]
+           [--shuffle]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -79,6 +80,7 @@ Options:
     -b=<basedir> --basedir=<basedir>            set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
+    --shuffle                                   shuttle run order of features and scenarios
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """

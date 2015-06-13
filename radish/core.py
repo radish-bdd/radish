@@ -4,7 +4,11 @@
     Providing radish core functionality like the feature file Runner.
 """
 
+from random import shuffle
+
 from radish.terrain import world
+from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 
 
@@ -61,6 +65,9 @@ class Runner(object):
             :param list features: the features to run
             :param string marker: the marker for this run
         """
+        if world.config.shuffle:
+            shuffle(features)
+
         for feature in features:
             if not feature.has_to_run(world.config.scenarios):
                 continue
@@ -75,10 +82,19 @@ class Runner(object):
 
             :param Feature feature: the feature to run
         """
-        for scenario in feature.all_scenarios:
+        if world.config.shuffle:
+            shuffle(feature.scenarios)
+
+        for scenario in feature.scenarios:
             if not scenario.has_to_run(world.config.scenarios):
                 continue
             self.run_scenario(scenario)
+
+            if not isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
+                continue
+
+            for sub_scenario in scenario.scenarios:
+                self.run_scenario(sub_scenario)
 
     @handle_exit
     @call_hooks("each_scenario")

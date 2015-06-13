@@ -29,7 +29,8 @@ class RunnerTestCase(RadishTestCase):
             "--no-ansi": False,
             "--no-line-jump": False,
             "--write-steps-once": False,
-            "--scenarios": None
+            "--scenarios": None,
+            "--shuffle": False
         })
 
     def test_running_a_step(self):

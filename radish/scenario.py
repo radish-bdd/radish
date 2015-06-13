@@ -13,8 +13,9 @@ class Scenario(Model):
         Represents a Scenario
     """
 
-    def __init__(self, id, keyword, sentence, path, line, parent):
+    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent)
+        self.absolute_id = absolute_id
         self.steps = []
 
     @property
@@ -36,3 +37,17 @@ class Scenario(Model):
             if step.state == Step.State.FAILED:
                 return step
         return None
+
+    def has_to_run(self, scenario_choice):
+        """
+            Returns wheiter the scenario has to run or not
+
+            :param list scenario_choice: the scenarios to run. If None all will run
+        """
+        if not scenario_choice:
+            return True
+
+        if self.absolute_id in scenario_choice:
+            return True
+
+        return False

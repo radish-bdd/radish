@@ -19,32 +19,32 @@ class ParserTestCase(RadishTestCase):
         """
             Test loading of a specific language
         """
-        en_feature_parser = FeatureParser("/", 1, language="en")
+        en_feature_parser = FeatureParser("/", 1, 1, language="en")
         en_feature_parser.keywords.feature.should.be.equal("Feature")
         en_feature_parser.keywords.scenario.should.be.equal("Scenario")
         en_feature_parser.keywords.scenario_outline.should.be.equal("Scenario Outline")
         en_feature_parser.keywords.examples.should.be.equal("Examples")
 
-        de_feature_parser = FeatureParser("/", 1, language="de")
+        de_feature_parser = FeatureParser("/", 1, 1, language="de")
         de_feature_parser.keywords.feature.should.be.equal("Feature")
         de_feature_parser.keywords.scenario.should.be.equal("Szenario")
         de_feature_parser.keywords.scenario_outline.should.be.equal("Szenario Auslagerung")
         de_feature_parser.keywords.examples.should.be.equal("Beispiele")
 
-        FeatureParser.when.called_with("/", 1, language="foo").should.throw(LanguageNotSupportedError)
+        FeatureParser.when.called_with("/", 1, 1, language="foo").should.throw(LanguageNotSupportedError)
 
     def test_parse_unexisting_featurefile(self):
         """
             Test parsing of an unexisting featurefile
         """
-        FeatureParser.when.called_with("nonexisting.feature", 1).should.throw(OSError, "Feature file at 'nonexisting.feature' does not exist")
+        FeatureParser.when.called_with("nonexisting.feature", 1, 1).should.throw(OSError, "Feature file at 'nonexisting.feature' does not exist")
 
     def test_parse_empty_featurefile(self):
         """
             Test parsing of an empty feature file
         """
         with NamedTemporaryFile("w+") as featurefile:
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse.when.called_with().should.throw(RadishError, "No Feature found in file {}".format(featurefile.name))
 
     def test_parse_empty_feature(self):
@@ -57,7 +57,7 @@ class ParserTestCase(RadishTestCase):
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.sentence.should.be.equal("some empty feature")
@@ -78,7 +78,7 @@ class ParserTestCase(RadishTestCase):
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.sentence.should.be.equal("some empty feature")
@@ -101,7 +101,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse.when.called_with().should.throw(RadishError, "radish supports only one Feature per feature file")
 
     def test_parse_feature_with_empty_scenario(self):
@@ -115,7 +115,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)
@@ -141,7 +141,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)
@@ -183,7 +183,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)
@@ -245,7 +245,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.sentence.should.be.equal("some feature")
@@ -298,7 +298,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)
@@ -389,7 +389,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)
@@ -447,7 +447,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse.when.called_with().should.throw(RadishError, "Scenario does not support Examples. Use 'Scenario Outline'")
 
     def test_parse_steps_with_table(self):
@@ -468,7 +468,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.sentence.should.be.equal("some feature")
@@ -496,7 +496,7 @@ Feature: another empty feature"""
         line = "Scenario Loop 10: Some fancy scenario loop"
 
         with NamedTemporaryFile("w+") as featurefile:
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             result = parser._detect_scenario_loop(line)
 
             result.should.be.a(tuple)
@@ -524,7 +524,7 @@ Feature: another empty feature"""
             featurefile.write(feature)
             featurefile.flush()
 
-            parser = FeatureParser(featurefile.name, 1)
+            parser = FeatureParser(featurefile.name, 1, 1)
             parser.parse()
 
             parser.feature.id.should.be.equal(1)

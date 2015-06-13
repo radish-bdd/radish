@@ -53,6 +53,7 @@ def error_oracle(func):
             abort(1)
         except Exception as e:  # pylint: disable=broad-except
             write_error(e)
+            raise
             abort(2)
 
     return _decorator

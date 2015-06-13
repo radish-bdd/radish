@@ -89,7 +89,7 @@ class ConsoleWriterTestCase(RadishTestCase):
             text = re.sub(r"\x1b[^m]*m", "", text)
             data.console = text
 
-        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
+        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.parent = Mock(spec=Feature)
         scenario.parent.id = 1
 

@@ -57,8 +57,14 @@ class Runner(object):
     def start(self, features, marker):
         """
             Start running features
+
+            :param list features: the features to run
+            :param string marker: the marker for this run
         """
         for feature in features:
+            if not feature.has_to_run(world.config.scenarios):
+                continue
+
             self.run_feature(feature)
 
     @handle_exit
@@ -70,6 +76,8 @@ class Runner(object):
             :param Feature feature: the feature to run
         """
         for scenario in feature.all_scenarios:
+            if not scenario.has_to_run(world.config.scenarios):
+                continue
             self.run_scenario(scenario)
 
     @handle_exit

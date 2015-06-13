@@ -72,3 +72,13 @@ class HookError(RadishError):
         self.hook_function = hook_function
         self.failure = failure
         super(HookError, self).__init__("Hook '{}' from {}:{} raised: '{}: {}'".format(hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))
+
+
+class ScenarioNotFoundError(RadishError):
+    """
+        Raised if a scenario cannot be found
+    """
+    def __init__(self, scenario_id, amount_of_scenarios):
+        self.scenario_id = scenario_id
+        self.amount_of_scenarios = amount_of_scenarios
+        super(ScenarioNotFoundError, self).__init__("No scenario with id {} found. Specify a scenario id between 1 and {}".format(scenario_id, amount_of_scenarios))

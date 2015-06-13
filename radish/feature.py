@@ -51,3 +51,12 @@ class Feature(Model):
             if scenario.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
                 return scenario.state
         return Step.State.PASSED
+
+    def has_to_run(self, scenario_choice):
+        """
+            Returns wheiter the feature has to run or not
+        """
+        if not scenario_choice:
+            return True
+
+        return any(s for s in self.scenarios if s.absolute_id in scenario_choice)

@@ -40,7 +40,7 @@ class MatcherTestCase(RadishTestCase):
         steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
-        scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
+        scenario = Scenario(1, 1, "Scenario", "Adding numbers", "test.feature", 2, feature)
         scenario.steps.append(Step(1, "Given I have the number 5", "test.feature", 3, scenario, False))
         scenario.steps.append(Step(2, "When I add 2 to my number", "test.feature", 4, scenario, False))
         feature.scenarios.append(scenario)
@@ -60,7 +60,7 @@ class MatcherTestCase(RadishTestCase):
         steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
-        scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
+        scenario = Scenario(1, 1, "Scenario", "Adding numbers", "test.feature", 2, feature)
         scenario.steps.append(Step(1, "When I call a non-existing step", "test.feature", 3, scenario, False))
         feature.scenarios.append(scenario)
 

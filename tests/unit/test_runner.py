@@ -28,7 +28,8 @@ class RunnerTestCase(RadishTestCase):
             "--bdd-xml": False,
             "--no-ansi": False,
             "--no-line-jump": False,
-            "--write-steps-once": False
+            "--write-steps-once": False,
+            "--scenarios": None
         })
 
     def test_running_a_step(self):
@@ -74,7 +75,7 @@ class RunnerTestCase(RadishTestCase):
         step.definition_func = some_step
         step.arguments = match_mock
 
-        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
+        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.steps.append(step)
 
         hook_mock = Mock()
@@ -100,7 +101,7 @@ class RunnerTestCase(RadishTestCase):
 
         feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
-        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
+        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
         feature.scenarios.append(scenario)
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
@@ -131,7 +132,7 @@ class RunnerTestCase(RadishTestCase):
 
         feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
-        scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
+        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
         feature.scenarios.append(scenario)
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)

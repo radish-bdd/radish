@@ -49,8 +49,11 @@ def console_writer_before_each_feature(feature):
 
         :param Feature feature: the feature to write to the console
     """
+    output = ""
+    for tag in feature.tags:
+        output += colorful.cyan("@{}\n".format(tag))
     leading = "\n    " if feature.description else ""
-    output = """{}{}: {}{}{}""".format(get_id_sentence_prefix(feature, colorful.bold_cyan), colorful.bold_white(feature.keyword), colorful.bold_white(feature.sentence), leading, colorful.white("\n    ".join(feature.description)))
+    output += "{}{}: {}{}{}".format(get_id_sentence_prefix(feature, colorful.bold_cyan), colorful.bold_white(feature.keyword), colorful.bold_white(feature.sentence), leading, colorful.white("\n    ".join(feature.description)))
     write(output)
 
 
@@ -78,6 +81,8 @@ def console_writer_before_each_scenario(scenario):
         output = "        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, colorful.bold_brown(scenario.iteration))
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
+        for tag in scenario.tags:
+            output += colorful.cyan("    @{}\n".format(tag))
         output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 

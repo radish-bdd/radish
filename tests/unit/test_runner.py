@@ -31,7 +31,9 @@ class RunnerTestCase(RadishTestCase):
             "--write-steps-once": False,
             "--scenarios": None,
             "--shuffle": False,
-            "--write-ids": False
+            "--write-ids": False,
+            "--feature-tags": None,
+            "--scenario-tags": None
         })
 
     def test_running_a_step(self):

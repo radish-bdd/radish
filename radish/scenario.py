@@ -13,8 +13,8 @@ class Scenario(Model):
         Represents a Scenario
     """
 
-    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent):
-        super(Scenario, self).__init__(id, keyword, sentence, path, line, parent)
+    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None):
+        super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = absolute_id
         self.steps = []
 
@@ -38,16 +38,23 @@ class Scenario(Model):
                 return step
         return None
 
-    def has_to_run(self, scenario_choice):
+    def has_to_run(self, scenario_choice, feature_tags, scenario_tags):
         """
             Returns wheiter the scenario has to run or not
 
             :param list scenario_choice: the scenarios to run. If None all will run
         """
-        if not scenario_choice:
+        if not scenario_choice and not feature_tags and not scenario_tags:
             return True
 
-        if self.absolute_id in scenario_choice:
-            return True
+        in_choice = self.absolute_id in (scenario_choice or [])
 
-        return False
+        in_tags = False
+        if scenario_tags:
+            in_tags = any(t for t in self.tags if t in scenario_tags)
+
+        feature_has_to_run = False
+        if feature_tags:
+            feature_has_to_run = any(t for t in self.parent.tags if t in feature_tags)
+
+        return in_choice or in_tags or feature_has_to_run

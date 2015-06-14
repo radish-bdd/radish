@@ -59,6 +59,7 @@ class FeatureParser(object):
 
         self._current_state = FeatureParser.State.FEATURE
         self._current_line = 0
+        self._current_tags = []
         self.current_abs_scenario_id = start_abs_scenario_id
         self.feature = None
 
@@ -106,7 +107,7 @@ class FeatureParser(object):
                     # try to detect feature file language
                     language = self._detect_language(line)
                     if language:
-                        self._load_language(language.group(1))
+                        self._load_language(language)
 
                     continue
 
@@ -147,10 +148,16 @@ class FeatureParser(object):
         """
         detected_feature = self._detect_feature(line)
         if not detected_feature:
+            tag = self._detect_tag(line)
+            if tag:
+                self._current_tags.append(tag)
+                return True
+
             return False
 
-        self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line)
+        self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
         self._current_state = FeatureParser.State.SCENARIO
+        self._current_tags = []
         return True
 
     def _parse_scenario(self, line):
@@ -170,6 +177,11 @@ class FeatureParser(object):
             if not detected_scenario:
                 detected_scenario = self._detect_scenario_loop(line)
                 if not detected_scenario:
+                    tag = self._detect_tag(line)
+                    if tag:
+                        self._current_tags.append(tag)
+                        return True
+
                     self.feature.description.append(line)
                     return True
 
@@ -186,7 +198,8 @@ class FeatureParser(object):
                 scenario_id += previous_scenario.iterations
 
         self.current_abs_scenario_id += 1
-        self.feature.scenarios.append(scenario_type(self.current_abs_scenario_id, scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature))
+        self.feature.scenarios.append(scenario_type(self.current_abs_scenario_id, scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags))
+        self._current_tags = []
 
         if scenario_type == ScenarioLoop:
             self.feature.scenarios[-1].iterations = iterations
@@ -229,7 +242,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
+        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
             if isinstance(self.feature.scenarios[-1], ScenarioLoop):
                 self.feature.scenarios[-1].build_scenarios()
             return self._parse_scenario(line)
@@ -349,9 +362,28 @@ class FeatureParser(object):
         """
             Detects a language on the given line
 
-            :parma string line: the line to detect the language
+            :param string line: the line to detect the language
 
             :returns: the language or None
-            :rtype: string or None
+            :rtype: str or None
         """
-        return re.search("^# language: (.*)", line)
+        match = re.search("^# language: (.*)", line)
+        if match:
+            return match.group(1)
+
+        return None
+
+    def _detect_tag(self, line):
+        """
+            Detects a tag on the given line
+
+            :param string line: the line to detect the tag
+
+            :returns: the tag or None
+            :rtype: str or None
+        """
+        match = re.search("^@([^\s]+)", line)
+        if match:
+            return match.group(1)
+
+        return None

@@ -15,16 +15,10 @@ class ExampleScenario(Scenario):
         super(ExampleScenario, self).__init__(None, id, keyword, sentence, path, line, parent)
         self.example = example
 
-    def has_to_run(self, scenario_choice):
+    def has_to_run(self, scenario_choice, tags):
         """
             Returns wheiter the scenario has to run or not
 
             :param list scenario_choice: the scenarios to run. If None all will run
         """
-        if not scenario_choice:
-            return True
-
-        if self.parent.absolute_id in scenario_choice:
-            return True
-
-        return False
+        return self.parent.has_to_run(scenario_choice, tags)

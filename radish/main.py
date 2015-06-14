@@ -11,7 +11,7 @@ from radish.matcher import Matcher
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 from radish.core import Runner
-from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
+from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
 from radish.errororacle import error_oracle
 from radish.terrain import world
 import radish.utils as utils
@@ -57,6 +57,8 @@ Usage:
            [-d | --dry-run]
            [-s=<scenarios> | --scenarios=<scenarios>]
            [--shuffle]
+           [--feature-tags=<feature_tags>]
+           [--scenario-tags=<scenario_tags>]
     radish (-h | --help)
     radish (-v | --version)
 
@@ -82,6 +84,8 @@ Options:
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
     --shuffle                                   shuttle run order of features and scenarios
+    --feature-tags=<feature_tags>               only run features with the given tags
+    --scenario-tags=<scenario_tags>             only run scenarios with the given tags
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """
@@ -132,6 +136,19 @@ Options:
         for s in world.config.scenarios:
             if s <= 0 or s > amount_of_scenarios:
                 raise ScenarioNotFoundError(s, amount_of_scenarios)
+
+    # tags
+    if world.config.feature_tags:
+        world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
+        for tag in world.config.feature_tags:
+            if not any(f for f in features if tag in f.tags):
+                raise FeatureTagNotFoundError(tag)
+
+    if world.config.scenario_tags:
+        world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
+        for tag in world.config.scenario_tags:
+            if not any(s for f in features for s in f.scenarios if tag in s.tags):
+                raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
     runner.start(features, marker=world.config.marker)

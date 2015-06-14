@@ -559,3 +559,115 @@ Feature: another empty feature"""
                 scenario.scenarios[i].steps[1].sentence.should.be.equal("When I add 2 to my number")
                 scenario.scenarios[i].steps[2].id.should.be.equal(3)
                 scenario.scenarios[i].steps[2].sentence.should.be.equal("Then I expect my number to be 3")
+
+    def test_detect_tag(self):
+        """
+            Test detecting a tag
+        """
+        feature = """Feature: some feature"""
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name, 1, 1)
+            parser._detect_tag.when.called_with("@some_tag").should.return_value("some_tag")
+            parser._detect_tag.when.called_with("@some_tag sdfg").should.return_value("some_tag")
+            parser._detect_tag.when.called_with("some_tag").should.return_value(None)
+            parser._detect_tag.when.called_with("some_tag sdfg").should.return_value(None)
+
+    def test_parse_feature_with_tag(self):
+        """
+            Test parsing feature with tag
+        """
+        feature = """
+@some_feature
+Feature: some feature
+    Scenario Loop 10: some fancy scenario
+        Given I have the number 1
+        When I add 2 to my number
+        Then I expect my number to be 3
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name, 1, 1)
+            parser.parse()
+
+            parser.feature.tags.should.have.length_of(1)
+            parser.feature.tags[0].should.be.equal("some_feature")
+
+    def test_parse_feature_with_multiple_tags(self):
+        """
+            Test parsing feature with tags
+        """
+        feature = """
+@some_feature
+@has_scenario_loop
+@add_numbers
+Feature: some feature
+    Scenario Loop 10: some fancy scenario
+        Given I have the number 1
+        When I add 2 to my number
+        Then I expect my number to be 3
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name, 1, 1)
+            parser.parse()
+
+            parser.feature.tags.should.have.length_of(3)
+            parser.feature.tags[0].should.be.equal("some_feature")
+            parser.feature.tags[1].should.be.equal("has_scenario_loop")
+            parser.feature.tags[2].should.be.equal("add_numbers")
+
+    def test_parse_feature_with_scenario_with_tags(self):
+        """
+            Test parsing feature with scenario and multiple tags
+        """
+        feature = """
+@some_feature
+Feature: some feature
+    @some_scenario_loop
+    Scenario Loop 10: some fancy scenario
+        Given I have the number 1
+        When I add 2 to my number
+        Then I expect my number to be 3
+
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    @error_case
+    @bad_case
+    Scenario: bad case
+        Given I have the number 1
+        When I add 3 to my number
+        Then I expect my number not to be 4
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            parser = FeatureParser(featurefile.name, 1, 1)
+            parser.parse()
+
+            parser.feature.tags.should.have.length_of(1)
+            parser.feature.tags[0].should.be.equal("some_feature")
+
+            parser.feature.scenarios.should.have.length_of(3)
+
+            parser.feature.scenarios[0].tags.should.have.length_of(1)
+            parser.feature.scenarios[0].tags[0].should.be.equal("some_scenario_loop")
+
+            parser.feature.scenarios[1].tags.should.be.empty
+
+            parser.feature.scenarios[2].tags.should.have.length_of(2)
+            parser.feature.scenarios[2].tags[0].should.be.equal("error_case")
+            parser.feature.scenarios[2].tags[1].should.be.equal("bad_case")

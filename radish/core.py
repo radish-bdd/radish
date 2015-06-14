@@ -69,7 +69,7 @@ class Runner(object):
             shuffle(features)
 
         for feature in features:
-            if not feature.has_to_run(world.config.scenarios):
+            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
 
             self.run_feature(feature)
@@ -86,7 +86,7 @@ class Runner(object):
             shuffle(feature.scenarios)
 
         for scenario in feature.scenarios:
-            if not scenario.has_to_run(world.config.scenarios):
+            if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
             self.run_scenario(scenario)
 

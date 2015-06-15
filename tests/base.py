@@ -2,7 +2,7 @@
 
 import sure
 from unittest import TestCase
-from mock import Mock, patch
+from mock import Mock, patch, MagicMock
 
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry

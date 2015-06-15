@@ -161,7 +161,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         scenario_mock = Mock()
         scenario_mock.parent = None
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
-        step.parent = Mock()
+        step.parent = MagicMock()
         step.parent.id = 1
         step.parent.parent = Mock(spec=Feature)
         step.parent.parent.id = 1

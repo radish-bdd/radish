@@ -92,3 +92,12 @@ def datetime_to_str(datetime):
         return ""
 
     return datetime.strftime("%Y-%m-%dT%H:%M:%S")
+
+
+def get_width(data):
+    """
+        Returns the needed width for a data column
+
+        :param list data: a column with data
+    """
+    return max(len(x) for x in data)

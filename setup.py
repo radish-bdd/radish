@@ -18,9 +18,10 @@ setup(
     url="http://github.com/timofurrer/radish",
     download_url="http://github.com/timofurrer/radish",
     install_requires=["docopt", "pysingleton", "colorful", "lxml", "ipython"],
-    packages=["radish", "radish/extensions"],
+    packages=["radish", "radish/extensions", "radish/languages"],
+    package_data={"": ["radish/languages/*", "*.md"]},
+    include_package_data=True,
     entry_points={"console_scripts": ["radish = radish.main:main"]},
-    package_data={"radish": ["*.md"]},
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",

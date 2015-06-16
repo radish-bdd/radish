@@ -4,9 +4,11 @@
     This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
 
+import re
+import inspect
 from singleton import singleton
 
-from radish.exceptions import SameStepError
+from radish.exceptions import RadishError, SameStepError, StepRegexError
 
 
 @singleton()
@@ -25,6 +27,42 @@ class StepRegistry(object):
             raise SameStepError(regex, self._steps[regex], func)
 
         self._steps[regex] = func
+
+    def register_object(self, steps_object):
+        """
+            Registers all public methods from the given object as steps.
+            The step regex must be in the first line of the docstring
+
+            :param instance steps_object: the object with step definition methods
+        """
+        ignore = getattr(steps_object, "ignore", [])
+        for attr in dir(steps_object):
+            if attr in ignore or not inspect.ismethod(getattr(steps_object, attr)):  # attribute should be ignored
+                continue
+
+            step_definition = getattr(steps_object, attr)
+            step_regex = self._extract_regex(step_definition)
+            self.register(step_regex, step_definition)
+
+        return steps_object
+
+    def _extract_regex(self, func):
+        """
+            Extracts a step regex from the docstring of the given func
+
+            :param function func: the step definition function
+        """
+        docstr = func.__doc__.strip()
+        if not docstr:
+            raise RadishError("Step definition '{}' from class must have step regex in docstring".format(func.__name__))
+
+        regex = docstr.splitlines()[0]
+        try:
+            re.compile(regex)
+        except re.error as e:
+            raise StepRegexError(regex, func.__name__, e)
+
+        return regex
 
     def clear(self):
         """

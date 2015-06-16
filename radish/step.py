@@ -146,6 +146,26 @@ def step(regex):
         return func
     return _decorator
 
+
+def steps(cls):
+    """
+        Decorator for classes with step definitions inside
+    """
+    old_cls_init = getattr(cls, "__init__")
+
+    def new_cls_init(self, *args, **kwargs):
+        """
+            New __init__ method for the given class which calls the old __init__ method
+            and registers the steps
+        """
+        old_cls_init(self, *args, **kwargs)
+
+        # register functions as step
+        StepRegistry().register_object(self)
+
+    setattr(cls, "__init__", new_cls_init)
+    return cls
+
 given = lambda regex: step("Given {}".format(regex))  # pylint: disable=invalid-name
 when = lambda regex: step("When {}".format(regex))  # pylint: disable=invalid-name
 then = lambda regex: step("Then {}".format(regex))  # pylint: disable=invalid-name

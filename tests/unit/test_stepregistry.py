@@ -52,3 +52,33 @@ class StepRegistryTestCase(RadishTestCase):
 
         registry.steps.should.have.length_of(1)
         registry.steps["abc"].should.be.equal(step_a)
+
+    def test_registering_object(self):
+        """
+            Test registering object as steps
+        """
+        registry = StepRegistry()
+        registry.steps.should.be.empty
+
+        class MySteps(object):
+            ignore = ["no_step_method"]
+
+            def some_step(step):
+                """When I call some step"""
+
+            def some_other_step(step):
+                """
+                    Then I expect some behaviour
+                """
+
+            def no_step_method(data):
+                """
+                    This is not a step method
+                """
+
+        steps_object = MySteps()
+        registry.register_object(steps_object)
+
+        registry.steps.should.have.length_of(2)
+        registry.steps["When I call some step"].should.be.equal(steps_object.some_step)
+        registry.steps["Then I expect some behaviour"].should.be.equal(steps_object.some_other_step)

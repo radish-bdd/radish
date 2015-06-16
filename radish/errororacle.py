@@ -59,7 +59,7 @@ def error_oracle(func):
             write_error(e)
             abort(1)
         except KeyboardInterrupt:
-            write("Aborted by the user..")
+            write("Aborted by the user...")
             abort(1)
         except Exception as e:  # pylint: disable=broad-except
             write_error(e)

@@ -76,3 +76,50 @@ class StepRegistry(object):
             Returns all registered steps
         """
         return self._steps
+
+
+def step(regex):
+    """
+        Step decorator for custom steps
+
+        :param string regex: this is the regex to match the steps in the feature file
+
+        :returns: the decorated function
+        :rtype: function
+    """
+    def _decorator(func):
+        """
+            Represents the actual decorator
+        """
+        try:
+            re.compile(regex)
+        except re.error as e:
+            raise StepRegexError(regex, func.__name__, e)
+        else:
+            StepRegistry().register(regex, func)
+        return func
+    return _decorator
+
+
+def steps(cls):
+    """
+        Decorator for classes with step definitions inside
+    """
+    old_cls_init = getattr(cls, "__init__")
+
+    def new_cls_init(self, *args, **kwargs):
+        """
+            New __init__ method for the given class which calls the old __init__ method
+            and registers the steps
+        """
+        old_cls_init(self, *args, **kwargs)
+
+        # register functions as step
+        StepRegistry().register_object(self)
+
+    setattr(cls, "__init__", new_cls_init)
+    return cls
+
+given = lambda regex: step("Given {}".format(regex))  # pylint: disable=invalid-name
+when = lambda regex: step("When {}".format(regex))  # pylint: disable=invalid-name
+then = lambda regex: step("Then {}".format(regex))  # pylint: disable=invalid-name

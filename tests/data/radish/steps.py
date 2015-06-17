@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from radish.step import step
 from radish.terrain import world
+from radish.stepregistry import step
 
 world.number = 0
 

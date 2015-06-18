@@ -7,3 +7,4 @@ colorful
 docopt
 ipython
 lxml
+parse

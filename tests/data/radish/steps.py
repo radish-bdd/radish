@@ -2,11 +2,11 @@
 
 from radish.terrain import world
 from radish.stepregistry import step
+from radish.argexpregistry import arg_expr, ArgumentExpression
 
 world.number = 0
 
-
-@step(r"I have the number (\d+)")
+@step(ArgumentExpression("I have the number {number:Number}"))
 def have_number(step, number):
     world.number = int(number)
 
@@ -22,7 +22,7 @@ def add_to_number(step, addition):
         assert False, "ANTOHER ERROR"
 
 
-@step(r"I expect the number to be (\d+)")
+@step(ArgumentExpression("I expect the number to be {:Number}"))
 def expect_number(step, number):
     assert world.number == int(number), "Expected number to be {}. Actual number is: {}".format(number, world.number)
 
@@ -54,3 +54,33 @@ def add_user(step):
 def expect_user_in_database(step, name):
     forename, surname = name.split()
     assert any(u for u in world.users if u["forename"] == forename and u["surname"] == surname), "No such user in the db"
+
+
+@step(ArgumentExpression("I have the numeric expression {expression:MathExpression}"))
+def have_expression(step, expression):
+    world.result = expression
+
+
+@step(ArgumentExpression("I add {addition:MathExpression} to this"))
+def add_to_result(step, addition):
+    world.result += addition
+
+
+@step(ArgumentExpression("I expect the result to be {result:MathExpression}"))
+def expect_result(step, result):
+    assert world.result == result, "Result is {} but expected {}".format(world.result, result)
+
+
+@step(ArgumentExpression("I have the float number {:FloatNumber}"))
+def have_float_number(step, number):
+    world.float_number = number
+
+
+@step(ArgumentExpression("I add to my float number {:FloatNumber}"))
+def add_to_float_number(step, number):
+    world.float_number += number
+
+
+@step(ArgumentExpression("I expect the float result to be {result:FloatNumber}"))
+def expect_float_number(step, result):
+    assert world.float_number == result, "Result is {} but expected {}".format(world.float_number, result)

@@ -34,6 +34,7 @@ class Step(Model):
         self.table = []
         self.definition_func = None
         self.arguments = None
+        self.keyword_arguments = None
         self.state = Step.State.UNTESTED
         self.failure = None
         self.runable = runable
@@ -46,9 +47,6 @@ class Step(Model):
         if not self.definition_func or not callable(self.definition_func):
             raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
 
-        if not self.arguments:
-            raise RadishError("The step '{}' does not have a match with registered steps".format(self.sentence))
-
     def run(self):
         """
             Runs the step.
@@ -59,12 +57,11 @@ class Step(Model):
 
         self._validate()
 
-        keyword_arguments = self.arguments.groupdict()
         try:
-            if keyword_arguments:
-                self.definition_func(self, **keyword_arguments)  # pylint: disable=not-callable
+            if self.keyword_arguments:
+                self.definition_func(self, **self.keyword_arguments)  # pylint: disable=not-callable
             else:
-                self.definition_func(self, *self.arguments.groups())  # pylint: disable=not-callable
+                self.definition_func(self, *self.arguments)  # pylint: disable=not-callable
         except Exception as e:  # pylint: disable=broad-except
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
@@ -85,7 +82,7 @@ class Step(Model):
         pdb = utils.get_debugger()
 
         try:
-            pdb.runcall(self.definition_func, self, *self.arguments.groups(), **self.arguments.groupdict())
+            pdb.runcall(self.definition_func, self, *self.arguments, **self.keyword_arguments)
         except Exception as e:  # pylint: disable=broad-except
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)

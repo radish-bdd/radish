@@ -5,7 +5,9 @@
 """
 
 import re
+import parse
 
+from radish.argexpregistry import ArgExpRegistry, ArgumentExpression
 from radish.exceptions import StepDefinitionNotFoundError
 
 
@@ -39,12 +41,13 @@ class Matcher(object):
             :param Step step: the step from a feature file to merge
             :param list steps: the registered steps
         """
-        arguments, func = cls.match(step.sentence, steps)
-        if not arguments or not func:
+        arguments, keyword_arguments, func = cls.match(step.sentence, steps)
+        if not func:
             raise StepDefinitionNotFoundError(step)
 
         step.definition_func = func
         step.arguments = arguments
+        step.keyword_arguments = keyword_arguments
 
     @classmethod
     def match(cls, sentence, steps):
@@ -58,8 +61,14 @@ class Matcher(object):
             :rtype: tuple
         """
         for regex, func in steps.items():
-            match = re.search(regex, sentence)
-            if match:
-                return match, func
+            if isinstance(regex, ArgumentExpression):
+                compiled = parse.compile(regex.regex, ArgExpRegistry().expressions)
+                match = compiled.search(sentence)
+                if match:
+                    return match.fixed, match.named, func
+            else:
+                match = re.search(regex, sentence)
+                if match:
+                    return match.groups(), match.groupdict(), func
 
-        return None, None
+        return None, None, None

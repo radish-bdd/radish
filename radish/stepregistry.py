@@ -6,8 +6,10 @@
 
 import re
 import inspect
+import parse
 from singleton import singleton
 
+from radish.argexpregistry import ArgumentExpression
 from radish.exceptions import RadishError, SameStepError, StepRegexError
 
 
@@ -92,7 +94,8 @@ def step(regex):
             Represents the actual decorator
         """
         try:
-            re.compile(regex)
+            if not isinstance(regex, ArgumentExpression):
+                re.compile(regex)
         except re.error as e:
             raise StepRegexError(regex, func.__name__, e)
         else:

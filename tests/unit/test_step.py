@@ -86,7 +86,7 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a passing step", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
-        step.arguments = re.search(step.sentence, step.sentence)
+        step.arguments = re.search(step.sentence, step.sentence).groups()
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -108,7 +108,7 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a passing step with number argument 42 and string argument 'Tschau'", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
-        step.arguments = re.search("I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence)
+        step.arguments = re.search("I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence).groups()
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -132,7 +132,9 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a passing step with string argument 'Tschau' and number argument 42", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
-        step.arguments = re.search("I call a passing step with string argument '(?P<string>.*?)' and number argument (?P<number>\d+)", step.sentence)
+        match = re.search("I call a passing step with string argument '(?P<string>.*?)' and number argument (?P<number>\d+)", step.sentence)
+        step.arguments = match.groups()
+        step.keyword_arguments = match.groupdict()
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -153,7 +155,7 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a failing step", "somefile.feature", 3, None, True)
         step.definition_func = step_failed
-        step.arguments = re.search(step.sentence, step.sentence)
+        step.arguments = re.search(step.sentence, step.sentence).groups()
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.FAILED)
@@ -167,14 +169,3 @@ class StepTestCase(RadishTestCase):
         """
         step = Step(1, "I call an invalid step", "somefile.feature", 3, None, True)
         step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a step definition")
-
-    def test_run_a_step_arguments_match(self):
-        """
-            Test running a step without matched arguments
-        """
-        def some_step(step):
-            pass
-
-        step = Step(1, "I call an invalid step", "somefile.feature", 3, None, True)
-        step.definition_func = some_step
-        step.run.when.called_with().should.throw(RadishError, "The step 'I call an invalid step' does not have a match with registered steps")

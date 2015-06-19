@@ -46,13 +46,10 @@ class RunnerTestCase(RadishTestCase):
         def some_step(step):
             data.step_was_called = True
 
-        match_mock = Mock()
-        match_mock.groupdict.return_value = None
-        match_mock.groups.return_value = tuple()
-
         step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
-        step.arguments = match_mock
+        step.arguments = tuple()
+        step.keyword_arguments = {}
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
@@ -71,13 +68,10 @@ class RunnerTestCase(RadishTestCase):
         def some_step(step):
             data.step_was_called = True
 
-        match_mock = Mock()
-        match_mock.groupdict.return_value = None
-        match_mock.groups.return_value = tuple()
-
         step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
-        step.arguments = match_mock
+        step.arguments = tuple()
+        step.keyword_arguments = {}
 
         scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.steps.append(step)
@@ -99,10 +93,6 @@ class RunnerTestCase(RadishTestCase):
         def some_step(step):
             data.step_was_called = True
 
-        match_mock = Mock()
-        match_mock.groupdict.return_value = None
-        match_mock.groups.return_value = tuple()
-
         feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
         scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
@@ -110,7 +100,8 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
-        step.arguments = match_mock
+        step.arguments = tuple()
+        step.keyword_arguments = {}
         scenario.steps.append(step)
 
         hook_mock = Mock()
@@ -130,10 +121,6 @@ class RunnerTestCase(RadishTestCase):
         def some_step(step):
             data.step_was_called = True
 
-        match_mock = Mock()
-        match_mock.groupdict.return_value = None
-        match_mock.groups.return_value = tuple()
-
         feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
         scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
@@ -141,7 +128,8 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
-        step.arguments = match_mock
+        step.arguments = tuple()
+        step.keyword_arguments = {}
         scenario.steps.append(step)
 
         hook_mock = Mock()

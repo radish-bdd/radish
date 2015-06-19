@@ -10,7 +10,7 @@ from radish.loader import Loader
 from radish.matcher import Matcher
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
-from radish.core import Runner
+from radish.runner import Runner
 from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
 from radish.errororacle import error_oracle
 from radish.terrain import world

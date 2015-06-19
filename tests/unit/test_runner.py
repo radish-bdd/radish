@@ -4,7 +4,7 @@ import threading
 
 from tests.base import *
 
-from radish.core import Runner
+from radish.runner import Runner
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.step import Step

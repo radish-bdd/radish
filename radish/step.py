@@ -116,4 +116,5 @@ class Step(Model):
 
         # re-raise exception if the failed
         if new_step.state is Step.State.FAILED:
+            new_step.failure.exception.args = ("Step '{}' failed: '{}'".format(sentence, new_step.failure.exception.message),)
             raise new_step.failure.exception

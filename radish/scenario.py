@@ -13,10 +13,10 @@ class Scenario(Model):
         Represents a Scenario
     """
 
-    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None):
+    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None, preconditions=None):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = absolute_id
-        self.preconditions = []
+        self.preconditions = preconditions or []
         self.steps = []
 
     @property
@@ -28,6 +28,17 @@ class Scenario(Model):
             if step.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
                 return step.state
         return Step.State.PASSED
+
+    @property
+    def all_steps(self):
+        """
+            Returns all steps from all preconditions in the correct order
+        """
+        steps = []
+        for precondition in self.preconditions:
+            steps.extend(precondition.all_steps)
+        steps.extend(self.steps)
+        return steps
 
     @property
     def failed_step(self):

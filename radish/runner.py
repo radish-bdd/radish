@@ -104,7 +104,7 @@ class Runner(object):
 
             :param Scenario scenario: the scnenario to run
         """
-        for step in scenario.steps:
+        for step in scenario.all_steps:
             if scenario.state == Step.State.FAILED:
                 self.skip_step(step)
                 continue

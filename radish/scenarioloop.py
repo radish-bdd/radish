@@ -13,8 +13,8 @@ class ScenarioLoop(Scenario):
     """
         Represents a scenario loop
     """
-    def __init__(self, absolute_id, id, keyword, iterations_keyword, sentence, path, line, parent, tags=None):
-        super(ScenarioLoop, self).__init__(absolute_id, id, keyword, sentence, path, line, parent, tags)
+    def __init__(self, absolute_id, id, keyword, iterations_keyword, sentence, path, line, parent, tags=None, preconditions=None):
+        super(ScenarioLoop, self).__init__(absolute_id, id, keyword, sentence, path, line, parent, tags, preconditions)
         self.iterations_keyword = iterations_keyword
         self.iterations = 0
         self.scenarios = []

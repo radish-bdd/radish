@@ -117,7 +117,7 @@ def console_writer_before_each_scenario(scenario):
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
         for tag in scenario.tags:
-            output += colorful.cyan("    @{}\n".format(tag.name))
+            output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
         output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 

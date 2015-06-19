@@ -5,6 +5,7 @@
 """
 
 from threading import Lock
+from collections import OrderedDict
 
 from radish.parser import FeatureParser
 
@@ -16,8 +17,16 @@ class Core(object):
     """
     def __init__(self):
         self.features = []
+        self._features_to_run = OrderedDict()
         self._scenario_id_lock = Lock()
         self._scenario_id = 0
+
+    @property
+    def features_to_run(self):
+        """
+            Return all parsed features which are to run
+        """
+        return [f for f in self._features_to_run.values()]
 
     @property
     def next_scenario_id(self):
@@ -33,12 +42,21 @@ class Core(object):
             Parses the given feature files
         """
         for featurefile in feature_files:
-            self.parse_feature(featurefile)
+            feature = self.parse_feature(featurefile)
+            self._features_to_run[featurefile] = feature
 
     def parse_feature(self, featurefile):
         """
             Parses the given feature file
+            If the feature is alreay parsed then it will just return it
+
+            :returns: the parsed feature
+            :rtype: Feature
         """
         featureparser = FeatureParser(self, featurefile, len(self.features) + 1)
         featureparser.parse()
+
+        #if featurefile not in self._features:
         self.features.append(featureparser.feature)
+
+        return featureparser.feature

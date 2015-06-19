@@ -149,7 +149,7 @@ Options:
                 raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
-    runner.start(core.features, marker=world.config.marker)
+    runner.start(core.features_to_run, marker=world.config.marker)
 
 
 if __name__ == "__main__":

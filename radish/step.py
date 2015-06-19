@@ -4,8 +4,6 @@
     This module provides a class to represent a Step
 """
 
-import re
-
 from radish.model import Model
 from radish.exceptions import RadishError
 from radish.terrain import world

@@ -382,7 +382,7 @@ class FeatureParser(object):
             :returns: the tag or None
             :rtype: str or None
         """
-        match = re.search("^@([^\s]+)", line)
+        match = re.search(r"^@([^\s]+)", line)
         if match:
             return match.group(1)
 

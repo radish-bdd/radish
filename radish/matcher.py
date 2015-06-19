@@ -8,7 +8,7 @@ import re
 import parse
 
 from radish.argexpregistry import ArgExpRegistry, ArgumentExpression
-from radish.exceptions import StepDefinitionNotFoundError
+from radish.exceptions import StepDefinitionNotFoundError, StepArgumentRegexError
 
 
 class Matcher(object):
@@ -62,7 +62,11 @@ class Matcher(object):
         """
         for regex, func in steps.items():
             if isinstance(regex, ArgumentExpression):
-                compiled = parse.compile(regex.regex, ArgExpRegistry().expressions)
+                try:
+                    compiled = parse.compile(regex.regex, ArgExpRegistry().expressions)
+                except ValueError as e:
+                    raise StepArgumentRegexError(regex.regex, func.__name__, e)
+
                 match = compiled.search(sentence)
                 if match:
                     return match.fixed, match.named, func

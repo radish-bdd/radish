@@ -37,6 +37,17 @@ class StepRegexError(RadishError, SyntaxError):
         super(StepRegexError, self).__init__("Cannot compile regex '{}' from step '{}': {}".format(regex, step_func_name, re_error))
 
 
+class StepArgumentRegexError(RadishError, SyntaxError):
+    """
+        Raised if the steps ArgumentExpression cannot be compiled.
+    """
+    def __init__(self, regex, step_func_name, error):
+        self.regex = regex
+        self.step_func_name = step_func_name
+        self.error = error
+        super(StepArgumentRegexError, self).__init__("Cannot compile ArgumentExpression regex '{}' from step '{}': {}".format(regex, step_func_name, error))
+
+
 class SameStepError(RadishError):
     """
         Raised if two step regex are exactly the same.

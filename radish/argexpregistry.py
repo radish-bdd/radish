@@ -4,9 +4,9 @@
     This module provides the Argument-Expression Registry
 """
 
-import parse
 from singleton import singleton
 
+from radish.exceptions import RadishError
 
 @singleton()
 class ArgExpRegistry(object):
@@ -20,7 +20,9 @@ class ArgExpRegistry(object):
         """
             Registers a custom argument expression
         """
-        # FIXME: check for duplications
+        if name in self._expressions:
+            raise RadishError("Cannot register argument expression with name {} because it already exists".format(name))
+
         self._expressions[name] = func
 
     @property
@@ -50,10 +52,5 @@ def arg_expr(name, expression):
         func.pattern = expression
         ArgExpRegistry().register(name, func)
 
-        def _wrapper(text):
-            """
-                Decorator wrapper
-            """
-            return func(text)
-        return _wrapper
+        return func
     return _decorator

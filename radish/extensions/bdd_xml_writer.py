@@ -66,7 +66,7 @@ def generate_bdd_xml(features):
     )
 
     for feature in features:
-        if not feature.has_to_run(world.config.scenarios):
+        if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
             continue
 
         feature_element = _get_element_from_model("feature", feature)
@@ -77,11 +77,11 @@ def generate_bdd_xml(features):
         scenarios_element = etree.Element("scenarios")
 
         for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
-            if not scenario.has_to_run(world.config.scenarios):
+            if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
             scenario_element = _get_element_from_model("scenario", scenario)
 
-            for step in scenario.steps:
+            for step in scenario.all_steps:
                 step_element = _get_element_from_model("step", step)
                 if step.state is Step.State.FAILED:
                     failure_element = etree.Element(

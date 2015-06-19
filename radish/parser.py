@@ -189,6 +189,9 @@ class FeatureParser(object):
                 scenario_type = ScenarioLoop
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
+        if detected_scenario in self.feature:
+            raise RadishError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.sentence))
+
         scenario_id = len(self.feature.scenarios) + 1
         if self.feature.scenarios:
             previous_scenario = self.feature.scenarios[-1]

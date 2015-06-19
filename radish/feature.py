@@ -39,6 +39,14 @@ class Feature(Model):
     def __repr__(self):
         return "<Feature: {} from {}:{}>".format(self.sentence, self.path, self.line)
 
+    def __contains__(self, sentence):
+        """
+            Checks if the given scenario sentence is from a scenario of this feature
+
+            :param str sentence: the scenario sentence to search
+        """
+        return any(s for s in self.scenarios if s.sentence == sentence)
+
     @property
     def state(self):
         """

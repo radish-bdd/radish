@@ -12,7 +12,7 @@ Feature: Feature with Scenario and ScenarioLoop
         When I add 12 to my number
         Then I expect the number to be 17
 
-    Scenario: Add numbers
+    Scenario: Add again numbers
         Given I have the number 5
         When I add 2 to my number
         Then I expect the number to be 7

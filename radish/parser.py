@@ -5,7 +5,7 @@ import io
 import re
 import json
 
-from radish.exceptions import RadishError, LanguageNotSupportedError
+from radish.exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
@@ -113,12 +113,12 @@ class FeatureParser(object):
                     continue
 
                 if self.feature and self._detect_feature(line):
-                    raise RadishError("radish supports only one Feature per feature file")
+                    raise FeatureFileSyntaxError("radish supports only one Feature per feature file")
 
                 if not self._parse_context(line):
-                    raise RadishError("Syntax error in feature file {} on line {}".format(self._featurefile, self._current_line))
+                    raise FeatureFileSyntaxError("Syntax error in feature file {} on line {}".format(self._featurefile, self._current_line))
         if not self.feature:
-            raise RadishError("No Feature found in file {}".format(self._featurefile))
+            raise FeatureFileSyntaxError("No Feature found in file {}".format(self._featurefile))
 
         if self.feature.scenarios:
             previous_scenario = self.feature.scenarios[-1]
@@ -194,7 +194,7 @@ class FeatureParser(object):
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
         if detected_scenario in self.feature:
-            raise RadishError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.sentence))
+            raise FeatureFileSyntaxError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.sentence))
 
         scenario_id = len(self.feature.scenarios) + 1
         if self.feature.scenarios:
@@ -220,7 +220,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         if not isinstance(self.feature.scenarios[-1], ScenarioOutline):
-            raise RadishError("Scenario does not support Examples. Use 'Scenario Outline'")
+            raise FeatureFileSyntaxError("Scenario does not support Examples. Use 'Scenario Outline'")
 
         self.feature.scenarios[-1].examples_header = [x.strip() for x in line.split("|")[1:-1]]
         self._current_state = FeatureParser.State.EXAMPLES_ROW
@@ -262,7 +262,7 @@ class FeatureParser(object):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
-        step_id = len(self.feature.scenarios[-1].steps) + 1
+        step_id = len(self.feature.scenarios[-1].all_steps) + 1
         not_runable = isinstance(self.feature.scenarios[-1], (ScenarioOutline, ScenarioLoop))
         step = Step(step_id, line, self._featurefile, self._current_line, self.feature.scenarios[-1], not not_runable)
         self.feature.scenarios[-1].steps.append(step)
@@ -275,7 +275,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         if not self.feature.scenarios[-1].steps:
-            raise RadishError("Found step table without previous step definition on line {}".format(self._current_line))
+            raise FeatureFileSyntaxError("Found step table without previous step definition on line {}".format(self._current_line))
 
         self.feature.scenarios[-1].steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
         return True
@@ -291,7 +291,7 @@ class FeatureParser(object):
         """
         match = re.search(r"(.*?\.feature): (.*)", arguments)
         if not match:
-            raise RadishError("Scenario @precondition tag must have argument in format: 'test.feature: Some scenario'")
+            raise FeatureFileSyntaxError("Scenario @precondition tag must have argument in format: 'test.feature: Some scenario'")
 
         feature_file_name, scenario_sentence = match.groups()
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
@@ -300,11 +300,11 @@ class FeatureParser(object):
             feature = self._core.parse_feature(feature_file)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
-                raise RadishError("You feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
+                raise FeatureFileSyntaxError("You feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
             raise
 
         if scenario_sentence not in feature:
-            raise RadishError("Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(scenario_sentence, feature_file))
+            raise FeatureFileSyntaxError("Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(scenario_sentence, feature_file))
 
         return feature[scenario_sentence]
 

@@ -26,6 +26,13 @@ class FeatureFileNotFoundError(RadishError):
         super(FeatureFileNotFoundError, self).__init__("Feature file '{}': No such file".format(featurefile))
 
 
+class FeatureFileSyntaxError(RadishError, SyntaxError):
+    """
+        If a a syntax error occured in a feature file
+    """
+    pass
+
+
 class StepRegexError(RadishError, SyntaxError):
     """
         Raised if the step regex cannot be compiled.

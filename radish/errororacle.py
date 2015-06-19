@@ -9,7 +9,11 @@ import sys
 from functools import wraps
 from colorful import colorful
 
-from radish.exceptions import RadishError, HookError
+from radish.terrain import world
+from radish.exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError
+
+
+__RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 
 
 def write(text):
@@ -54,6 +58,25 @@ def error_oracle(func):
         except HookError as e:  # handle exception from hook
             write_error(e)
             write_failure(e.failure)
+            abort(1)
+        except FeatureFileSyntaxError as e:
+            write("""You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to found out which
+features radish supports and how you could use them:
+Link: {}
+                  """.format(__RADISH_DOC__))
+            write_error(e)
+            abort(1)
+        except StepDefinitionNotFoundError as e:
+            write("""There is no step defintion for '{}'.
+All steps should be declared in a module located in {}.
+For example you could do:
+
+@step(r"{}")
+def my_step(step):
+    raise NotImplementedError("This step is not implemented yet")
+            """.format(e.step.sentence, world.config.basedir, e.step.sentence))
+            write_error(e)
             abort(1)
         except RadishError as e:
             write_error(e)

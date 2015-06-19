@@ -51,10 +51,11 @@ class Runner(object):
             return _wrapper
         return _decorator
 
-    def __init__(self, hooks, early_exit=False):
+    def __init__(self, hooks, early_exit=False, dry_run=False):
         self._hooks = hooks
         self._early_exit = early_exit
         self._required_exit = False
+        self._dry_run = dry_run
 
     @handle_exit
     @call_hooks("all")
@@ -104,7 +105,8 @@ class Runner(object):
 
             :param Scenario scenario: the scnenario to run
         """
-        for step in scenario.all_steps:
+        steps = scenario.all_steps if world.config.expanded else scenario.steps
+        for step in steps:
             if scenario.state == Step.State.FAILED:
                 self.skip_step(step)
                 continue
@@ -123,6 +125,9 @@ class Runner(object):
 
             :param Step step: the step to run
         """
+        if self._dry_run:
+            return
+
         if world.config.debug_steps:
             step.debug()
         else:

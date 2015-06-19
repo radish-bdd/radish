@@ -7,7 +7,6 @@
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
 
-from datetime import timedelta
 from colorful import colorful
 
 from radish.terrain import world
@@ -36,7 +35,7 @@ def get_line_jump_seq():
         Returns the line jump ANSI sequence
     """
     line_jump_seq = ""
-    if not world.config.no_ansi and not world.config.no_line_jump:
+    if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
         line_jump_seq = "\r\033[A\033[K"
     return line_jump_seq
 
@@ -117,7 +116,10 @@ def console_writer_before_each_scenario(scenario):
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
         for tag in scenario.tags:
-            output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
+            if tag.name == "precondition" and world.config.expanded and world.config.show:  # exceptional for show command when scenario steps expanded and tag is a precondition -> comment it out
+                output += colorful.white("    # @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
+            else:
+                output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
         output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 
@@ -216,71 +218,3 @@ def console_writer_after_each_feature(feature):  # pylint: disable=unused-argume
         :param Feature feature: the feature which was ran.
     """
     write("")
-
-
-@after.all  # pylint: disable=no-member
-def console_write_after_all(features, marker):
-    """
-        Writes the endreport for all features
-
-        :param list features: all features
-    """
-    stats = {
-        "features": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
-        "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
-        "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
-    }
-    duration = timedelta()
-    for feature in features:
-        stats["features"]["amount"] += 1
-        stats["features"][feature.state] += 1
-
-        if feature.state in [Step.State.PASSED, Step.State.FAILED]:
-            duration += feature.duration
-
-        for scenario in feature.all_scenarios:
-            if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines
-                continue
-
-            stats["scenarios"]["amount"] += 1
-            stats["scenarios"][scenario.state] += 1
-            for step in scenario.steps:
-                stats["steps"]["amount"] += 1
-                stats["steps"][step.state] += 1
-
-    colored_closing_paren = colorful.bold_white(")")
-    colored_comma = colorful.bold_white(", ")
-    passed_word = colorful.bold_green("{} passed")
-    failed_word = colorful.bold_red("{} failed")
-    skipped_word = colorful.cyan("{} skipped")
-
-    output = colorful.bold_white("{} features (".format(stats["features"]["amount"]))
-    output += passed_word.format(stats["features"]["passed"])
-    if stats["features"]["failed"]:
-        output += colored_comma + failed_word.format(stats["features"]["failed"])
-    if stats["features"]["skipped"]:
-        output += colored_comma + skipped_word.format(stats["features"]["skipped"])
-    output += colored_closing_paren
-
-    output += "\n"
-    output += colorful.bold_white("{} scenarios (".format(stats["scenarios"]["amount"]))
-    output += passed_word.format(stats["scenarios"]["passed"])
-    if stats["scenarios"]["failed"]:
-        output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
-    if stats["scenarios"]["skipped"]:
-        output += colored_comma + skipped_word.format(stats["scenarios"]["skipped"])
-    output += colored_closing_paren
-
-    output += "\n"
-    output += colorful.bold_white("{} steps (".format(stats["steps"]["amount"]))
-    output += passed_word.format(stats["steps"]["passed"])
-    if stats["steps"]["failed"]:
-        output += colored_comma + failed_word.format(stats["steps"]["failed"])
-    if stats["steps"]["skipped"]:
-        output += colored_comma + skipped_word.format(stats["steps"]["skipped"])
-    output += colored_closing_paren
-
-    output += "\n"
-    output += colorful.cyan("Run {} finished within {}:{} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
-
-    write(output)

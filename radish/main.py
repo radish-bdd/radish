@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 from docopt import docopt
 from time import time
 
 from radish import __VERSION__
 from radish.core import Core
-from radish.parser import FeatureParser
 from radish.loader import Loader
 from radish.matcher import Matcher
 from radish.stepregistry import StepRegistry
@@ -16,16 +16,6 @@ from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, F
 from radish.errororacle import error_oracle
 from radish.terrain import world
 import radish.utils as utils
-
-# extensions
-# FIXME: load dynamically
-import radish.extensions.argumentexpressions
-import radish.extensions.time_recorder
-import radish.extensions.syslog_writer
-import radish.extensions.console_writer
-import radish.extensions.failure_inspector
-import radish.extensions.failure_debugger
-import radish.extensions.bdd_xml_writer
 
 
 def setup_config(arguments):
@@ -38,10 +28,84 @@ def setup_config(arguments):
         setattr(world.config, config_key, value)
 
 
+def show_features(core):
+    """
+        Show the parsed features
+    """
+    # FIXME: load dynamically
+    import radish.extensions.console_writer
+
+    # set needed configuration
+    world.config.write_steps_once = True
+    if not sys.stdout.isatty():
+        world.config.no_ansi = True
+
+    runner = Runner(HookRegistry(), dry_run=True)
+    runner.start(core.features_to_run, marker="show")
+
+
+def run_features(core):
+    """
+        Run the parsed features
+
+        :param Core core: the radish core object
+    """
+    # FIXME: load dynamically
+    import radish.extensions.argumentexpressions
+    import radish.extensions.time_recorder
+    import radish.extensions.syslog_writer
+    import radish.extensions.console_writer
+    import radish.extensions.endreport_writer
+    import radish.extensions.failure_inspector
+    import radish.extensions.failure_debugger
+    import radish.extensions.bdd_xml_writer
+
+    # set needed configuration
+    world.config.expanded = True
+
+    # load user's custom python files
+    loader = Loader(world.config.basedir)
+    loader.load_all()
+
+    # match feature file steps with user's step definitions
+    Matcher.merge_steps(core.features, StepRegistry().steps)
+
+    # run parsed features
+    if world.config.marker == "time.time()":
+        world.config.marker = int(time())
+
+    # scenario choice
+    amount_of_scenarios = sum(len(f.scenarios) for f in core.features)
+    if world.config.scenarios:
+        world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
+        for s in world.config.scenarios:
+            if s <= 0 or s > amount_of_scenarios:
+                raise ScenarioNotFoundError(s, amount_of_scenarios)
+
+    # tags
+    if world.config.feature_tags:
+        world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
+        for tag in world.config.feature_tags:
+            if not any(f for f in core.features if tag in [t.name for t in f.tags]):
+                raise FeatureTagNotFoundError(tag)
+
+    if world.config.scenario_tags:
+        world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
+        for tag in world.config.scenario_tags:
+            if not any(s for f in core.features for s in f.scenarios if tag in [t.name for t in s.tags]):
+                raise ScenarioTagNotFoundError(tag)
+
+    runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
+    runner.start(core.features_to_run, marker=world.config.marker)
+
+
 @error_oracle
 def main():
     """
 Usage:
+    radish show <features>
+           [--expanded]
+           [--no-ansi]
     radish <features>...
            [-b=<basedir> | --basedir=<basedir>]
            [-e | --early-exit]
@@ -88,6 +152,7 @@ Options:
     --shuffle                                   shuttle run order of features and scenarios
     --feature-tags=<feature_tags>               only run features with the given tags
     --scenario-tags=<scenario_tags>             only run scenarios with the given tags
+    --expanded                                  expand the feature file (all preconditions)
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """
@@ -116,40 +181,15 @@ Options:
         print("Error: no features given")
         return 1
 
-    # load user's custom python files
-    loader = Loader(world.config.basedir)
-    loader.load_all()
+    argument_dispatcher = [
+        ((lambda: world.config.show), show_features),
+        ((lambda: True), run_features)
+    ]
 
-    # match feature file steps with user's step definitions
-    Matcher.merge_steps(core.features, StepRegistry().steps)
-
-    # run parsed features
-    if world.config.marker == "time.time()":
-        world.config.marker = int(time())
-
-    # scenario choice
-    amount_of_scenarios = sum(len(f.scenarios) for f in core.features)
-    if world.config.scenarios:
-        world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
-        for s in world.config.scenarios:
-            if s <= 0 or s > amount_of_scenarios:
-                raise ScenarioNotFoundError(s, amount_of_scenarios)
-
-    # tags
-    if world.config.feature_tags:
-        world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
-        for tag in world.config.feature_tags:
-            if not any(f for f in core.features if tag in [t.name for t in f.tags]):
-                raise FeatureTagNotFoundError(tag)
-
-    if world.config.scenario_tags:
-        world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
-        for tag in world.config.scenario_tags:
-            if not any(s for f in core.features for s in f.scenarios if tag in [t.name for t in s.tags]):
-                raise ScenarioTagNotFoundError(tag)
-
-    runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
-    runner.start(core.features_to_run, marker=world.config.marker)
+    # radish command dispatching
+    for to_run, method in argument_dispatcher:
+        if to_run():
+            return method(core)
 
 
 if __name__ == "__main__":

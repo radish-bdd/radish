@@ -33,7 +33,8 @@ class RunnerTestCase(RadishTestCase):
             "--shuffle": False,
             "--write-ids": False,
             "--feature-tags": None,
-            "--scenario-tags": None
+            "--scenario-tags": None,
+            "--expanded": True,
         })
 
     def test_running_a_step(self):

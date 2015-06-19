@@ -47,6 +47,14 @@ class Feature(Model):
         """
         return any(s for s in self.scenarios if s.sentence == sentence)
 
+    def __getitem__(self, sentence):
+        """
+            Returns the scenario with the given sentence
+
+            :param str sentence: the scenario sentence to search
+        """
+        return next((s for s in self.scenarios if s.sentence == sentence), None)
+
     @property
     def state(self):
         """

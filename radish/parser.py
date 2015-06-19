@@ -48,10 +48,11 @@ class FeatureParser(object):
         EXAMPLES_ROW = "examples_row"
         SCENARIO_LOOP = "scenario_loop"
 
-    def __init__(self, featurefile, featureid, start_abs_scenario_id, language="en"):
+    def __init__(self, core, featurefile, featureid, language="en"):
         if not os.path.exists(featurefile):
             raise OSError("Feature file at '{}' does not exist".format(featurefile))
 
+        self._core = core
         self._featureid = featureid
         self._featurefile = featurefile
         self.keywords = {}
@@ -60,7 +61,6 @@ class FeatureParser(object):
         self._current_state = FeatureParser.State.FEATURE
         self._current_line = 0
         self._current_tags = []
-        self.current_abs_scenario_id = start_abs_scenario_id
         self.feature = None
 
         self._load_language(language)
@@ -200,8 +200,7 @@ class FeatureParser(object):
             elif isinstance(previous_scenario, ScenarioLoop):
                 scenario_id += previous_scenario.iterations
 
-        self.current_abs_scenario_id += 1
-        self.feature.scenarios.append(scenario_type(self.current_abs_scenario_id, scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags))
+        self.feature.scenarios.append(scenario_type(self._core.next_scenario_id, scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags))
         self._current_tags = []
 
         if scenario_type == ScenarioLoop:

@@ -5,6 +5,7 @@ from docopt import docopt
 from time import time
 
 from radish import __VERSION__
+from radish.core import Core
 from radish.parser import FeatureParser
 from radish.loader import Loader
 from radish.matcher import Matcher
@@ -96,6 +97,8 @@ Options:
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
 
+    core = Core()
+
     feature_files = []
     for given_feature in world.config.features:
         if not os.path.exists(given_feature):
@@ -107,15 +110,9 @@ Options:
 
         feature_files.append(given_feature)
 
-    features = []
-    abs_scenario_id = 0
-    for featureid, featurefile in enumerate(feature_files):
-        featureparser = FeatureParser(featurefile, featureid + 1, abs_scenario_id)
-        featureparser.parse()
-        features.append(featureparser.feature)
-        abs_scenario_id = featureparser.current_abs_scenario_id
+    core.parse_features(feature_files)
 
-    if not features:
+    if not core.features:
         print("Error: no features given")
         return 1
 
@@ -124,14 +121,14 @@ Options:
     loader.load_all()
 
     # match feature file steps with user's step definitions
-    Matcher.merge_steps(features, StepRegistry().steps)
+    Matcher.merge_steps(core.features, StepRegistry().steps)
 
     # run parsed features
     if world.config.marker == "time.time()":
         world.config.marker = int(time())
 
     # scenario choice
-    amount_of_scenarios = sum(len(f.scenarios) for f in features)
+    amount_of_scenarios = sum(len(f.scenarios) for f in core.features)
     if world.config.scenarios:
         world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
         for s in world.config.scenarios:
@@ -142,17 +139,17 @@ Options:
     if world.config.feature_tags:
         world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
         for tag in world.config.feature_tags:
-            if not any(f for f in features if tag in [t.name for t in f.tags]):
+            if not any(f for f in core.features if tag in [t.name for t in f.tags]):
                 raise FeatureTagNotFoundError(tag)
 
     if world.config.scenario_tags:
         world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
         for tag in world.config.scenario_tags:
-            if not any(s for f in features for s in f.scenarios if tag in [t.name for t in s.tags]):
+            if not any(s for f in core.features for s in f.scenarios if tag in [t.name for t in s.tags]):
                 raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
-    runner.start(features, marker=world.config.marker)
+    runner.start(core.features, marker=world.config.marker)
 
 
 if __name__ == "__main__":

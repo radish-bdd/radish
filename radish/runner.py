@@ -105,7 +105,7 @@ class Runner(object):
 
             :param Scenario scenario: the scnenario to run
         """
-        steps = scenario.all_steps if world.config.expanded else scenario.steps
+        steps = scenario.all_steps if world.config.expand else scenario.steps
         for step in steps:
             if scenario.state == Step.State.FAILED:
                 self.skip_step(step)

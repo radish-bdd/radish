@@ -61,7 +61,7 @@ def run_features(core):
     import radish.extensions.bdd_xml_writer
 
     # set needed configuration
-    world.config.expanded = True
+    world.config.expand = True
 
     # load user's custom python files
     loader = Loader(world.config.basedir)
@@ -104,7 +104,7 @@ def main():
     """
 Usage:
     radish show <features>
-           [--expanded]
+           [--expand]
            [--no-ansi]
     radish <features>...
            [-b=<basedir> | --basedir=<basedir>]
@@ -152,7 +152,7 @@ Options:
     --shuffle                                   shuttle run order of features and scenarios
     --feature-tags=<feature_tags>               only run features with the given tags
     --scenario-tags=<scenario_tags>             only run scenarios with the given tags
-    --expanded                                  expand the feature file (all preconditions)
+    --expand                                    expand the feature file (all preconditions)
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """

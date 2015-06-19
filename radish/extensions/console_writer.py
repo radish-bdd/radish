@@ -116,7 +116,7 @@ def console_writer_before_each_scenario(scenario):
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
         for tag in scenario.tags:
-            if tag.name == "precondition" and world.config.expanded and world.config.show:  # exceptional for show command when scenario steps expanded and tag is a precondition -> comment it out
+            if tag.name == "precondition" and world.config.expand and world.config.show:  # exceptional for show command when scenario steps expand and tag is a precondition -> comment it out
                 output += colorful.white("    # @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
             else:
                 output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))

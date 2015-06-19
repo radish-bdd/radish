@@ -150,7 +150,7 @@ class FeatureParser(object):
         if not detected_feature:
             tag = self._detect_tag(line)
             if tag:
-                self._current_tags.append(tag)
+                self._current_tags.append(Feature.Tag(tag[0], tag[1]))
                 return True
 
             return False
@@ -179,7 +179,7 @@ class FeatureParser(object):
                 if not detected_scenario:
                     tag = self._detect_tag(line)
                     if tag:
-                        self._current_tags.append(tag)
+                        self._current_tags.append(Scenario.Tag(tag[0], tag[1]))
                         return True
 
                     self.feature.description.append(line)
@@ -382,8 +382,8 @@ class FeatureParser(object):
             :returns: the tag or None
             :rtype: str or None
         """
-        match = re.search(r"^@([^\s]+)", line)
+        match = re.search(r"^@([^\s(]+)(?:\((.*?)\))?", line)
         if match:
-            return match.group(1)
+            return match.group(1), match.group(2)
 
         return None

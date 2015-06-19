@@ -18,6 +18,14 @@ class Model(object):
     """
         Represents a base model
     """
+    class Tag(object):
+        """
+            Represents a tag for a model
+        """
+        def __init__(self, name, arg=None):
+            self.name = name
+            self.arg = arg
+
     def __init__(self, id, keyword, sentence, path, line, parent=None, tags=None):
         self.id = id
         self.keyword = keyword

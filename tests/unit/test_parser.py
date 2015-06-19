@@ -5,6 +5,7 @@ from tests.base import *
 from tempfile import NamedTemporaryFile
 
 from radish.parser import FeatureParser
+from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
@@ -571,8 +572,9 @@ Feature: another empty feature"""
             featurefile.flush()
 
             parser = FeatureParser(featurefile.name, 1, 1)
-            parser._detect_tag.when.called_with("@some_tag").should.return_value("some_tag")
-            parser._detect_tag.when.called_with("@some_tag sdfg").should.return_value("some_tag")
+            parser._detect_tag.when.called_with("@some_tag").should.return_value(("some_tag", None))
+            parser._detect_tag.when.called_with("@some_tag sdfg").should.return_value(("some_tag", None))
+            parser._detect_tag.when.called_with("@some_tag_with_arg(args)").should.return_value(("some_tag_with_arg", "args"))
             parser._detect_tag.when.called_with("some_tag").should.return_value(None)
             parser._detect_tag.when.called_with("some_tag sdfg").should.return_value(None)
 
@@ -597,7 +599,7 @@ Feature: some feature
             parser.parse()
 
             parser.feature.tags.should.have.length_of(1)
-            parser.feature.tags[0].should.be.equal("some_feature")
+            parser.feature.tags[0].name.should.be.equal("some_feature")
 
     def test_parse_feature_with_multiple_tags(self):
         """
@@ -622,9 +624,9 @@ Feature: some feature
             parser.parse()
 
             parser.feature.tags.should.have.length_of(3)
-            parser.feature.tags[0].should.be.equal("some_feature")
-            parser.feature.tags[1].should.be.equal("has_scenario_loop")
-            parser.feature.tags[2].should.be.equal("add_numbers")
+            parser.feature.tags[0].name.should.be.equal("some_feature")
+            parser.feature.tags[1].name.should.be.equal("has_scenario_loop")
+            parser.feature.tags[2].name.should.be.equal("add_numbers")
 
     def test_parse_feature_with_scenario_with_tags(self):
         """
@@ -659,15 +661,15 @@ Feature: some feature
             parser.parse()
 
             parser.feature.tags.should.have.length_of(1)
-            parser.feature.tags[0].should.be.equal("some_feature")
+            parser.feature.tags[0].name.should.be.equal("some_feature")
 
             parser.feature.scenarios.should.have.length_of(3)
 
             parser.feature.scenarios[0].tags.should.have.length_of(1)
-            parser.feature.scenarios[0].tags[0].should.be.equal("some_scenario_loop")
+            parser.feature.scenarios[0].tags[0].name.should.be.equal("some_scenario_loop")
 
             parser.feature.scenarios[1].tags.should.be.empty
 
             parser.feature.scenarios[2].tags.should.have.length_of(2)
-            parser.feature.scenarios[2].tags[0].should.be.equal("error_case")
-            parser.feature.scenarios[2].tags[1].should.be.equal("bad_case")
+            parser.feature.scenarios[2].tags[0].name.should.be.equal("error_case")
+            parser.feature.scenarios[2].tags[1].name.should.be.equal("bad_case")

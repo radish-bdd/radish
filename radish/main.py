@@ -142,13 +142,13 @@ Options:
     if world.config.feature_tags:
         world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
         for tag in world.config.feature_tags:
-            if not any(f for f in features if tag in f.tags):
+            if not any(f for f in features if tag in [t.name for t in f.tags]):
                 raise FeatureTagNotFoundError(tag)
 
     if world.config.scenario_tags:
         world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
         for tag in world.config.scenario_tags:
-            if not any(s for f in features for s in f.scenarios if tag in s.tags):
+            if not any(s for f in features for s in f.scenarios if tag in [t.name for t in s.tags]):
                 raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)

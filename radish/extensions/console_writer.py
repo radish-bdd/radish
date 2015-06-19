@@ -72,7 +72,7 @@ def console_writer_before_each_feature(feature):
     """
     output = ""
     for tag in feature.tags:
-        output += colorful.cyan("@{}\n".format(tag))
+        output += colorful.cyan("@{}\n".format(tag.name))
 
     leading = "\n    " if feature.description else ""
 
@@ -117,7 +117,7 @@ def console_writer_before_each_scenario(scenario):
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
         for tag in scenario.tags:
-            output += colorful.cyan("    @{}\n".format(tag))
+            output += colorful.cyan("    @{}\n".format(tag.name))
         output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 

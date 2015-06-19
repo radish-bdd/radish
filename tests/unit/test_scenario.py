@@ -13,7 +13,7 @@ class ScenarioTestCase(RadishTestCase):
         """
             Test scenario's has to run functionality
         """
-        s = Scenario(1, 1, "Scenario", "Some scenario", None, None, None, ["foo", "bar", "bad_case"])
+        s = Scenario(1, 1, "Scenario", "Some scenario", None, None, None, [Scenario.Tag("foo", None), Scenario.Tag("bar", None), Scenario.Tag("bad_case", None)])
         s.has_to_run.when.called_with(None, None, ["foo"]).should.return_value(True)
         s.has_to_run.when.called_with(None, None, ["good_case", "foo"]).should.return_value(True)
         s.has_to_run.when.called_with(None, None, ["good_case", "bar", "bad_case"]).should.return_value(True)

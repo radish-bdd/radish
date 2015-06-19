@@ -13,7 +13,7 @@ class FeatureTestCase(RadishTestCase):
         """
             Test feature's has to run functionality
         """
-        f = Feature(1, "Feature", "Some feature", None, None, ["foo", "bar", "bad_case"])
+        f = Feature(1, "Feature", "Some feature", None, None, [Feature.Tag("foo", None), Feature.Tag("bar", None), Feature.Tag("bad_case", None)])
         f.has_to_run.when.called_with(None, ["foo"], None).should.return_value(True)
         f.has_to_run.when.called_with(None, ["good_case", "foo"], None).should.return_value(True)
         f.has_to_run.when.called_with(None, ["good_case", "bar", "bad_case"], None).should.return_value(True)

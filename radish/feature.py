@@ -65,7 +65,7 @@ class Feature(Model):
 
         in_tags = False
         if feature_tags:
-            in_tags = any(t for t in self.tags if t in feature_tags)
+            in_tags = any(t for t in self.tags if t.name in feature_tags)
 
         scenario_to_run = any(s for s in self.scenarios if s.has_to_run(scenario_choice, feature_tags, scenario_tags))
 

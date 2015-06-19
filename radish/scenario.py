@@ -16,6 +16,7 @@ class Scenario(Model):
     def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = absolute_id
+        self.preconditions = []
         self.steps = []
 
     @property
@@ -51,7 +52,7 @@ class Scenario(Model):
 
         in_tags = False
         if scenario_tags:
-            in_tags = any(t for t in self.tags if t in scenario_tags)
+            in_tags = any(t for t in self.tags if t.name in scenario_tags)
 
         feature_has_to_run = False
         if feature_tags:

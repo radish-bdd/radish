@@ -80,4 +80,6 @@ class Scenario(Model):
         """
         for step_id, step in enumerate(self.all_steps, start=1):
             step.id = step_id
-            step.parent = self
+            if step.parent != self:
+                step.as_precondition = step.parent
+                step.parent = self

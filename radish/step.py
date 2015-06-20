@@ -36,6 +36,7 @@ class Step(Model):
         self.state = Step.State.UNTESTED
         self.failure = None
         self.runable = runable
+        self.as_precondition = None
 
     def _validate(self):
         """

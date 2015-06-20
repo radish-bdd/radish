@@ -7,6 +7,7 @@
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
 
+import os
 from colorful import colorful
 
 from radish.terrain import world
@@ -16,6 +17,8 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.step import Step
 from radish.utils import console_write as write
+
+__LAST_PRECONDITION__ = None
 
 
 def get_color_func(state):
@@ -131,13 +134,21 @@ def console_writer_before_each_step(step):
 
         :param Step step: the step to write to the console
     """
+    global __LAST_PRECONDITION__
     if not isinstance(step.parent.parent, Feature):
         return
 
     if world.config.write_steps_once:
         return
 
-    output = "\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
+    output = ""
+    if step.as_precondition and __LAST_PRECONDITION__ != step.as_precondition:
+        output += colorful.white("      As precondition from {}: {}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
+    elif not step.as_precondition and __LAST_PRECONDITION__:
+        output += colorful.white("      From scenario\n")
+
+    __LAST_PRECONDITION__ = step.as_precondition
+    output += "\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
     write(output)
 
 

@@ -32,3 +32,7 @@ class ScenarioLoop(Scenario):
                 step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, True)
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
+
+    def after_parse(self):
+        Scenario.after_parse(self)
+        self.build_scenarios()

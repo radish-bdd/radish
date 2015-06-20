@@ -121,11 +121,7 @@ class FeatureParser(object):
             raise FeatureFileSyntaxError("No Feature found in file {}".format(self._featurefile))
 
         if self.feature.scenarios:
-            previous_scenario = self.feature.scenarios[-1]
-            if isinstance(previous_scenario, ScenarioOutline) or isinstance(previous_scenario, ScenarioLoop):
-                # last scenario was a ScenarioOutline or Scenario Loop but the inner Scenarios could not be build yet
-                # - do it now! FIXME: fix this ugly algorithm
-                previous_scenario.build_scenarios()
+            self.feature.scenarios[-1].after_parse()
 
     def _parse_context(self, line):
         """
@@ -234,8 +230,7 @@ class FeatureParser(object):
         """
         # detect next keyword
         if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
-            # the current Examples are finished so build the scenarios in the scenario outline
-            self.feature.scenarios[-1].build_scenarios()
+            self.feature.scenarios[-1].after_parse()
             return self._parse_scenario(line)
 
         example = ScenarioOutline.Example([x.strip() for x in line.split("|")[1:-1]], self._featurefile, self._current_line)
@@ -250,8 +245,7 @@ class FeatureParser(object):
         """
         # detect next keyword
         if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
-            if isinstance(self.feature.scenarios[-1], ScenarioLoop):
-                self.feature.scenarios[-1].build_scenarios()
+            self.feature.scenarios[-1].after_parse()
             return self._parse_scenario(line)
 
         if self._detect_table(line):

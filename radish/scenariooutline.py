@@ -73,3 +73,7 @@ class ScenarioOutline(Scenario):
             return max(max([len(x.data[column_index]) for x in self.examples]), len(self.examples_header[column_index]))
         except IndexError:
             raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{}'".format(self.sentence))
+
+    def after_parse(self):
+        Scenario.after_parse(self)
+        self.build_scenarios()

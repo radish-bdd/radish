@@ -38,6 +38,13 @@ class Step(Model):
         self.runable = runable
         self.as_precondition = None
 
+    @property
+    def context(self):
+        """
+            Returns the scenario context belonging to this step
+        """
+        return self.parent.context
+
     def _validate(self):
         """
             Checks if the step is valid to run or not

@@ -12,12 +12,20 @@ class Scenario(Model):
     """
         Represents a Scenario
     """
+    class Context(object):
+        """
+            Represents a scenario context.
+            For every scenario a new Context object is created
+            and passed to all scenario and step hooks
+        """
+        pass
 
     def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None, preconditions=None):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = absolute_id
         self.preconditions = preconditions or []
         self.steps = []
+        self.context = Scenario.Context()
 
     @property
     def state(self):

@@ -26,6 +26,13 @@ class Model(object):
             self.name = name
             self.arg = arg
 
+    class Context(object):
+        """
+            Represents a Models context.
+            For every feature/scenario a new Context object is created
+        """
+        pass
+
     def __init__(self, id, keyword, sentence, path, line, parent=None, tags=None):
         self.id = id
         self.keyword = keyword

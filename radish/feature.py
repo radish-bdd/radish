@@ -19,6 +19,7 @@ class Feature(Model):
         super(Feature, self).__init__(id, keyword, sentence, path, line, None, tags)
         self.description = []
         self.scenarios = []
+        self.context = self.Context()
 
     @property
     def all_scenarios(self):

@@ -41,7 +41,7 @@ class Matcher(object):
             :param Step step: the step from a feature file to merge
             :param list steps: the registered steps
         """
-        arguments, keyword_arguments, func = cls.match(step.sentence, steps)
+        arguments, keyword_arguments, func = cls.match(step.expanded_sentence, steps)
         if not func:
             raise StepDefinitionNotFoundError(step)
 

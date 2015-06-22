@@ -74,7 +74,7 @@ def console_writer_before_each_feature(feature):
     """
     output = ""
     for tag in feature.tags:
-        output += colorful.cyan("@{}\n".format(tag.name))
+        output += colorful.cyan("@{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
 
     leading = "\n    " if feature.description else ""
 

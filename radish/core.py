@@ -54,6 +54,10 @@ class Core(object):
         """
         for featurefile in feature_files:
             feature = self.parse_feature(featurefile, self.next_feature_id)
+
+            for scenario in feature.scenarios:
+                scenario.absolute_id = self.next_scenario_id
+
             self._features_to_run[featurefile] = feature
 
     def parse_feature(self, featurefile, featureid=0):

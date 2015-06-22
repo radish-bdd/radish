@@ -44,3 +44,16 @@ def arg_expr_mathexpression(text):
         :rtype: float
     """
     return float(eval(text))
+
+
+@arg_expr("VariableName", r"[A-Za-z_][A-Za-z0-9_]*")
+def arg_expr_variablename(text):
+    """
+        Argument Expression which expects a variable name
+
+        :param str text: the text which was matched as variable name
+
+        :returns: the variable name
+        :rtype: str
+    """
+    return text

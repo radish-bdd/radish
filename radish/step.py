@@ -45,6 +45,18 @@ class Step(Model):
         """
         return self.parent.context
 
+    @property
+    def expanded_sentence(self):
+        """
+            Returns the expanded sentence of this step
+
+                * Expand variables
+        """
+        sentence = self.sentence
+        for name, value in self.parent.variables:
+            sentence = sentence.replace("${%s}" % name, value)
+        return sentence
+
     def _validate(self):
         """
             Checks if the step is valid to run or not
@@ -113,7 +125,7 @@ class Step(Model):
             return
 
         # create step according to given sentence
-        new_step = Step(None, sentence, self.path, self.line, self, True)
+        new_step = Step(None, sentence, self.path, self.line, self.parent, True)
         Matcher.merge_step(new_step, StepRegistry().steps)
 
         # run or debug step

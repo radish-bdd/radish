@@ -31,7 +31,8 @@ class Model(object):
             Represents a Models context.
             For every feature/scenario a new Context object is created
         """
-        pass
+        def __init__(self):
+            self.variables = []
 
     def __init__(self, id, keyword, sentence, path, line, parent=None, tags=None):
         self.id = id

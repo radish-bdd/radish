@@ -22,7 +22,7 @@ def add_to_number(step, addition):
         assert False, "ANTOHER ERROR"
 
 
-@step(ArgumentExpression("I expect the number to be {:Number}"))
+@step(ArgumentExpression("I expect the number to be {:MathExpression}"))
 def expect_number(step, number):
     assert world.number == int(number), "Expected number to be {}. Actual number is: {}".format(number, world.number)
 

@@ -34,6 +34,13 @@ class Feature(Model):
                 scenarios.extend(scenario.scenarios)
         return scenarios
 
+    @property
+    def variables(self):
+        """
+            Returns all variables
+        """
+        return self.context.variables
+
     def __str__(self):
         return "Feature: {} from {}:{}".format(self.sentence, self.path, self.line)
 

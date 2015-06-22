@@ -75,7 +75,7 @@ def run_features(core):
         world.config.marker = int(time())
 
     # scenario choice
-    amount_of_scenarios = sum(len(f.scenarios) for f in core.features)
+    amount_of_scenarios = sum(len(f.scenarios) for f in core.features_to_run)
     if world.config.scenarios:
         world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
         for s in world.config.scenarios:

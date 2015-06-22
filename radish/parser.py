@@ -62,6 +62,7 @@ class FeatureParser(object):
         self._current_line = 0
         self._current_tags = []
         self._current_preconditions = []
+        self._current_variables = []
         self.feature = None
 
         self._load_language(language)
@@ -148,13 +149,18 @@ class FeatureParser(object):
             tag = self._detect_tag(line)
             if tag:
                 self._current_tags.append(Feature.Tag(tag[0], tag[1]))
+                if tag[0] == "variable":
+                    name, value = self._parse_variable(tag[1])
+                    self._current_variables.append((name, value))
                 return True
 
             return False
 
         self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
+        self.feature.context.variables = self._current_variables
         self._current_state = FeatureParser.State.SCENARIO
         self._current_tags = []
+        self._current_variables = []
         return True
 
     def _parse_scenario(self, line):
@@ -180,6 +186,9 @@ class FeatureParser(object):
                         if tag[0] == "precondition":
                             scenario = self._parse_precondition(tag[1])
                             self._current_preconditions.append(scenario)
+                        elif tag[0] == "variable":
+                            name, value = self._parse_variable(tag[1])
+                            self._current_variables.append((name, value))
                         return True
 
                     self.feature.description.append(line)
@@ -200,9 +209,11 @@ class FeatureParser(object):
             elif isinstance(previous_scenario, ScenarioLoop):
                 scenario_id += previous_scenario.iterations
 
-        self.feature.scenarios.append(scenario_type(self._core.next_scenario_id, scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions))
+        self.feature.scenarios.append(scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions))
+        self.feature.scenarios[-1].context.variables = self._current_variables
         self._current_tags = []
         self._current_preconditions = []
+        self._current_variables = []
 
         if scenario_type == ScenarioLoop:
             self.feature.scenarios[-1].iterations = iterations
@@ -301,6 +312,19 @@ class FeatureParser(object):
             raise FeatureFileSyntaxError("Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(scenario_sentence, feature_file))
 
         return feature[scenario_sentence]
+
+    def _parse_variable(self, arguments):
+        """
+            Parses tag arguments as a variable containing name and value
+
+            The arguments must be in format:
+                VariableName: SomeValue
+                VariableName: 5
+
+            :param str arguments: the raw arguments to parse
+        """
+        name, value = arguments.split(":", 1)
+        return name.strip(), value.strip()
 
     def _detect_feature(self, line):
         """

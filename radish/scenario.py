@@ -12,9 +12,9 @@ class Scenario(Model):
     """
         Represents a Scenario
     """
-    def __init__(self, absolute_id, id, keyword, sentence, path, line, parent, tags=None, preconditions=None):
+    def __init__(self, id, keyword, sentence, path, line, parent, tags=None, preconditions=None):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
-        self.absolute_id = absolute_id
+        self.absolute_id = None
         self.preconditions = preconditions or []
         self.steps = []
         self.context = self.Context()
@@ -28,6 +28,18 @@ class Scenario(Model):
             if step.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
                 return step.state
         return Step.State.PASSED
+
+    @property
+    def variables(self):
+        """
+            Returns all variables
+        """
+        variables = self.context.variables
+        for name, value in variables:
+            for parent_name, parent_value in self.parent.variables:
+                value = value.replace("${%s}" % parent_name, parent_value)
+        variables.extend(self.parent.variables)
+        return variables
 
     @property
     def all_steps(self):

@@ -6,7 +6,7 @@ from radish.argexpregistry import arg_expr, ArgumentExpression
 
 world.number = 0
 
-@step(ArgumentExpression("I have the number {number:Number}"))
+@step(ArgumentExpression("I have the number {number:g}"))
 def have_number(step, number):
     world.number = int(number)
 
@@ -16,8 +16,6 @@ def add_to_number(step, addition):
     world.number += int(addition)
     if int(addition) == 3:
         world.number += 1
-    if int(addition) == 32:
-        assert False, "SOME FAILURE"
     if int(addition) == 11:
         assert False, "ANTOHER ERROR"
 
@@ -99,3 +97,46 @@ def ignore_step(step):
 @step(ArgumentExpression("I expect the data to be \"{}\""))
 def expect_data(step, expected_data):
     assert step.context.some_data == expected_data, "Data is: '{}'. Expected was: '{}'".format(step.context.some_data, expected_data)
+
+@step("Given I install the database server")
+def demo(step):
+    pass
+
+
+@step("When I add all default users")
+def demo(step):
+    pass
+
+
+@step("And I add all default types")
+def demo(step):
+    pass
+
+
+@step("And I initialize the database error handlers")
+def demo(step):
+    pass
+
+
+@step("And I set the permissions for the administrator tables")
+def demo(step):
+    pass
+
+
+@step("And I index imported fields")
+def demo(step):
+    pass
+
+
+@step("Then I expect my installation to be complete")
+def demo(step):
+    pass
+
+@step("I add the user \"Timo furrer\"")
+def demo(step):
+    pass
+
+
+@step("I expect the user \"Timo Furrer\" in the databas")
+def demo(step):
+    pass

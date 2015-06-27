@@ -16,7 +16,7 @@ class Loader(object):
         Class to load a modules in a given folder
     """
     def __init__(self, location):
-        self._location = location
+        self._location = os.path.expanduser(os.path.expandvars(location))
         self._loaded_modules = {}
 
     def load_all(self):

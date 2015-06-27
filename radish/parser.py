@@ -47,6 +47,7 @@ class FeatureParser(object):
         EXAMPLES = "examples"
         EXAMPLES_ROW = "examples_row"
         SCENARIO_LOOP = "scenario_loop"
+        STEP_TEXT = "step_text"
 
     def __init__(self, core, featurefile, featureid, language="en"):
         if not os.path.exists(featurefile):
@@ -63,6 +64,7 @@ class FeatureParser(object):
         self._current_tags = []
         self._current_preconditions = []
         self._current_variables = []
+        self._in_step_text = False
         self.feature = None
 
         self._load_language(language)
@@ -259,6 +261,10 @@ class FeatureParser(object):
             self.feature.scenarios[-1].after_parse()
             return self._parse_scenario(line)
 
+        if self._detect_step_text(line):
+            self._current_state = self.State.STEP_TEXT
+            return self._parse_step_text(line)
+
         if self._detect_table(line):
             self._parse_table(line)
             return True
@@ -283,6 +289,25 @@ class FeatureParser(object):
             raise FeatureFileSyntaxError("Found step table without previous step definition on line {}".format(self._current_line))
 
         self.feature.scenarios[-1].steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
+        return True
+
+    def _parse_step_text(self, line):
+        """
+            Parses additional step text
+
+            :param str line: the line to parse
+        """
+        if line.startswith('"""') and not self._in_step_text:
+            self._in_step_text = True
+            line = line[3:]
+
+        if line.endswith('"""') and self._in_step_text:
+            self._current_state = self.State.STEP
+            self._in_step_text = False
+            line = line[:-3]
+
+        if line:
+            self.feature.scenarios[-1].steps[-1].raw_text.append(line.strip())
         return True
 
     def _parse_precondition(self, arguments):
@@ -406,10 +431,18 @@ class FeatureParser(object):
             :returns: if an step table row was found or not
             :rtype: bool
         """
-        if line.startswith("|"):
-            return True
+        return line.startswith("|")
 
-        return False
+    def _detect_step_text(self, line):
+        """
+            Detects the beginning of an additional step text block
+
+            :param str line: the line to detect the step text block
+
+            :returns: if a step text block was found or not
+            :rtype: bool
+        """
+        return line.startswith('"""')
 
     def _detect_language(self, line):
         """

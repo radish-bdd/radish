@@ -84,3 +84,18 @@ def add_to_float_number(step, number):
 @step(ArgumentExpression("I expect the float result to be {result:FloatNumber}"))
 def expect_float_number(step, result):
     assert world.float_number == result, "Result is {} but expected {}".format(world.float_number, result)
+
+
+@step("I have the following data:")
+def have_data(step):
+    step.context.some_data = step.text
+
+
+@step("I ignore this step")
+def ignore_step(step):
+    pass
+
+
+@step(ArgumentExpression("I expect the data to be \"{}\""))
+def expect_data(step, expected_data):
+    assert step.context.some_data == expected_data, "Data is: '{}'. Expected was: '{}'".format(step.context.some_data, expected_data)

@@ -62,7 +62,7 @@ def get_id_padding(max_rows):
     if not world.config.write_ids:
         return ""
 
-    return " " * (max_rows + 2)
+    return " " * (len(str(max_rows)) + 2)
 
 
 @before.each_feature  # pylint: disable=no-member
@@ -149,6 +149,13 @@ def console_writer_before_each_step(step):
 
     __LAST_PRECONDITION__ = step.as_precondition
     output += "\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
+
+    if step.text:
+        id_padding = get_id_padding(len(step.parent.steps))
+        output += colorful.bold_white('\n            {}"""'.format(id_padding))
+        output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
+        output += colorful.bold_white('\n            {}"""'.format(id_padding))
+
     write(output)
 
 
@@ -163,7 +170,14 @@ def console_writer_after_each_step(step):
         return
 
     color_func = get_color_func(step.state)
-    output = "{}        {}{}".format(get_line_jump_seq(), get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
+    line_jump_seq = get_line_jump_seq() * ((len(step.raw_text) + 3) if step.text else 1)
+    output = "{}        {}{}".format(line_jump_seq, get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
+
+    if step.text:
+        id_padding = get_id_padding(len(step.parent.steps))
+        output += colorful.bold_white('\n            {}"""'.format(id_padding))
+        output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
+        output += colorful.bold_white('\n            {}"""'.format(id_padding))
 
     if step.state == step.State.FAILED:
         if world.config.with_traceback:

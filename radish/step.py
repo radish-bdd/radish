@@ -30,6 +30,7 @@ class Step(Model):
     def __init__(self, id, sentence, path, line, parent, runable):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
         self.table = []
+        self.raw_text = []
         self.definition_func = None
         self.arguments = None
         self.keyword_arguments = None
@@ -56,6 +57,13 @@ class Step(Model):
         for name, value in self.parent.variables:
             sentence = sentence.replace("${%s}" % name, value)
         return sentence
+
+    @property
+    def text(self):
+        """
+            Returns the additional text of this step as string
+        """
+        return "\n".join(self.raw_text)
 
     def _validate(self):
         """

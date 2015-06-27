@@ -47,6 +47,12 @@ class Feature(Model):
     def __repr__(self):
         return "<Feature: {} from {}:{}>".format(self.sentence, self.path, self.line)
 
+    def __iter__(self):
+        """
+            Returns an iterator for the scenario of this feature
+        """
+        return iter(self.scenarios)
+
     def __contains__(self, sentence):
         """
             Checks if the given scenario sentence is from a scenario of this feature

@@ -34,3 +34,16 @@ class FeatureTestCase(RadishTestCase):
         f.has_to_run.when.called_with([1, 2], ["foo", "bad_case"], None).should.return_value(True)
         f.has_to_run.when.called_with([5, 4], ["bad_case"], None).should.return_value(True)
         f.has_to_run.when.called_with([6], ["good_case"], None).should.return_value(False)
+
+    def test_feature_scenario_iterator(self):
+        """
+            Test using a feature as iterator which iterates over its scenarios
+        """
+        feature = Feature(1, "Feature", "Some feature", None, None)
+        feature.scenarios.append(Mock(id=1))
+        feature.scenarios.append(Mock(id=2))
+        feature.scenarios.append(Mock(id=3))
+        feature.scenarios.append(Mock(id=4))
+
+        for expected_scenario_id, scenario in enumerate(feature, start=1):
+            scenario.id.should.be.equal(expected_scenario_id)

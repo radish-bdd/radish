@@ -42,7 +42,8 @@ class Loader(object):
         try:
             module = __import__(module_name)
         except Exception as e:
-            raise ImportError("Unable to import module '{}' from '{}': {}".format(module_name, path, e))
+            #raise ImportError("Unable to import module '{}' from '{}': {}".format(module_name, path, e))
+            raise e
         else:
             self._loaded_modules[module_name] = module
         finally:

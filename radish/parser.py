@@ -201,7 +201,7 @@ class FeatureParser(object):
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
         if detected_scenario in self.feature:
-            raise FeatureFileSyntaxError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.sentence))
+            raise FeatureFileSyntaxError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.path))
 
         scenario_id = len(self.feature.scenarios) + 1
         if self.feature.scenarios:
@@ -330,7 +330,7 @@ class FeatureParser(object):
             feature = self._core.parse_feature(feature_file)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
-                raise FeatureFileSyntaxError("You feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
+                raise FeatureFileSyntaxError("Your feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
             raise
 
         if scenario_sentence not in feature:

@@ -13,7 +13,7 @@ from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 from radish.runner import Runner
 from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
-from radish.errororacle import error_oracle
+from radish.errororacle import error_oracle, catch_unhandled_exception
 from radish.terrain import world
 import radish.utils as utils
 
@@ -156,6 +156,8 @@ Options:
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """
+
+    sys.excepthook = catch_unhandled_exception
 
     arguments = docopt("radish {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
 

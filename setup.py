@@ -17,7 +17,6 @@ setup(
     platforms=["Linux", "Windows", "MAC OS X"],
     url="http://github.com/timofurrer/radish",
     download_url="http://github.com/timofurrer/radish",
-    install_requires=["docopt", "pysingleton", "colorful", "lxml", "ipython"],
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
     include_package_data=True,

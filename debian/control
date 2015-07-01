@@ -7,5 +7,5 @@ Standards-Version: 3.9.1
 
 Package: radish-bdd
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-lxml, python-docopt, python-colorful, ipython
+Depends: ${misc:Depends}, ${python:Depends}, python-lxml, python-docopt, python-colorful, python-singleton, ipython, python-parse
 Description: Awesome Behaviour Driven Development tool for python

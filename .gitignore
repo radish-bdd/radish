@@ -19,4 +19,9 @@ radish_bdd.egg-info/
 result.xml
 
 # generated files by the sphinx documentation
-documentation/_build
+doc/_build
+
+# generated files by the debian package
+.pybuild
+debian/files
+debian/radish-bdd*

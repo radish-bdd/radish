@@ -65,7 +65,7 @@ def catch_unhandled_exception(exc_type, exc_value, traceback):
     """
         Catch all unhandled exceptions
     """
-    handle_exception(exc_type)
+    handle_exception(exc_value)
 
 
 def handle_exception(exception):
@@ -117,5 +117,5 @@ you may want to add a $ to mark the sentence's end - take care of the code order
         write("Aborted by the user...")
         abort(1)
     else:
-        write_error(exception)
+        write_error(str(exception))
         abort(2)

@@ -1,3 +1,9 @@
+radish-bdd (0.2.1) unstable; urgency=low
+
+  * add all dependencies
+
+ -- Timo Furrer <tuxtimo@gmail.com>  Wed, 13 May 2015 19:53:54 +0200
+
 radish-bdd (0.2.0) unstable; urgency=low
 
   * first debian package

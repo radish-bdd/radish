@@ -112,7 +112,7 @@ Usage:
            [--debug-steps]
            [--debug-after-failure]
            [--inspect-after-failure]
-           [--bdd-xml]
+           [--bdd-xml=<bddxml>]
            [--no-ansi]
            [--no-line-jump]
            [--write-steps-once]
@@ -138,7 +138,7 @@ Options:
     --debug-steps                               debugs each step
     --debug-after-failure                       start python debugger after failure
     --inspect-after-failure                     start python shell after failure
-    --bdd-xml                                   write BDD XML result file after run
+    --bdd-xml=<bddxml>                          write BDD XML result file after run
     --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
     --no-line-jump                              print features without line jumps (overwriting steps)
     --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)

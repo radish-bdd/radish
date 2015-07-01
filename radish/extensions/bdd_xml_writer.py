@@ -97,7 +97,7 @@ def generate_bdd_xml(features):
         feature_element.append(scenarios_element)
         testrun_element.append(feature_element)
 
-    with io.open("result.xml", "w+", encoding="utf-8") as f:
+    with io.open(world.config.bdd_xml, "w+", encoding="utf-8") as f:
         f.write(unicode(etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")))
 
 

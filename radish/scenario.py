@@ -79,7 +79,7 @@ class Scenario(Model):
 
         feature_has_to_run = False
         if feature_tags:
-            feature_has_to_run = any(t for t in self.parent.tags if t in feature_tags)
+            feature_has_to_run = any(t for t in self.parent.tags if t.name in feature_tags)
 
         return in_choice or in_tags or feature_has_to_run
 

@@ -2,4 +2,4 @@
 
 export PYBUILD_NAME=radish-bdd
 %:
-	dh $@ --with python2 --buildsystem=pybuild
+	dh $@ --with python2

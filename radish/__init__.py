@@ -7,3 +7,4 @@ from radish.terrain import world
 from radish.hookregistry import before, after
 from radish.stepregistry import step, given, when, then, steps
 from radish.argexpregistry import arg_expr, ArgumentExpression
+from radish.exceptions import ValidationError

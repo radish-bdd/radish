@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__VERSION__ = "0.2.0"
+__VERSION__ = "0.2.4"
 
 # export some functions for users
 from radish.terrain import world

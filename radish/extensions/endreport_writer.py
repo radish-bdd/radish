@@ -13,6 +13,7 @@ from radish.hookregistry import after
 from radish.step import Step
 from radish.utils import console_write as write
 from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
 
 
 @after.all  # pylint: disable=no-member
@@ -37,6 +38,8 @@ def console_write_after_all(features, marker):
 
         for scenario in feature.all_scenarios:
             if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines
+                continue
+            if isinstance(scenario, ScenarioLoop):  # skip ScenarioLoop
                 continue
 
             stats["scenarios"]["amount"] += 1

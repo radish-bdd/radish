@@ -9,7 +9,6 @@ from socket import gethostname
 from lxml import etree
 from datetime import timedelta
 import re
-import io
 
 from radish.terrain import world
 from radish.hookregistry import after
@@ -97,8 +96,8 @@ def generate_bdd_xml(features):
         feature_element.append(scenarios_element)
         testrun_element.append(feature_element)
 
-    with io.open(world.config.bdd_xml, "w+", encoding="utf-8") as f:
-        f.write(unicode(etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")))
+    with open(world.config.bdd_xml, "w+") as f:
+        f.write(etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8"))
 
 
 @after.all  # pylint: disable=no-member

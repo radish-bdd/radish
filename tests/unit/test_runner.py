@@ -55,7 +55,8 @@ class RunnerTestCase(RadishTestCase):
         hook_mock = Mock()
         hook_mock.call.return_value = True
         runner = Runner(hook_mock)
-        runner.run_step(step)
+        returncode = runner.run_step(step)
+        returncode.should.be.equal(0)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
 
@@ -80,7 +81,8 @@ class RunnerTestCase(RadishTestCase):
         hook_mock = Mock()
         hook_mock.call.return_value = True
         runner = Runner(hook_mock)
-        runner.run_scenario(scenario)
+        returncode = runner.run_scenario(scenario)
+        returncode.should.be.equal(0)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
 
@@ -139,3 +141,40 @@ class RunnerTestCase(RadishTestCase):
         runner.start([feature], None)
         step.state.should.be.equal(Step.State.PASSED)
         data.step_was_called.should.be.true
+
+    def test_returncode_of_runner(self):
+        """
+            Test returncode of run functions in Runner
+        """
+        def some_passed_step(step):
+            pass
+
+        def some_failed_step(step):
+            raise AttributeError("I expect this error to test the behavior of a failed step")
+
+        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
+
+        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
+        feature.scenarios.append(scenario)
+
+        step1 = Step(1, "Some passed step", "somefile.feature", 3, scenario, True)
+        step1.definition_func = some_passed_step
+        step1.arguments = tuple()
+        step1.keyword_arguments = {}
+        scenario.steps.append(step1)
+
+        step2 = Step(2, "Some failed step", "somefile.feature", 4, scenario, True)
+        step2.definition_func = some_failed_step
+        step2.arguments = tuple()
+        step2.keyword_arguments = {}
+        scenario.steps.append(step2)
+
+        hook_mock = Mock()
+        hook_mock.call.return_value = True
+        runner = Runner(hook_mock)
+        returncode = runner.run_feature(feature)
+        returncode.should.be.equal(1)
+        step1.state.should.be.equal(Step.State.PASSED)
+        step2.state.should.be.equal(Step.State.FAILED)
+        scenario.state.should.be.equal(Step.State.FAILED)
+        feature.state.should.be.equal(Step.State.FAILED)

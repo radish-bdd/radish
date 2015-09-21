@@ -69,11 +69,14 @@ class Runner(object):
         if world.config.shuffle:
             shuffle(features)
 
+        returncode = 0  # return code is set to 1 if any feature fails
         for feature in features:
             if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
 
-            self.run_feature(feature)
+            returncode |= self.run_feature(feature)
+
+        return returncode
 
     @handle_exit
     @call_hooks("each_feature")
@@ -86,16 +89,18 @@ class Runner(object):
         if world.config.shuffle:
             shuffle(feature.scenarios)
 
+        returncode = 0
         for scenario in feature:
             if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
-            self.run_scenario(scenario)
+            returncode |= self.run_scenario(scenario)
 
             if not isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
                 continue
 
             for sub_scenario in scenario.scenarios:
-                self.run_scenario(sub_scenario)
+                returncode |= self.run_scenario(sub_scenario)
+        return returncode
 
     @handle_exit
     @call_hooks("each_scenario")
@@ -105,17 +110,19 @@ class Runner(object):
 
             :param Scenario scenario: the scnenario to run
         """
+        returncode = 0
         steps = scenario.all_steps if world.config.expand else scenario.steps
         for step in steps:
             if scenario.state == Step.State.FAILED:
                 self.skip_step(step)
                 continue
 
-            self.run_step(step)
+            returncode |= self.run_step(step)
 
             if step.state == step.State.FAILED and self._early_exit:
                 self.exit()
-                return
+                return 1
+        return returncode
 
     @handle_exit
     @call_hooks("each_step")
@@ -126,12 +133,14 @@ class Runner(object):
             :param Step step: the step to run
         """
         if self._dry_run:
-            return
+            return 0
 
         if world.config.debug_steps:
-            step.debug()
+            state = step.debug()
         else:
-            step.run()
+            state = step.run()
+
+        return 1 if state == Step.State.FAILED else 0
 
     def skip_step(self, step):
         """

@@ -42,6 +42,7 @@ def show_features(core):
 
     runner = Runner(HookRegistry(), dry_run=True)
     runner.start(core.features_to_run, marker="show")
+    return 0
 
 
 def run_features(core):
@@ -96,7 +97,7 @@ def run_features(core):
                 raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
-    runner.start(core.features_to_run, marker=world.config.marker)
+    return runner.start(core.features_to_run, marker=world.config.marker)
 
 
 @error_oracle
@@ -195,4 +196,4 @@ Options:
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -203,13 +203,13 @@ class FeatureParser(object):
         if detected_scenario in self.feature:
             raise FeatureFileSyntaxError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.path))
 
-        scenario_id = len(self.feature.scenarios) + 1
+        scenario_id = 1
         if self.feature.scenarios:
             previous_scenario = self.feature.scenarios[-1]
-            if isinstance(previous_scenario, ScenarioOutline):
-                scenario_id += len(previous_scenario.examples)
-            elif isinstance(previous_scenario, ScenarioLoop):
-                scenario_id += previous_scenario.iterations
+            if hasattr(previous_scenario, "scenarios") and previous_scenario.scenarios:
+                scenario_id = previous_scenario.scenarios[-1].id + 1
+            else:
+                scenario_id = previous_scenario.id + 1
 
         self.feature.scenarios.append(scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions))
         self.feature.scenarios[-1].context.variables = self._current_variables

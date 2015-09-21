@@ -1,3 +1,10 @@
+radish-bdd (0.2.5) unstable; urgency=low
+
+  * fix return code
+  * show feature file path for every feature
+
+ -- Timo Furrer <tuxtimo@gmail.com>  Mon, 21 Sep 2015 10:32:36 +0200
+
 radish-bdd (0.2.4) unstable; urgency=low
 
   * fix unicode support in bdd-xml extension

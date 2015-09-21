@@ -78,10 +78,11 @@ def console_writer_before_each_feature(feature):
 
     leading = "\n    " if feature.description else ""
 
-    output += "{}{}: {}{}{}".format(
+    output += "{}{}: {}  # {}{}{}".format(
         get_id_sentence_prefix(feature, colorful.bold_cyan),
         colorful.bold_white(feature.keyword),
         colorful.bold_white(feature.sentence),
+        colorful.bold_black(feature.path),
         leading,
         colorful.white("\n    ".join(feature.description))
     )

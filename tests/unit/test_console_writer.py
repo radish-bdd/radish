@@ -67,7 +67,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_feature", feature)
 
-            data.console.should.be.equal("Feature: Some feature")
+            data.console.should.be.equal("Feature: Some feature  # somefile.feature")
 
         feature.description.append("This is some description")
         feature.description.append("Because I want to test it")
@@ -75,7 +75,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_feature", feature)
 
-            data.console.should.be.equal("""Feature: Some feature
+            data.console.should.be.equal("""Feature: Some feature  # somefile.feature
     This is some description
     Because I want to test it""")
 

@@ -65,6 +65,13 @@ def get_id_padding(max_rows):
     return " " * (len(str(max_rows)) + 2)
 
 
+def get_table_col_widths(table):
+    """
+        Returns the width for every column of a table (lists in list)
+    """
+    return [max(len(str(col)) for col in row) for row in zip(*table)]  # pylint: disable=star-args
+
+
 @before.each_feature  # pylint: disable=no-member
 def console_writer_before_each_feature(feature):
     """
@@ -157,6 +164,14 @@ def console_writer_before_each_step(step):
         output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
         output += colorful.bold_white('\n            {}"""'.format(id_padding))
 
+    if step.table:
+        colored_pipe = colorful.bold_white("|")
+        col_widths = get_table_col_widths(step.table)
+        for row in step.table:
+            output += "\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
+                colorful.bold_brown("{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+            ))
+
     write(output)
 
 
@@ -171,7 +186,7 @@ def console_writer_after_each_step(step):
         return
 
     color_func = get_color_func(step.state)
-    line_jump_seq = get_line_jump_seq() * ((len(step.raw_text) + 3) if step.text else 1)
+    line_jump_seq = get_line_jump_seq() * (((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) if step.table else 0))
     output = "{}        {}{}".format(line_jump_seq, get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
 
     if step.text:
@@ -179,6 +194,14 @@ def console_writer_after_each_step(step):
         output += colorful.bold_white('\n            {}"""'.format(id_padding))
         output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
         output += colorful.bold_white('\n            {}"""'.format(id_padding))
+
+    if step.table:
+        colored_pipe = colorful.bold_white("|")
+        col_widths = get_table_col_widths(step.table)
+        for row in step.table:
+            output += "\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
+                color_func("{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+            ))
 
     if step.state == step.State.FAILED:
         if world.config.with_traceback:

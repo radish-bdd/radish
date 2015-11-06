@@ -8,7 +8,7 @@ from radish import __VERSION__
 setup(
     name="radish-bdd",
     version=__VERSION__,
-    license="GPL",
+    license="MIT",
     description="Behaviour-Driven-Development tool for python",
     author="Timo Furrer",
     author_email="tuxtimo@gmail.com",

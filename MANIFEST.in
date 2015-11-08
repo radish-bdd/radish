@@ -1,1 +1,13 @@
 include radish/languages/*
+include *.md
+include *.txt
+include AUTHORS
+include LICENSE
+include pylintrc
+include tox.ini
+recursive-include doc *.png
+recursive-include doc *.py
+recursive-include doc *.rst
+recursive-include doc Makefile
+recursive-include tests *.feature
+recursive-include tests *.py

@@ -4,8 +4,10 @@ python:
     #- "3.2"
     #- "3.3"
     #- "3.4"
-# command to install dependencies
 install:
     - pip install tox
-# # command to run tests
 script: tox
+before_install:
+    - pip install codecov
+after_success:
+    - codecov

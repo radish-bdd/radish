@@ -1,22 +1,50 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
+# pylint: disable=missing-docstring
 
+import os
+import re
+import codecs
 from setuptools import setup
 
-from radish import __VERSION__
+
+def read_metafile(path):
+    """
+        Read contents from given metafile
+    """
+    with codecs.open(path, "rb", "utf-8") as f:
+        return f.read()
+
+
+def get_meta(name):
+    """
+        Get some metdata with the give name from the
+        Meta file
+    """
+    meta_match = re.search(
+        r"^__{meta}__ = ['\"]([^'\"]*)['\"]".format(meta=name.upper()),
+        __META_DATA__, re.M
+    )
+
+    if not meta_match:
+        raise RuntimeError("Unable to find __{}string.".format(name))
+    return meta_match.group(1)
+
+
+__META_FILE__ = os.path.join("radish", "__init__.py")
+__META_DATA__ = read_metafile(__META_FILE__)
 
 setup(
     name="radish-bdd",
-    version=__VERSION__,
-    license="MIT",
-    description="Behaviour-Driven-Development tool for python",
-    author="Timo Furrer",
-    author_email="tuxtimo@gmail.com",
-    maintainer="Timo Furrer",
-    maintainer_email="tuxtimo@gmail.com",
+    version=get_meta("version"),
+    license=get_meta("license"),
+    description=get_meta("description"),
+    author=get_meta("author"),
+    author_email=get_meta("author_email"),
+    maintainer=get_meta("author"),
+    maintainer_email=get_meta("author_email"),
     platforms=["Linux", "Windows", "MAC OS X"],
-    url="http://github.com/radish-bdd/radish",
-    download_url="http://radish-bdd.io",
+    url=get_meta("url"),
+    download_url=get_meta("download_url"),
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
     include_package_data=True,

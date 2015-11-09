@@ -3,7 +3,14 @@
 
 ***
 
-[![Build Status](https://travis-ci.org/radish-bdd/radish.svg?branch=master)](https://travis-ci.org/radish-bdd/radish) [![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
+[![PyPI](https://img.shields.io/pypi/l/radish-bdd.svg)]()
+[![Build Status](https://travis-ci.org/radish-bdd/radish.svg?branch=master)](https://travis-ci.org/radish-bdd/radish)
+[![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
+[![Code Health](https://landscape.io/github/radish-bdd/radish/master/landscape.svg?style=flat)](https://landscape.io/github/radish-bdd/radish/master)
+[![PyPI version](https://badge.fury.io/py/radish-bdd.svg)](https://badge.fury.io/py/radish-bdd)
+[![PyPI](https://img.shields.io/pypi/pyversions/radish-bdd.svg)]()
+[![PyPI](https://img.shields.io/pypi/wheel/radish-bdd.svg)]()
+[![PyPI](https://img.shields.io/pypi/dm/radish-bdd.svg)](https://github.com/radish-bdd/radish)
 
 **License**: MIT <br>
 **Supported Python versions**: 2.7, 3.3, 3.4, 3.5

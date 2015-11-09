@@ -1,5 +1,6 @@
 include radish/languages/*
 include *.md
+include *.rst
 include *.txt
 include AUTHORS
 include LICENSE

@@ -23,7 +23,7 @@ radish is a Behavior Driven Development tool completely written in python. It su
 
 # Installation
 
-radish is available as `pip` package. As soon as all dependencies are available as `pip wheel` radish will be too.
+radish is available as `pip` package:
 
 ```bash
 pip install radish-bdd

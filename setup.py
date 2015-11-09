@@ -26,7 +26,7 @@ def get_meta(name):
     )
 
     if not meta_match:
-        raise RuntimeError("Unable to find __{}string.".format(name))
+        raise RuntimeError("Unable to find __{}__ string.".format(name))
     return meta_match.group(1)
 
 
@@ -45,6 +45,7 @@ setup(
     platforms=["Linux", "Windows", "MAC OS X"],
     url=get_meta("url"),
     download_url=get_meta("download_url"),
+    bugtracker_url=get_meta("bugtracker_url"),
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
     install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "lxml", "ipython"],

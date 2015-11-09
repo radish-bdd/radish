@@ -7,6 +7,7 @@ __AUTHOR__ = "Timo Furrer"
 __AUTHOR_EMAIL__ = "tuxtimo@gmail.com"
 __URL__ = "http://radish-bdd.io"
 __DOWNLOAD_URL__ = "https://github.com/radish-bdd/radish"
+__BUGTRACKER_URL__ = "https://github.com/radish-bdd/radish/issues"
 
 # export some functions for users
 from radish.terrain import world

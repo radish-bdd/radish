@@ -97,7 +97,14 @@ def generate_bdd_xml(features):
         testrun_element.append(feature_element)
 
     with open(world.config.bdd_xml, "w+") as f:
-        f.write(etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8"))
+        content = etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
+        try:
+            if not isinstance(content, str):
+                content = content.decode("utf-8")
+        except Exception:
+            pass
+        finally:
+            f.write(content)
 
 
 @after.all  # pylint: disable=no-member

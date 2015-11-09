@@ -17,7 +17,7 @@ def add_to_number(step, addition):
     if int(addition) == 3:
         world.number += 1
     if int(addition) == 11:
-        assert False, "ANTOHER ERROR"
+        assert False, "ANTOHER ERROR °"
 
 
 @step(ArgumentExpression("I expect the number to be {:MathExpression}"))

@@ -81,11 +81,11 @@ def console_writer_before_each_feature(feature):
     """
     output = ""
     for tag in feature.tags:
-        output += colorful.cyan("@{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
+        output += colorful.cyan(u"@{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
 
     leading = "\n    " if feature.description else ""
 
-    output += "{}{}: {}  # {}{}{}".format(
+    output += u"{}{}: {}  # {}{}{}".format(
         get_id_sentence_prefix(feature, colorful.bold_cyan),
         colorful.bold_white(feature.keyword),
         colorful.bold_white(feature.sentence),
@@ -110,11 +110,11 @@ def console_writer_before_each_scenario(scenario):
 
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_brown, len(scenario.parent.scenarios))
         colored_pipe = colorful.bold_white("|")
-        output = "        {0}{1} {2} {1}".format(
+        output = u"        {0}{1} {2} {1}".format(
             id_prefix,
             colored_pipe,
-            (" {} ").format(colored_pipe).join(
-                colorful.bold_brown("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
+            (u" {} ").format(colored_pipe).join(
+                colorful.bold_brown(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
             )
         )
     elif isinstance(scenario.parent, ScenarioLoop):
@@ -123,15 +123,15 @@ def console_writer_before_each_scenario(scenario):
 
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_brown, len(scenario.parent.scenarios))
         colored_pipe = colorful.bold_white("|")
-        output = "        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, colorful.bold_brown(scenario.iteration))
+        output = u"        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, colorful.bold_brown(scenario.iteration))
     else:
         id_prefix = get_id_sentence_prefix(scenario, colorful.bold_cyan)
         for tag in scenario.tags:
             if tag.name == "precondition" and world.config.expand and world.config.show:  # exceptional for show command when scenario steps expand and tag is a precondition -> comment it out
-                output += colorful.white("    # @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
+                output += colorful.white(u"    # @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
             else:
-                output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
-        output += """    {}{}: {}""".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
+                output += colorful.cyan(u"    @{}{}\n".format(tag.name, u"({})".format(tag.arg) if tag.arg else ""))
+        output += u"    {}{}: {}".format(id_prefix, colorful.bold_white(scenario.keyword), colorful.bold_white(scenario.sentence))
     write(output)
 
 
@@ -151,25 +151,25 @@ def console_writer_before_each_step(step):
 
     output = ""
     if step.as_precondition and __LAST_PRECONDITION__ != step.as_precondition:
-        output += colorful.white("      As precondition from {}: {}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
+        output += colorful.white(u"      As precondition from {}: {}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
     elif not step.as_precondition and __LAST_PRECONDITION__:
-        output += colorful.white("      From scenario\n")
+        output += colorful.white(u"      From scenario\n")
 
     __LAST_PRECONDITION__ = step.as_precondition
-    output += "\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
+    output += u"\r        {}{}".format(get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
 
     if step.text:
         id_padding = get_id_padding(len(step.parent.steps))
-        output += colorful.bold_white('\n            {}"""'.format(id_padding))
-        output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
-        output += colorful.bold_white('\n            {}"""'.format(id_padding))
+        output += colorful.bold_white(u'\n            {}"""'.format(id_padding))
+        output += colorful.cyan(u"".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
+        output += colorful.bold_white(u'\n            {}"""'.format(id_padding))
 
     if step.table:
         colored_pipe = colorful.bold_white("|")
         col_widths = get_table_col_widths(step.table)
         for row in step.table:
-            output += "\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
-                colorful.bold_brown("{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+            output += u"\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
+                colorful.bold_brown(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
             ))
 
     write(output)
@@ -187,26 +187,26 @@ def console_writer_after_each_step(step):
 
     color_func = get_color_func(step.state)
     line_jump_seq = get_line_jump_seq() * (((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) if step.table else 0))
-    output = "{}        {}{}".format(line_jump_seq, get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
+    output = u"{}        {}{}".format(line_jump_seq, get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
 
     if step.text:
         id_padding = get_id_padding(len(step.parent.steps))
-        output += colorful.bold_white('\n            {}"""'.format(id_padding))
-        output += colorful.cyan("".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
-        output += colorful.bold_white('\n            {}"""'.format(id_padding))
+        output += colorful.bold_white(u'\n            {}"""'.format(id_padding))
+        output += colorful.cyan(u"".join(["\n                {}{}".format(id_padding, l) for l in step.raw_text]))
+        output += colorful.bold_white(u'\n            {}"""'.format(id_padding))
 
     if step.table:
         colored_pipe = colorful.bold_white("|")
         col_widths = get_table_col_widths(step.table)
         for row in step.table:
-            output += "\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
-                color_func("{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+            output += u"\n          {0} {1} {0}".format(colored_pipe, (" {} ").format(colored_pipe).join(
+                color_func(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
             ))
 
     if step.state == step.State.FAILED:
         if world.config.with_traceback:
-            output += "\n          {}{}".format(get_id_padding(len(step.parent.steps) - 2), "\n          ".join([colorful.red(l) for l in step.failure.traceback.split("\n")[:-2]]))
-        output += "\n          {}{}: {}".format(get_id_padding(len(step.parent.steps) - 2), colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
+            output += u"\n          {}{}".format(get_id_padding(len(step.parent.steps) - 2), "\n          ".join([colorful.red(l) for l in step.failure.traceback.split("\n")[:-2]]))
+        output += u"\n          {}{}: {}".format(get_id_padding(len(step.parent.steps) - 2), colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
 
     write(output)
 
@@ -220,40 +220,40 @@ def console_writer_after_each_scenario(scenario):
     """
     output = ""
     if isinstance(scenario, ScenarioOutline):
-        output += "\n    {}:\n".format(colorful.bold_white(scenario.example_keyword))
-        output += colorful.bold_white("        {}| {} |".format(
+        output += u"\n    {}:\n".format(colorful.bold_white(scenario.example_keyword))
+        output += colorful.bold_white(u"        {}| {} |".format(
             get_id_padding(len(scenario.scenarios)),
-            " | ".join("{1: <{0}}".format(scenario.get_column_width(i), x) for i, x in enumerate(scenario.examples_header))
+            u" | ".join("{1: <{0}}".format(scenario.get_column_width(i), x) for i, x in enumerate(scenario.examples_header))
         ))
     elif isinstance(scenario, ScenarioLoop):
-        output += "\n    {}: {}".format(colorful.bold_white(scenario.iterations_keyword), colorful.cyan(scenario.iterations))
+        output += u"\n    {}: {}".format(colorful.bold_white(scenario.iterations_keyword), colorful.cyan(scenario.iterations))
     elif isinstance(scenario.parent, ScenarioOutline):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
-        output += "{0}        {1}{2} {3} {2}".format(
+        output += u"{0}        {1}{2} {3} {2}".format(
             get_line_jump_seq(),
             get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)),
             colored_pipe,
-            (" {} ").format(colored_pipe).join(
-                color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
+            (u" {} ").format(colored_pipe).join(
+                color_func(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
             )
         )
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step
             if world.config.with_traceback:
-                output += "\n          {}{}".format(get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
-            output += "\n          {}{}: {}".format(get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
+                output += u"\n          {}{}".format(get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
+            output += u"\n          {}{}: {}".format(get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
     elif isinstance(scenario.parent, ScenarioLoop):
         colored_pipe = colorful.bold_white("|")
         color_func = get_color_func(scenario.state)
-        output += "{0}        {1}{2} {3: <18} {2}".format(get_line_jump_seq(), get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)), colored_pipe, color_func(scenario.iteration))
+        output += u"{0}        {1}{2} {3: <18} {2}".format(get_line_jump_seq(), get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)), colored_pipe, color_func(scenario.iteration))
 
         if scenario.state == Step.State.FAILED:
             failed_step = scenario.failed_step
             if world.config.with_traceback:
-                output += "\n          {}{}".format(get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
-            output += "\n          {}{}: {}".format(get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
+                output += u"\n          {}{}".format(get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
+            output += u"\n          {}{}: {}".format(get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
 
     if output:
         write(output)

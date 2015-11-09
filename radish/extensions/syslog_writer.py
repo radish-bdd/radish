@@ -28,9 +28,13 @@ def log(message):
 
         :param string message: the message to log
     """
-    if isinstance(message, unicode):
-        message = message.encode("utf8")
-    syslog.syslog(syslog.LOG_INFO, message)
+    try:
+        if isinstance(message, unicode):
+            message = message.encode("utf8")
+    except Exception:  # pylint: disable=broad-except
+        pass
+    finally:
+        syslog.syslog(syslog.LOG_INFO, message)
 
 
 @before.all  # pylint: disable=no-member

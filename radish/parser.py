@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import io
+import codecs
 import re
 import json
 
@@ -88,7 +88,7 @@ class FeatureParser(object):
         if not os.path.exists(language_path):
             raise LanguageNotSupportedError(language)
 
-        with io.open(language_path, "r", encoding="utf-8") as f:
+        with codecs.open(language_path, "rb", "utf-8") as f:
             language_pkg = json.load(f)
 
         self.keywords = Keywords(**language_pkg["keywords"])
@@ -100,7 +100,7 @@ class FeatureParser(object):
             :returns: if the parsing was successful or not
             :rtype: bool
         """
-        with io.open(self._featurefile) as f:
+        with codecs.open(self._featurefile, "rb", "utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line = line.strip()

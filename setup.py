@@ -47,6 +47,7 @@ setup(
     download_url=get_meta("download_url"),
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
+    install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "six", "lxml"],
     include_package_data=True,
     entry_points={"console_scripts": ["radish = radish.main:main"]},
     classifiers=[

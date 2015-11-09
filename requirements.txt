@@ -1,4 +1,3 @@
-sure
 pysingleton
 colorful==0.1.3
 docopt

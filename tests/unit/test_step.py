@@ -42,7 +42,13 @@ class StepTestCase(RadishTestCase):
         def step_a():
             pass
 
-        step("[[").when.called_with(step_a).should.throw(StepRegexError, "Cannot compile regex '[[' from step 'step_a': unexpected end of regular expression")
+        exception_message = "Cannot compile regex '[[' from step 'step_a': {}"
+        if is_python3(minor=5):
+            exception_message = exception_message.format("unterminated character set at position 0")
+        else:
+            exception_message = exception_message.format("unexpected end of regular expression")
+
+        step("[[").when.called_with(step_a).should.throw(StepRegexError, exception_message)
 
     def test_registering_steps_with_gherkin_decorators(self):
         """

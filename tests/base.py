@@ -8,6 +8,14 @@ from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 
 
+def is_python3(minor=0):
+    """
+        Check if python is in version 3.
+    """
+    import sys
+    return sys.version_info >= (3, minor)
+
+
 class RadishTestCase(TestCase):
     """
         Base class for all radish tests.

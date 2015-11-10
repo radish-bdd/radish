@@ -43,3 +43,4 @@ The whole documentation of radish is available here: http://radish.readthedocs.o
 
 Yes, we are looking for some contributors and people who spread out a word about radish. Help us to improve these piece of software. You don't know what to do?
 Just have a look at the Issues or create a new one.
+Please have a look at the [Contributing Guidelines](https://github.com/radish-bdd/radish/blob/master/CONTRIBUTING.md), too.

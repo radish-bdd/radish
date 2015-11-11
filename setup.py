@@ -45,7 +45,7 @@ setup(
     platforms=["Linux", "Windows", "MAC OS X"],
     url=get_meta("url"),
     download_url=get_meta("download_url"),
-    bugtracker_url=get_meta("bugtracker_url"),
+    bugtrack_url=get_meta("bugtrack_url"),
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
     install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "lxml", "ipython"],

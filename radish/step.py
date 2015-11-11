@@ -55,7 +55,7 @@ class Step(Model):
         """
         sentence = self.sentence
         for name, value in self.parent.variables:
-            sentence = sentence.replace("${%s}" % name, value)
+            sentence = sentence.replace("${{{0}}}".format(name), value)
         return sentence
 
     @property

@@ -34,5 +34,8 @@ class ScenarioLoop(Scenario):
             self.scenarios.append(scenario)
 
     def after_parse(self):
+        """
+            Build looped scenarios
+        """
         Scenario.after_parse(self)
         self.build_scenarios()

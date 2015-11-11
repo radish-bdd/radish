@@ -59,6 +59,15 @@ def expandpath(path):
 
 
 def recursive_glob(root, pattern):
+    """
+        Recursively search for files with given pattern inside a path
+
+        :param str root: the root location to start search
+        :param str pattern: to pattern to look for. It's matched against the filenames under `root`.
+
+        :rtype: list
+        :returns: A list of matching files
+    """
     matches = []
     for root, dirnames, filenames in os.walk(root):
         for filename in fnmatch.filter(filenames, pattern):

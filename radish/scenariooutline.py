@@ -48,8 +48,8 @@ class ScenarioOutline(Scenario):
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
 
-    @classmethod
-    def _replace_examples_in_sentence(cls, sentence, examples):
+    @staticmethod
+    def _replace_examples_in_sentence(sentence, examples):
         """
             Replaces the given examples in the given sentece
 
@@ -75,5 +75,8 @@ class ScenarioOutline(Scenario):
             raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{0}'".format(self.sentence))
 
     def after_parse(self):
+        """
+            Build outlined scenarios
+        """
         Scenario.after_parse(self)
         self.build_scenarios()

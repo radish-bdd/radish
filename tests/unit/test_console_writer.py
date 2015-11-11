@@ -44,7 +44,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         pass
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(cls):
         """
             Reset hook registry
         """

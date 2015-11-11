@@ -51,7 +51,7 @@ class FeatureParser(object):
 
     def __init__(self, core, featurefile, featureid, language="en"):
         if not os.path.exists(featurefile):
-            raise OSError("Feature file at '{}' does not exist".format(featurefile))
+            raise OSError("Feature file at '{0}' does not exist".format(featurefile))
 
         self._core = core
         self._featureid = featureid
@@ -121,7 +121,7 @@ class FeatureParser(object):
                 if not self._parse_context(line):
                     raise FeatureFileSyntaxError("Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
         if not self.feature:
-            raise FeatureFileSyntaxError("No Feature found in file {}".format(self._featurefile))
+            raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
         if self.feature.scenarios:
             self.feature.scenarios[-1].after_parse()
@@ -134,7 +134,7 @@ class FeatureParser(object):
         """
         parse_context_func = getattr(self, "_parse_" + self._current_state)
         if not parse_context_func:
-            raise RadishError("FeatureParser state {} is not support".format(self._current_state))
+            raise RadishError("FeatureParser state {0} is not support".format(self._current_state))
 
         return parse_context_func(line)
 
@@ -201,7 +201,7 @@ class FeatureParser(object):
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
         if detected_scenario in self.feature:
-            raise FeatureFileSyntaxError("Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.path))
+            raise FeatureFileSyntaxError("Scenario with name '{0}' defined twice in feature '{1}'".format(detected_scenario, self.feature.path))
 
         scenario_id = 1
         if self.feature.scenarios:
@@ -286,7 +286,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         if not self.feature.scenarios[-1].steps:
-            raise FeatureFileSyntaxError("Found step table without previous step definition on line {}".format(self._current_line))
+            raise FeatureFileSyntaxError("Found step table without previous step definition on line {0}".format(self._current_line))
 
         self.feature.scenarios[-1].steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
         return True
@@ -330,11 +330,11 @@ class FeatureParser(object):
             feature = self._core.parse_feature(feature_file)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
-                raise FeatureFileSyntaxError("Your feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
+                raise FeatureFileSyntaxError("Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
             raise
 
         if scenario_sentence not in feature:
-            raise FeatureFileSyntaxError("Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(scenario_sentence, feature_file))
+            raise FeatureFileSyntaxError("Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(scenario_sentence, feature_file))
 
         return feature[scenario_sentence]
 
@@ -416,7 +416,7 @@ class FeatureParser(object):
             :returns: if a scenario loop was found on the given line
             :rtype: string
         """
-        match = re.search(r"^{} (\d+):(.*)".format(self.keywords.scenario_loop), line)
+        match = re.search(r"^{0} (\d+):(.*)".format(self.keywords.scenario_loop), line)
         if match:
             return match.group(2).strip(), int(match.group(1))
 

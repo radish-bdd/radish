@@ -37,7 +37,7 @@ class Scenario(Model):
         variables = self.context.variables
         for name, value in variables:
             for parent_name, parent_value in self.parent.variables:
-                value = value.replace("${%s}" % parent_name, parent_value)
+                value = value.replace("${{{0}}}".format(parent_name), parent_value)
         variables.extend(self.parent.variables)
         return variables
 

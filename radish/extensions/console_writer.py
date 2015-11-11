@@ -151,7 +151,7 @@ def console_writer_before_each_step(step):
 
     output = ""
     if step.as_precondition and __LAST_PRECONDITION__ != step.as_precondition:
-        output += colorful.white(u"      As precondition from {}: {}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
+        output += colorful.white(u"      As precondition from {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
     elif not step.as_precondition and __LAST_PRECONDITION__:
         output += colorful.white(u"      From scenario\n")
 

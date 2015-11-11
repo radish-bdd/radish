@@ -19,7 +19,7 @@ class StepRegistry(object):
         Represents the step registry
     """
     def __init__(self):
-        self.clear()
+        self._steps = {}
 
     def register(self, regex, func):
         """
@@ -48,7 +48,8 @@ class StepRegistry(object):
 
         return steps_object
 
-    def _extract_regex(self, func):
+    @staticmethod
+    def _extract_regex(func):
         """
             Extracts a step regex from the docstring of the given func
 

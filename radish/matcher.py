@@ -49,8 +49,8 @@ class Matcher(object):
         step.arguments = arguments
         step.keyword_arguments = keyword_arguments
 
-    @classmethod
-    def match(cls, sentence, steps):
+    @staticmethod
+    def match(sentence, steps):
         """
             Tries to find a match from the given sentence with the given steps
 

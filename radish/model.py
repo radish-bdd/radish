@@ -10,7 +10,7 @@
         * Step
 """
 
-from radish.exceptions import RadishError
+from .exceptions import RadishError
 
 
 # FIXME: make ABC

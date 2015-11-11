@@ -4,8 +4,8 @@
     This module provides a class to represent a Scenario
 """
 
-from radish.model import Model
-from radish.step import Step
+from .model import Model
+from .step import Step
 
 
 class Scenario(Model):

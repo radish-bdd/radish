@@ -4,7 +4,7 @@
     This module provides a class to represent one Scenario Outline Example
 """
 
-from radish.scenario import Scenario
+from .scenario import Scenario
 
 
 class ExampleScenario(Scenario):

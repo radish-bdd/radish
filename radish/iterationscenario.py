@@ -4,7 +4,7 @@
     This module provides a Scenario which represents one iteration in a ScenarioLoop
 """
 
-from radish.scenario import Scenario
+from .scenario import Scenario
 
 
 class IterationScenario(Scenario):

@@ -5,17 +5,17 @@ import sys
 from docopt import docopt
 from time import time
 
-from radish import __VERSION__
-from radish.core import Core
-from radish.loader import Loader
-from radish.matcher import Matcher
-from radish.stepregistry import StepRegistry
-from radish.hookregistry import HookRegistry
-from radish.runner import Runner
-from radish.exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
-from radish.errororacle import error_oracle, catch_unhandled_exception
-from radish.terrain import world
-import radish.utils as utils
+from . import __VERSION__
+from .core import Core
+from .loader import Loader
+from .matcher import Matcher
+from .stepregistry import StepRegistry
+from .hookregistry import HookRegistry
+from .runner import Runner
+from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
+from .errororacle import error_oracle, catch_unhandled_exception
+from .terrain import world
+from . import utils
 
 
 def setup_config(arguments):
@@ -33,7 +33,7 @@ def show_features(core):
         Show the parsed features
     """
     # FIXME: load dynamically
-    import radish.extensions.console_writer
+    from .extensions import console_writer
 
     # set needed configuration
     world.config.write_steps_once = True
@@ -52,14 +52,14 @@ def run_features(core):
         :param Core core: the radish core object
     """
     # FIXME: load dynamically
-    import radish.extensions.argumentexpressions
-    import radish.extensions.time_recorder
-    import radish.extensions.syslog_writer
-    import radish.extensions.console_writer
-    import radish.extensions.endreport_writer
-    import radish.extensions.failure_inspector
-    import radish.extensions.failure_debugger
-    import radish.extensions.bdd_xml_writer
+    from .extensions import argumentexpressions
+    from .extensions import time_recorder
+    from .extensions import syslog_writer
+    from .extensions import console_writer
+    from .extensions import endreport_writer
+    from .extensions import failure_inspector
+    from .extensions import failure_debugger
+    from .extensions import bdd_xml_writer
 
     # set needed configuration
     world.config.expand = True

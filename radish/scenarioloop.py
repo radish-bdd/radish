@@ -4,9 +4,9 @@
     This module provides a Scenario type which represents a Scenario loop
 """
 
-from radish.scenario import Scenario
-from radish.iterationscenario import IterationScenario
-from radish.step import Step
+from .scenario import Scenario
+from .iterationscenario import IterationScenario
+from .step import Step
 
 
 class ScenarioLoop(Scenario):

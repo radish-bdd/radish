@@ -9,8 +9,8 @@ import inspect
 import parse
 from singleton import singleton
 
-from radish.argexpregistry import ArgumentExpression
-from radish.exceptions import RadishError, SameStepError, StepRegexError
+from .argexpregistry import ArgumentExpression
+from .exceptions import RadishError, SameStepError, StepRegexError
 
 
 @singleton()

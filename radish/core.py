@@ -7,7 +7,7 @@
 from threading import Lock
 from collections import OrderedDict
 
-from radish.parser import FeatureParser
+from .parser import FeatureParser
 
 
 # FIXME: rename

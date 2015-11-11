@@ -6,8 +6,8 @@
 
 from singleton import singleton
 
-import radish.utils as utils
-from radish.exceptions import HookError
+from . import utils
+from .exceptions import HookError
 
 
 @singleton()

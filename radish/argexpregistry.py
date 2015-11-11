@@ -6,7 +6,7 @@
 
 from singleton import singleton
 
-from radish.exceptions import RadishError
+from .exceptions import RadishError
 
 @singleton()
 class ArgExpRegistry(object):

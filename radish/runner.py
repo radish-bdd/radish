@@ -6,10 +6,10 @@
 
 from random import shuffle
 
-from radish.terrain import world
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from .terrain import world
+from .scenariooutline import ScenarioOutline
+from .scenarioloop import ScenarioLoop
+from .step import Step
 
 
 class Runner(object):

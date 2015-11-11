@@ -4,12 +4,12 @@
     This module provides a class to represent a Step
 """
 
-from radish.model import Model
-from radish.exceptions import RadishError
-from radish.terrain import world
-from radish.stepregistry import StepRegistry
-from radish.matcher import Matcher
-import radish.utils as utils
+from .model import Model
+from .exceptions import RadishError
+from .terrain import world
+from .stepregistry import StepRegistry
+from .matcher import Matcher
+from . import utils
 
 
 class Step(Model):

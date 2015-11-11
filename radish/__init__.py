@@ -10,8 +10,8 @@ __DOWNLOAD_URL__ = "https://github.com/radish-bdd/radish"
 __BUGTRACKER_URL__ = "https://github.com/radish-bdd/radish/issues"
 
 # export some functions for users
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.stepregistry import step, given, when, then, steps
-from radish.argexpregistry import arg_expr, ArgumentExpression
-from radish.exceptions import ValidationError
+from .terrain import world
+from .hookregistry import before, after
+from .stepregistry import step, given, when, then, steps
+from .argexpregistry import arg_expr, ArgumentExpression
+from .exceptions import ValidationError

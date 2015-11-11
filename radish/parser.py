@@ -5,12 +5,12 @@ import codecs
 import re
 import json
 
-from radish.exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
-from radish.feature import Feature
-from radish.scenario import Scenario
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
+from .feature import Feature
+from .scenario import Scenario
+from .scenariooutline import ScenarioOutline
+from .scenarioloop import ScenarioLoop
+from .step import Step
 
 
 class Keywords(object):

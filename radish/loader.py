@@ -8,7 +8,7 @@ import os
 import sys
 import fnmatch
 
-import radish.utils as utils
+from . import utils
 
 
 class Loader(object):

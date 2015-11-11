@@ -4,10 +4,10 @@
     This module provides a class to represent a Feature from a parsed feature file.
 """
 
-from radish.model import Model
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from .model import Model
+from .scenariooutline import ScenarioOutline
+from .scenarioloop import ScenarioLoop
+from .step import Step
 
 
 class Feature(Model):

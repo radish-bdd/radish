@@ -9,8 +9,8 @@ import sys
 from functools import wraps
 from colorful import colorful
 
-from radish.terrain import world
-from radish.exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError, SameStepError
+from .terrain import world
+from .exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError, SameStepError
 
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"

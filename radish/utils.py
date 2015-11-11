@@ -10,7 +10,7 @@ import sys
 import fnmatch
 import traceback
 
-from radish.terrain import world
+from .terrain import world
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods

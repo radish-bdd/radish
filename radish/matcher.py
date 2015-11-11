@@ -7,8 +7,8 @@
 import re
 import parse
 
-from radish.argexpregistry import ArgExpRegistry, ArgumentExpression
-from radish.exceptions import StepDefinitionNotFoundError, StepArgumentRegexError
+from .argexpregistry import ArgExpRegistry, ArgumentExpression
+from .exceptions import StepDefinitionNotFoundError, StepArgumentRegexError
 
 
 class Matcher(object):
@@ -24,7 +24,7 @@ class Matcher(object):
             :param dict steps: the steps
         """
         # FIXME: fix cycle-import ... Matcher -> ScenarioOutline -> Step -> Matcher
-        from radish.scenariooutline import ScenarioOutline
+        from .scenariooutline import ScenarioOutline
         for feature in features:
             for scenario in feature.all_scenarios:
                 if isinstance(scenario, ScenarioOutline):

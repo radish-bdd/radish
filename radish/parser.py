@@ -119,7 +119,7 @@ class FeatureParser(object):
                     raise FeatureFileSyntaxError("radish supports only one Feature per feature file")
 
                 if not self._parse_context(line):
-                    raise FeatureFileSyntaxError("Syntax error in feature file {} on line {}".format(self._featurefile, self._current_line))
+                    raise FeatureFileSyntaxError("Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {}".format(self._featurefile))
 

@@ -24,7 +24,7 @@ class Loader(object):
             Loads all modules in the `location` folder
         """
         if not os.path.exists(self._location):
-            raise OSError("Location '{}' to load modules does not exist".format(self._location))
+            raise OSError("Location '{0}' to load modules does not exist".format(self._location))
 
         for p, d, f in os.walk(self._location):
             for filename in fnmatch.filter(f, "*.py"):
@@ -42,7 +42,7 @@ class Loader(object):
         try:
             module = __import__(module_name)
         except Exception as e:
-            #raise ImportError("Unable to import module '{}' from '{}': {}".format(module_name, path, e))
+            #raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e))
             raise e
         else:
             self._loaded_modules[module_name] = module

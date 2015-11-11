@@ -26,7 +26,7 @@ def get_meta(name):
     )
 
     if not meta_match:
-        raise RuntimeError("Unable to find __{}__ string.".format(name))
+        raise RuntimeError("Unable to find __{0}__ string.".format(name))
     return meta_match.group(1)
 
 

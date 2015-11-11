@@ -61,7 +61,7 @@ def generate_bdd_xml(features):
         starttime=utils.datetime_to_str(features[0].starttime),
         endtime=utils.datetime_to_str(features[-1].endtime),
         duration=str(duration.total_seconds()),
-        agent="{}@{}".format(getuser(), gethostname())
+        agent="{0}@{1}".format(getuser(), gethostname())
     )
 
     for feature in features:

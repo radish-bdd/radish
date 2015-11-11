@@ -21,7 +21,7 @@ class ArgExpRegistry(object):
             Registers a custom argument expression
         """
         if name in self._expressions:
-            raise RadishError("Cannot register argument expression with name {} because it already exists".format(name))
+            raise RadishError("Cannot register argument expression with name {0} because it already exists".format(name))
 
         self._expressions[name] = func
 

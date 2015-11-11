@@ -57,8 +57,8 @@ hook module from another module with hooks.
              Send data to a specific user
          """
          assert world.connection, "No connection initialized"
-         assert user not in world.users, "User {} not found".format(user)
-         assert data, "No data given to send to {}".format(user)
+         assert user not in world.users, "User {0} not found".format(user)
+         assert data, "No data given to send to {0}".format(user)
          world.connection.send(world.users[user].token, data)
 
 

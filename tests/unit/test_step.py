@@ -42,7 +42,7 @@ class StepTestCase(RadishTestCase):
         def step_a():
             pass
 
-        exception_message = "Cannot compile regex '[[' from step 'step_a': {}"
+        exception_message = "Cannot compile regex '[[' from step 'step_a': {0}"
         if is_python3(minor=5):
             exception_message = exception_message.format("unterminated character set at position 0")
         else:

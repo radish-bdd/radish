@@ -56,7 +56,7 @@ class StepRegistry(object):
         """
         docstr = func.__doc__.strip()
         if not docstr:
-            raise RadishError("Step definition '{}' from class must have step regex in docstring".format(func.__name__))
+            raise RadishError("Step definition '{0}' from class must have step regex in docstring".format(func.__name__))
 
         regex = docstr.splitlines()[0]
         try:
@@ -123,6 +123,6 @@ def steps(cls):
     setattr(cls, "__init__", new_cls_init)
     return cls
 
-given = lambda regex: step("Given {}".format(regex))  # pylint: disable=invalid-name
-when = lambda regex: step("When {}".format(regex))  # pylint: disable=invalid-name
-then = lambda regex: step("Then {}".format(regex))  # pylint: disable=invalid-name
+given = lambda regex: step("Given {0}".format(regex))  # pylint: disable=invalid-name
+when = lambda regex: step("When {0}".format(regex))  # pylint: disable=invalid-name
+then = lambda regex: step("Then {0}".format(regex))  # pylint: disable=invalid-name

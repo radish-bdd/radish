@@ -27,14 +27,14 @@ def write_error(text):
     """
         Writes the given text to the console
     """
-    write("{}: {}".format(colorful.bold_red("Error"), colorful.red(text)))
+    write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
 
 
 def write_failure(failure):
     """
         Writes the failure to the console
     """
-    write("\n{}".format(colorful.red(failure.traceback)))
+    write("\n{0}".format(colorful.red(failure.traceback)))
 
 
 def abort(return_code):
@@ -86,17 +86,17 @@ def handle_exception(exception):
         write("""You have a SyntaxError in your feature file!
 Please have a look into the radish documentation to found out which
 features radish supports and how you could use them:
-Link: {}
+Link: {0}
               """.format(__RADISH_DOC__))
         abort(1)
     elif isinstance(exception, StepDefinitionNotFoundError):
         write_error(exception)
         write("\nError Oracle says:")
-        write("""There is no step defintion for '{}'.
-All steps should be declared in a module located in {}.
+        write("""There is no step defintion for '{0}'.
+All steps should be declared in a module located in {1}.
 For example you could do:
 
-@step(r"{}")
+@step(r"{2}")
 def my_step(step):
     raise NotImplementedError("This step is not implemented yet")
         """.format(exception.step.sentence, world.config.basedir, exception.step.sentence))

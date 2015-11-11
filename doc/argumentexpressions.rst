@@ -63,4 +63,4 @@ Your step definition can now use this Argument Expression format:
 
    @then(ArgumentExpression("I expect the user {user:User} has the email {}"))
    def expect_user_has_email(step, user, expected_email):
-       assert user.email == expected_email, "User has email '{}'. Expected was email '{}'".format(user.email, expected_email)
+       assert user.email == expected_email, "User has email '{0}'. Expected was email '{1}'".format(user.email, expected_email)

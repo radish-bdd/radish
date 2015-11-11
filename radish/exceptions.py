@@ -14,7 +14,7 @@ class LanguageNotSupportedError(RadishError):
     """
     def __init__(self, language):
         self.language = language
-        super(LanguageNotSupportedError, self).__init__("Language {} could not be found".format(language))
+        super(LanguageNotSupportedError, self).__init__("Language {0} could not be found".format(language))
 
 
 class FeatureFileNotFoundError(RadishError):
@@ -23,7 +23,7 @@ class FeatureFileNotFoundError(RadishError):
     """
     def __init__(self, featurefile):
         self.featurefile = featurefile
-        super(FeatureFileNotFoundError, self).__init__("Feature file '{}': No such file".format(featurefile))
+        super(FeatureFileNotFoundError, self).__init__("Feature file '{0}': No such file".format(featurefile))
 
 
 class FeatureFileSyntaxError(RadishError, SyntaxError):
@@ -41,7 +41,7 @@ class StepRegexError(RadishError, SyntaxError):
         self.regex = regex
         self.step_func_name = step_func_name
         self.re_error = re_error
-        super(StepRegexError, self).__init__("Cannot compile regex '{}' from step '{}': {}".format(regex, step_func_name, re_error))
+        super(StepRegexError, self).__init__("Cannot compile regex '{0}' from step '{1}': {2}".format(regex, step_func_name, re_error))
 
 
 class StepArgumentRegexError(RadishError, SyntaxError):
@@ -52,7 +52,7 @@ class StepArgumentRegexError(RadishError, SyntaxError):
         self.regex = regex
         self.step_func_name = step_func_name
         self.error = error
-        super(StepArgumentRegexError, self).__init__("Cannot compile ArgumentExpression regex '{}' from step '{}': {}".format(regex, step_func_name, error))
+        super(StepArgumentRegexError, self).__init__("Cannot compile ArgumentExpression regex '{0}' from step '{1}': {2}".format(regex, step_func_name, error))
 
 
 class SameStepError(RadishError):
@@ -63,7 +63,7 @@ class SameStepError(RadishError):
         self.regex = regex
         self.func1 = func1
         self.func2 = func2
-        super(SameStepError, self).__init__("Cannot register step {} with regex '{}' because it is already used by step {}".format(func2.__name__, regex, func1.__name__))
+        super(SameStepError, self).__init__("Cannot register step {0} with regex '{1}' because it is already used by step {2}".format(func2.__name__, regex, func1.__name__))
 
 
 class StepDefinitionNotFoundError(RadishError):
@@ -72,7 +72,7 @@ class StepDefinitionNotFoundError(RadishError):
     """
     def __init__(self, step):
         self.step = step
-        super(StepDefinitionNotFoundError, self).__init__("Cannot find step definition for step '{}' in {}:{}".format(step.sentence, step.path, step.line))
+        super(StepDefinitionNotFoundError, self).__init__("Cannot find step definition for step '{0}' in {1}:{2}".format(step.sentence, step.path, step.line))
 
 
 class RunnerEarlyExit(RadishError):
@@ -89,7 +89,7 @@ class HookError(RadishError):
     def __init__(self, hook_function, failure):
         self.hook_function = hook_function
         self.failure = failure
-        super(HookError, self).__init__("Hook '{}' from {}:{} raised: '{}: {}'".format(hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))
+        super(HookError, self).__init__("Hook '{0}' from {1}:{2} raised: '{3}: {4}'".format(hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))
 
 
 class ScenarioNotFoundError(RadishError):
@@ -99,7 +99,7 @@ class ScenarioNotFoundError(RadishError):
     def __init__(self, scenario_id, amount_of_scenarios):
         self.scenario_id = scenario_id
         self.amount_of_scenarios = amount_of_scenarios
-        super(ScenarioNotFoundError, self).__init__("No scenario with id {} found. Specify a scenario id between 1 and {}".format(scenario_id, amount_of_scenarios))
+        super(ScenarioNotFoundError, self).__init__("No scenario with id {0} found. Specify a scenario id between 1 and {1}".format(scenario_id, amount_of_scenarios))
 
 
 class ValidationError(RadishError):
@@ -115,7 +115,7 @@ class FeatureTagNotFoundError(RadishError):
     """
     def __init__(self, tag):
         self.tag = tag
-        super(FeatureTagNotFoundError, self).__init__("No features found with tag '{}'".format(tag))
+        super(FeatureTagNotFoundError, self).__init__("No features found with tag '{0}'".format(tag))
 
 
 class ScenarioTagNotFoundError(RadishError):
@@ -124,4 +124,4 @@ class ScenarioTagNotFoundError(RadishError):
     """
     def __init__(self, tag):
         self.tag = tag
-        super(ScenarioTagNotFoundError, self).__init__("No scenarios found with tag '{}'".format(tag))
+        super(ScenarioTagNotFoundError, self).__init__("No scenarios found with tag '{0}'".format(tag))

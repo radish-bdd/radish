@@ -41,7 +41,7 @@ class ScenarioOutline(Scenario):
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))
             scenario_id = self.id + row_id + 1
-            scenario = ExampleScenario(scenario_id, self.keyword, "{} - row {}".format(self.sentence, row_id), self.path, self.line, self, example)
+            scenario = ExampleScenario(scenario_id, self.keyword, "{0} - row {1}".format(self.sentence, row_id), self.path, self.line, self, example)
             for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
                 step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, True)
@@ -60,7 +60,7 @@ class ScenarioOutline(Scenario):
             :rtype: string
         """
         for key, value in examples.items():
-            sentence = sentence.replace("<{}>".format(key), value)
+            sentence = sentence.replace("<{0}>".format(key), value)
         return sentence
 
     def get_column_width(self, column_index):
@@ -72,7 +72,7 @@ class ScenarioOutline(Scenario):
         try:
             return max(max([len(x.data[column_index]) for x in self.examples]), len(self.examples_header[column_index]))
         except IndexError:
-            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{}'".format(self.sentence))
+            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{0}'".format(self.sentence))
 
     def after_parse(self):
         Scenario.after_parse(self)

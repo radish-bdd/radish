@@ -51,6 +51,6 @@ class Model(object):
             Returns the duration of this model
         """
         if not self.starttime or not self.endtime:
-            raise RadishError("Cannot get duration of {} '{}' because either starttime or endtime is not set".format(self.keyword, self.sentence))
+            raise RadishError("Cannot get duration of {0} '{1}' because either starttime or endtime is not set".format(self.keyword, self.sentence))
 
         return self.endtime - self.starttime

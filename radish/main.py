@@ -160,7 +160,7 @@ Options:
 
     sys.excepthook = catch_unhandled_exception
 
-    arguments = docopt("radish {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
+    arguments = docopt("radish {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)

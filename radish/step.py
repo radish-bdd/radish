@@ -71,7 +71,7 @@ class Step(Model):
         """
 
         if not self.definition_func or not callable(self.definition_func):
-            raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
+            raise RadishError("The step '{0}' does not have a step definition".format(self.sentence))
 
     def run(self):
         """
@@ -144,5 +144,5 @@ class Step(Model):
 
         # re-raise exception if the failed
         if new_step.state is Step.State.FAILED:
-            new_step.failure.exception.args = ("Step '{}' failed: '{}'".format(sentence, new_step.failure.exception.message),)
+            new_step.failure.exception.args = ("Step '{0}' failed: '{1}'".format(sentence, new_step.failure.exception.message),)
             raise new_step.failure.exception

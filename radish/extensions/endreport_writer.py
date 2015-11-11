@@ -50,11 +50,11 @@ def console_write_after_all(features, marker):
 
     colored_closing_paren = colorful.bold_white(")")
     colored_comma = colorful.bold_white(", ")
-    passed_word = colorful.bold_green("{} passed")
-    failed_word = colorful.bold_red("{} failed")
-    skipped_word = colorful.cyan("{} skipped")
+    passed_word = colorful.bold_green("{0} passed")
+    failed_word = colorful.bold_red("{0} failed")
+    skipped_word = colorful.cyan("{0} skipped")
 
-    output = colorful.bold_white("{} features (".format(stats["features"]["amount"]))
+    output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
     output += passed_word.format(stats["features"]["passed"])
     if stats["features"]["failed"]:
         output += colored_comma + failed_word.format(stats["features"]["failed"])
@@ -81,6 +81,6 @@ def console_write_after_all(features, marker):
     output += colored_closing_paren
 
     output += "\n"
-    output += colorful.cyan("Run {} finished within {}:{} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
+    output += colorful.cyan("Run {0} finished within {1}:{2} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
 
     write(output)

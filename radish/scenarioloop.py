@@ -27,7 +27,7 @@ class ScenarioLoop(Scenario):
         """
         for i in range(self.iterations):
             scenario_id = self.id + i + 1
-            scenario = IterationScenario(scenario_id, self.keyword, "{} - iteration {}".format(self.sentence, i), self.path, self.line, self, i)
+            scenario = IterationScenario(scenario_id, self.keyword, "{0} - iteration {1}".format(self.sentence, i), self.path, self.line, self, i)
             for step_id, iteration_step in enumerate(self.steps):
                 step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, True)
                 scenario.steps.append(step)

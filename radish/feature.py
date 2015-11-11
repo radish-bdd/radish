@@ -42,10 +42,10 @@ class Feature(Model):
         return self.context.variables
 
     def __str__(self):
-        return "Feature: {} from {}:{}".format(self.sentence, self.path, self.line)
+        return "Feature: {0} from {1}:{2}".format(self.sentence, self.path, self.line)
 
     def __repr__(self):
-        return "<Feature: {} from {}:{}>".format(self.sentence, self.path, self.line)
+        return "<Feature: {0} from {1}:{2}>".format(self.sentence, self.path, self.line)
 
     def __iter__(self):
         """

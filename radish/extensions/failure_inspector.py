@@ -21,6 +21,6 @@ def failure_inspector_after_each_step(step):
     try:
         from IPython import embed
     except ImportError as e:
-        raise RadishError("Cannot import IPython embed function: {}".format(e))
+        raise RadishError("Cannot import IPython embed function: {0}".format(e))
 
     embed()

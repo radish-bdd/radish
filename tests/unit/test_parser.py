@@ -48,7 +48,7 @@ class ParserTestCase(RadishTestCase):
         core = Mock()
         with NamedTemporaryFile("w+") as featurefile:
             parser = FeatureParser(core, featurefile.name, 1)
-            parser.parse.when.called_with().should.throw(RadishError, "No Feature found in file {}".format(featurefile.name))
+            parser.parse.when.called_with().should.throw(RadishError, "No Feature found in file {0}".format(featurefile.name))
 
     def test_parse_empty_feature(self):
         """

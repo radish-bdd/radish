@@ -73,7 +73,7 @@ Usually your step definitions are in a file called *steps.py* and could look lik
 
      @step(r"I expect the number to be (\d+)")
      def expect_number(step, number):
-         assert step.context.number == number, "Expected number to but {} but is {}".format(
+         assert step.context.number == number, "Expected number to but {0} but is {1}".format(
             number, step.context.number)
 
 

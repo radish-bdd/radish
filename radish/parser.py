@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+"""
+    Feature file parser.
+    One Feature file parser instance is able to parse one feature file.
+"""
+
 import os
 import codecs
 import re
@@ -85,11 +90,11 @@ class FeatureParser(object):
             raise NotImplementedError("Auto detect language is not implemented yet")
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
-        if not os.path.exists(language_path):
+        try:
+            with codecs.open(language_path, "rb", "utf-8") as f:
+                language_pkg = json.load(f)
+        except IOError:
             raise LanguageNotSupportedError(language)
-
-        with codecs.open(language_path, "rb", "utf-8") as f:
-            language_pkg = json.load(f)
 
         self.keywords = Keywords(**language_pkg["keywords"])
 

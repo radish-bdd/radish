@@ -40,7 +40,7 @@ radish is very easy to use. Take the 5 minutes and follow the *Getting started* 
 
 # Documentation
 
-The whole documentation of radish is available here: http://radish.readthedocs.org/en/latest/quicktutorial.html
+The whole documentation of radish is available on [Read The Docs](http://radish.readthedocs.org)
 
 # Contribution
 

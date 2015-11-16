@@ -51,9 +51,9 @@ class StepTestCase(RadishTestCase):
         registry = StepRegistry()
         registry.steps.should.be.empty
 
-        given(r"I have the number \d+")(step_given)
+        given(r"I have the number {:g}")(step_given)
         registry.steps.should.have.length_of(1)
-        registry.steps[r"Given I have the number \d+"] = step_given
+        registry.steps[r"Given I have the number {:g}"] = step_given
 
         # cannot test the when function because sure overwrites it!
         # stupid stuff
@@ -61,9 +61,8 @@ class StepTestCase(RadishTestCase):
         # registry.steps.should.have.length_of(2)
         # registry.steps[r"When I add \d+ to my number"] = step_when
 
-        then(r"I expect my number to be \d+")(step_then)
+        then(re.compile(r"I expect my number to be \d+"))(step_then)
         registry.steps.should.have.length_of(2)
-        registry.steps[r"Then I expect my number to be \d+"] = step_then
 
     def test_run_step_passed(self):
         """

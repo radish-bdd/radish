@@ -93,6 +93,7 @@ def step(pattern):
         """
             Represents the actual decorator
         """
+        print("add pattern", pattern)
         StepRegistry().register(pattern, func)
         return func
     return _decorator
@@ -117,6 +118,29 @@ def steps(cls):
     setattr(cls, "__init__", new_cls_init)
     return cls
 
-given = lambda regex: step("Given {0}".format(regex))  # pylint: disable=invalid-name
-when = lambda regex: step("When {0}".format(regex))  # pylint: disable=invalid-name
-then = lambda regex: step("Then {0}".format(regex))  # pylint: disable=invalid-name
+
+def given(pattern):
+    """
+        Step decorator prefixed with the Given-keyword.
+    """
+    if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
+        return step(re.compile(r"Given {0}".format(pattern.pattern)))
+    return step("Given {0}".format(pattern))
+
+
+def when(pattern):
+    """
+        Step decorator prefixed with the When-keyword.
+    """
+    if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
+        return step(re.compile(r"When {0}".format(pattern.pattern)))
+    return step("When {0}".format(pattern))
+
+
+def then(pattern):
+    """
+        Step decorator prefixed with the Then-keyword.
+    """
+    if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
+        return step(re.compile(r"Then {0}".format(pattern.pattern)))
+    return step("Then {0}".format(pattern))

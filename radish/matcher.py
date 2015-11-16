@@ -6,9 +6,12 @@
 
 import re
 import parse
+from collections import namedtuple
 
 from .argexpregistry import ArgExpRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError
+
+StepMatch = namedtuple("StepMatch", ["args", "kwargs", "func"])
 
 
 class Matcher(object):
@@ -41,13 +44,13 @@ class Matcher(object):
             :param Step step: the step from a feature file to merge
             :param list steps: the registered steps
         """
-        arguments, keyword_arguments, func = cls.match(step.expanded_sentence, steps)
-        if not func:
+        match = cls.match(step.expanded_sentence, steps)
+        if not match or not match.func:
             raise StepDefinitionNotFoundError(step)
 
-        step.definition_func = func
-        step.arguments = arguments
-        step.keyword_arguments = keyword_arguments
+        step.definition_func = match.func
+        step.arguments = match.args
+        step.keyword_arguments = match.kwargs
 
     @staticmethod
     def match(sentence, steps):
@@ -60,12 +63,11 @@ class Matcher(object):
             :returns: the arguments and the func which were matched
             :rtype: tuple
         """
-        # FIXME: return namedtuple instead of tuple
         for pattern, func in steps.items():
             if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
                 match = pattern.search(sentence)
                 if match:
-                    return match.groups(), match.groupdict(), func
+                    return StepMatch(args=match.groups(), kwargs=match.groupdict(), func=func)
             else:
                 try:
                     compiled = parse.compile(pattern, ArgExpRegistry().expressions)
@@ -74,6 +76,6 @@ class Matcher(object):
 
                 match = compiled.search(sentence)
                 if match:
-                    return match.fixed, match.named, func
+                    return StepMatch(args=match.fixed, kwargs=match.named, func=func)
 
-        return None, None, None
+        return None

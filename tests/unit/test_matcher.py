@@ -31,10 +31,8 @@ class MatcherTestCase(RadishTestCase):
         keyword_arguments.should.be.equal({})
         func.should.be.equal("some_other_func")
 
-        arguments, keyword_arguments, func = matcher.match("when I call a non-existing step", steps)
-        arguments.should.be.none
-        keyword_arguments.should.be.none
-        func.should.be.none
+        match = matcher.match("when I call a non-existing step", steps)
+        match.should.be.none
 
     def test_merge_steps(self):
         """

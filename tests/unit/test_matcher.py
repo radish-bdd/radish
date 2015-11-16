@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import re
 from tests.base import *
 
 from radish.matcher import Matcher
@@ -18,7 +19,7 @@ class MatcherTestCase(RadishTestCase):
             Test matching steps from feature files with registered steps
         """
         matcher = Matcher()
-        steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         arguments, keyword_arguments, func = matcher.match("Given I have the number 5", steps)
         arguments.should.be.equal(("5",))
@@ -40,7 +41,7 @@ class MatcherTestCase(RadishTestCase):
             Test merging steps from feature files with registered steps
         """
         matcher = Matcher()
-        steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
         scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
@@ -60,7 +61,7 @@ class MatcherTestCase(RadishTestCase):
             Test merging non existing step
         """
         matcher = Matcher()
-        steps = {r"Given I have the number (\d+)": "some_func", r"I add (\d+) to my number": "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
         scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)

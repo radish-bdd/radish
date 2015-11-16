@@ -35,21 +35,6 @@ class StepTestCase(RadishTestCase):
         registry.steps.should.have.length_of(2)
         registry.steps["def"].should.be.equal(step_b)
 
-    def test_registering_errornous_step_with_decorator(self):
-        """
-            Test registering a step with an invalid regex over decorator
-        """
-        def step_a():
-            pass
-
-        exception_message = "Cannot compile regex '[[' from step 'step_a': {0}"
-        if is_python3(minor=5):
-            exception_message = exception_message.format("unterminated character set at position 0")
-        else:
-            exception_message = exception_message.format("unexpected end of regular expression")
-
-        step("[[").when.called_with(step_a).should.throw(StepRegexError, exception_message)
-
     def test_registering_steps_with_gherkin_decorators(self):
         """
             Test registering steps with gherkin specific decorators

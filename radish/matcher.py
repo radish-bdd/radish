@@ -7,8 +7,8 @@
 import re
 import parse
 
-from .argexpregistry import ArgExpRegistry, ArgumentExpression
-from .exceptions import StepDefinitionNotFoundError, StepArgumentRegexError
+from .argexpregistry import ArgExpRegistry
+from .exceptions import StepDefinitionNotFoundError, StepPatternError
 
 
 class Matcher(object):
@@ -60,19 +60,20 @@ class Matcher(object):
             :returns: the arguments and the func which were matched
             :rtype: tuple
         """
-        for regex, func in steps.items():
-            if isinstance(regex, ArgumentExpression):
+        # FIXME: return namedtuple instead of tuple
+        for pattern, func in steps.items():
+            if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
+                match = pattern.search(sentence)
+                if match:
+                    return match.groups(), match.groupdict(), func
+            else:
                 try:
-                    compiled = parse.compile(regex.regex, ArgExpRegistry().expressions)
+                    compiled = parse.compile(pattern, ArgExpRegistry().expressions)
                 except ValueError as e:
-                    raise StepArgumentRegexError(regex.regex, func.__name__, e)
+                    raise StepPatternError(pattern, func.__name__, e)
 
                 match = compiled.search(sentence)
                 if match:
                     return match.fixed, match.named, func
-            else:
-                match = re.search(regex, sentence)
-                if match:
-                    return match.groups(), match.groupdict(), func
 
         return None, None, None

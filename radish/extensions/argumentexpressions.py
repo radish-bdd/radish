@@ -4,7 +4,7 @@
     This module provides some default ArgumentExpressions
 """
 
-from radish.argexpregistry import arg_expr, ArgumentExpression
+from radish.argexpregistry import arg_expr
 
 
 @arg_expr("Number", r"(\+|-)?\d+")

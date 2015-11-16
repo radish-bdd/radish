@@ -44,15 +44,15 @@ class StepRegexError(RadishError, SyntaxError):
         super(StepRegexError, self).__init__("Cannot compile regex '{0}' from step '{1}': {2}".format(regex, step_func_name, re_error))
 
 
-class StepArgumentRegexError(RadishError, SyntaxError):
+class StepPatternError(RadishError, SyntaxError):
     """
-        Raised if the steps ArgumentExpression cannot be compiled.
+        Raised if the steps pattern cannot be compiled.
     """
-    def __init__(self, regex, step_func_name, error):
-        self.regex = regex
+    def __init__(self, pattern, step_func_name, error):
+        self.pattern = pattern
         self.step_func_name = step_func_name
         self.error = error
-        super(StepArgumentRegexError, self).__init__("Cannot compile ArgumentExpression regex '{0}' from step '{1}': {2}".format(regex, step_func_name, error))
+        super(StepPatternError, self).__init__("Cannot compile pattern '{0}' of step '{1}': {2}".format(pattern, step_func_name, error))
 
 
 class SameStepError(RadishError):

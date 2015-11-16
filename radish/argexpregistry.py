@@ -33,14 +33,6 @@ class ArgExpRegistry(object):
         return self._expressions
 
 
-class ArgumentExpression(object):  # pylint: disable=too-few-public-methods
-    """
-        Represents an object with the advanced regex parsing
-    """
-    def __init__(self, regex):
-        self.regex = regex
-
-
 def arg_expr(name, expression):
     """
         Decorator for custom argument expressions

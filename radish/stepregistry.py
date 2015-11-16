@@ -9,7 +9,6 @@ import inspect
 import parse
 from singleton import singleton
 
-from .argexpregistry import ArgumentExpression
 from .exceptions import RadishError, SameStepError, StepRegexError
 
 
@@ -21,14 +20,14 @@ class StepRegistry(object):
     def __init__(self):
         self._steps = {}
 
-    def register(self, regex, func):
+    def register(self, pattern, func):
         """
             Registers a given regex with the given step function.
         """
-        if regex in self._steps:
-            raise SameStepError(regex, self._steps[regex], func)
+        if pattern in self._steps:
+            raise SameStepError(pattern, self._steps[pattern], func)
 
-        self._steps[regex] = func
+        self._steps[pattern] = func
 
     def register_object(self, steps_object):
         """
@@ -81,7 +80,7 @@ class StepRegistry(object):
         return self._steps
 
 
-def step(regex):
+def step(pattern):
     """
         Step decorator for custom steps
 
@@ -94,13 +93,7 @@ def step(regex):
         """
             Represents the actual decorator
         """
-        try:
-            if not isinstance(regex, ArgumentExpression):
-                re.compile(regex)
-        except re.error as e:
-            raise StepRegexError(regex, func.__name__, e)
-        else:
-            StepRegistry().register(regex, func)
+        StepRegistry().register(pattern, func)
         return func
     return _decorator
 

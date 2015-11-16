@@ -13,5 +13,5 @@ __BUGTRACK_URL__ = "https://github.com/radish-bdd/radish/issues"
 from .terrain import world
 from .hookregistry import before, after
 from .stepregistry import step, given, when, then, steps
-from .argexpregistry import arg_expr, ArgumentExpression
+from .argexpregistry import arg_expr
 from .exceptions import ValidationError

@@ -23,6 +23,11 @@ result.xml
 
 # generated files by the sphinx documentation
 docs/_build
+docs/modules.rst
+docs/modules/
+docs/radish.extensions.rst
+docs/radish.rst
+
 
 # generated files by the debian package
 .pybuild

@@ -16,6 +16,7 @@ Contents:
    installation
    quickstart
    tutorial
+   modules/modules
 
 
 

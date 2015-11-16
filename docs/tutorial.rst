@@ -156,8 +156,9 @@ Another way to implement step function is using a whole class:
 
   # -*- coding: utf-8 -*-
 
-  from radish.stepregistry import StepRegistry
+  from radish import steps
 
+  @steps
   class Calculator(object):
       def have_number(self, step, number):
           """I have the number {number:g}"""
@@ -171,17 +172,15 @@ Another way to implement step function is using a whole class:
           """I expect the result to be {result:g}"""
           assert step.context.result == result
 
-  calculator = Calculator()
-  StepRegistry().register_object(calculator)
-
-With the ``StepRegistry().register_object()`` call all methods of the given object are registered as steps. The step pattern is always the first line of the docstring of each method. If a method inside the call is not a step implementation you can add the method name to the ``ignore`` attribute of this class:
+With the ``@steps`` decorator all methods of the given class are registered as steps. The step pattern is always the first line of the docstring of each method. If a method inside the call is not a step implementation you can add the method name to the ``ignore`` attribute of this class:
 
 .. code:: python
 
   # -*- coding: utf-8 -*-
 
-  from radish.stepregistry import StepRegistry
+  from radish import steps
 
+  @steps
   class Calculator(object):
 
       ignore = ["validate_number"]

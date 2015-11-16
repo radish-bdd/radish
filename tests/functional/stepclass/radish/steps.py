@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from radish.stepregistry import StepRegistry
+from radish import steps
 
+@steps
 class Calculator(object):
     def have_number(self, step, number):
         """I have the number {number:g}"""
@@ -14,6 +15,3 @@ class Calculator(object):
     def expect_result(self, step, result):
         """I expect the result to be {result:g}"""
         assert step.context.result == result
-
-calculator = Calculator()
-StepRegistry().register_object(calculator)

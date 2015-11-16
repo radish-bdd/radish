@@ -116,6 +116,8 @@ def steps(cls):
         StepRegistry().register_object(self)
 
     setattr(cls, "__init__", new_cls_init)
+    # create instance in order to register object in step registry
+    cls()
     return cls
 
 

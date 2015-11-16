@@ -30,16 +30,16 @@ class Scenario(Model):
         return Step.State.PASSED
 
     @property
-    def variables(self):
+    def constants(self):
         """
-            Returns all variables
+            Returns all constants
         """
-        variables = self.context.variables
-        for name, value in variables:
-            for parent_name, parent_value in self.parent.variables:
+        constants = self.context.constants
+        for name, value in constants:
+            for parent_name, parent_value in self.parent.constants:
                 value = value.replace("${{{0}}}".format(parent_name), parent_value)
-        variables.extend(self.parent.variables)
-        return variables
+        constants.extend(self.parent.constants)
+        return constants
 
     @property
     def all_steps(self):

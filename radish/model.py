@@ -32,7 +32,7 @@ class Model(object):
             For every feature/scenario a new Context object is created
         """
         def __init__(self):
-            self.variables = []
+            self.constants = []
 
     def __init__(self, id, keyword, sentence, path, line, parent=None, tags=None):
         self.id = id

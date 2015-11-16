@@ -38,20 +38,20 @@ class ScenarioTestCase(RadishTestCase):
         step_1.state = Step.State.PASSED
         scenario.state.should.be.equal(Step.State.PASSED)
 
-    def test_scenario_variables(self):
+    def test_scenario_constants(self):
         """
-            Test scenario's variables
+            Test scenario's constants
         """
-        feature = Mock(variables=[("feature_var_1", "1"), ("feature_var_2", "2")])
+        feature = Mock(constants=[("feature_var_1", "1"), ("feature_var_2", "2")])
 
         scenario = Scenario(1, "Scenario", "Some scenario", None, None, feature)
-        scenario.context.variables.extend([("scenario_var_1", "3"), ("scenario_var_2", "4")])
+        scenario.context.constants.extend([("scenario_var_1", "3"), ("scenario_var_2", "4")])
 
-        scenario.variables.should.have.length_of(4)
-        scenario.variables[0].should.be.equal(("scenario_var_1", "3"))
-        scenario.variables[1].should.be.equal(("scenario_var_2", "4"))
-        scenario.variables[2].should.be.equal(("feature_var_1", "1"))
-        scenario.variables[3].should.be.equal(("feature_var_2", "2"))
+        scenario.constants.should.have.length_of(4)
+        scenario.constants[0].should.be.equal(("scenario_var_1", "3"))
+        scenario.constants[1].should.be.equal(("scenario_var_2", "4"))
+        scenario.constants[2].should.be.equal(("feature_var_1", "1"))
+        scenario.constants[3].should.be.equal(("feature_var_2", "2"))
 
     def test_scenario_all_steps(self):
         """

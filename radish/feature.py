@@ -35,11 +35,11 @@ class Feature(Model):
         return scenarios
 
     @property
-    def variables(self):
+    def constants(self):
         """
-            Returns all variables
+            Returns all constants
         """
-        return self.context.variables
+        return self.context.constants
 
     def __str__(self):
         return "Feature: {0} from {1}:{2}".format(self.sentence, self.path, self.line)

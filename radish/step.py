@@ -51,10 +51,10 @@ class Step(Model):
         """
             Returns the expanded sentence of this step
 
-                * Expand variables
+                * Expand constants
         """
         sentence = self.sentence
-        for name, value in self.parent.variables:
+        for name, value in self.parent.constants:
             sentence = sentence.replace("${{{0}}}".format(name), value)
         return sentence
 

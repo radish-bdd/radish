@@ -111,7 +111,61 @@ Scenario Loops have the following syntax:
 Scenario Precondition
 ---------------------
 
-tbd.
+Sometimes it can be very useful to reuse specific Scenarios. That's why we've decided to implement *Scenario Preconditions* in radish even though it's not common for a BDD tool. Before you start using *Scenario Preconditions* you should really think about the reason why you are using it. Behavior Driven Development Scenarios should be as short and concise as possible without a long list of dependencies. But there will always be these edge cases where it really makes sense to have a precondition for your Scenario.
+Every Scenario can be used as a Precondition Scenario. *Scenario Preconditions* are implemented as special tags:
+
+.. code:: cucumber
+
+   Feature: My Awesome Feature
+       In order to document
+       radish I write this feature.
+
+       @precondition(SomeFeature.feature: An awesome Scenario)
+       Scenario: Do some crazy stuff
+           When I add the following users to the database
+               | Sheldon | Cooper |
+           Then I expect to have 1 user in the database
+
+radish will import the Scenario with the sentence `An awesome Scenario` from the feature file `SomeFeature.feature` and run it before the `Do some crazy stuff` Scenario. The following lines will be written:
+
+.. code::
+
+   Feature: My Awesome Feature
+       In order to document
+       radish I write this feature.
+
+       @precondition(SomeFeature.feature: An awesome Scenario)
+       Scenario: Do some crazy stuff
+         As precondition from SomeFeature.feature: An awesome Scenario
+           Given I setup the database
+         From scenario
+           When I add the following users to the database
+               | Sheldon | Cooper |
+           Then I expect to have 1 user in the database
+
+As you can see radish will print some information about the Scenario where the Steps came from.
+radish supports *multiple* and *nested* Scenario Preconditions, too. Recursions are detected and radish will print a certain error message.
+
+If you have preconditions in a Scenario it's inconvenient to send it to your colleague or post it somewhere because you have multiple files. radish is able to resolve all preconditions and expand them to a single file.
+Use the `radish show --expand` command to do so:
+
+.. code::
+
+   $ radish show --expand MyFeature.feature
+   Feature: My Awesome Feature
+       In order to document
+       radish I write this feature.
+
+       #@precondition(SomeFeature.feature: An awesome Scenario)
+       Scenario: Do some crazy stuff
+           Given I setup the database
+           When I add the following users to the database
+               | Sheldon | Cooper |
+           Then I expect to have 1 user in the database
+
+The information about the precondition is commented out.
+
+*Note: Scenario Loop are not standard gherkin*
 
 Steps
 -----

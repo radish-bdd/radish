@@ -93,7 +93,6 @@ def step(pattern):
         """
             Represents the actual decorator
         """
-        print("add pattern", pattern)
         StepRegistry().register(pattern, func)
         return func
     return _decorator

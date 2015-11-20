@@ -70,17 +70,17 @@ def expect_result(step, result):
     assert world.result == result, "Result is {0} but expected {1}".format(world.result, result)
 
 
-@step("I have the float number {:FloatNumber}")
+@step("I have the float number {:g}")
 def have_float_number(step, number):
     world.float_number = number
 
 
-@step("I add to my float number {:FloatNumber}")
+@step("I add to my float number {:g}")
 def add_to_float_number(step, number):
     world.float_number += number
 
 
-@step("I expect the float result to be {result:FloatNumber}")
+@step("I expect the float result to be {result:g}")
 def expect_float_number(step, result):
     assert world.float_number == result, "Result is {0} but expected {1}".format(world.float_number, result)
 

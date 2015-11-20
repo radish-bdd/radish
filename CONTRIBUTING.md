@@ -42,3 +42,7 @@ pip install -r development.txt
 pip install .
 nosetests --rednose -v tests/unit --with-cover --cover-package=radish/
 ```
+
+## AUTHORS file
+Please feel free to open a Pull Request and add yourself to the `AUTHORS` file. <br>
+Well, ... only if you've done some considerable changes - naturally :beers:

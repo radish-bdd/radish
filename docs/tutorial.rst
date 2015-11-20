@@ -126,7 +126,7 @@ Every Scenario can be used as a Precondition Scenario. *Scenario Preconditions* 
                | Sheldon | Cooper |
            Then I expect to have 1 user in the database
 
-radish will import the Scenario with the sentence `An awesome Scenario` from the feature file `SomeFeature.feature` and run it before the `Do some crazy stuff` Scenario. The following lines will be written:
+radish will import the Scenario with the sentence ``An awesome Scenario`` from the feature file ``SomeFeature.feature`` and run it before the ``Do some crazy stuff`` Scenario. The following lines will be written:
 
 .. code::
 
@@ -147,7 +147,7 @@ As you can see radish will print some information about the Scenario where the S
 radish supports *multiple* and *nested* Scenario Preconditions, too. Recursions are detected and radish will print a certain error message.
 
 If you have preconditions in a Scenario it's inconvenient to send it to your colleague or post it somewhere because you have multiple files. radish is able to resolve all preconditions and expand them to a single file.
-Use the `radish show --expand` command to do so:
+Use the ``radish show --expand`` command to do so:
 
 .. code::
 

@@ -53,7 +53,7 @@ clean:
 	rm -rf $(BUILDDIR)/*
 
 html:
-	mkdir $(BUILDDIR)
+	mkdir -p $(BUILDDIR)
 	$(SPHINXAPIDOC) $(BUILDDIR)/../../radish -o $(BUILDDIR)/.. -f
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo

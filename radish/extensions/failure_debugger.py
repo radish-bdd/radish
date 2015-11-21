@@ -5,19 +5,30 @@
     This module provides an extension which starts a debugger when a step fails
 """
 
-from radish.terrain import world
 from radish.hookregistry import after
 from radish.stepmodel import Step
+from radish.extensionregistry import extension
 import radish.utils as utils
 
 
-@after.each_step  # pylint: disable=no-member
-def failure_debugger_after_each_step(step):
+@extension
+class FailureDebugger(object):
     """
-        Starts a python debugger if the step failed
+        Failure debugger radish extension
     """
-    if not world.config.debug_after_failure or step.state is not Step.State.FAILED:
-        return
+    OPTIONS = [("--debug-after-failure", "start python debugger after failure")]
+    LOAD_IF = staticmethod(lambda config: config.debug_after_failure)
+    LOAD_PRIORITY = 20
 
-    pdb = utils.get_debugger()
-    pdb.set_trace()
+    def __init__(self):
+        after.each_step(self.failure_debugger)
+
+    def failure_debugger(self, step):
+        """
+            Starts a python debugger if the step failed
+        """
+        if step.state is not Step.State.FAILED:
+            return
+
+        pdb = utils.get_debugger()
+        pdb.set_trace()

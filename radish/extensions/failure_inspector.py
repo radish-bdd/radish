@@ -4,23 +4,34 @@
     This module provides an extension which starts a python shell after a step failed
 """
 
-from radish.terrain import world
 from radish.hookregistry import after
 from radish.stepmodel import Step
 from radish.exceptions import RadishError
+from radish.extensionregistry import extension
 
 
-@after.each_step  # pylint: disable=no-member
-def failure_inspector_after_each_step(step):
+@extension
+class FailureInspector(object):
     """
-        Starts a python shell after a step failed
+        Failure inspector radish extension
     """
-    if not world.config.inspect_after_failure or step.state is not Step.State.FAILED:
-        return
+    OPTIONS = [("--inspect-after-failure", "start python shell after failure")]
+    LOAD_IF = staticmethod(lambda config: config.inspect_after_failure)
+    LOAD_PRIORITY = 10
 
-    try:
-        from IPython import embed
-    except ImportError as e:
-        raise RadishError("Cannot import IPython embed function: {0}".format(e))
+    def __init__(self):
+        after.each_step(self.failure_inspector)
 
-    embed()
+    def failure_inspector(self, step):
+        """
+            Starts a python shell after a step failed
+        """
+        if step.state is not Step.State.FAILED:
+            return
+
+        try:
+            from IPython import embed
+        except ImportError as e:
+            raise RadishError("Cannot import IPython embed function: {0}".format(e))
+
+        embed()

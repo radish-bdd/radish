@@ -2,7 +2,7 @@
 
 __DESCRIPTION__ = "Behaviour-Driven-Development tool for python"
 __LICENSE__ = "MIT"
-__VERSION__ = "0.2.10"
+__VERSION__ = "0.2.10dev"
 __AUTHOR__ = "Timo Furrer"
 __AUTHOR_EMAIL__ = "tuxtimo@gmail.com"
 __URL__ = "http://radish-bdd.io"
@@ -14,4 +14,5 @@ from .terrain import world, pick
 from .hookregistry import before, after
 from .stepregistry import step, given, when, then, steps
 from .argexpregistry import arg_expr
+from .extensionregistry import extension
 from .exceptions import ValidationError

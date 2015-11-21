@@ -12,6 +12,7 @@ from .matcher import Matcher
 from .stepregistry import StepRegistry
 from .hookregistry import HookRegistry
 from .runner import Runner
+from .extensionregistry import ExtensionRegistry
 from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
@@ -32,9 +33,6 @@ def show_features(core):
     """
         Show the parsed features
     """
-    # FIXME: load dynamically
-    from .extensions import console_writer
-
     # set needed configuration
     world.config.write_steps_once = True
     if not sys.stdout.isatty():
@@ -51,16 +49,6 @@ def run_features(core):
 
         :param Core core: the radish core object
     """
-    # FIXME: load dynamically
-    from .extensions import argumentexpressions
-    from .extensions import time_recorder
-    from .extensions import syslog_writer
-    from .extensions import console_writer
-    from .extensions import endreport_writer
-    from .extensions import failure_inspector
-    from .extensions import failure_debugger
-    from .extensions import bdd_xml_writer
-
     # set needed configuration
     world.config.expand = True
 
@@ -111,13 +99,6 @@ Usage:
            [-b=<basedir> | --basedir=<basedir>]
            [-e | --early-exit]
            [--debug-steps]
-           [--debug-after-failure]
-           [--inspect-after-failure]
-           [--bdd-xml=<bddxml>]
-           [--no-ansi]
-           [--no-line-jump]
-           [--write-steps-once]
-           [--write-ids]
            [-t | --with-traceback]
            [-m=<marker> | --marker=<marker>]
            [-p=<profile> | --profile=<profile>]
@@ -126,6 +107,7 @@ Usage:
            [--shuffle]
            [--feature-tags=<feature_tags>]
            [--scenario-tags=<scenario_tags>]
+           {0}
     radish (-h | --help)
     radish (-v | --version)
 
@@ -137,13 +119,6 @@ Options:
     -v --version                                show version
     -e --early-exit                             stop the run after the first failed step
     --debug-steps                               debugs each step
-    --debug-after-failure                       start python debugger after failure
-    --inspect-after-failure                     start python shell after failure
-    --bdd-xml=<bddxml>                          write BDD XML result file after run
-    --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
-    --no-line-jump                              print features without line jumps (overwriting steps)
-    --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
-    --write-ids                                 write the feature, scenario and step id before the sentences
     -t --with-traceback                         show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
     -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation
@@ -154,9 +129,16 @@ Options:
     --feature-tags=<feature_tags>               only run features with the given tags
     --scenario-tags=<scenario_tags>             only run scenarios with the given tags
     --expand                                    expand the feature file (all preconditions)
+    {1}
 
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """
+    # load extensions
+    extension_loader = Loader(os.path.join(os.path.dirname(__file__), "extensions"))
+    extension_loader.load_all()
+
+    extensions = ExtensionRegistry()
+    main.__doc__ = main.__doc__.format(extensions.get_options(), extensions.get_option_description())
 
     sys.excepthook = catch_unhandled_exception
 
@@ -164,6 +146,9 @@ Options:
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
+
+    # load needed extensions
+    extensions.load(world.config)
 
     core = Core()
 

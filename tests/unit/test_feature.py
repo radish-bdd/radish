@@ -6,7 +6,7 @@ from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from radish.stepmodel import Step
 
 
 class FeatureTestCase(RadishTestCase):

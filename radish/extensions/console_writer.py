@@ -15,7 +15,7 @@ from radish.hookregistry import before, after
 from radish.feature import Feature
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.utils import console_write as write
 
 __LAST_PRECONDITION__ = None

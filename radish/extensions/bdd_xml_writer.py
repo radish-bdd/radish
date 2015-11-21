@@ -15,7 +15,7 @@ from radish.hookregistry import after
 from radish.exceptions import RadishError
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.step import Step
+from radish.stepmodel import Step
 import radish.utils as utils
 
 

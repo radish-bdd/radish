@@ -9,7 +9,7 @@ import radish.extensions.console_writer
 from radish.hookregistry import HookRegistry
 from radish.feature import Feature
 from radish.scenario import Scenario
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.main import setup_config
 import radish.utils as utils
 

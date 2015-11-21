@@ -7,7 +7,7 @@
 
 from radish.terrain import world
 from radish.hookregistry import after
-from radish.step import Step
+from radish.stepmodel import Step
 import radish.utils as utils
 
 

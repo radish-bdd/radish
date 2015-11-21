@@ -5,7 +5,7 @@ import threading
 
 from tests.base import *
 
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.stepregistry import StepRegistry, step, given, then
 from radish.exceptions import RadishError, StepRegexError
 

@@ -10,7 +10,7 @@
 from datetime import timedelta
 from colorful import colorful
 from radish.hookregistry import after
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.utils import console_write as write
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop

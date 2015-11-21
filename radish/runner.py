@@ -9,7 +9,7 @@ from random import shuffle
 from .terrain import world
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
-from .step import Step
+from .stepmodel import Step
 
 
 class Runner(object):

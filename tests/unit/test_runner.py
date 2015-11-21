@@ -7,7 +7,7 @@ from tests.base import *
 from radish.runner import Runner
 from radish.feature import Feature
 from radish.scenario import Scenario
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.main import setup_config
 
 

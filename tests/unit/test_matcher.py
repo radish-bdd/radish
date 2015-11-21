@@ -6,7 +6,7 @@ from tests.base import *
 from radish.matcher import Matcher
 from radish.feature import Feature
 from radish.scenario import Scenario
-from radish.step import Step
+from radish.stepmodel import Step
 from radish.exceptions import StepDefinitionNotFoundError
 
 

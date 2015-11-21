@@ -3,7 +3,7 @@
 from tests.base import *
 
 from radish.scenario import Scenario
-from radish.step import Step
+from radish.stepmodel import Step
 
 
 class ScenarioTestCase(RadishTestCase):

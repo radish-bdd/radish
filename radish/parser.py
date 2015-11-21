@@ -15,7 +15,7 @@ from .feature import Feature
 from .scenario import Scenario
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
-from .step import Step
+from .stepmodel import Step
 
 
 class Keywords(object):

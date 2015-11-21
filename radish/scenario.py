@@ -5,7 +5,7 @@
 """
 
 from .model import Model
-from .step import Step
+from .stepmodel import Step
 
 
 class Scenario(Model):

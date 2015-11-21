@@ -6,7 +6,7 @@
 
 from .scenario import Scenario
 from .examplescenario import ExampleScenario
-from .step import Step
+from .stepmodel import Step
 from .exceptions import RadishError
 
 

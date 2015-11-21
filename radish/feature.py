@@ -7,7 +7,7 @@
 from .model import Model
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
-from .step import Step
+from .stepmodel import Step
 
 
 class Feature(Model):

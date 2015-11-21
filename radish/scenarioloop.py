@@ -6,7 +6,7 @@
 
 from .scenario import Scenario
 from .iterationscenario import IterationScenario
-from .step import Step
+from .stepmodel import Step
 
 
 class ScenarioLoop(Scenario):

@@ -4,3 +4,4 @@ docopt
 ipython
 lxml
 parse
+coverage

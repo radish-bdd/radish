@@ -48,7 +48,7 @@ setup(
     bugtrack_url=get_meta("bugtrack_url"),
     packages=["radish", "radish/extensions", "radish/languages"],
     package_data={"": ["radish/languages/*", "*.md"]},
-    install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "lxml", "ipython"],
+    install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "lxml", "ipython", "coverage"],
     include_package_data=True,
     entry_points={"console_scripts": ["radish = radish.main:main"]},
     classifiers=[

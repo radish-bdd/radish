@@ -34,21 +34,20 @@ class CodeCoverage(object):
             cover_packages = world.config.cover_packages.split(",")
         else:
             cover_packages = []
-        print(cover_packages)
-        world.coverage = Coverage(source=cover_packages)
+        self.coverage = Coverage(source=cover_packages)
 
     def coverage_start(self, features, marker):
         """
             Start the coverage measurement
         """
-        world.coverage.load()
-        world.coverage.start()
+        self.coverage.load()
+        self.coverage.start()
 
     def coverage_stop(self, features, marker):
         """
             Stop the coverage measurement
             and create report
         """
-        world.coverage.stop()
-        world.coverage.save()
-        world.coverage.report(file=sys.stdout)
+        self.coverage.stop()
+        self.coverage.save()
+        self.coverage.report(file=sys.stdout)

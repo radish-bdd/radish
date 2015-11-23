@@ -70,7 +70,7 @@ setup(
     url=get_meta('url'),
     download_url=get_meta('download_url'),
     bugtrack_url=get_meta('bugtrack_url'),
-    packages=find_packages(),
+    packages=find_packages(exclude=['*tests*']),
     package_data={'': ['radish/languages/*', '*.md']},
     install_requires=requirements,
     extras_require=extra_requirements,

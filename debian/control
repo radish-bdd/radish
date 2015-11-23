@@ -1,0 +1,27 @@
+Source: radish-bdd
+Maintainer: Timo Furrer <tuxtimo@gmail.com>
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 9), dh-python, git,
+ python-all (>= 2.7.3), python-setuptools,
+ python3-all, python3-setuptools
+Standards-Version: 3.9.1
+
+Package: radish-bdd
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends},
+Description: Behavior Driven Development tool for python
+ radish is a Behavior Driven Development tool completely written in python.
+ It supports all gherkin language features. In addition to that,
+ radish implements a few unconventional BDD features such as Preconditions,
+ Scenario Loops, Constants and Expressions.
+
+Package: python3-radish-bdd
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends},
+Conflicts: radish-bdd
+Description: Behavior Driven Development tool for python
+ radish is a Behavior Driven Development tool completely written in python.
+ It supports all gherkin language features. In addition to that,
+ radish implements a few unconventional BDD features such as Preconditions,
+ Scenario Loops, Constants and Expressions.

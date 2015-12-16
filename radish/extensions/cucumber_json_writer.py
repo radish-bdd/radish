@@ -1,0 +1,127 @@
+# -*- coding: utf-8 -*-
+
+"""
+    This module provides a hook which generates a cucumber json result file at the end of the run.
+"""
+
+from getpass import getuser
+from socket import gethostname
+from datetime import timedelta
+import re
+import json
+import logging
+
+from radish.terrain import world
+from radish.hookregistry import after
+from radish.exceptions import RadishError
+from radish.scenariooutline import ScenarioOutline
+from radish.scenarioloop import ScenarioLoop
+from radish.stepmodel import Step
+from radish.extensionregistry import extension
+import radish.utils as utils
+
+
+@extension
+class CucumberJSONWriter(object):
+    """
+        cucumber json Writer radish extension
+    """
+    OPTIONS = [("--cucumber-json=<ccjson>", "write cucumber json result file after run")]
+    LOAD_IF = staticmethod(lambda config: config.cucumber_json)
+    LOAD_PRIORITY = 60
+
+    def __init__(self):
+        print "TEST2345"
+        logging.info("test23454")
+        after.all(self.generate_ccjson)
+
+    def _get_element_from_model(self, what, model):
+        """
+            Create a etree.Element from a given model
+        """
+        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else ""
+        return etree.Element(
+            what,
+            sentence=model.sentence,
+            id=str(model.id),
+            result=model.state,
+            starttime=utils.datetime_to_str(model.starttime),
+            endtime=utils.datetime_to_str(model.endtime),
+            duration=duration,
+            testfile=model.path
+        )
+
+    def _strip_ansi(self, text):
+        """
+            Strips ANSI modifiers from the given text
+        """
+        pattern = re.compile("(\\033\[\d+(?:;\d+)*m)")
+        return pattern.sub("", text)
+
+    def generate_ccjson(self, features, marker):
+        """
+            Generates the cucumber json
+        """
+
+        if not features:
+            raise RadishError("No features given to generate cucumber json file")
+
+        duration = timedelta()
+        for feature in features:
+            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+                duration += feature.duration
+
+        ccjson = {
+            "uri": "features/one_passing_one_failing.feature",
+            "keyword": "Feature",
+            "id": "one-passing-scenario,-one-failing-scenario",
+            "name": "One passing scenario, one failing scenario",
+            "line": 2,
+            "description": "",
+            "tags": [
+                  {
+                    "name": "@a",
+                    "line": 1
+                  }
+                ],
+                "elements": [
+                  {
+                    "keyword": "Scenario",
+                    "id": "one-passing-scenario,-one-failing-scenario;passing",
+                    "name": "Passing",
+                    "line": 5,
+                    "description": "",
+                    "tags": [
+                      {
+                        "name": "@b",
+                        "line": 4
+                      }
+                    ],
+                    "type": "scenario",
+                    "steps": [
+                      {
+                        "keyword": "Given ",
+                        "name": "this step passes",
+                        "line": 6,
+                        "match": {
+                          "location": "features/step_definitions/steps.rb:1"
+                        },
+                        "result": {
+                          "status": "passed",
+                          "duration": 1
+                        }
+                      }
+                    ]
+                  }
+                  ]
+        }
+
+        with open(world.config.cucumber_json, "w+") as f:
+            content = json.dumps(ccjson, indent=4, sort_keys=True) #etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
+            try:
+                if not isinstance(content, str):
+                    content = content.decode("utf-8")
+            except Exception:
+                pass
+            finally:
+                f.write(content)

@@ -71,50 +71,51 @@ class CucumberJSONWriter(object):
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration
 
-        ccjson = {
-            "uri": "features/one_passing_one_failing.feature",
-            "keyword": "Feature",
-            "id": "one-passing-scenario,-one-failing-scenario",
-            "name": "One passing scenario, one failing scenario",
-            "line": 2,
-            "description": "",
-            "tags": [
-                  {
-                    "name": "@a",
-                    "line": 1
-                  }
-                ],
-                "elements": [
-                  {
+        for feature in features:
+            feature_description = "\n".join(feature.description)
+            ccjson = {
+                "uri": feature.path,
+                "keyword": "Feature",
+                "id": feature.keyword,
+                "name": feature.sentence,
+                "line": feature.line,
+                "description": feature_description,
+                "tags": [],
+                "elements": []
+                }
+            for i in range(len(feature.tags)):
+                ccjson["tags"].append({"name": "@"+feature.tags[i].name, "line": feature.line-len(feature.tags)+i})
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+                if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                    continue
+                scenario_json = {
                     "keyword": "Scenario",
-                    "id": "one-passing-scenario,-one-failing-scenario;passing",
-                    "name": "Passing",
-                    "line": 5,
-                    "description": "",
-                    "tags": [
-                      {
-                        "name": "@b",
-                        "line": 4
-                      }
-                    ],
                     "type": "scenario",
-                    "steps": [
-                      {
-                        "keyword": "Given ",
-                        "name": "this step passes",
-                        "line": 6,
-                        "match": {
-                          "location": "features/step_definitions/steps.rb:1"
-                        },
+                    "id": scenario.keyword,
+                    "name": scenario.sentence,
+                    "line": scenario.line,
+                    "description": "",
+                    "steps": [],
+                    "tags": []
+                }
+                for i in range(len(scenario.tags)):
+                    scenario_json["tags"].append({"name": "@"+scenario.tags[i].name, "line": scenario.line-len(scenario.tags)+i})
+                for step in scenario.all_steps:
+                    duration = str(step.duration.total_seconds()) if step.starttime and step.endtime else ""
+                    step_json = {
+                        "keyword": step.sentence.split()[0],
+                        "name": step.sentence,
+                        "line": step.line,
                         "result": {
-                          "status": "passed",
-                          "duration": 1
+                            "status": step.state,
+                            "duration": float(duration)
                         }
-                      }
-                    ]
-                  }
-                  ]
-        }
+                    }
+                    if step.state is Step.State.FAILED:
+                        step_json["result"]["error_message"] = step.failure.reason
+                    scenario_json["steps"].append(step_json)
+                ccjson["elements"].append(scenario_json)
+
 
         with open(world.config.cucumber_json, "w+") as f:
             content = json.dumps(ccjson, indent=4, sort_keys=True) #etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")

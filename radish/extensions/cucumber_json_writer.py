@@ -71,9 +71,10 @@ class CucumberJSONWriter(object):
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration
 
+        ccjson = []
         for feature in features:
             feature_description = "\n".join(feature.description)
-            ccjson = {
+            feature_json = {
                 "uri": feature.path,
                 "keyword": "Feature",
                 "id": feature.keyword,
@@ -84,7 +85,7 @@ class CucumberJSONWriter(object):
                 "elements": []
                 }
             for i in range(len(feature.tags)):
-                ccjson["tags"].append({"name": "@"+feature.tags[i].name, "line": feature.line-len(feature.tags)+i})
+                feature_json["tags"].append({"name": "@"+feature.tags[i].name, "line": feature.line-len(feature.tags)+i})
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                     continue
@@ -114,8 +115,8 @@ class CucumberJSONWriter(object):
                     if step.state is Step.State.FAILED:
                         step_json["result"]["error_message"] = step.failure.reason
                     scenario_json["steps"].append(step_json)
-                ccjson["elements"].append(scenario_json)
-
+                feature_json["elements"].append(scenario_json)
+            ccjson.append(feature_json)
 
         with open(world.config.cucumber_json, "w+") as f:
             content = json.dumps(ccjson, indent=4, sort_keys=True) #etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")

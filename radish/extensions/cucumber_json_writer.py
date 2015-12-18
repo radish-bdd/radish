@@ -39,7 +39,7 @@ class CucumberJSONWriter(object):
         """
             Create a etree.Element from a given model
         """
-        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else ""
+        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else "0.0"
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -101,7 +101,7 @@ class CucumberJSONWriter(object):
                 for i in range(len(scenario.tags)):
                     scenario_json["tags"].append({"name": "@"+scenario.tags[i].name, "line": scenario.line-len(scenario.tags)+i})
                 for step in scenario.all_steps:
-                    duration = str(step.duration.total_seconds()) if step.starttime and step.endtime else ""
+                    duration = str(step.duration.total_seconds()) if step.starttime and step.endtime else "0.0"
                     step_json = {
                         "keyword": step.sentence.split()[0],
                         "name": step.sentence,

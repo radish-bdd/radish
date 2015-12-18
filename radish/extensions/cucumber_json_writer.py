@@ -31,25 +31,7 @@ class CucumberJSONWriter(object):
     LOAD_PRIORITY = 60
 
     def __init__(self):
-        print "TEST2345"
-        logging.info("test23454")
         after.all(self.generate_ccjson)
-
-    def _get_element_from_model(self, what, model):
-        """
-            Create a etree.Element from a given model
-        """
-        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else "0.0"
-        return etree.Element(
-            what,
-            sentence=model.sentence,
-            id=str(model.id),
-            result=model.state,
-            starttime=utils.datetime_to_str(model.starttime),
-            endtime=utils.datetime_to_str(model.endtime),
-            duration=duration,
-            testfile=model.path
-        )
 
     def _strip_ansi(self, text):
         """
@@ -76,8 +58,9 @@ class CucumberJSONWriter(object):
             feature_description = "\n".join(feature.description)
             feature_json = {
                 "uri": feature.path,
-                "keyword": "Feature",
-                "id": feature.keyword,
+                "type": "Feature"
+                "keyword": feature.keyword,
+                "id": feature.id,
                 "name": feature.sentence,
                 "line": feature.line,
                 "description": feature_description,
@@ -90,9 +73,9 @@ class CucumberJSONWriter(object):
                 if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                     continue
                 scenario_json = {
-                    "keyword": "Scenario",
-                    "type": "scenario",
-                    "id": scenario.keyword,
+                    "keyword": scenario.keyword,
+                    "type": "Scenario",
+                    "id": scenario.id,
                     "name": scenario.sentence,
                     "line": scenario.line,
                     "description": "",

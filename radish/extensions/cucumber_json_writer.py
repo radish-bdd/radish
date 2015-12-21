@@ -97,6 +97,8 @@ class CucumberJSONWriter(object):
                     }
                     if step.state is Step.State.FAILED:
                         step_json["result"]["error_message"] = step.failure.reason
+                    if step.state is Step.State.UNTESTED:
+                        step_json["result"]["status"] = "pending"
                     scenario_json["steps"].append(step_json)
                 feature_json["elements"].append(scenario_json)
             ccjson.append(feature_json)

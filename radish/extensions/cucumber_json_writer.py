@@ -58,7 +58,7 @@ class CucumberJSONWriter(object):
             feature_description = "\n".join(feature.description)
             feature_json = {
                 "uri": feature.path,
-                "type": "Feature",
+                "type": "feature",
                 "keyword": feature.keyword,
                 "id": str(feature.id),
                 "name": feature.sentence,
@@ -74,7 +74,7 @@ class CucumberJSONWriter(object):
                     continue
                 scenario_json = {
                     "keyword": scenario.keyword,
-                    "type": "Scenario",
+                    "type": "scenario",
                     "id": str(scenario.id),
                     "name": scenario.sentence,
                     "line": scenario.line,

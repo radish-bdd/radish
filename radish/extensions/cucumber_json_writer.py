@@ -55,6 +55,8 @@ class CucumberJSONWriter(object):
 
         ccjson = []
         for feature in features:
+            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                continue
             feature_description = "\n".join(feature.description)
             feature_json = {
                 "uri": feature.path,

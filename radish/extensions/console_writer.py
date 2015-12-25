@@ -52,6 +52,8 @@ class ConsoleWriter(object):
             return colorful.bold_green
         elif state == Step.State.FAILED:
             return colorful.bold_red
+        elif state == Step.State.PENDING:
+            return colorful.bold_brown
         elif state:
             return colorful.cyan
 

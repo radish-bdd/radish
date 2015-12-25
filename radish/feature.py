@@ -82,7 +82,7 @@ class Feature(Model):
             if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
 
-            if scenario.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
+            if scenario.state is not Step.State.PASSED:
                 return scenario.state
         return Step.State.PASSED
 

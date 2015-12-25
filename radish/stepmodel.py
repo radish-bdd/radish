@@ -26,6 +26,7 @@ class Step(Model):
         SKIPPED = "skipped"
         PASSED = "passed"
         FAILED = "failed"
+        PENDING = "pending"
 
     def __init__(self, id, sentence, path, line, parent, runable):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
@@ -92,7 +93,8 @@ class Step(Model):
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
         else:
-            self.state = Step.State.PASSED
+            if self.state is not Step.State.PENDING:
+                self.state = Step.State.PASSED
         return self.state
 
     def debug(self):
@@ -113,7 +115,8 @@ class Step(Model):
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
         else:
-            self.state = Step.State.PASSED
+            if self.state is not Step.State.PENDING:
+                self.state = Step.State.PASSED
         return self.state
 
     def skip(self):
@@ -121,6 +124,15 @@ class Step(Model):
             Skips the step
         """
         self.state = Step.State.SKIPPED
+
+    def pending(self):
+        """
+            Mark the step as pending
+
+            The end report will remind
+            about all pending steps.
+        """
+        self.state = Step.State.PENDING
 
     def behave_like(self, sentence):
         """

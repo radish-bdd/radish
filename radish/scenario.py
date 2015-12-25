@@ -25,7 +25,7 @@ class Scenario(Model):
             Returns the state of the scenario
         """
         for step in self.steps:
-            if step.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:
+            if step.state is not Step.State.PASSED:
                 return step.state
         return Step.State.PASSED
 

@@ -29,6 +29,12 @@ class StepRegistry(object):
 
         self._steps[pattern] = func
 
+    def get_pattern(self, func):
+        """
+            Get step pattern from a given function.
+        """
+        return next((k for k, v in self._steps.items() if v == func), "Unknown")
+
     def register_object(self, steps_object):
         """
             Registers all public methods from the given object as steps.

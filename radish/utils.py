@@ -114,3 +114,21 @@ def get_width(data):
         :param list data: a column with data
     """
     return max(len(x) for x in data)
+
+
+def make_unique_obj_list(somelist, attr):
+    """
+        Make list with objects unique
+        according to an objects attribute.
+    """
+    tmp = {}
+    for item in somelist:
+        tmp[attr(item)] = item
+    return tmp.values()
+
+
+def get_func_code(func):
+    if sys.version_info[0] == 3:
+        return func.__code__
+    else:
+        return func.func_code

@@ -11,11 +11,12 @@ from datetime import timedelta
 from colorful import colorful
 from radish.hookregistry import after
 from radish.stepmodel import Step
-from radish.utils import console_write as write
+from radish.utils import console_write as write, make_unique_obj_list, get_func_code
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.extensionregistry import extension
 from radish.terrain import world
+from radish.stepregistry import StepRegistry
 
 
 @extension
@@ -36,10 +37,11 @@ class EndreportWriter(object):
             :param list features: all features
         """
         stats = {
-            "features": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
-            "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
-            "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0},
+            "features": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
+            "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
+            "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
         }
+        pending_steps = []
         duration = timedelta()
         for feature in features:
             if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
@@ -65,11 +67,15 @@ class EndreportWriter(object):
                     stats["steps"]["amount"] += 1
                     stats["steps"][step.state] += 1
 
+                    if step.state == Step.State.PENDING:
+                        pending_steps.append(step)
+
         colored_closing_paren = colorful.bold_white(")")
         colored_comma = colorful.bold_white(", ")
         passed_word = colorful.bold_green("{0} passed")
         failed_word = colorful.bold_red("{0} failed")
         skipped_word = colorful.cyan("{0} skipped")
+        pending_word = colorful.bold_brown("{0} pending")
 
         output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
         output += passed_word.format(stats["features"]["passed"])
@@ -77,6 +83,8 @@ class EndreportWriter(object):
             output += colored_comma + failed_word.format(stats["features"]["failed"])
         if stats["features"]["skipped"]:
             output += colored_comma + skipped_word.format(stats["features"]["skipped"])
+        if stats["features"]["pending"]:
+            output += colored_comma + pending_word.format(stats["features"]["pending"])
         output += colored_closing_paren
 
         output += "\n"
@@ -86,6 +94,8 @@ class EndreportWriter(object):
             output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
         if stats["scenarios"]["skipped"]:
             output += colored_comma + skipped_word.format(stats["scenarios"]["skipped"])
+        if stats["scenarios"]["pending"]:
+            output += colored_comma + pending_word.format(stats["scenarios"]["pending"])
         output += colored_closing_paren
 
         output += "\n"
@@ -95,7 +105,20 @@ class EndreportWriter(object):
             output += colored_comma + failed_word.format(stats["steps"]["failed"])
         if stats["steps"]["skipped"]:
             output += colored_comma + skipped_word.format(stats["steps"]["skipped"])
+        if stats["steps"]["pending"]:
+            output += colored_comma + pending_word.format(stats["steps"]["pending"])
         output += colored_closing_paren
+
+        if pending_steps:
+            sr = StepRegistry()
+            pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
+            output += colorful.white("\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
+                len(pending_step_implementations),
+                "s" if len(pending_step_implementations) is not 1 else "",
+                len(pending_steps),
+                "s" if len(pending_steps) is not 1 else "",
+                "\n  ".join(["-  '{0}' @ {1}".format(sr.get_pattern(s.definition_func), get_func_code(s.definition_func).co_filename) for s in pending_step_implementations])
+            ))
 
         output += "\n"
         output += colorful.cyan("Run {0} finished within {1}:{2} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))

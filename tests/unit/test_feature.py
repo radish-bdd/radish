@@ -7,12 +7,35 @@ from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
+from radish.main import setup_config
 
 
 class FeatureTestCase(RadishTestCase):
     """
         Tests for the feature model class
     """
+    @classmethod
+    def setUpClass(cls):
+        """
+            Setup config object
+        """
+        setup_config({
+            "--early_exit": False,
+            "--debug-steps": False,
+            "--debug-after-failure": False,
+            "--inspect-after-failure": False,
+            "--bdd-xml": False,
+            "--no-ansi": False,
+            "--no-line-jump": False,
+            "--write-steps-once": False,
+            "--scenarios": None,
+            "--shuffle": False,
+            "--write-ids": False,
+            "--feature-tags": None,
+            "--scenario-tags": None,
+            "--expand": True,
+        })
+
     def test_feature_all_scenarios(self):
         """
             Test getting all scenario from feature

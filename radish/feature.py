@@ -8,6 +8,7 @@ from .model import Model
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
+from .terrain import world
 
 
 class Feature(Model):
@@ -76,6 +77,9 @@ class Feature(Model):
         """
         for scenario in self.all_scenarios:
             if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):  # skip scenario outlines
+                continue
+
+            if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                 continue
 
             if scenario.state in [Step.State.UNTESTED, Step.State.SKIPPED, Step.State.FAILED]:

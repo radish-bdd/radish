@@ -15,6 +15,7 @@ from radish.utils import console_write as write
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.extensionregistry import extension
+from radish.terrain import world
 
 
 @extension
@@ -41,6 +42,8 @@ class EndreportWriter(object):
         }
         duration = timedelta()
         for feature in features:
+            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                continue
             stats["features"]["amount"] += 1
             stats["features"][feature.state] += 1
 
@@ -48,6 +51,9 @@ class EndreportWriter(object):
                 duration += feature.duration
 
             for scenario in feature.all_scenarios:
+                if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                    continue
+
                 if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines
                     continue
                 if isinstance(scenario, ScenarioLoop):  # skip ScenarioLoop

@@ -33,13 +33,6 @@ class CucumberJSONWriter(object):
     def __init__(self):
         after.all(self.generate_ccjson)
 
-    def _strip_ansi(self, text):
-        """
-            Strips ANSI modifiers from the given text
-        """
-        pattern = re.compile("(\\033\[\d+(?:;\d+)*m)")
-        return pattern.sub("", text)
-
     def generate_ccjson(self, features, marker):
         """
             Generates the cucumber json
@@ -69,8 +62,8 @@ class CucumberJSONWriter(object):
                 "tags": [],
                 "elements": []
                 }
-            for i in range(len(feature.tags)):
-                feature_json["tags"].append({"name": "@"+feature.tags[i].name, "line": feature.line-len(feature.tags)+i})
+            for i,j in enumerate(feature.tags):
+                feature_json["tags"].append({"name": "@" + j.name, "line": feature.line - len(feature.tags) + i})
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
                     continue
@@ -106,11 +99,5 @@ class CucumberJSONWriter(object):
             ccjson.append(feature_json)
 
         with open(world.config.cucumber_json, "w+") as f:
-            content = json.dumps(ccjson, indent=4, sort_keys=True) #etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
-            try:
-                if not isinstance(content, str):
-                    content = content.decode("utf-8")
-            except Exception:
-                pass
-            finally:
-                f.write(content)
+            content = json.dumps(ccjson, indent=4, sort_keys=True)
+            f.write(content)

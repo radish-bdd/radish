@@ -20,7 +20,7 @@ from radish.extensionregistry import extension
 import radish.utils as utils
 
 
-@extensiont
+@extension
 class BDDXMLWriter(object):
     """
         BDD XML Writer radish extension

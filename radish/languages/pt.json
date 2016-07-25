@@ -1,0 +1,10 @@
+{
+  "keywords": {
+    "feature": "Funcionalidade",
+    "scenario": "Cenário",
+    "scenario_outline": "Cenário Outline",
+    "examples": "Exemplos",
+    "scenario_loop": "Cenário Loop",
+    "iterations": "Interações"
+  }
+}

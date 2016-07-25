@@ -3,7 +3,7 @@
     "feature": "Funcionalidade",
     "scenario": "Cenário",
     "scenario_outline": "Cenário Outline",
-    "examples": "Examplos",
+    "examples": "Exemplos",
     "scenario_loop": "Cenário Loop",
     "iterations": "Interações"
   }

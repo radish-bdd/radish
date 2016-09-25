@@ -13,6 +13,7 @@ install:
 
 script:
     - nosetests --rednose -v tests/unit --with-cover --cover-package=radish
+    - pip install --editable .
     - bash ./tests/functional.sh
 
 after_success:

@@ -7,7 +7,7 @@ from time import time
 
 from . import __VERSION__
 from .core import Core
-from .loader import Loader
+from .loader import load_modules
 from .matcher import Matcher
 from .stepregistry import StepRegistry
 from .hookregistry import HookRegistry
@@ -53,8 +53,7 @@ def run_features(core):
     world.config.expand = True
 
     # load user's custom python files
-    loader = Loader(world.config.basedir)
-    loader.load_all()
+    load_modules(world.config.basedir)
 
     # match feature file steps with user's step definitions
     Matcher.merge_steps(core.features, StepRegistry().steps)
@@ -134,8 +133,7 @@ Options:
 (C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
     """
     # load extensions
-    extension_loader = Loader(os.path.join(os.path.dirname(__file__), "extensions"))
-    extension_loader.load_all()
+    load_modules(os.path.join(os.path.dirname(__file__), "extensions"))
 
     extensions = ExtensionRegistry()
     main.__doc__ = main.__doc__.format(extensions.get_options(), extensions.get_option_description())

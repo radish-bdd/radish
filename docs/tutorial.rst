@@ -524,7 +524,7 @@ In addition to the step implementation radish provides the possibility to implem
 There are two different hook objects:
 
 * before
-* all
+* after
 
 These can be combined the following hook subjects:
 

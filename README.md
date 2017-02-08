@@ -16,9 +16,6 @@
 [![Code Issues](https://www.quantifiedcode.com/api/v1/project/27441974a1a343d5813ad90cf0db3c07/badge.svg)](https://www.quantifiedcode.com/app/project/27441974a1a343d5813ad90cf0db3c07)
 
 
-**License**: MIT <br>
-**Supported Python versions**: 2.7, 3.3, 3.4, 3.5
-
 ***
 
 # What is radish?

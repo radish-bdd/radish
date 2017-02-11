@@ -2,6 +2,3 @@
 source =
     radish/
     .tox/py*/lib/python*/site-packages/radish/
-
-
-#.tox/*/lib/python*/site-packages/radish

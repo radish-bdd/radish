@@ -16,6 +16,8 @@ script:
     - nosetests --rednose -v tests/unit --with-cover --cover-package=radish
     - pip install --editable .
     - bash ./tests/functional.sh
+    - coverage combine -a
+    - coverage report -m
 
 after_success:
     - codecov

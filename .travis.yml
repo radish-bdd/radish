@@ -31,4 +31,4 @@ deploy:
     on:
         branch: master
         tags: true
-
+    distributions: "sdist bdist_wheel"

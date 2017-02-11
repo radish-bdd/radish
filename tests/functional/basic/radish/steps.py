@@ -8,7 +8,7 @@ def have_number(step, number):
     step.context.numbers.append(number)
 
 @when("I sum them")
-def sum_numbres(step):
+def sum_numbers(step):
     step.context.result = sum(step.context.numbers)
 
 @then("I expect the result to be {result:g}")

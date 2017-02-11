@@ -131,3 +131,10 @@ def get_func_code(func):
         return func.__code__
     else:
         return func.func_code
+
+
+def get_func_arg_names(func):
+    """
+        Get the argument names of the given function.
+    """
+    return get_func_code(func).co_varnames

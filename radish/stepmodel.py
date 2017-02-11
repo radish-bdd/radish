@@ -8,7 +8,7 @@ from .model import Model
 from .exceptions import RadishError
 from .terrain import world
 from .stepregistry import StepRegistry
-from .matcher import Matcher
+from .matcher import merge_step
 from . import utils
 
 
@@ -146,7 +146,7 @@ class Step(Model):
 
         # create step according to given sentence
         new_step = Step(None, sentence, self.path, self.line, self.parent, True)
-        Matcher.merge_step(new_step, StepRegistry().steps)
+        merge_step(new_step, StepRegistry().steps)
 
         # run or debug step
         if world.config.debug_steps:

@@ -2,13 +2,14 @@
 
 import os
 import sys
-from docopt import docopt
 from time import time
+
+from docopt import docopt
 
 from . import __VERSION__
 from .core import Core
 from .loader import load_modules
-from .matcher import Matcher
+from .matcher import merge_steps
 from .stepregistry import StepRegistry
 from .hookregistry import HookRegistry
 from .runner import Runner
@@ -56,7 +57,7 @@ def run_features(core):
     load_modules(world.config.basedir)
 
     # match feature file steps with user's step definitions
-    Matcher.merge_steps(core.features, StepRegistry().steps)
+    merge_steps(core.features, StepRegistry().steps)
 
     # run parsed features
     if world.config.marker == "time.time()":
@@ -67,7 +68,7 @@ def run_features(core):
     if world.config.scenarios:
         world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
         for s in world.config.scenarios:
-            if not (0 < s <= amount_of_scenarios):
+            if not 0 < s <= amount_of_scenarios:
                 raise ScenarioNotFoundError(s, amount_of_scenarios)
 
     # tags

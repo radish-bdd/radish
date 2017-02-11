@@ -8,22 +8,24 @@ radish step implementations
 import sys
 
 from docopt import docopt
-from colorful import colorful
 
 from radish import __VERSION__
-from radish.testing.matches import test_step_matches
+from radish.testing.matches import test_step_matches_configs
 
 
 def main():
     """
 Usage:
-    radish-test matches [-b=<basedir> | --basedir=<basedir>]
+    radish-test matches <match-configs>...
+        [-b=<basedir> | --basedir=<basedir>]
     radish-test (-h | --help)
     radish-test (-v | --version)
 
+Arguments:
+    match-configs                       configuration files of step matcher tests
+
 Commands:
-    matches                             test if the step implemention matchers actually match the expected sentences
-                                        The match configuration can be found in radish-matches.yml
+    matches                             test if the step implementions actually match the expected sentences
 
 Options:
     -h --help                           show this screen
@@ -37,18 +39,7 @@ Options:
 
 
     if arguments['matches']:
-        failed, passed = test_step_matches('tests/radish-matches.yml', arguments['--basedir'])
-        report = colorful.bold_white('{0} sentences ('.format(failed + passed))
-        if passed > 0:
-            report += colorful.bold_green('{0} passed'.format(passed))
-
-        if passed > 0 and failed > 0:
-            report += colorful.bold_white(', ')
-
-        if failed > 0:
-            report += colorful.bold_red('{0} failed'.format(failed))
-        report += colorful.bold_white(')')
-        print('\n' + report)
+        return test_step_matches_configs(arguments['<match-configs>'], arguments['--basedir'])
 
 
 if __name__ == "__main__":

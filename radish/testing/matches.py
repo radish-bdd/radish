@@ -18,20 +18,51 @@ from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names
 
 
-def test_step_matches(match_config_file, basedir):
+def test_step_matches_configs(match_config_files, basedir):
+    """
+    Test if the given match config files matches the actual
+    matched step implementations.
+    """
+    # load user's custom python files
+    load_modules(basedir)
+    steps = StepRegistry().steps
+
+    failed = 0
+    passed = 0
+
+    for match_config_file in match_config_files:
+        # load the given match config file
+        with codecs.open(match_config_file, "r", "utf-8") as f:
+            match_config = yaml.safe_load(f)
+
+        print(colorful.brown('Testing sentences from {0}:'.format(colorful.bold_brown(match_config_file))))
+        failed_sentences, passed_senteces = test_step_matches(match_config, steps)
+        failed += failed_sentences
+        passed += passed_senteces
+
+        # newline
+        sys.stdout.write('\n')
+
+    report = colorful.bold_white('{0} sentences ('.format(failed + passed))
+    if passed > 0:
+        report += colorful.bold_green('{0} passed'.format(passed))
+
+    if passed > 0 and failed > 0:
+        report += colorful.bold_white(', ')
+
+    if failed > 0:
+        report += colorful.bold_red('{0} failed'.format(failed))
+    report += colorful.bold_white(')')
+    print(report)
+
+    return 0 if failed == 0 else 1
+
+
+def test_step_matches(match_config, steps):
     """
     Test if the given match config matches the actual
     matched step implementations.
     """
-    # load the given match config file
-    with codecs.open(match_config_file, "r", "utf-8") as f:
-        match_config = yaml.safe_load(f)
-
-    # load user's custom python files
-    load_modules(basedir)
-
-    steps = StepRegistry().steps
-
     failed = 0
     passed = 0
 

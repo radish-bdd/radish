@@ -128,6 +128,9 @@ def make_unique_obj_list(somelist, attr):
 
 
 def get_func_code(func):
+    """
+        Get the code object for the given function.
+    """
     if sys.version_info[0] == 3:
         return func.__code__
     else:

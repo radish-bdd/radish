@@ -77,8 +77,9 @@ class CucumberJSONWriter(object):
                     "steps": [],
                     "tags": []
                 }
-                for i in range(len(scenario.tags)):
-                    scenario_json["tags"].append({"name": "@"+scenario.tags[i].name, "line": scenario.line-len(scenario.tags)+i})
+                start_line_no = scenario.line - len(scenario.tags)
+                for i, tag in enumerate(scenario.tags):
+                    scenario_json["tags"].append({"name": "@" + tag.name, "line": start_line_no + i})
                 for step in scenario.all_steps:
                     duration = str(step.duration.total_seconds()) if step.starttime and step.endtime else "0.0"
                     step_json = {

@@ -24,10 +24,10 @@ class Failure(object):  # pylint: disable=too-few-public-methods
             :param Exception exception: the exception shrown in the step
         """
         self.exception = exception
-        try:
+        if hasattr(globals()['__builtins__'], 'unicode') is True:
             self.reason = unicode(str(exception), "utf-8")
             self.traceback = unicode(traceback.format_exc(), "utf-8")
-        except NameError:
+        else:
             self.reason = str(exception)
             self.traceback = traceback.format_exc()
 

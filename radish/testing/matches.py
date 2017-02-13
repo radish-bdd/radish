@@ -127,7 +127,20 @@ def check_step_arguments(expected_arguments, arguments):
                 arg_name, list(arguments.keys())))
             continue
 
-        if arguments[arg_name] != arg_value:
+        # check if argument value is a dict, if yes we'll do thorough comparison
+        if isinstance(arg_value, dict):
+            _type = arg_value['type']
+            value = arg_value['value']
+        else:
+            _type = type(arg_value).__name__
+            value = arg_value
+
+        if type(arguments[arg_name]).__name__ != _type:
+            errors.append('Expected argument "{0}" is of type "{1}" instead "{2}"'.format(
+                arg_name, type(arguments[arg_name]).__name__, _type))
+            continue
+
+        if arguments[arg_name] != value:
             errors.append('Expected argument "{0}" with value "{1}" does not match value "{2}"'.format(
                 arg_name, arg_value, arguments[arg_name]))
     return errors

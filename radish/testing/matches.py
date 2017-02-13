@@ -115,7 +115,6 @@ def output_failure(errors):
         print(colorful.red('  - {0}'.format(error)))
 
 
-
 def check_step_arguments(expected_arguments, arguments):
     """
     Check if the given expected arguments

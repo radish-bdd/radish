@@ -35,7 +35,7 @@ else:   # pragma: no cover
 
 def u(text):  # pragma: no cover
     """
-    Encode given test to unicode utf-8 in manner that works accross various
+    Encode given text to unicode utf-8 in manner that works accross various
     python interpreters and version. Currently only support CPython 2 and 3.
 
     :param text: text to encode

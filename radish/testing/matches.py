@@ -23,6 +23,11 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
     Test if the given match config files matches the actual
     matched step implementations.
     """
+    if cover_min_percentage is not None and float(cover_min_percentage) > 100:
+        sys.stderr.write(colorful.magenta('You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n'.format(
+            float(cover_min_percentage))))
+        return 3
+
     # load user's custom python files
     load_modules(basedir)
     steps = StepRegistry().steps

@@ -18,7 +18,7 @@ from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names
 
 
-def test_step_matches_configs(match_config_files, basedir):
+def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None):
     """
     Test if the given match config files matches the actual
     matched step implementations.
@@ -29,6 +29,7 @@ def test_step_matches_configs(match_config_files, basedir):
 
     failed = 0
     passed = 0
+    covered_steps = set()
 
     for match_config_file in match_config_files:
         # load the given match config file
@@ -39,6 +40,8 @@ def test_step_matches_configs(match_config_files, basedir):
         failed_sentences, passed_senteces = test_step_matches(match_config, steps)
         failed += failed_sentences
         passed += passed_senteces
+
+        covered_steps = covered_steps.union(x['should_match'] for x in match_config)
 
         # newline
         sys.stdout.write('\n')
@@ -55,7 +58,26 @@ def test_step_matches_configs(match_config_files, basedir):
     report += colorful.bold_white(')')
     print(report)
 
-    return 0 if failed == 0 else 1
+    step_coverage = 100.0 / len(steps) * len(covered_steps)
+    coverage_report = colorful.bold_white('Covered {0} of {1} step implementations'.format(
+        len(covered_steps), len(steps)))
+
+    ret = 0 if failed == 0 else 1
+
+    if cover_min_percentage:
+        coverage_color = colorful.bold_green if step_coverage >= float(cover_min_percentage) else colorful.bold_red
+        coverage_report += colorful.bold_white(' (coverage: ')
+        coverage_report += coverage_color('{0:.2f}%'.format(step_coverage))
+        if float(cover_min_percentage) > step_coverage:
+            coverage_report += colorful.bold_white(', expected a minimum of {0}'.format(
+                colorful.bold_green(cover_min_percentage + '%')))
+            if failed == 0:
+                ret = 2
+            # if tests have passed and coverage is too low we fail with exit code 2
+        coverage_report += colorful.bold_white(')')
+    print(coverage_report)
+
+    return ret
 
 
 def test_step_matches(match_config, steps):

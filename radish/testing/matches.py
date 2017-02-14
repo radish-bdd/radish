@@ -15,7 +15,7 @@ from colorful import colorful
 from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
-from radish.utils import get_func_arg_names
+from radish.utils import get_func_arg_names, get_func_location
 
 
 def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None):
@@ -100,12 +100,12 @@ def test_step_matches(match_config, steps):
 
         result = match_step(item['sentence'], steps)
         if not result:
-            output_failure(['Expected sentence didn\'t match any step implemention'])
+            output_failure(None, ['Expected sentence didn\'t match any step implemention'])
             failed += 1
             continue
 
         if expected_step != result.func.__name__:
-            output_failure(['Expected sentence matched {0} instead of {1}'.format(result.func.__name__, expected_step)])
+            output_failure(result.func, ['Expected sentence matched {0} instead of {1}'.format(result.func.__name__, expected_step)])
             failed += 1
             continue
 
@@ -117,7 +117,7 @@ def test_step_matches(match_config, steps):
             expected_arguments = {k: v for expected_arguments in expected_arguments for k, v in expected_arguments.items()}
             argument_errors = check_step_arguments(expected_arguments, arguments)
             if argument_errors:
-                output_failure(argument_errors)
+                output_failure(result.func, argument_errors)
                 failed += 1
                 continue
 
@@ -128,11 +128,16 @@ def test_step_matches(match_config, steps):
     return failed, passed
 
 
-def output_failure(errors):
+def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    print(colorful.bold_red('✘'))
+    sys.stdout.write(colorful.bold_red('✘'))
+    if step_func is not None:
+        sys.stdout.write(colorful.red(' (at {0})'.format(get_func_location(step_func))))
+
+    sys.stdout.write('\n')
+
     for error in errors:
         print(colorful.red('  - {0}'.format(error)))
 

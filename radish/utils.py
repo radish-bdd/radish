@@ -138,3 +138,11 @@ def get_func_arg_names(func):
         Get the argument names of the given function.
     """
     return get_func_code(func).co_varnames
+
+
+def get_func_location(func):
+    """
+        Get the location where the given function is implemented.
+    """
+    func_code = get_func_code(func)
+    return '{0}:{1}'.format(func_code.co_filename, func_code.co_firstlineno)

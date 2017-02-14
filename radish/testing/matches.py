@@ -164,7 +164,7 @@ def check_step_arguments(expected_arguments, arguments):
 
         if arguments[arg_name] != value:
             errors.append('Expected argument "{0}" with value "{1}" does not match value "{2}"'.format(
-                arg_name, arg_value, arguments[arg_name]))
+                arg_name, value, arguments[arg_name]))
     return errors
 
 

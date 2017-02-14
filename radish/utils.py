@@ -10,6 +10,7 @@ import sys
 import fnmatch
 import traceback
 
+from .compat import unicode_
 from .terrain import world
 
 
@@ -24,13 +25,8 @@ class Failure(object):  # pylint: disable=too-few-public-methods
             :param Exception exception: the exception shrown in the step
         """
         self.exception = exception
-        if hasattr(globals()['__builtins__'], 'unicode') is True:
-            self.reason = unicode(str(exception), "utf-8")
-            self.traceback = unicode(traceback.format_exc(), "utf-8")
-        else:
-            self.reason = str(exception)
-            self.traceback = traceback.format_exc()
-
+        self.reason = unicode_(str(exception))
+        self.traceback = unicode_(traceback.format_exc())
         self.name = exception.__class__.__name__
         traceback_info = traceback.extract_tb(sys.exc_info()[2])[-1]
         self.filename = traceback_info[0]

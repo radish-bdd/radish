@@ -5,16 +5,16 @@
 ***
 
 [![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/master/LICENSE)
+[![Gitter](https://badges.gitter.im/radish-bdd/radish.svg)](https://gitter.im/radish-bdd/radish?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+<br>
 [![Build Status](https://travis-ci.org/radish-bdd/radish.svg?branch=master)](https://travis-ci.org/radish-bdd/radish)
+[![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
+[![Code Health](https://landscape.io/github/radish-bdd/radish/master/landscape.svg?style=flat)](https://landscape.io/github/radish-bdd/radish/master)
+[![Code Issues](https://www.quantifiedcode.com/api/v1/project/27441974a1a343d5813ad90cf0db3c07/badge.svg)](https://www.quantifiedcode.com/app/project/27441974a1a343d5813ad90cf0db3c07)
 <br>
 [![PyPI version](https://badge.fury.io/py/radish-bdd.svg)](https://badge.fury.io/py/radish-bdd)
 [![PyPI](https://img.shields.io/pypi/pyversions/radish-bdd.svg)](https://pypi.python.org/pypi/radish-bdd)
 [![PyPI](https://img.shields.io/pypi/wheel/radish-bdd.svg)](https://pypi.python.org/pypi/radish-bdd)
-<br>
-[![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
-[![Code Health](https://landscape.io/github/radish-bdd/radish/master/landscape.svg?style=flat)](https://landscape.io/github/radish-bdd/radish/master)
-[![Code Issues](https://www.quantifiedcode.com/api/v1/project/27441974a1a343d5813ad90cf0db3c07/badge.svg)](https://www.quantifiedcode.com/app/project/27441974a1a343d5813ad90cf0db3c07)
-
 
 ***
 

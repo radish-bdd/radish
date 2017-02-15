@@ -9,7 +9,7 @@ def have_number(step, number):
     step.context.numbers.append(float(number))
 
 @when(re.compile(r"I sum them"))
-def sum_numbres(step):
+def sum_numbers(step):
     step.context.result = sum(step.context.numbers)
 
 @then(re.compile(r"I expect the result to be (\d+)"))

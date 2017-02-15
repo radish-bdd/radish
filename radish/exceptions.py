@@ -7,6 +7,12 @@ class RadishError(Exception):
     """
     pass
 
+class PythonCompatibilityError(RadishError):
+    """
+        Raised if python compatibility is not possible
+    """
+    def __init__(self, tag):
+        pass
 
 class LanguageNotSupportedError(RadishError):
     """

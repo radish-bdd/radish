@@ -41,12 +41,15 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
         with codecs.open(match_config_file, "r", "utf-8") as f:
             match_config = yaml.safe_load(f)
 
-        print(colorful.brown('Testing sentences from {0}:'.format(colorful.bold_brown(match_config_file))))
-        failed_sentences, passed_senteces = test_step_matches(match_config, steps)
-        failed += failed_sentences
-        passed += passed_senteces
+        if not match_config:
+            print(colorful.magenta('No sentences found in {0} to test against'.format(match_config_file)))
+        else:
+            print(colorful.brown('Testing sentences from {0}:'.format(colorful.bold_brown(match_config_file))))
+            failed_sentences, passed_senteces = test_step_matches(match_config, steps)
+            failed += failed_sentences
+            passed += passed_senteces
 
-        covered_steps = covered_steps.union(x['should_match'] for x in match_config)
+            covered_steps = covered_steps.union(x['should_match'] for x in match_config)
 
         # newline
         sys.stdout.write('\n')

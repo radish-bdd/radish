@@ -32,6 +32,11 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
     load_modules(basedir)
     steps = StepRegistry().steps
 
+    if not steps:
+        sys.stderr.write(colorful.magenta('No step implementations found in {0}, thus doesn\'t make sense to continue'.format(
+            basedir)))
+        return 4
+
     failed = 0
     passed = 0
     covered_steps = set()
@@ -43,6 +48,7 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
 
         if not match_config:
             print(colorful.magenta('No sentences found in {0} to test against'.format(match_config_file)))
+            return 5
         else:
             print(colorful.brown('Testing sentences from {0}:'.format(colorful.bold_brown(match_config_file))))
             failed_sentences, passed_senteces = test_step_matches(match_config, steps)

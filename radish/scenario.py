@@ -86,9 +86,10 @@ class Scenario(Model):
     def after_parse(self):
         """
             This method is called after the scenario is completely parsed.
+
             Actions to do:
-                * number steps
-                * fix parent of precondition steps
+              * number steps
+              * fix parent of precondition steps
         """
         for step_id, step in enumerate(self.all_steps, start=1):
             step.id = step_id

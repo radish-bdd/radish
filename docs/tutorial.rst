@@ -324,7 +324,7 @@ Per default the following *argument types* are supported:
 +----------------+-------------------------------------------------------------------------------+-------------+
 | tt             | Time e.g. 10:21:36 PM -5:30                                                   | time        |
 +----------------+-------------------------------------------------------------------------------+-------------+
-| MathExpression | Mathematic expression containing: [0-9 +\-*/%.e]+                             | float       |
+| MathExpression | Mathematic expression containing: [0-9 +\-\*/%.e]+                            | float       |
 +----------------+-------------------------------------------------------------------------------+-------------+
 
 radish provides a way to extend this types. This could be useful to directly inject more advanced objects to the step implementations:
@@ -517,6 +517,8 @@ This could be useful when you have values which are used in several points in a 
           When I increase the temperature about 5 degrees
           Then I expect the temperature to be ${base_temperature} + 5
 
+.. _tutorial#terrain_and_hooks:
+
 Terrain and Hooks
 -----------------
 
@@ -562,36 +564,6 @@ The python functions must accept the respective object and in the case of ``all`
 
 The hooks are called in the order of registration.
 
-Sometimes it's useful to have specific variable and functions available during a whole test run. These variables and functions can be added to a thread specific object called ``world``:
-
-.. code:: python
-
-   # -*- coding: utf-8 -*-
-
-   from radish import world, pick
-   import random
-
-   world.x = 42
-
-   @pick
-   def get_magic_number():
-       return random.randint(1, world.x)
-
-The ``pick`` decorator adds the decorated function to the ``world`` object. You can use this function later in a step implementation or another hook:
-
-
-.. code:: python
-
-   # -*- coding: utf-8 -*-
-
-   from radish import before, world
-
-   from security import Tokenizer
-
-   @before.each_scenario
-   def gen_token(scenario):
-      scenario.context.token = Tokenizer(world.get_magic_number())
-
 
 Contexts
 --------
@@ -612,3 +584,72 @@ As you may have noticed: each Feature and Scenario has it's own context. You can
        # accessing Feature specific context
        feature.context.setup = True
 
+
+.. _tutorial#world:
+World
+-----
+
+The ``world`` is a "global" radish context. It is used by radish to store the
+configuration and other utility functions. It can be accessed by importing it
+from the ``radish``. The ``world`` object is a threadlocal so it is safe to use
+in threads.
+
+You should not be using ``world`` to store data in scenarios and steps, that is
+what `Contexts`_ are for.
+
+The ``config`` attribute of world ``world`` contains a ``Configuration`` object
+with named and positional arguments passed in to radish. A basic transformation
+is applied to each of the arguments to turn it into a python attribute:
+As such "-" is replaced with "_", "--" is removed, and  "<" and ">" characters
+used in positionla are removed.
+
+For example ``--bdd-xml`` argument can be accessed using
+``world.config.bdd_xml``, and position ``<features>`` are accesses as
+``world.config.features``.
+
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   from radish import world
+
+   # print basedir
+   print(world.config.basedir)
+
+   # print profile
+   print(worl.config.profile)
+
+
+Sometimes it's useful to have specific variable and functions available during
+a whole test run. These variables and functions can be added to the ``world``
+object:
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   from radish import world, pick
+   import random
+
+   world.x = 42
+
+   @pick
+   def get_magic_number():
+       return random.randint(1, world.x)
+
+The ``pick`` decorator adds the decorated function to the ``world`` object. You
+can use this function later in a step implementation or another hook:
+
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   from radish import before, world
+
+   from security import Tokenizer
+
+   @before.each_scenario
+   def gen_token(scenario):
+      scenario.context.token = Tokenizer(world.get_magic_number())

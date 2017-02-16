@@ -17,7 +17,7 @@ Contents:
    quickstart
    tutorial
    commandline
-   modules/modules
+   modules
 
 
 

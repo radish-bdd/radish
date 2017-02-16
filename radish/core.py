@@ -10,6 +10,33 @@ from collections import OrderedDict
 from .parser import FeatureParser
 
 
+class Configuration(object):
+    """
+        Manage configuration. Attributes of the class are created from the
+        names of the command line options and are set to the command line
+        values.
+
+        Attribute names are parsed from command-line options removing or
+        replacing characters that can not be used in python variables.
+
+        Specifically:
+          * "-" is replaced with "_"
+          * "--" is removed.
+          * "<" and ">" are removed (they are used in positional arguments)
+
+        :param arguments: command line arguments and their values
+        :type arguments: dict-line object (i.e. docopt.Dict)
+    """
+
+    def __init__(self, arguments):
+        for key, value in arguments.items():
+            config_key = key.replace("--", "")\
+                            .replace("-", "_")\
+                            .replace("<", "")\
+                            .replace(">", "")
+            setattr(self, config_key, value)
+
+
 # FIXME: rename
 class Core(object):
     """

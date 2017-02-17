@@ -1,8 +1,9 @@
 Command Line Usage
 ==================
 
-This chapter describes how to use radish from the command line. All it's
+This chapter describes how to use Radish from the command line. All it's
 commands, options and arguments.
+
 
 Run - Specify Feature files
 ---------------------------
@@ -15,78 +16,6 @@ directories:
 .. code:: bash
 
   radish SomeFeature.feature myfeatures/
-
-Run - Early exit
-----------------
-
-Per default radish will try to run all specified Scenarios even if there are
-failed Scenarios. If you want to abort the test run after the first error
-occurred you can use the ``-e`` or ``--early-exit`` switch:
-
-.. code:: bash
-
-  radish SomeFeature.feature -e
-  radish SomeFeature.feature --early-exit
-
-Run - Debug Steps
------------------
-
-Run and debugs each step in an IPython debugger. You can then step through all
-your code using standard Python debugger
-`commands <https://docs.python.org/3/library/pdb.html#debugger-commands>`_.
-
-.. code:: bash
-
-  radish --debug-steps SomeFeature.feature
-
-
-Run - Show traceback on failure
--------------------------------
-
-Sometimes it's useful to get the complete traceback when a Step fails. Use the
-``-t`` or ``--with-traceback`` switch to print them on failure:
-
-.. code:: bash
-
-  radish SomeFeature.feature -t
-  radish SomeFeature.feature --with-traceback
-
-Run - Use custom marker to uniquely identify test run
------------------------------------------------------
-
-Sometimes it is useful to create a marker for a specific test run using ``-m``
-or ``--marker`` command line switch. The marker is passed in to all the hooks
-define in terrain file. To see example code checkout
-:ref:`terrain <tutorial#terrain_and_hooks>`:
-
-The marker is also displayed in the summary of the test runs.
-
-.. code:: bash
-
-  radish SomeFeature.feature -m "My Marker"
-  radish SomeFeature.feature --marker "My Marker"
-
-  ... radish output
-
-  Run My Marker finished within 0:0.001272 minutes
-
-To compare, the default marker is the number of seconds from the epoch
-(01/01/1970)
-
-.. code:: bash
-
-  # run without custom marker
-  radish SomeFeature.feature
-
-  Example, standard::
-    Run 1487231904 finished within 0:0.001272 minutes
-
-Run - Profile
--------------
-
-The  ``-p`` or ``--profile`` is a command line switch to set a simple variable
-which is then available ``world.config.profile`` and can be used in hooks
-(or steps, though not recommended) as needed. Please see :ref:`tutorial#world`.
 
 
 Run - Specify base directory
@@ -101,6 +30,84 @@ You can specify the base directory with the ``-b`` or ``--basedir`` switch:
 
   radish -b tests/radish SomeFeature.feature
   radish --basedir tests/radish SomeFeature.feature
+
+
+Run - Early exit
+----------------
+
+By default radish will try to run all specified Scenarios even if there are
+failed Scenarios. If you want to abort the test run after the first error
+occurred you can use the ``-e`` or ``--early-exit`` switch:
+
+.. code:: bash
+
+  radish SomeFeature.feature -e
+  radish SomeFeature.feature --early-exit
+
+
+Run - Debug Steps
+-----------------
+
+Radish provides ability to debug each step using an IPython debugger. You can
+enable that ``--debug-steps`` command line switch.
+
+If you are unfamiliar with the Python debugger please consult official
+`debugger documentation <https://docs.python.org/3/library/pdb.html>`_.
+
+.. code:: bash
+
+  radish --debug-steps SomeFeature.feature
+
+
+Run - Show traceback on failure
+-------------------------------
+
+Sometimes it's useful to get the complete traceback when a Step fails. Use the
+``-t`` or ``--with-traceback`` command line switch switch to print them on failure:
+
+.. code:: bash
+
+  radish SomeFeature.feature -t
+  radish SomeFeature.feature --with-traceback
+
+
+Run - Use custom marker to uniquely identify test run
+-----------------------------------------------------
+
+Radish supports marker functionality which is used to uniquely identify a
+specific test run using. By default the marker is set to the number of seconds
+from the epoch (01/01/1970). You can specify your own marker using ``-m`` or
+``--marker`` command line switch.
+
+The marker is also displayed in the summary of the test runs.
+
+.. code:: bash
+
+  radish SomeFeature.feature -m "My Marker"
+  radish SomeFeature.feature --marker "My Marker"
+
+  ... radish output
+
+  Run My Marker finished within 0:0.001272 minutes
+
+The marker is also passed in to all the hooks define in terrain file. To see
+example code please read :ref:`terrain <tutorial#terrain_and_hooks>`:
+
+
+Run - Profile
+-------------
+
+Radish allows you to pass custom in the data to terrain hook code or to steps
+code using the ``-p`` or ``--profile`` is a command line switch. This can be
+used to customize your test runs as needed.
+
+A common usage of ``--profile`` is to set it to the environment value such as
+``stage`` or ``production``.
+
+The value specified to the command line switch is made available in
+``world.config.profile``. Please see :ref:`tutorial#world` for more
+information.
+
 
 Run - Dry run
 -------------
@@ -122,17 +129,31 @@ The first Scenario in the first Feature will have the id 1, the second scenario
 the id 2. The Scenario ids are unique over all Features from this run. The
 value can be a single Scenario id or a comma separated list of Scenario ids:
 
-User ``--write-ids`` command line switch to print scenarios
+You can use ``--write-ids`` command line switch to print scenarios counts
 
 .. code:: bash
 
   radish SomeFeature.feature -s 1
   radish SomeFeature.feature --scenarios 1,2,5,6
 
+Run - Shuffle Scenarios
+-----------------------
+
+You can shuffle the Scenarios in a specific run by passing the ``--shuffle``
+command line switch. This useful when you are trying to detect if any scenario
+have unintended side effects on other scenarios.
+
+.. code:: bash
+
+  radish SomeFeature.feature --shuffle
+
 Run - Specify certain Features/Scenarios by tags
 ------------------------------------------------
 
-radish is able to run only a selection of certain Features and/or Scenarios. The Features/Scenarios must be tagged. Use the ``--feature-tags`` or ``--scenario-tags`` to specify the tags of Features/Scenarios which should be run. The value can be a single tag or a comma separated list of tags:
+radish is able to run only a selection of certain Features and/or Scenarios.
+The Features/Scenarios must be tagged. Use the ``--feature-tags`` or
+``--scenario-tags`` to specify the tags of Features/Scenarios which should be
+run. The value can be a single tag or a comma separated list of tags:
 
 .. code:: bash
 
@@ -140,14 +161,6 @@ radish is able to run only a selection of certain Features and/or Scenarios. The
   radish SomeFeature.feature --scenario-tags good_case,in_progress
   radish SomeFeature.feature --scenario-tags good_case --feature-tags regression
 
-Run - Shuffle Scenarios
------------------------
-
-You can shuffle the Scenarios in a specific run by passing the ``--shuffle`` command line switch:
-
-.. code:: bash
-
-  radish SomeFeature.feature --shuffle
 
 Show - Expand feature
 ---------------------

@@ -4,7 +4,7 @@
 import os
 import re
 import codecs
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def read_metafile(path):
@@ -46,9 +46,9 @@ setup(
     url=get_meta("url"),
     download_url=get_meta("download_url"),
     bugtrack_url=get_meta("bugtrack_url"),
-    packages=["radish", "radish/extensions", "radish/languages"],
+    packages=find_packages(),
     package_data={"": ["radish/languages/*", "*.md"]},
-    install_requires=["docopt", "parse", "pysingleton", "colorful>=0.01.03", "lxml", "ipython", "coverage"],
+    install_requires=["docopt", "pysingleton", "colorful>=0.01.03", "lxml", "ipython", "coverage"],
     include_package_data=True,
     entry_points={"console_scripts": ["radish = radish.main:main"]},
     classifiers=[

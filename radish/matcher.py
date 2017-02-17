@@ -7,7 +7,7 @@
 import re
 from collections import namedtuple
 
-import parse
+import radish.vendor.parse as parse
 
 from .argexpregistry import ArgExpRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError

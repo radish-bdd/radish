@@ -1,2 +1,3 @@
 # Ignore test source code
 tests/*
+radish/vendor/*

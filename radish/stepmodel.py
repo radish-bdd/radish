@@ -33,8 +33,7 @@ class Step(Model):
         self.table = []
         self.raw_text = []
         self.definition_func = None
-        self.arguments = None
-        self.keyword_arguments = None
+        self.argument_match = None
         self.state = Step.State.UNTESTED
         self.failure = None
         self.runable = runable
@@ -83,12 +82,13 @@ class Step(Model):
             return self.state
 
         self._validate()
+        args, kwargs = self.argument_match.evaluate()
 
         try:
-            if self.keyword_arguments:
-                self.definition_func(self, **self.keyword_arguments)  # pylint: disable=not-callable
+            if kwargs:
+                self.definition_func(self, **kwargs)  # pylint: disable=not-callable
             else:
-                self.definition_func(self, *self.arguments)  # pylint: disable=not-callable
+                self.definition_func(self, *args)  # pylint: disable=not-callable
         except Exception as e:  # pylint: disable=broad-except
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
@@ -106,11 +106,12 @@ class Step(Model):
             return self.state
 
         self._validate()
+        args, kwargs = self.argument_match.evaluate()
 
         pdb = utils.get_debugger()
 
         try:
-            pdb.runcall(self.definition_func, self, *self.arguments, **self.keyword_arguments)
+            pdb.runcall(self.definition_func, self, *args, **kwargs)
         except Exception as e:  # pylint: disable=broad-except
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)

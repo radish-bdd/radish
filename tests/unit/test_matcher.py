@@ -20,12 +20,14 @@ class MatcherTestCase(RadishTestCase):
         """
         steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
-        arguments, keyword_arguments, func = match_step("Given I have the number 5", steps)
+        match, func = match_step("Given I have the number 5", steps)
+        arguments, keyword_arguments = match.evaluate()
         arguments.should.be.equal(("5",))
         keyword_arguments.should.be.equal({})
         func.should.be.equal("some_func")
 
-        arguments, keyword_arguments, func = match_step("When I add 2 to my number", steps)
+        match, func = match_step("When I add 2 to my number", steps)
+        arguments, keyword_arguments = match.evaluate()
         arguments.should.be.equal(("2",))
         keyword_arguments.should.be.equal({})
         func.should.be.equal("some_other_func")
@@ -48,9 +50,9 @@ class MatcherTestCase(RadishTestCase):
         merge_steps([feature], steps)
 
         scenario.steps[0].definition_func.should.be.equal("some_func")
-        scenario.steps[0].arguments.should.be.equal(("5",))
+        scenario.steps[0].argument_match.evaluate()[0].should.be.equal(("5",))
         scenario.steps[1].definition_func.should.be.equal("some_other_func")
-        scenario.steps[1].arguments.should.be.equal(("2",))
+        scenario.steps[1].argument_match.evaluate()[0].should.be.equal(("2",))
 
     def test_merge_non_existing_step(self):
         """

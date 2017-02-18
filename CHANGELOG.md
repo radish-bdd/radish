@@ -4,7 +4,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-*Nothing to release yet*
+### Added
+- Vendor `parse` package until [parse (#38)](https://github.com/r1chardj0n3s/parse/pull/38) is merged
+
+### Fixed
+- Lazy evaluate matched step arguments. Refs #31
 
 ## [v0.2.12]
 ### Added

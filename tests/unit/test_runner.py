@@ -49,8 +49,9 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
-        step.arguments = tuple()
-        step.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step.argument_match = argument_match_mock
 
         hook_mock = Mock()
         hook_mock.call.return_value = True
@@ -72,8 +73,9 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, None, True)
         step.definition_func = some_step
-        step.arguments = tuple()
-        step.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step.argument_match = argument_match_mock
 
         scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.steps.append(step)
@@ -103,8 +105,9 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
-        step.arguments = tuple()
-        step.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step.argument_match = argument_match_mock
         scenario.steps.append(step)
 
         hook_mock = Mock()
@@ -131,8 +134,9 @@ class RunnerTestCase(RadishTestCase):
 
         step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
         step.definition_func = some_step
-        step.arguments = tuple()
-        step.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step.argument_match = argument_match_mock
         scenario.steps.append(step)
 
         hook_mock = Mock()
@@ -159,14 +163,16 @@ class RunnerTestCase(RadishTestCase):
 
         step1 = Step(1, "Some passed step", "somefile.feature", 3, scenario, True)
         step1.definition_func = some_passed_step
-        step1.arguments = tuple()
-        step1.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step1.argument_match = argument_match_mock
         scenario.steps.append(step1)
 
         step2 = Step(2, "Some failed step", "somefile.feature", 4, scenario, True)
         step2.definition_func = some_failed_step
-        step2.arguments = tuple()
-        step2.keyword_arguments = {}
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (tuple(), {})
+        step2.argument_match = argument_match_mock
         scenario.steps.append(step2)
 
         hook_mock = Mock()

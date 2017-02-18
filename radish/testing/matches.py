@@ -193,7 +193,8 @@ def merge_step_args(step_func):
     of the given step function.
     """
     #: Holds the merged arguments as a dict with the corresponding matched values
+    args, kwargs = step_func.argument_match.evaluate()
     step_arg_names = get_func_arg_names(step_func.func)[1:]
-    arguments = dict(zip(step_arg_names, step_func.args))
-    arguments.update(step_func.kwargs)
+    arguments = dict(zip(step_arg_names, args))
+    arguments.update(kwargs)
     return arguments

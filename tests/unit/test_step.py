@@ -76,7 +76,9 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a passing step", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
-        step.arguments = re.search(step.sentence, step.sentence).groups()
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (re.search(step.sentence, step.sentence).groups(), {})
+        step.argument_match = argument_match_mock
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -98,7 +100,10 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a passing step with number argument 42 and string argument 'Tschau'", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
-        step.arguments = re.search("I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence).groups()
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (
+            re.search(r"I call a passing step with number argument (\d+) and string argument '(.*?)'", step.sentence).groups(), {})
+        step.argument_match = argument_match_mock
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -123,8 +128,9 @@ class StepTestCase(RadishTestCase):
         step = Step(1, "I call a passing step with string argument 'Tschau' and number argument 42", "somefile.feature", 3, None, True)
         step.definition_func = step_passed
         match = re.search("I call a passing step with string argument '(?P<string>.*?)' and number argument (?P<number>\d+)", step.sentence)
-        step.arguments = match.groups()
-        step.keyword_arguments = match.groupdict()
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (match.groups(), match.groupdict())
+        step.argument_match = argument_match_mock
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.PASSED)
@@ -145,7 +151,9 @@ class StepTestCase(RadishTestCase):
 
         step = Step(1, "I call a failing step", "somefile.feature", 3, None, True)
         step.definition_func = step_failed
-        step.arguments = re.search(step.sentence, step.sentence).groups()
+        argument_match_mock = Mock()
+        argument_match_mock.evaluate.return_value = (re.search(step.sentence, step.sentence).groups(), {})
+        step.argument_match = argument_match_mock
 
         step.state.should.be.equal(Step.State.UNTESTED)
         step.run.when.called_with().should.return_value(Step.State.FAILED)

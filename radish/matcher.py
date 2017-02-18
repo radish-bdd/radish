@@ -12,7 +12,28 @@ import radish.vendor.parse as parse
 from .argexpregistry import ArgExpRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError
 
-StepMatch = namedtuple("StepMatch", ["args", "kwargs", "func"])
+StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
+
+
+class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
+    """Class to represent the argument groups matched by a regex step pattern"""
+    def __init__(self, match):
+        self.match = match
+
+    def evaluate(self):
+        """Lazy and return evaluate the step group matches"""
+        return self.match.groups(), self.match.groupdict()
+
+
+class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
+    """Class to represent the argument groups matched by a parse step pattern"""
+    def __init__(self, match):
+        self.match = match
+
+    def evaluate(self):
+        """Lazy and return evaluate the step group matches"""
+        result = self.match.generate_result()
+        return result.fixed, result.named
 
 
 def merge_steps(features, steps):
@@ -45,8 +66,7 @@ def merge_step(step, steps):
         raise StepDefinitionNotFoundError(step)
 
     step.definition_func = match.func
-    step.arguments = match.args
-    step.keyword_arguments = match.kwargs
+    step.argument_match = match.argument_match
 
 
 def match_step(sentence, steps):
@@ -62,16 +82,17 @@ def match_step(sentence, steps):
     for pattern, func in steps.items():
         if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
             match = pattern.search(sentence)
-            if match:
-                return StepMatch(args=match.groups(), kwargs=match.groupdict(), func=func)
+            argument_match = RegexStepArguments(match)
         else:
             try:
                 compiled = parse.compile(pattern, ArgExpRegistry().expressions)
             except ValueError as e:
                 raise StepPatternError(pattern, func.__name__, e)
 
-            match = compiled.search(sentence)
-            if match:
-                return StepMatch(args=match.fixed, kwargs=match.named, func=func)
+            match = compiled.search(sentence, generate_result=False)
+            argument_match = ParseStepArguments(match)
+
+        if match:
+            return StepMatch(argument_match=argument_match, func=func)
 
     return None

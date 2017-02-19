@@ -655,3 +655,4 @@ can use this function later in a step implementation or another hook:
    @before.each_scenario
    def gen_token(scenario):
       scenario.context.token = Tokenizer(world.get_magic_number())
+

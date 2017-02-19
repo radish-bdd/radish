@@ -140,7 +140,7 @@ Please see :ref:`tutorial#world` for an example.
 
 .. code:: bash
 
-  radish SomeFeature.feature -p -d
+  radish SomeFeature.feature -d
   radish SomeFeature.feature --dry-run
 
 Run - Specifying Scenarios by id

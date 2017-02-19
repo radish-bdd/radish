@@ -132,10 +132,12 @@ How does radish find my python modules?
 radish imports all python modules inside the *basedir*. Per default the *basedir* points to *$PWD/radish* which in our case is perfectly fine. If the python implementation modules are located at another location the *-b* option followed by the path to the files can be given and radish will import the files from this location.
 
 
+.. _quickstart#run-state-result:
+
 Run state result
 ----------------
 
-**Step: **
+**Step:**
 
 A Step run state can be one of the following values.
 

@@ -1,8 +1,7 @@
 Tutorial
 ========
 
-This chapter covers the whole Tutorial about radish and it's features. The API Reference can be found here: foobar.
-
+This chapter covers the whole Tutorial about radish and it's features.
 
 Feature files
 -------------
@@ -106,7 +105,7 @@ Scenario Loops have the following syntax:
        Scenario Loop 10: Some stabilization test
            ... Some Steps ...
 
-*Note: Scenario Loop are not standard gherkin*
+*Note: Scenario Loops are not standard gherkin*
 
 Scenario Precondition
 ---------------------
@@ -165,7 +164,7 @@ Use the ``radish show --expand`` command to do so:
 
 The information about the precondition is commented out.
 
-*Note: Scenario Loop are not standard gherkin*
+*Note: Scenario Preconditions are not standard gherkin*
 
 Steps
 -----

@@ -36,7 +36,7 @@ Per default radish will try to run all specified Scenarios even if there are fai
 Run - Dry run
 -------------
 
-A make a dry run. Use the ``-d`` or ``--dry-run`` command line switch:
+To make a dry run use the ``-d`` or ``--dry-run`` command line switch:
 
 .. code:: bash
 
@@ -124,4 +124,3 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [--scenario-tags=<scenario_tags>]
       radish (-h | --help)
       radish (-v | --version)
-

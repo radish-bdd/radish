@@ -17,7 +17,6 @@ Contents:
    quickstart
    tutorial
    commandline
-   bdd_xml
    modules
 
 

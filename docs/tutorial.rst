@@ -621,7 +621,10 @@ For example ``--bdd-xml`` argument can be accessed using
    print(world.config.basedir)
 
    # print profile
-   print(worl.config.profile)
+   print(world.config.profile)
+
+   # print dry-run command-line switch
+   print(world.config.dry_run)
 
 
 Sometimes it's useful to have specific variable and functions available during
@@ -656,3 +659,4 @@ can use this function later in a step implementation or another hook:
    @before.each_scenario
    def gen_token(scenario):
       scenario.context.token = Tokenizer(world.get_magic_number())
+

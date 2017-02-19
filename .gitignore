@@ -26,6 +26,8 @@ docs/_build
 docs/modules.rst
 docs/modules/
 docs/radish.extensions.rst
+docs/radish.vendor.parse.rst
+docs/radish.vendor.rst
 docs/radish.rst
 
 

@@ -41,7 +41,7 @@ class CucumberJSONWriter(object):
         if not features:
             raise RadishError("No features given to generate cucumber json file")
 
-        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
+        duration = timedelta()
         for feature in features:
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration

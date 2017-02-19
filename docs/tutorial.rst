@@ -458,6 +458,8 @@ To access this text data you can use the ``text`` attribute of the ``step`` obje
       assert len(step.context.database.quotes) == number
 
 
+.. _tutorial#tags:
+
 Tags
 ----
 
@@ -586,6 +588,7 @@ As you may have noticed: each Feature and Scenario has it's own context. You can
 
 
 .. _tutorial#world:
+
 World
 -----
 

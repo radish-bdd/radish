@@ -41,7 +41,7 @@ class CucumberJSONWriter(object):
         if not features:
             raise RadishError("No features given to generate cucumber json file")
 
-        duration = timedelta()
+        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
         for feature in features:
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration
@@ -81,14 +81,17 @@ class CucumberJSONWriter(object):
                 for i, tag in enumerate(scenario.tags):
                     scenario_json["tags"].append({"name": "@" + tag.name, "line": start_line_no + i})
                 for step in scenario.all_steps:
-                    duration = str(step.duration.total_seconds()) if step.starttime and step.endtime else "0.0"
+                    # round duration to 10 decimal points, to avoid it being
+                    # printed in scientific notation
+                    duration = "%.10f" % step.duration.total_seconds() \
+                                if step.starttime and step.endtime else "0.0"
                     step_json = {
                         "keyword": step.sentence.split()[0],
                         "name": step.sentence,
                         "line": step.line,
                         "result": {
                             "status": step.state,
-                            "duration": float(duration)
+                            "duration": duration
                         }
                     }
                     if step.state is Step.State.FAILED:

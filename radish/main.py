@@ -37,7 +37,7 @@ def show_features(core):
     if not sys.stdout.isatty():
         world.config.no_ansi = True
 
-    runner = Runner(HookRegistry(), dry_run=True)
+    runner = Runner(HookRegistry(), show_only=True)
     runner.start(core.features_to_run, marker="show")
     return 0
 

@@ -17,8 +17,8 @@ Contents:
    quickstart
    tutorial
    commandline
+   bdd_xml
    modules
-
 
 
 Indices and tables

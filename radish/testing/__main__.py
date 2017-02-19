@@ -19,6 +19,7 @@ Usage:
     radish-test matches <match-configs>...
         [-b=<basedir> | --basedir=<basedir>]
         [--cover-min-percentage=<cover-min-percentage>]
+        [--cover-show-missing]
     radish-test (-h | --help)
     radish-test (-v | --version)
 
@@ -33,6 +34,7 @@ Options:
     -v --version                                   show version
     -b=<basedir> --basedir=<basedir>               set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
     --cover-min-percentage=<cover-min-percentage>  minimum percentage of step coverage for tests to pass
+    --cover-show-missing                           show steps which are not tested
 
 (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
     """
@@ -41,7 +43,8 @@ Options:
 
 
     if arguments['matches']:
-        return test_step_matches_configs(arguments['<match-configs>'], arguments['--basedir'], arguments['--cover-min-percentage'])
+        return test_step_matches_configs(arguments['<match-configs>'],
+             arguments['--basedir'], arguments['--cover-min-percentage'], arguments['--cover-show-missing'])
 
 
 if __name__ == "__main__":

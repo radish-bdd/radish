@@ -18,7 +18,7 @@ from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location
 
 
-def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None):
+def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None, cover_show_missing=False):
     """
     Test if the given match config files matches the actual
     matched step implementations.
@@ -89,7 +89,18 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
                 ret = 2
             # if tests have passed and coverage is too low we fail with exit code 2
         coverage_report += colorful.bold_white(')')
+
     print(coverage_report)
+
+    if cover_show_missing:
+        missing_steps = get_missing_steps(steps, covered_steps)
+        if missing_steps:
+            missing_step_report = colorful.bold_brown('Missing steps:\n')
+            for step in missing_steps:
+                missing_step_report += '- {0} at '.format(
+                    colorful.cyan(step[0]))
+                missing_step_report += colorful.cyan(step[1]) + '\n'
+            sys.stdout.write(missing_step_report)
 
     return ret
 
@@ -198,3 +209,15 @@ def merge_step_args(step_func):
     arguments = dict(zip(step_arg_names, args))
     arguments.update(kwargs)
     return arguments
+
+
+def get_missing_steps(steps, covered_steps):
+    """
+    Get all steps within ``steps`` which are not
+    covered by ``covered_steps``.
+    """
+    missing_steps = []
+    for step_func in steps.values():
+        if step_func.__name__ not in covered_steps:
+            missing_steps.append((step_func.__name__, get_func_location(step_func)))
+    return missing_steps

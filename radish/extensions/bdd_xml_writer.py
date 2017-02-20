@@ -36,7 +36,7 @@ class BDDXMLWriter(object):
         """
             Create a etree.Element from a given model
         """
-        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else ""
+        duration = str(model.duration.seconds) if model.starttime and model.endtime else ""
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -71,7 +71,7 @@ class BDDXMLWriter(object):
             "testrun",
             starttime=utils.datetime_to_str(features[0].starttime),
             endtime=utils.datetime_to_str(features[-1].endtime),
-            duration=str(duration.total_seconds()),
+            duration=str(duration.seconds),
             agent="{0}@{1}".format(getuser(), gethostname())
         )
 

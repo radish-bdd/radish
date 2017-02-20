@@ -18,7 +18,7 @@ cd "$ROOT/$TESTS_ROOT"
 
 for t in *; do
     export COVERAGE_FILE=${BASE_COVERAGE_FILE}.$t
-    coverage run -a --rcfile=$COVERAGE_RC --source=radish ${RADISH_BIN} -b "$t/$RADISH_BASEDIR" "$t/$FEATURES_DIR"
+    PYTHONPATH="${t}" coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" -b "$t/$RADISH_BASEDIR" "$t/$FEATURES_DIR"
     if [ $? -ne 0 ]; then
         echo "Functional tests from '$t' failed with status $?"
         exit 1

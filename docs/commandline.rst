@@ -8,7 +8,7 @@ commands, options and arguments.
 Run - Specify Feature files
 ---------------------------
 
-All arguments which doesn't belong to any command line switch are interpreted
+All arguments which do not belong to any command line switch are interpreted
 as Feature files or Feature file locations. If the argument is a directory all
 files ending with ``.feature`` will be run. It's possible to mix files and
 directories:
@@ -21,13 +21,10 @@ directories:
 Run - Specify base directory
 ----------------------------
 
-Radish looks for *Step* and *Terrain* files in the ``base directory``. By
-default the ``base directory`` is set to the in the ``radish`` folder within
-the current working directory (a.k.a ``$PWD/radish``). Radish imports all
-the python files imported.
-
-You can specify an alternate path using the ``-b`` or ``--basedir``
-command line switch:
+Radish searches for and imports *Step* and *Terrain* python files in the
+``base directory`` which by is set to the ``radish`` folder inside the
+current working directory (a.k.a ``$PWD/radish``). To specify an alternate path
+using the ``-b`` or ``--basedir`` command line switch:
 
 .. code:: bash
 
@@ -51,15 +48,17 @@ occurred you can use the ``-e`` or ``--early-exit`` switch:
 Run - Debug Steps
 -----------------
 
-Radish provides ability to debug each step using an IPython debugger. You can
+Radish provides ability to debug each step using an debugger. You can
 enable that using ``--debug-steps`` command line switch.
 
 .. code:: bash
 
   radish --debug-steps SomeFeature.feature
 
-If you are unfamiliar with the Python debugger please consult official
-`debugger documentation <https://docs.python.org/3/library/pdb.html>`_.
+IPython debugger is used if found, if not then the standard Python debugger.
+Please consult please consult official
+`debugger documentation <https://docs.python.org/3/library/pdb.html>`_ for
+common debugger workflow and commands.
 
 For example can see variables available to by printing ``locals()``.
 
@@ -88,8 +87,8 @@ Run - Use custom marker to uniquely identify test run
 -----------------------------------------------------
 
 Radish supports marker functionality which is used to uniquely identify a
-specific test run using. By default the marker is set to the number of seconds
-from the epoch (01/01/1970). You can specify your own marker using ``-m`` or
+specific test run. By default the marker is set to the number of seconds from
+the epoch (01/01/1970). You can specify your own marker using ``-m`` or
 ``--marker`` command line switch.
 
 The marker is also displayed in the summary of the test runs.
@@ -103,8 +102,8 @@ The marker is also displayed in the summary of the test runs.
 
   Run My Marker finished within 0:0.001272 minutes
 
-The marker is also passed in to all the hooks define in terrain file. To see
-example code please read :ref:`terrain <tutorial#terrain_and_hooks>`:
+The marker is also passed in to all the hooks defined in the terrain files.
+To see example code please consult :ref:`terrain <tutorial#terrain_and_hooks>`.
 
 
 Run - Profile
@@ -118,8 +117,8 @@ The value specified to the ``-p`` / ``--profile`` command line switch is made
 available in ``world.config.profile``. Please see :ref:`tutorial#world` for
 for an example.
 
-A common usage of  is to set it to the environment value
-such as ``stage`` or ``production``.
+A common usage of ``profile`` settting it to the environment value such as
+``stage`` or ``production``.
 
 .. code:: bash
 
@@ -147,10 +146,11 @@ Run - Specifying Scenarios by id
 --------------------------------
 
 Radish can also runs specific scenarios by id using the ``-s`` or
-``--scenarios`` command line switch. The ids are scenarios are indexed by the
-parsing order. The first Scenario in the first Feature will have the id 1, the second scenario
-the id 2. The Scenario ids are unique over all Features from this run. The
-value can be a single Scenario id or a comma separated list of Scenario ids:
+``--scenarios`` command line switch. The ids are scenarios indexed by the
+parsing order. The first Scenario in the first Feature will have the id 1, the
+second scenario the id 2. The Scenario ids are unique over all Features from
+this run. The value can be a single Scenario id or a comma separated list of
+Scenario ids:
 
 You can use ``--write-ids`` command line switch to print Scenario ids.
 Please consult `Run - Writing out Scenario and Step ids`_
@@ -165,7 +165,7 @@ Run - Shuffle Scenarios
 -----------------------
 
 Radish can also shuffle the Scenarios by using the ``--shuffle`` command line
-switch. This useful when you are trying to detect if any scenario have
+switch. This is useful when you are trying to detect if any scenario have
 unintended side effects on other scenarios.
 
 .. code:: bash
@@ -232,7 +232,7 @@ value must be a file path to the output file.
 
   radish SomeFeature.feature --cucumber-json /tmp/result.json
 
-Documentation describing then format of the Cucumber JSON file can be founde
+Documentation describing the format of the Cucumber JSON file can be founde
 here: https://www.relishapp.com/cucumber/cucumber/docs/formatters/json-output-formatter
 
 
@@ -315,8 +315,10 @@ turned of using ``--write-steps-once``.
   radish SomeFeature.feature --no-ansi --write-steps-once
 
 The ``--no-line-jump`` command line switch disables the "overwriting" of the
-yellow pending lines by the success or failure lines. This helpful to you
-during debugging so you can see when steps were pending then executed.
+yellow pending lines by the success or failure lines. This is helpful when
+reviewing and debugging as it shows Steps first pending then executed. It also
+allows for "print to console" style debugging to be used without ansi codes
+destroying them.
 
 .. code:: bash
 

@@ -36,7 +36,10 @@ class BDDXMLWriter(object):
         """
             Create a etree.Element from a given model
         """
-        duration = str(model.duration.total_seconds()) if model.starttime and model.endtime else ""
+
+        # round duration to 10 decimal points, to avoid it being printed in
+        # scientific notation
+        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
         return etree.Element(
             what,
             sentence=model.sentence,

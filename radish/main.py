@@ -8,6 +8,7 @@ from docopt import docopt
 
 from . import __VERSION__
 from .core import Core
+from .core import Configuration
 from .loader import load_modules
 from .matcher import merge_steps
 from .stepregistry import StepRegistry
@@ -24,10 +25,7 @@ def setup_config(arguments):
     """
         Parses the docopt arguments and creates a configuration object in terrain.world
     """
-    world.config = lambda: None
-    for key, value in arguments.items():
-        config_key = key.replace("--", "").replace("-", "_").replace("<", "").replace(">", "")
-        setattr(world.config, config_key, value)
+    world.config = Configuration(arguments)
 
 
 def show_features(core):
@@ -39,7 +37,7 @@ def show_features(core):
     if not sys.stdout.isatty():
         world.config.no_ansi = True
 
-    runner = Runner(HookRegistry(), dry_run=True)
+    runner = Runner(HookRegistry(), show_only=True)
     runner.start(core.features_to_run, marker="show")
     return 0
 
@@ -91,6 +89,13 @@ def run_features(core):
 @error_oracle
 def main():
     """
+    Entrypont to radish.
+    Setup up configuration, loads extensions, reads feature files and runs
+    radish
+    """
+
+    # note: using doc string for usage, messes up Sphinx documantation
+    usage = """
 Usage:
     radish show <features>
            [--expand]
@@ -131,17 +136,20 @@ Options:
     --expand                                    expand the feature file (all preconditions)
     {1}
 
-(C) Copyright 2013 by Timo Furrer <tuxtimo@gmail.com>
+(C) Copyright 2017 by Timo Furrer <tuxtimo@gmail.com>
     """
+
     # load extensions
     load_modules(os.path.join(os.path.dirname(__file__), "extensions"))
 
     extensions = ExtensionRegistry()
-    main.__doc__ = main.__doc__.format(extensions.get_options(), extensions.get_option_description())
+    # add arguments from extensions to the usage
+    usage = usage.format(extensions.get_options(), extensions.get_option_description())
 
     sys.excepthook = catch_unhandled_exception
 
-    arguments = docopt("radish {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__)
+    # add version to the usage
+    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)

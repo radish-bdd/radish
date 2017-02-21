@@ -130,3 +130,34 @@ radish will output the following:
 
 How does radish find my python modules?
 radish imports all python modules inside the *basedir*. Per default the *basedir* points to *$PWD/radish* which in our case is perfectly fine. If the python implementation modules are located at another location the *-b* option followed by the path to the files can be given and radish will import the files from this location.
+
+
+.. _quickstart#run-state-result:
+
+Run state result
+----------------
+
+**Step:**
+
+A Step run state can be one of the following values.
+
+* passed
+* failed
+* skipped
+* pending
+* untested
+
+**Scenario:**
+
+Scenario run state result is set set as follows:
+
+If any Step in the Scenario is did not "pass" then return the run result of the
+**first** Step that did not pass. As such Scenario run state result is always
+one of the Step run state values described above.
+
+**Feature:**
+
+If any Scenario in the Feature is did not "pass" then return the run result of
+the **first** Step that did not pass. As such Feature run state result is
+always one of the Step run state values described above.
+

@@ -17,11 +17,12 @@ Contents:
    quickstart
    tutorial
    commandline
-   modules/modules
+   modules
 
 
+Indices and tables
+==================
 
-Search
-======
-
-* :ref:`search`
+ * :ref:`genindex`
+ * :ref:`modindex`
+ * :ref:`search`

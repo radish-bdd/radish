@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Vendor `parse` package until [parse (#38)](https://github.com/r1chardj0n3s/parse/pull/38) is merged
+- Implement `radish-test` to test step patterns
 
 ### Fixed
 - Lazy evaluate matched step arguments. Refs #31

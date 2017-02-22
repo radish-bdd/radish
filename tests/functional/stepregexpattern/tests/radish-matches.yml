@@ -1,0 +1,14 @@
+- sentence: Given I have the number 5
+  should_match: have_number
+  with-arguments:
+      - number:
+            type: str
+            value: '5'
+
+- sentence: When I sum them
+  should_match: sum_numbers
+
+- sentence: Then I expect the result to be 8
+  should_match: expect_result
+  with-arguments:
+      - result: '8'

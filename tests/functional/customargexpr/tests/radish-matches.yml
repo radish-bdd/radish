@@ -1,14 +1,11 @@
-#- sentence: Given I have the number 5
-  #should_match: have_number
-  #with-arguments:
-      #- number:
-            #type: float
-            #value: 5.0
+- sentence: Given I have the following heros in the database
+  should_match: add_heros_to_db
 
-#- sentence: When I sum them
-  #should_match: sum_numbers
+- sentence: When I query for the hero with name Batman
+  should_match: query_hero
 
-#- sentence: Then I expect the result to be 8
-  #should_match: expect_result
-  #with-arguments:
-      #- result: 8.0
+- sentence: When I query for the hero with name Spiderman
+  should_match: query_hero
+
+- sentence: Then I expect it's name to be Peter Parker
+  should_match: expect_hero

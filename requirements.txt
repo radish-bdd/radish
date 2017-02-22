@@ -5,3 +5,4 @@ ipython
 lxml
 parse
 coverage
+PyYAML

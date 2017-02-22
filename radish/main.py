@@ -136,7 +136,7 @@ Options:
     --expand                                    expand the feature file (all preconditions)
     {1}
 
-(C) Copyright 2017 by Timo Furrer <tuxtimo@gmail.com>
+(C) Copyright by Timo Furrer <tuxtimo@gmail.com>
     """
 
     # load extensions

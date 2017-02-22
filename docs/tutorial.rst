@@ -888,15 +888,127 @@ example:
 
 .. code:: xml
 
-  <failure
-    message="hello"
-    type="Exception">
+   <failure message="hello" type="Exception">
       <![CDATA[Traceback (most recent call last):
         File "/tmp/bdd/_env36/lib/python3.6/site-packages/radish/stepmodel.py", line 91, in run
-          self.definition_func(self, *self.arguments)  # pylint: disable=not-callable
+            self.definition_func(self, \*self.arguments)  # pylint: disable=not-callable
         File "/tmp/bdd/radish/radish/example.py", line 34, in step_when_switch_blender_on
           raise Exception("show off radish error handling")
       Exception: show off radish error handling
      ]]>
-  </failure>
+   </failure>
 
+
+Testing Step Patterns
+---------------------
+
+*New since radish version v0.3.0*
+
+Radish provides a nice way to test if the implemented step pattern (``@step(...)``) match the
+expected sentences. This is especially useful if you provide a set of step implementations
+and someone else is going to use them and implement the feature files.
+
+In a way your step pattern are the interface of your step implementation and **interfaces ought to be tested properly**.
+
+If you've installed radish a command called ``radish-test`` is available.
+
+The ``matches`` sub command is used to test your step pattern inside your *base dir* (``-b`` / ``--basedir``) against some
+sentences defined in a YAML file. We call those files **match configs**. A *match config* file has the following format:
+
+.. code:: yaml
+
+    - sentence: <SOME STEP SENTENCE>
+      should_match: <THE STEP FUNCTION NAME IT SHOULD MATCH>
+      with-arguments:
+        # argument check if implicit type
+        - <ARGUMENT 1 NAME>: <ARGUMENT 1 VALUE>
+        # argument check with explicit type
+        - <ARGUMENT 2 NAME>:
+            type: <ARGUMENT 2 TYPE NAME>
+            value: <ARGUMENT 2 VALUE>
+
+
+:sentence:
+    **Required**. This is the sentence you want to test.
+    It's an example of a sentence which should match
+    a certain Step pattern.
+:should_match:
+    **Required**. This is the name of the python Step implementation
+    function which you expect the sentence will match with.
+:with-arguments:
+    **Optional**. This is a list of arguments which you expect
+    will be passed in the python Step implementation function.
+    The arguments can be specified as key-value pairs or as an object
+    with a *type* and *value*. This could be useful if a custom argument expression
+    is used to parse the arguments.
+
+Example
+~~~~~~~
+
+Let's assume we have the following ``step.py`` implementation:
+
+.. code:: python
+
+    from radish.stepregistry import step
+    from radish import given, when, then
+
+    @step("I have the number {number:g}")
+    def have_number(step, number):
+        step.context.numbers.append(number)
+
+
+    @when("I sum them")
+    def sum_numbers(step):
+        step.context.result = sum(step.context.numbers)
+
+
+    @then("I expect the result to be {result:g}")
+    def expect_result(step, result):
+        assert step.context.result == result
+
+
+And a ``step-matches.yml`` file like this:
+
+.. code:: yaml
+
+    - sentence: Given I have the number 5
+      should_match: have_number
+      with-arguments:
+          - number:
+                type: float
+                value: 5.0
+
+    - sentence: When I sum them
+      should_match: sum_numbers
+
+    - sentence: Then I expect the result to be 8
+      should_match: expect_result
+      with-arguments:
+          - result: 8.0
+
+We can check the ``step.py`` implementation against the ``step-matches.yml`` match config file using the ``radish-test`` CLI application:
+
+.. code:: bash
+
+    radish-test matches tests/step-matches.yml
+
+
+Due to the fact that the ``step.py`` module is located in ``$PWD/radish`` we don't have to specify it's location with ``-b`` or ``--basedir``.
+
+For the ``radish-test`` call above we would get the following output:
+
+
+.. code:: text
+
+    Testing sentences from tests/step-matches.yml:
+    >> STEP "Given I have the number 5" SHOULD MATCH have_number ✔
+    >> STEP "When I sum them" SHOULD MATCH sum_numbers ✔
+    >> STEP "Then I expect the result to be 8" SHOULD MATCH expect_result ✔
+
+    3 sentences (3 passed)
+    Covered 3 of 3 step implementations
+
+In case of success we get the exit code **0** and in case of failure we'd get an exit code which is greater than **0**.
+
+``radish-test matches`` also supports step coverage measurements. Use ``--cover-min-percentage`` to let ``radish-test matches`` fail if a certain
+coverage threshold is not met and use the ``--cover-show-missing`` command line option to list all not covered steps and their location.

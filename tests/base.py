@@ -1,5 +1,12 @@
 # -*- coding: utf-8 -*-
 
+import sys
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
+
 import sure
 from unittest import TestCase
 from mock import Mock, patch, MagicMock
@@ -12,7 +19,6 @@ def is_python3(minor=0):
     """
         Check if python is in version 3.
     """
-    import sys
     return sys.version_info >= (3, minor)
 
 

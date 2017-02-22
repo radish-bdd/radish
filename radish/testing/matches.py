@@ -104,7 +104,7 @@ def test_step_matches(match_config, steps):
 
     for item in match_config:
         if 'sentence' not in item or 'should_match' not in item:
-            raise ValueError('You have provide a sentence and the function name which should be matched (should_match)')
+            raise ValueError('You have to provide a sentence and the function name which should be matched (should_match)')
 
         sentence = item['sentence']
         expected_step = item['should_match']

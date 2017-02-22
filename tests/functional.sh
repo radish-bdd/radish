@@ -26,7 +26,7 @@ for t in *; do
     MATCHES_FILE="${t}/tests/radish-matches.yml"
 
     if [ -f "${MATCHES_FILE}" ]; then
-        coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches -b "${BASE_DIR}" "${MATCHES_FILE}"
+        PYTHONPATH="${t}" coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches -b "${BASE_DIR}" "${MATCHES_FILE}"
         if [ $? -ne 0 ]; then
             echo "Functional tests from '${t}' failed to match steps with status $?"
             exit 1

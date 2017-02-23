@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+from .terrain import world
+
+
+__DOCS__ = "https://github.com/radish-bdd/radish"
+
 
 class RadishError(Exception):
     """
@@ -7,12 +12,13 @@ class RadishError(Exception):
     """
     pass
 
+
 class PythonCompatibilityError(RadishError):
     """
         Raised if python compatibility is not possible
     """
-    def __init__(self, tag):
-        pass
+    pass
+
 
 class LanguageNotSupportedError(RadishError):
     """
@@ -36,7 +42,16 @@ class FeatureFileSyntaxError(RadishError, SyntaxError):
     """
         If a a syntax error occured in a feature file
     """
-    pass
+    MESSAGE_TEMPLATE = """{msg}
+
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to found out which
+features radish supports and how you could use them:
+Link: {docs_link}"""
+
+    def __init__(self, msg):
+        super(FeatureFileSyntaxError, self).__init__(FeatureFileSyntaxError.MESSAGE_TEMPLATE.format(msg=msg, docs_link=__DOCS__))
 
 
 class StepRegexError(RadishError, SyntaxError):
@@ -65,20 +80,40 @@ class SameStepError(RadishError):
     """
         Raised if two step regex are exactly the same.
     """
+    MESSAGE_TEMPLATE = """Cannot register step {0} with regex '{1}' because it is already used by step {2}
+
+Error Oracle says:
+You have defined two step definitions with the same Regular Expression.
+This is invalid since radish does not know which one is the one to go with.
+If you have two similar step definition expressions but ones sentence is a subset of the other
+you may want to add a $ to mark the sentence's end - take care of the code order - first comes first serves."""
+
     def __init__(self, regex, func1, func2):
         self.regex = regex
         self.func1 = func1
         self.func2 = func2
-        super(SameStepError, self).__init__("Cannot register step {0} with regex '{1}' because it is already used by step {2}".format(func2.__name__, regex, func1.__name__))
+        super(SameStepError, self).__init__(SameStepError.MESSAGE_TEMPLATE.format(func2.__name__, regex, func1.__name__))
 
 
 class StepDefinitionNotFoundError(RadishError):
     """
         Raised if the Matcher cannot find a step from the feature file in the registered steps.
     """
+    MESSAGE_TEMPLATE = """Cannot find step definition for step '{sentence}' in {step_path}:{step_line}
+
+Error Oracle says:
+There is no step defintion for '{sentence}'.
+All steps should be declared in a module located in {basedir}.
+For example you could do:
+
+@step(r"{sentence}")
+def my_step(step):
+    raise NotImplementedError("This step is not implemented yet")"""
+
     def __init__(self, step):
         self.step = step
-        super(StepDefinitionNotFoundError, self).__init__("Cannot find step definition for step '{0}' in {1}:{2}".format(step.sentence, step.path, step.line))
+        super(StepDefinitionNotFoundError, self).__init__(StepDefinitionNotFoundError.MESSAGE_TEMPLATE.format(
+            sentence=step.sentence, step_path=step.path, step_line=step.line, basedir=world.config.basedir))
 
 
 class RunnerEarlyExit(RadishError):
@@ -95,7 +130,8 @@ class HookError(RadishError):
     def __init__(self, hook_function, failure):
         self.hook_function = hook_function
         self.failure = failure
-        super(HookError, self).__init__("Hook '{0}' from {1}:{2} raised: '{3}: {4}'".format(hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))
+        super(HookError, self).__init__("Hook '{0}' from {1}:{2} raised: '{3}: {4}'".format(
+            hook_function.__name__, hook_function.__code__.co_filename, hook_function.__code__.co_firstlineno, failure.name, failure.reason))
 
 
 class ScenarioNotFoundError(RadishError):

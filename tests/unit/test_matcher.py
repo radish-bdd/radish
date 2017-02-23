@@ -8,12 +8,22 @@ from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.stepmodel import Step
 from radish.exceptions import StepDefinitionNotFoundError
+from radish.main import setup_config
 
 
 class MatcherTestCase(RadishTestCase):
     """
         Tests the Matcher class
     """
+    @classmethod
+    def setUpClass(cls):
+        """
+            Setup config object
+        """
+        setup_config({
+            "--basedir": 'foo',
+        })
+
     def test_match_steps(self):
         """
             Test matching steps from feature files with registered steps
@@ -65,4 +75,4 @@ class MatcherTestCase(RadishTestCase):
         scenario.steps.append(Step(1, "When I call a non-existing step", "test.feature", 3, scenario, False))
         feature.scenarios.append(scenario)
 
-        merge_steps.when.called_with([feature], steps).should.throw(StepDefinitionNotFoundError, "Cannot find step definition for step 'When I call a non-existing step' in test.feature:3")
+        merge_steps.when.called_with([feature], steps).should.throw(StepDefinitionNotFoundError)

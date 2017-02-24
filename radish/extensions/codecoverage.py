@@ -29,7 +29,9 @@ class CodeCoverage(object):
         ('--cover-config-file=<cover_config_file>', 'specify coverage config file [default: .coveragerc]'),
         ('--cover-branches', 'include branch coverage in report'),
         ('--cover-erase', 'erase previously collected coverage data'),
-        ('--cover-min-percentage=<cover_min_percentage>', 'fail if the given minimum coverage percentage is not reached')
+        ('--cover-min-percentage=<cover_min_percentage>', 'fail if the given minimum coverage percentage is not reached'),
+        ('--cover-html=<cover_html_dir>', 'specify a directory where to store HTML coverage report'),
+        ('--cover-xml=<cover_xml_file>', 'specify a file where to store XML coverage report')
     ]
     LOAD_IF = staticmethod(lambda config: config.with_coverage)
     LOAD_PRIORITY = 70
@@ -82,10 +84,16 @@ class CodeCoverage(object):
         self.coverage.save()
         self.coverage.report(file=sys.stdout)
 
-        xml_data = StringIO()
-        self.coverage.report(file=xml_data)
+        if world.config.cover_html:
+            self.coverage.html_report(directory=world.config.cover_html)
+
+        if world.config.cover_xml:
+            self.coverage.xml_report(outfile=world.config.cover_xml)
+
         if world.config.cover_min_percentage:
-            match = re.search(r'^TOTAL\s+(.*)$', xml_data.getvalue(), re.MULTILINE)
+            report = StringIO()
+            self.coverage.report(file=report)
+            match = re.search(r'^TOTAL\s+(.*)$', report.getvalue(), re.MULTILINE)
             if not match:
                 raise RadishError('Failed to find total percentage in coverage report')
 

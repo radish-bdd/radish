@@ -6,12 +6,15 @@ coverage measurements.
 """
 
 import sys
+import re
 
 from coverage import Coverage
 
 from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.terrain import world
+from radish.compat import StringIO
+from radish.exceptions import RadishError
 
 
 @extension
@@ -22,7 +25,11 @@ class CodeCoverage(object):
     OPTIONS = [
         ('--with-coverage', 'enable code coverage'),
         ('--cover-packages=<cover_packages>', 'specify source code package'),
-        ('--cover-append', 'append coverage data to previous collected data')
+        ('--cover-append', 'append coverage data to previous collected data'),
+        ('--cover-config-file=<cover_config_file>', 'specify coverage config file [default: .coveragerc]'),
+        ('--cover-branches', 'include branch coverage in report'),
+        ('--cover-erase', 'erase previously collected coverage data'),
+        ('--cover-min-percentage=<cover_min_percentage>', 'fail if the given minimum coverage percentage is not reached')
     ]
     LOAD_IF = staticmethod(lambda config: config.with_coverage)
     LOAD_PRIORITY = 70
@@ -54,7 +61,13 @@ class CodeCoverage(object):
         else:
             source = self.cover_packages
 
-        self.coverage = Coverage(source=source)
+        self.coverage = Coverage(source=source,
+                                 config_file=world.config.cover_config_file,
+                                 branch=world.config.cover_branches)
+        if world.config.cover_erase:
+            self.coverage.combine()
+            self.coverage.erase()
+
         if world.config.cover_append:
             self.coverage.load()
         self.coverage.start()
@@ -65,5 +78,18 @@ class CodeCoverage(object):
         and create report
         """
         self.coverage.stop()
+        self.coverage.combine()
         self.coverage.save()
         self.coverage.report(file=sys.stdout)
+
+        xml_data = StringIO()
+        self.coverage.report(file=xml_data)
+        if world.config.cover_min_percentage:
+            match = re.search(r'^TOTAL\s+(.*)$', xml_data.getvalue(), re.MULTILINE)
+            if not match:
+                raise RadishError('Failed to find total percentage in coverage report')
+
+            total_percentage = int(match.groups()[0].split()[-1][:-1])
+            if total_percentage < int(world.config.cover_min_percentage):
+                raise RadishError('Failed to reach minimum expected coverage of {0}% (reached: {1}%)'.format(
+                    world.config.cover_min_percentage, total_percentage))

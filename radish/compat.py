@@ -6,6 +6,11 @@
 
 from sys import version_info
 
+try:
+    from io import StringIO
+except ImportError:
+    from StringIO import StringIO
+
 from .exceptions import PythonCompatibilityError
 
 

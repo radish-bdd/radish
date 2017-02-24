@@ -215,10 +215,32 @@ package names using ``--cover-packages``. The ``--cover-packages`` command line 
 is the ``--source`` command line switch used by ``coverage``.
 See `coverage documention <https://coverage.readthedocs.io/en/latest/cmd.html#execution>`_
 
-.. note::
+The following options are also available to configure the coverage measurement and report:
 
-    This feature is not yet complete.
-    See: https://github.com/radish-bdd/radish/issues/15
+:--with-coverage:
+    enables the coverage measurement
+:--cover-packages:
+    specify one or more packages to measure.
+    Multiple package names have to be separated
+    with a comma.
+:--cover-append:
+    append the coverage data to previously measured
+    data.
+:--cover-config-file:
+    specify a custom coverage config file.
+    By default the ``$PWD.coveragerc`` file
+    is read if it exists.
+:--cover-branches:
+    include branch coverage into the measurement
+:--cover-erase:
+    erase all previously collected coverage data
+:--cover-min-percentage:
+    let the radish run file if the given
+    coverage percentage is not reached
+:--cover-html:
+    generate an HTML coverage report
+:--cover-xml:
+    generate a XML coverage report
 
 
 Run - Write Cucumber JSON file
@@ -414,6 +436,13 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --bdd-xml=<bddxml>                          write BDD XML result file after run
       --with-coverage                             enable code coverage
       --cover-packages=<cover_packages>           specify source code package
+      --cover-append                              append coverage data to previous collected data
+      --cover-config-file=<cover_config_file>     specify coverage config file [default: .coveragerc]
+      --cover-branches                            include branch coverage in report
+      --cover-erase                               erase previously collected coverage data
+      --cover-min-percentage=<cover_min_percentage> fail if the given minimum coverage percentage is not reached
+      --cover-html=<cover_html_dir>               specify a directory where to store HTML coverage report
+      --cover-xml=<cover_xml_file>                specify a file where to store XML coverage report
       --cucumber-json=<ccjson>                    write cucumber json result file after run
       --debug-after-failure                       start python debugger after failure
       --inspect-after-failure                     start python shell after failure

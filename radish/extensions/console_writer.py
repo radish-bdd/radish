@@ -77,14 +77,14 @@ class ConsoleWriter(object):
         padding = len("{0}. ".format(max_rows)) if max_rows else 0
         return color_func("{1: >{0}}. ".format(padding, model.id)) if world.config.write_ids else ""
 
-    def get_id_padding(self, max_rows):
+    def get_id_padding(self, max_rows, offset=0):
         """
             Returns the id padding
         """
         if not world.config.write_ids:
             return ""
 
-        return " " * (len(str(max_rows)) + 2)
+        return " " * (len(str(max_rows)) + 2 + offset)
 
     def get_table_col_widths(self, table):
         """
@@ -232,7 +232,7 @@ class ConsoleWriter(object):
         if isinstance(scenario, ScenarioOutline):
             output += u"\n    {0}:\n".format(colorful.bold_white(scenario.example_keyword))
             output += colorful.bold_white(u"        {0}| {1} |".format(
-                self.get_id_padding(len(scenario.scenarios)),
+                self.get_id_padding(len(scenario.scenarios), offset=2),
                 u" | ".join("{1: <{0}}".format(scenario.get_column_width(i), x) for i, x in enumerate(scenario.examples_header))
             ))
         elif isinstance(scenario, ScenarioLoop):

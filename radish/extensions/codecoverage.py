@@ -21,7 +21,8 @@ class CodeCoverage(object):
     """
     OPTIONS = [
         ('--with-coverage', 'enable code coverage'),
-        ('--cover-packages=<cover_packages>', 'specify source code package')
+        ('--cover-packages=<cover_packages>', 'specify source code package'),
+        ('--cover-append', 'append coverage data to previous collected data')
     ]
     LOAD_IF = staticmethod(lambda config: config.with_coverage)
     LOAD_PRIORITY = 70
@@ -54,7 +55,8 @@ class CodeCoverage(object):
             source = self.cover_packages
 
         self.coverage = Coverage(source=source)
-        self.coverage.load()
+        if world.config.cover_append:
+            self.coverage.load()
         self.coverage.start()
 
     def coverage_stop(self, features, marker):

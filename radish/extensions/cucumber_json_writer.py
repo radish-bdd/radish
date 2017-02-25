@@ -48,7 +48,7 @@ class CucumberJSONWriter(object):
 
         ccjson = []
         for feature in features:
-            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not feature.has_to_run(world.config.scenarios):
                 continue
             feature_description = "\n".join(feature.description)
             feature_json = {
@@ -65,7 +65,7 @@ class CucumberJSONWriter(object):
             for i,j in enumerate(feature.tags):
                 feature_json["tags"].append({"name": "@" + j.name, "line": feature.line - len(feature.tags) + i})
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
-                if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_json = {
                     "keyword": scenario.keyword,

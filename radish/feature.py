@@ -79,28 +79,22 @@ class Feature(Model):
             if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):  # skip scenario outlines
                 continue
 
-            if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not scenario.has_to_run(world.config.scenarios):
                 continue
 
             if scenario.state is not Step.State.PASSED:
                 return scenario.state
         return Step.State.PASSED
 
-    def has_to_run(self, scenario_choice, feature_tags, scenario_tags):
+    def has_to_run(self, scenario_choice):
         """
             Returns wheiter the feature has to run or not
         """
-        if not scenario_choice and not feature_tags and not scenario_tags:
+        if not scenario_choice:
             return True
 
         in_choice = False
         if scenario_choice:
             in_choice = any(s for s in self.scenarios if s.absolute_id in scenario_choice)
 
-        in_tags = False
-        if feature_tags:
-            in_tags = any(t for t in self.tags if t.name in feature_tags)
-
-        scenario_to_run = any(s for s in self.scenarios if s.has_to_run(scenario_choice, feature_tags, scenario_tags))
-
-        return in_choice or in_tags or scenario_to_run
+        return in_choice

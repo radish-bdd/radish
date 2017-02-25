@@ -44,7 +44,7 @@ class EndreportWriter(object):
         pending_steps = []
         duration = timedelta()
         for feature in features:
-            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not feature.has_to_run(world.config.scenarios):
                 continue
             stats["features"]["amount"] += 1
             stats["features"][feature.state] += 1
@@ -53,7 +53,7 @@ class EndreportWriter(object):
                 duration += feature.duration
 
             for scenario in feature.all_scenarios:
-                if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                if not scenario.has_to_run(world.config.scenarios):
                     continue
 
                 if isinstance(scenario, ScenarioOutline):  # skip ScenarioOutlines

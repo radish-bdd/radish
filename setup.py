@@ -52,6 +52,7 @@ setup(
         "docopt",
         "pysingleton",
         "colorful>=0.01.03",
+        "tag-expressions>=1.0.0",
         "lxml",
         "ipython",
         "coverage",

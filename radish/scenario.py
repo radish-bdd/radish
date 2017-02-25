@@ -62,26 +62,16 @@ class Scenario(Model):
                 return step
         return None
 
-    def has_to_run(self, scenario_choice, feature_tags, scenario_tags):
+    def has_to_run(self, scenario_choice):
         """
             Returns wheiter the scenario has to run or not
 
             :param list scenario_choice: the scenarios to run. If None all will run
         """
-        if not scenario_choice and not feature_tags and not scenario_tags:
+        if not scenario_choice:
             return True
 
-        in_choice = self.absolute_id in (scenario_choice or [])
-
-        in_tags = False
-        if scenario_tags:
-            in_tags = any(t for t in self.tags if t.name in scenario_tags)
-
-        feature_has_to_run = False
-        if feature_tags:
-            feature_has_to_run = any(t for t in self.parent.tags if t.name in feature_tags)
-
-        return in_choice or in_tags or feature_has_to_run
+        return self.absolute_id in (scenario_choice or [])
 
     def after_parse(self):
         """

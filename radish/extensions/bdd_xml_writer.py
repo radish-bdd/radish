@@ -79,7 +79,7 @@ class BDDXMLWriter(object):
         )
 
         for feature in features:
-            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not feature.has_to_run(world.config.scenarios):
                 continue
 
             feature_element = self._get_element_from_model("feature", feature)
@@ -90,7 +90,7 @@ class BDDXMLWriter(object):
             scenarios_element = etree.Element("scenarios")
 
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
-                if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+                if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_element = self._get_element_from_model("scenario", scenario)
 

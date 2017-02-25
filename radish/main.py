@@ -5,6 +5,8 @@ import sys
 from time import time
 
 from docopt import docopt
+from colorful import colorful
+import tagexpressions
 
 from . import __VERSION__
 from .core import Core
@@ -15,7 +17,7 @@ from .stepregistry import StepRegistry
 from .hookregistry import HookRegistry
 from .runner import Runner
 from .extensionregistry import ExtensionRegistry
-from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError, FeatureTagNotFoundError, ScenarioTagNotFoundError
+from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
 from . import utils
@@ -68,19 +70,6 @@ def run_features(core):
         for s in world.config.scenarios:
             if not 0 < s <= amount_of_scenarios:
                 raise ScenarioNotFoundError(s, amount_of_scenarios)
-
-    # tags
-    if world.config.feature_tags:
-        world.config.feature_tags = [t for t in world.config.feature_tags.split(",")]
-        for tag in world.config.feature_tags:
-            if not any(f for f in core.features if tag in [t.name for t in f.tags]):
-                raise FeatureTagNotFoundError(tag)
-
-    if world.config.scenario_tags:
-        world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
-        for tag in world.config.scenario_tags:
-            if not any(s for f in core.features for s in f.scenarios if tag in [t.name for t in s.tags]):
-                raise ScenarioTagNotFoundError(tag)
 
     runner = Runner(HookRegistry(), early_exit=world.config.early_exit)
     return runner.start(core.features_to_run, marker=world.config.marker)
@@ -170,10 +159,20 @@ Options:
 
         feature_files.append(given_feature)
 
-    core.parse_features(feature_files)
+    # parse feature and scenario tag expressions
+    feature_tag_expression = None
+    if world.config.feature_tags:
+        feature_tag_expression = tagexpressions.parse(world.config.feature_tags)
 
-    if not core.features:
-        print("Error: no features given")
+    scenario_tag_expression = None
+    if world.config.scenario_tags:
+        scenario_tag_expression = tagexpressions.parse(world.config.scenario_tags)
+    core.parse_features(feature_files, feature_tag_expression, scenario_tag_expression)
+
+    if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
+        print(colorful.bold_red('Error: ') + colorful.red('please specify at least one feature to run'))
+        if feature_tag_expression or scenario_tag_expression:
+            print(colorful.red('You have specified a feature or scenario expression. Make sure those are valid and actually yield some features to run.'))
         return 1
 
     argument_dispatcher = [

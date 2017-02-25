@@ -16,6 +16,7 @@ from .scenario import Scenario
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
+from .tags import Tag
 
 
 class Keywords(object):
@@ -53,14 +54,17 @@ class FeatureParser(object):
         EXAMPLES_ROW = "examples_row"
         SCENARIO_LOOP = "scenario_loop"
         STEP_TEXT = "step_text"
+        SKIP_SCENARIO = "skip_scenario"
 
-    def __init__(self, core, featurefile, featureid, language="en"):
+    def __init__(self, core, featurefile, featureid, feature_tag_expr=None, scenario_tag_expr=None, language="en"):
         if not os.path.exists(featurefile):
             raise OSError("Feature file at '{0}' does not exist".format(featurefile))
 
         self._core = core
         self._featureid = featureid
         self._featurefile = featurefile
+        self._feature_tag_expr = feature_tag_expr
+        self._scenario_tag_expr = scenario_tag_expr
         self.keywords = {}
         self._keywords_delimiter = ":"
 
@@ -123,13 +127,20 @@ class FeatureParser(object):
                 if self.feature and self._detect_feature(line):
                     raise FeatureFileSyntaxError("radish supports only one Feature per feature file")
 
-                if not self._parse_context(line):
+                result = self._parse_context(line)
+                if result is False:
                     raise FeatureFileSyntaxError("Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
+
+                if result is None:  # feature did not match tag expression, thus do not continue to parse
+                    return None
+
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
         if self.feature.scenarios:
             self.feature.scenarios[-1].after_parse()
+
+        return self.feature
 
     def _parse_context(self, line):
         """
@@ -155,13 +166,20 @@ class FeatureParser(object):
         if not detected_feature:
             tag = self._detect_tag(line)
             if tag:
-                self._current_tags.append(Feature.Tag(tag[0], tag[1]))
+                self._current_tags.append(Tag(tag[0], tag[1]))
                 if tag[0] == "constant":
                     name, value = self._parse_constant(tag[1])
                     self._current_constants.append((name, value))
                 return True
 
             return False
+
+        # all tags of this feature have been consumed so we can
+        # check if this feature has to be evaluated or not.
+        if self._feature_tag_expr:
+            feature_in_tags = self._feature_tag_expr.evaluate([t.name for t in self._current_tags])
+            if not feature_in_tags:  # this feature does not match the given tag expression.
+                return None
 
         self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
         self.feature.context.constants = self._current_constants
@@ -189,7 +207,7 @@ class FeatureParser(object):
                 if not detected_scenario:
                     tag = self._detect_tag(line)
                     if tag:
-                        self._current_tags.append(Scenario.Tag(tag[0], tag[1]))
+                        self._current_tags.append(Tag(tag[0], tag[1]))
                         if tag[0] == "precondition":
                             scenario = self._parse_precondition(tag[1])
                             self._current_preconditions.append(scenario)
@@ -215,6 +233,17 @@ class FeatureParser(object):
                 scenario_id = previous_scenario.scenarios[-1].id + 1
             else:
                 scenario_id = previous_scenario.id + 1
+
+        # all tags of this scneario have been consumed so we can
+        # check if this scenario has to be evaluated or not
+        if self._scenario_tag_expr:
+            scenario_in_tags = self._scenario_tag_expr.evaluate([t.name for t in self._current_tags])
+            if not scenario_in_tags:  # this scenario does not match the given tag expression
+                self._current_tags = []
+                self._current_preconditions = []
+                self._current_constants = []
+                self._current_state = FeatureParser.State.SKIP_SCENARIO
+                return True
 
         self.feature.scenarios.append(scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions))
         self.feature.scenarios[-1].context.constants = self._current_constants
@@ -355,6 +384,15 @@ class FeatureParser(object):
         """
         name, value = arguments.split(":", 1)
         return name.strip(), value.strip()
+
+    def _parse_skip_scenario(self, line):
+        """
+        Parses the next lines until the next scenario is reached
+        """
+        if self._detect_tag(line) or self._detect_scenario(line) or self._detect_scenario_loop(line) or self._detect_scenario_outline(line):
+            return self._parse_scenario(line)
+
+        return True
 
     def _detect_feature(self, line):
         """

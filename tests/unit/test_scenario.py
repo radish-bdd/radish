@@ -4,6 +4,7 @@ from tests.base import *
 
 from radish.scenario import Scenario
 from radish.stepmodel import Step
+from radish.tags import Tag
 
 
 class ScenarioTestCase(RadishTestCase):
@@ -109,28 +110,15 @@ class ScenarioTestCase(RadishTestCase):
         """
             Test scenario's has to run functionality
         """
-        feature = Mock(tags=[Scenario.Tag("feature_bar"), Scenario.Tag("feature_foo")])
+        feature = Mock()
 
-        s = Scenario(1, "Scenario", "Some scenario", None, None, feature, [Scenario.Tag("foo", None), Scenario.Tag("bar", None), Scenario.Tag("bad_case", None)])
+        s = Scenario(1, "Scenario", "Some scenario", None, None, feature)
         s.absolute_id = 1
-        s.has_to_run.when.called_with(None, None, ["foo"]).should.return_value(True)
-        s.has_to_run.when.called_with(None, None, ["good_case", "foo"]).should.return_value(True)
-        s.has_to_run.when.called_with(None, None, ["good_case", "bar", "bad_case"]).should.return_value(True)
-        s.has_to_run.when.called_with(None, None, ["good_case"]).should.return_value(False)
+        s.has_to_run.when.called_with(None).should.return_value(True)
 
-        s.has_to_run.when.called_with([1], None, None).should.return_value(True)
-        s.has_to_run.when.called_with([1, 2], None, None).should.return_value(True)
-        s.has_to_run.when.called_with([2], None, None).should.return_value(False)
-
-        s.has_to_run.when.called_with([1], None, ["good_case"]).should.return_value(True)
-        s.has_to_run.when.called_with([1, 2], None, ["foo", "bad_case"]).should.return_value(True)
-        s.has_to_run.when.called_with([5, 4], None, ["bad_case"]).should.return_value(True)
-        s.has_to_run.when.called_with([6], None, ["good_case"]).should.return_value(False)
-
-        s.has_to_run.when.called_with(None, ["feature"], None).should.return_value(False)
-        s.has_to_run.when.called_with(None, ["feature_bar"], None).should.return_value(True)
-        s.has_to_run.when.called_with(None, ["feature", "feature_bar"], None).should.return_value(True)
-        s.has_to_run.when.called_with(None, ["feature_foo"], None).should.return_value(True)
+        s.has_to_run.when.called_with([1]).should.return_value(True)
+        s.has_to_run.when.called_with([1, 2]).should.return_value(True)
+        s.has_to_run.when.called_with([2]).should.return_value(False)
 
     def test_scenario_after_parse_hook(self):
         """

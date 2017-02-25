@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Vendor `parse` package until [parse (#38)](https://github.com/r1chardj0n3s/parse/pull/38) is merged
 - Implement `radish-test` to test step patterns
 - Improved coverage extensions with useful CLI options. Refs #15 and #41
+- Support for [tag-expressions](https://github.com/timofurrer/tag-expressions) for `--feature-tags` and `--scenario-tags`. Refs #16
 
 ### Fixed
 - Lazy evaluate matched step arguments. Refs #31

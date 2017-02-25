@@ -149,21 +149,3 @@ class ValidationError(RadishError):
         Raised by the user if a step is somehow not valid
     """
     pass
-
-
-class FeatureTagNotFoundError(RadishError):
-    """
-        Raised if a feature tag cannot be found
-    """
-    def __init__(self, tag):
-        self.tag = tag
-        super(FeatureTagNotFoundError, self).__init__("No features found with tag '{0}'".format(tag))
-
-
-class ScenarioTagNotFoundError(RadishError):
-    """
-        Raised if a scenario tag cannot be found
-    """
-    def __init__(self, tag):
-        self.tag = tag
-        super(ScenarioTagNotFoundError, self).__init__("No scenarios found with tag '{0}'".format(tag))

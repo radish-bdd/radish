@@ -13,13 +13,6 @@ class RadishError(Exception):
     pass
 
 
-class PythonCompatibilityError(RadishError):
-    """
-        Raised if python compatibility is not possible
-    """
-    pass
-
-
 class LanguageNotSupportedError(RadishError):
     """
         Raised if the language could not be found.

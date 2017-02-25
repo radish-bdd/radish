@@ -179,13 +179,18 @@ Run - Specify certain Features and/or Scenarios by tags
 Radish is able to run only a selection of certain Features and/or Scenarios
 using the ``--feature-tags`` or ``--scenario-tags`` command line options.
 You can specify the tags of Features/Scenarios which should be run. The command line
-option value can be a single tag or a comma separated list of tags:
+option value has to be a valid tag expression.
+Radish uses `tag-expressions <https://github.com/timofurrer/tag-expressions>`_.
+The following are some valid tag expressions:
+
 
 .. code:: bash
 
-  radish SomeFeature.feature --feature-tags regression
-  radish SomeFeature.feature --scenario-tags good_case,in_progress
-  radish SomeFeature.feature --scenario-tags good_case --feature-tags regression
+  radish SomeFeature.feature --feature-tags 'regression'
+  radish SomeFeature.feature --scenario-tags 'good_case and in_progress'
+  radish SomeFeature.feature --scenario-tags 'good_case' --feature-tags 'regression'
+  radish SomeFeature.feature --feature-tags 'regression and good_case and not real_hardware'
+  radish SomeFeature.feature --feature-tags 'database or filesystem and bad_case'
 
 To learn how to tag Features and Scenarios please refer to :ref:`tutorial#tags`
 section.

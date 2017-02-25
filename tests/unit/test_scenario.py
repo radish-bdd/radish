@@ -4,7 +4,7 @@ from tests.base import *
 
 from radish.scenario import Scenario
 from radish.stepmodel import Step
-from radish.tags import Tag
+from radish.model import Tag
 
 
 class ScenarioTestCase(RadishTestCase):

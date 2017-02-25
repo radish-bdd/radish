@@ -8,7 +8,7 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.main import setup_config
-from radish.tags import Tag
+from radish.model import Tag
 
 
 class FeatureTestCase(RadishTestCase):

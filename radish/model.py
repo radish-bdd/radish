@@ -13,6 +13,15 @@
 from .exceptions import RadishError
 
 
+class Tag(object):
+    """
+    Represents a tag for a model
+    """
+    def __init__(self, name, arg=None):
+        self.name = name
+        self.arg = arg
+
+
 # FIXME: make ABC
 class Model(object):
     """

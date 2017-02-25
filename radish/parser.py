@@ -16,7 +16,7 @@ from .scenario import Scenario
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
-from .tags import Tag
+from .model import Tag
 
 
 class Keywords(object):

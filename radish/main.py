@@ -76,7 +76,9 @@ def run_features(core):
             if not any(f for f in core.features if tag in [t.name for t in f.tags]):
                 raise FeatureTagNotFoundError(tag)
 
+    print(world.config.scenario_tags)
     if world.config.scenario_tags:
+        print(world.config.scenario_tags)
         world.config.scenario_tags = [t for t in world.config.scenario_tags.split(",")]
         for tag in world.config.scenario_tags:
             if not any(s for f in core.features for s in f.scenarios if tag in [t.name for t in s.tags]):
@@ -110,8 +112,8 @@ Usage:
            [-d | --dry-run]
            [-s=<scenarios> | --scenarios=<scenarios>]
            [--shuffle]
-           [--feature-tags=<feature_tags>]
-           [--scenario-tags=<scenario_tags>]
+           [--feature-tags=<feature_tags> ...]
+           [--scenario-tags=<scenario_tags> ...]
            {0}
     radish (-h | --help)
     radish (-v | --version)

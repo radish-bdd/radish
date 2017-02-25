@@ -4,6 +4,7 @@ from tests.base import *
 
 from radish.scenario import Scenario
 from radish.stepmodel import Step
+from radish.tags import Tag
 
 
 class ScenarioTestCase(RadishTestCase):
@@ -109,9 +110,9 @@ class ScenarioTestCase(RadishTestCase):
         """
             Test scenario's has to run functionality
         """
-        feature = Mock(tags=[Scenario.Tag("feature_bar"), Scenario.Tag("feature_foo")])
+        feature = Mock(tags=[Tag("feature_bar"), Tag("feature_foo")])
 
-        s = Scenario(1, "Scenario", "Some scenario", None, None, feature, [Scenario.Tag("foo", None), Scenario.Tag("bar", None), Scenario.Tag("bad_case", None)])
+        s = Scenario(1, "Scenario", "Some scenario", None, None, feature, [Tag("foo", None), Tag("bar", None), Tag("bad_case", None)])
         s.absolute_id = 1
         s.has_to_run.when.called_with(None, None, ["foo"]).should.return_value(True)
         s.has_to_run.when.called_with(None, None, ["good_case", "foo"]).should.return_value(True)

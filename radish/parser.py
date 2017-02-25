@@ -16,6 +16,7 @@ from .scenario import Scenario
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
+from .tags import Tag
 
 
 class Keywords(object):
@@ -155,7 +156,7 @@ class FeatureParser(object):
         if not detected_feature:
             tag = self._detect_tag(line)
             if tag:
-                self._current_tags.append(Feature.Tag(tag[0], tag[1]))
+                self._current_tags.append(Tag(tag[0], tag[1]))
                 if tag[0] == "constant":
                     name, value = self._parse_constant(tag[1])
                     self._current_constants.append((name, value))
@@ -189,7 +190,7 @@ class FeatureParser(object):
                 if not detected_scenario:
                     tag = self._detect_tag(line)
                     if tag:
-                        self._current_tags.append(Scenario.Tag(tag[0], tag[1]))
+                        self._current_tags.append(Tag(tag[0], tag[1]))
                         if tag[0] == "precondition":
                             scenario = self._parse_precondition(tag[1])
                             self._current_preconditions.append(scenario)

@@ -71,7 +71,7 @@ class Runner(object):
 
         returncode = 0  # return code is set to 1 if any feature fails
         for feature in features:
-            if not feature.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not feature.has_to_run(world.config.scenarios):
                 continue
 
             returncode |= self.run_feature(feature)
@@ -91,7 +91,7 @@ class Runner(object):
 
         returncode = 0
         for scenario in feature:
-            if not scenario.has_to_run(world.config.scenarios, world.config.feature_tags, world.config.scenario_tags):
+            if not scenario.has_to_run(world.config.scenarios):
                 continue
             returncode |= self.run_scenario(scenario)
 

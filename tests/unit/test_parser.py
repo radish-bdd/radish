@@ -3,13 +3,14 @@
 from tests.base import *
 
 from tempfile import NamedTemporaryFile
+import tagexpressions
 
 from radish.parser import FeatureParser
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.exceptions import RadishError, LanguageNotSupportedError
+from radish.exceptions import RadishError, LanguageNotSupportedError, FeatureFileSyntaxError
 
 
 class ParserTestCase(RadishTestCase):
@@ -693,3 +694,78 @@ Feature: some feature
             parser.feature.scenarios[2].tags.should.have.length_of(2)
             parser.feature.scenarios[2].tags[0].name.should.be.equal("error_case")
             parser.feature.scenarios[2].tags[1].name.should.be.equal("bad_case")
+
+    def test_parse_feature_with_ignored_tag(self):
+        """
+            Test parsing a feature which is not part of the feature tag expression
+        """
+        feature = """
+@some_feature
+Feature: some feature
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1, feature_tag_expr=tagexpressions.parse('not some_feature'))
+            feature = parser.parse()
+
+            feature.should.be.none
+
+    def test_parse_feature_with_ignored_scenario(self):
+        """
+            Test parsing a feature which has an ignored scenario by a given tag expression
+        """
+        feature = """
+Feature: some feature
+    @good_case
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    @bad_case
+    Scenario: bad case
+        Given I have the number 1
+        When I add 3 to my number
+        Then I expect my number not to be 4
+
+    @good_case
+    Scenario: foo second it
+        When I have a normal scenario
+        Then I expect nothing special
+
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1, scenario_tag_expr=tagexpressions.parse('not bad_case'))
+            feature = parser.parse()
+
+            feature.scenarios.should.have.length_of(2)
+
+    def test_parse_feature_with_syntax_error(self):
+        """
+            Test parsing a feature which has syntax errors
+        """
+        feature = """
+Bllllla: fooo
+    @good_case
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special"""
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            parser.parse.when.called.should.throw(FeatureFileSyntaxError)

@@ -2,6 +2,7 @@ pysingleton
 colorful==0.1.3
 docopt
 ipython
+tag-expressions>=1.0.0
 lxml
 parse
 coverage

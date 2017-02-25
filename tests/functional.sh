@@ -24,6 +24,7 @@ for t in *; do
     BASE_DIR="${t}/radish"
     FEATURES_DIR="${t}/features"
     MATCHES_FILE="${t}/tests/radish-matches.yml"
+    CMDLINE_FILE="${t}/cmdline"
 
     if [ -f "${MATCHES_FILE}" ]; then
         PYTHONPATH="${t}" coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches -b "${BASE_DIR}" "${MATCHES_FILE}"
@@ -33,7 +34,13 @@ for t in *; do
         fi
     fi
 
-    PYTHONPATH="${t}" coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" -b "${BASE_DIR}" "${FEATURES_DIR}"
+    # check if custom cmdline arguments are specified
+    custom_cmdline_args=""
+    if [ -f "${CMDLINE_FILE}" ]; then
+        custom_cmdline_args=$(cat "${CMDLINE_FILE}")
+    fi
+
+    echo "${custom_cmdline_args}" | PYTHONPATH="${t}" xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" -b "${BASE_DIR}" "${FEATURES_DIR}"
     if [ $? -ne 0 ]; then
         echo "Functional tests from '${t}' failed with status $?"
         exit 1

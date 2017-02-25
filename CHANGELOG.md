@@ -12,6 +12,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - Lazy evaluate matched step arguments. Refs #31
+- Support running features containing steps with missing step definitions if they are ignored by tags. Refs #17
 
 ## [v0.2.12]
 ### Added

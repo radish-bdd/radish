@@ -6,7 +6,7 @@
 
 import re
 import inspect
-import radish.vendor.parse as parse
+import parse
 from singleton import singleton
 
 from .exceptions import RadishError, SameStepError, StepRegexError

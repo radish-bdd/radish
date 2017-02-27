@@ -53,6 +53,7 @@ setup(
         "pysingleton",
         "colorful>=0.01.03",
         "tag-expressions>=1.0.0",
+        "parse>=1.8.0",
         "lxml",
         "ipython",
         "coverage",

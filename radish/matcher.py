@@ -7,7 +7,7 @@
 import re
 from collections import namedtuple
 
-import radish.vendor.parse as parse
+import parse
 
 from .argexpregistry import ArgExpRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError
@@ -32,7 +32,7 @@ class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
 
     def evaluate(self):
         """Lazy and return evaluate the step group matches"""
-        result = self.match.generate_result()
+        result = self.match.evaluate_result()
         return result.fixed, result.named
 
 
@@ -89,7 +89,7 @@ def match_step(sentence, steps):
             except ValueError as e:
                 raise StepPatternError(pattern, func.__name__, e)
 
-            match = compiled.search(sentence, generate_result=False)
+            match = compiled.search(sentence, evaluate_result=False)
             argument_match = ParseStepArguments(match)
 
         if match:

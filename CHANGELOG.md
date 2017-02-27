@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-*Nothing here yet ...*
+### Fixed
+- Remove vendored `parse` package because [parse (#38)](https://github.com/r1chardj0n3s/parse/pull/38) is merged
 
 ## [v0.3.0]
 

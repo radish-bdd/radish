@@ -17,7 +17,9 @@ class SyslogWriter(object):
     """
         Syslog Writer radish extension
     """
-    LOAD_IF = staticmethod(lambda config: not config.show)
+    OPTIONS = (["--syslog", "log all of your features, scenarios, and steps"+\
+    		" to the syslog"])
+    LOAD_IF = staticmethod(lambda config: config.syslog)
     LOAD_PRIORITY = 40
 
     def __init__(self):

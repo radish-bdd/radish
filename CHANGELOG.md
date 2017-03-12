@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Nothing here yet...*
 
+## [v0.3.2]
+
+### Changed
+- Disabled the *syslog extension* by default. It can be enabled via the `--syslog` command line option. Refs #49
+
 ## [v0.3.1]
 
 ### Fixed
@@ -33,7 +38,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.3.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.3.2...HEAD
+[v0.3.2]: https://github.com/radish-bdd/radish/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/radish-bdd/radish/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/radish-bdd/radish/compare/v0.2.12...v0.3.0
 [v0.2.12]: https://github.com/radish-bdd/radish/compare/v0.2.11...v0.2.12

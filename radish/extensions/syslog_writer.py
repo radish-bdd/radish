@@ -10,8 +10,6 @@ from radish.feature import Feature
 from radish.hookregistry import before, after
 from radish.extensionregistry import extension
 
-import syslog
-
 @extension
 class SyslogWriter(object):
     """
@@ -27,6 +25,10 @@ class SyslogWriter(object):
     LOAD_PRIORITY = 40
 
     def __init__(self):
+        # import syslog only if the extension got loaded
+        # but not if the module got loaded.
+        import syslog
+
         before.all(self.syslog_writer_before_all)
         before.each_feature(self.syslog_writer_before_each_feature)
         before.each_scenario(self.syslog_writer_before_each_scenario)

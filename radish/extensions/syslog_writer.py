@@ -13,8 +13,12 @@ from radish.extensionregistry import extension
 @extension
 class SyslogWriter(object):
     """
-        Syslog Writer radish extension
+        Syslog Writer radish extension. This extension is only supported on
+        systems where the Python standard library supports the system logger
+        (syslog). For example, this extension works on UNIX and UNIX-like
+        systems (Linux), but will not work on Windows.
     """
+
     OPTIONS = (["--syslog", "log all of your features, scenarios, and steps"+\
     		" to the syslog"])
     LOAD_IF = staticmethod(lambda config: config.syslog)

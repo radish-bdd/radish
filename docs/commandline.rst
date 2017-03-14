@@ -263,6 +263,25 @@ Documentation describing the format of the Cucumber JSON file can be found
 here: https://www.relishapp.com/cucumber/cucumber/docs/formatters/json-output-formatter
 
 
+Run - Log all features, scenarios, and steps to syslog
+------------------------------------------------------
+
+Radish provides the `--syslog` command line option which can be used to log all of your
+features, scenarios, and steps to the syslog. The caveat here is this option is only 
+supported on systems where the Python standard library supports the system logger
+(syslog). This command line option works well in UNIX and UNIX-like systems (Linux) but
+will not work on Windows machines.
+
+This can be especially useful for consolidating all of your logging data in one central
+repository.
+
+.. code:: bash
+
+  radish SomeFeature.feature --syslog
+
+If you are unfamiliar with the syslog feature, please consult the official `syslog
+documentation <https://docs.python.org/3/library/syslog.html#module-syslog>`_.
+
 Run - Debug code after failure
 -------------------------------
 
@@ -352,7 +371,7 @@ destroying them.
 Run - Writing out Scenario and Step ids
 ---------------------------------------
 
-Radish provides the `--write-ids`` command line option which can be used to
+Radish provides the `--write-ids` command line option which can be used to
 enumerate Scenarios and Steps.
 
 This can be useful for bug reporting.
@@ -451,6 +470,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --cucumber-json=<ccjson>                    write cucumber json result file after run
       --debug-after-failure                       start python debugger after failure
       --inspect-after-failure                     start python shell after failure
+      --syslog                                    log all of your features, scenarios, and steps to the syslog 
       --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
       --no-line-jump                              print features without line jumps (overwriting steps)
       --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)

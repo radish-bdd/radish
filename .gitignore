@@ -38,3 +38,6 @@ debian/radish-bdd*
 
 # ignore README.rst which is only generated for pypi
 README.rst
+
+# IDE configuration
+.idea/

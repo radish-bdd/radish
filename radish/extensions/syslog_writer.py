@@ -4,11 +4,11 @@
     This module provides an extension to write all features, scenarios and steps to the syslog.
 """
 
-
 from radish.terrain import world
 from radish.feature import Feature
 from radish.hookregistry import before, after
 from radish.extensionregistry import extension
+
 
 @extension
 class SyslogWriter(object):
@@ -19,8 +19,7 @@ class SyslogWriter(object):
         systems (Linux), but will not work on Windows.
     """
 
-    OPTIONS = (["--syslog", "log all of your features, scenarios, and steps"+\
-    		" to the syslog"])
+    OPTIONS = [("--syslog", "log all of your features, scenarios, and steps to the syslog")]
     LOAD_IF = staticmethod(lambda config: config.syslog)
     LOAD_PRIORITY = 40
 
@@ -91,22 +90,28 @@ class SyslogWriter(object):
         """
             Writes the scenario to the syslog
         """
-        self.log(u"begin scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id, scenario.id, scenario.sentence))
+        self.log(u"begin scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id,
+                                                          scenario.id, scenario.sentence))
 
     def syslog_writer_after_each_scenario(self, scenario):
         """
             Writes the scenario to the syslog
         """
-        self.log(u"end scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id, scenario.id, scenario.sentence))
+        self.log(u"end scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id,
+                                                        scenario.id, scenario.sentence))
 
     def syslog_writer_before_each_step(self, step):
         """
             Writes the step to the syslog
         """
-        self.log(u"begin step {0}:{1}.{2}.{3} {4}".format(world.config.marker, self.get_scenario_feature(step.parent).id, step.parent.id, step.id, step.sentence))
+        self.log(
+            u"begin step {0}:{1}.{2}.{3} {4}".format(world.config.marker, self.get_scenario_feature(step.parent).id,
+                                                     step.parent.id, step.id, step.sentence))
 
     def syslog_writer_after_each_step(self, step):
         """
             Writes the step to the syslog
         """
-        self.log(u"{0} step {1}:{2}.{3}.{4} {5}".format(step.state, world.config.marker, self.get_scenario_feature(step.parent).id, step.parent.id, step.id, step.sentence))
+        self.log(u"{0} step {1}:{2}.{3}.{4} {5}".format(step.state, world.config.marker,
+                                                        self.get_scenario_feature(step.parent).id, step.parent.id,
+                                                        step.id, step.sentence))

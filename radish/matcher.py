@@ -17,7 +17,6 @@ StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
 class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a regex step pattern"""
-
     def __init__(self, match):
         self.match = match
 
@@ -28,7 +27,6 @@ class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
 
 class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a parse step pattern"""
-
     def __init__(self, match):
         self.match = match
 
@@ -81,9 +79,6 @@ def match_step(sentence, steps):
         :returns: the arguments and the func which were matched
         :rtype: tuple
     """
-
-    matches = []
-
     for pattern, func in steps.items():
         if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
             match = pattern.search(sentence)
@@ -98,20 +93,6 @@ def match_step(sentence, steps):
             argument_match = ParseStepArguments(match)
 
         if match:
-            matches.append(StepMatch(argument_match=argument_match, func=func))
+            return StepMatch(argument_match=argument_match, func=func)
 
-    return keep_longuest_match(matches)
-
-
-def keep_longuest_match(matches):
-    if len(matches) < 1:
-        return None
-    else:
-        longuest_match = matches[0]
-        for i in range(1, len(matches)):
-            current = longuest_match.argument_match.match.match.string
-            match = matches[i].argument_match.match.match.string
-            if len(match) > len(current):
-                longuest_match = matches[i]
-
-        return longuest_match
+    return None

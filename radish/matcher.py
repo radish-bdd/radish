@@ -17,6 +17,7 @@ StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
 class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a regex step pattern"""
+
     def __init__(self, match):
         self.match = match
 
@@ -27,6 +28,7 @@ class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
 
 class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a parse step pattern"""
+
     def __init__(self, match):
         self.match = match
 
@@ -83,6 +85,10 @@ def match_step(sentence, steps):
         if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
             match = pattern.search(sentence)
             argument_match = RegexStepArguments(match)
+            if match:
+                longest_group = get_longest_group(match.regs)
+            else:
+                longest_group = 0
         else:
             try:
                 compiled = parse.compile(pattern, ArgExpRegistry().expressions)
@@ -91,8 +97,26 @@ def match_step(sentence, steps):
 
             match = compiled.search(sentence, evaluate_result=False)
             argument_match = ParseStepArguments(match)
+            if match:
+                longest_group = get_longest_group(match.match.regs)
+            else:
+                longest_group = 0
 
         if match:
-            return StepMatch(argument_match=argument_match, func=func)
+            if len(sentence) == longest_group:
+                return StepMatch(argument_match=argument_match, func=func)
 
     return None
+
+
+def get_longest_group(regs):
+    if len(regs) < 1:
+        return 0
+
+    longest_group = regs[0][1]
+
+    for i in range(1, len(regs)):
+        candidate = regs[i][1]
+        if candidate > longest_group:
+            longest_group = candidate
+    return longest_group

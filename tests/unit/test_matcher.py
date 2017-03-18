@@ -15,6 +15,7 @@ class MatcherTestCase(RadishTestCase):
     """
         Tests the Matcher class
     """
+
     @classmethod
     def setUpClass(cls):
         """
@@ -28,7 +29,8 @@ class MatcherTestCase(RadishTestCase):
         """
             Test matching steps from feature files with registered steps
         """
-        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func",
+                 re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         match, func = match_step("Given I have the number 5", steps)
         arguments, keyword_arguments = match.evaluate()
@@ -45,11 +47,34 @@ class MatcherTestCase(RadishTestCase):
         match = match_step("when I call a non-existing step", steps)
         match.should.be.none  # pylint: disable=pointless-statement
 
+    def test_similar_steps_pattern(self):
+        """
+            Test matching steps from feature files with similar patterns
+        """
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func",
+                 re.compile(r"Given I have the number (\d+) to add"): "some_other_func"}
+
+        match, func = match_step("Given I have the number 5", steps)
+        arguments, keyword_arguments = match.evaluate()
+        arguments.should.be.equal(("5",))
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_func")
+
+        match, func = match_step("Given I have the number 5 to add", steps)
+        arguments, keyword_arguments = match.evaluate()
+        arguments.should.be.equal(("5",))
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_other_func")
+
+        match = match_step("Given I have the number", steps)
+        match.should.be.none  # pylint: disable=pointless-statement
+
     def test_merge_steps(self):
         """
             Test merging steps from feature files with registered steps
         """
-        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func",
+                 re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
         scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)
@@ -68,7 +93,8 @@ class MatcherTestCase(RadishTestCase):
         """
             Test merging non existing step
         """
-        steps = {re.compile(r"Given I have the number (\d+)"): "some_func", re.compile(r"I add (\d+) to my number"): "some_other_func"}
+        steps = {re.compile(r"Given I have the number (\d+)"): "some_func",
+                 re.compile(r"I add (\d+) to my number"): "some_other_func"}
 
         feature = Feature(1, "Feature", "Some feature", "test.feature", 1)
         scenario = Scenario(1, "Scenario", "Adding numbers", "test.feature", 2, feature)

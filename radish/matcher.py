@@ -115,8 +115,8 @@ def get_longest_group(regs):
 
     longest_group = regs[0][1]
 
-    for i in range(1, len(regs)):
-        candidate = regs[i][1]
+    for reg in regs[1:]:
+        candidate = reg[1]
         if candidate > longest_group:
             longest_group = candidate
     return longest_group

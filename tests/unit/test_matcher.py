@@ -69,6 +69,46 @@ class MatcherTestCase(RadishTestCase):
         match = match_step("Given I have the number", steps)
         match.should.be.none  # pylint: disable=pointless-statement
 
+    def test_similar_steps(self):
+        """
+            Test matching steps from feature files with similar text
+        """
+        steps = {"This is a short sentence": "some_func",
+                 "This is a short sentence with few more words": "some_other_func"}
+
+        match, func = match_step("This is a short sentence", steps)
+        arguments, keyword_arguments = match.evaluate()
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_func")
+
+        match, func = match_step("This is a short sentence with few more words", steps)
+        arguments, keyword_arguments = match.evaluate()
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_other_func")
+
+        match = match_step("This is not a step", steps)
+        match.should.be.none  # pylint: disable=pointless-statement
+
+    def test_similar_steps_with_args(self):
+        """
+            Test matching steps from feature files with similar text and arguments
+        """
+        steps = {"This is a short {arg:S}": "some_func",
+                 "This is a short {arg:S} with few more words": "some_other_func"}
+
+        match, func = match_step("This is a short sentence", steps)
+        arguments, keyword_arguments = match.evaluate()
+        assert keyword_arguments["arg"] == "sentence"
+        func.should.be.equal("some_func")
+
+        match, func = match_step("This is a short sentence with few more words", steps)
+        arguments, keyword_arguments = match.evaluate()
+        assert keyword_arguments["arg"] == "sentence"
+        func.should.be.equal("some_other_func")
+
+        match = match_step("This is not a step", steps)
+        match.should.be.none  # pylint: disable=pointless-statement
+
     def test_merge_steps(self):
         """
             Test merging steps from feature files with registered steps

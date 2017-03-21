@@ -21,6 +21,10 @@
 
 radish is a Behavior Driven Development tool completely written in python. It supports all *gherkin* language features. In addition to that, radish implements a few *unconventional* BDD features such as **Preconditions**, **Scenario Loops**, **Constants** and **Expressions**.
 
+# Supported plateforms
+
+radish is supported on Windows, Mac and Linux
+
 # Installation
 
 radish is available as `pip` package:
@@ -28,7 +32,6 @@ radish is available as `pip` package:
 ```bash
 pip install radish-bdd
 ```
-
 **Note**: Make sure you have enough privileges to install radish on your system.
 
 # Getting started

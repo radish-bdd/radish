@@ -21,7 +21,7 @@
 
 radish is a Behavior Driven Development tool completely written in python. It supports all *gherkin* language features. In addition to that, radish implements a few *unconventional* BDD features such as **Preconditions**, **Scenario Loops**, **Constants** and **Expressions**.
 
-# Supported plateforms
+# Supported platforms
 
 radish is supported on Windows, Mac and Linux
 

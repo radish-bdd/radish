@@ -6,7 +6,9 @@
 
 
 import sys
+import os
 from functools import wraps
+
 from colorful import colorful
 
 from .terrain import world
@@ -45,10 +47,33 @@ def abort(return_code):
     sys.exit(return_code)
 
 
+def debug_enabled():
+    """
+        Return True is ``RADISH_DEBUG`` environmental variable is set to 1
+    """
+    return 'RADISH_DEBUG' in os.environ and os.environ['RADISH_DEBUG'] == "1"
+
+
+def enable_excepthook():
+    """
+        Enable Radish custom excepthook handling system-wide if debug
+        is not set. Specifically this sets ``sys.excepthook`` to
+        ``oracleerror.catch_unhandled_exception``.
+    """
+
+    if debug_enabled() is False:
+        sys.excepthook = catch_unhandled_exception
+
+
 def error_oracle(func):
     """
-        Decorator to diagnose thrown exceptions
+        Decorator to diagnose thrown exceptions. Only enabled if debug is
+        enabled (see ``debug_enabled()``)
     """
+
+    if debug_enabled():
+        return func
+
     @wraps(func)
     def _decorator(*args, **kwargs):
         """

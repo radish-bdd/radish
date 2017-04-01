@@ -29,3 +29,27 @@ def u(text):  # pragma: no cover
         return unicode(text, "utf-8")
 
     return text
+
+
+# base classes for strings types in python2/python3
+if PY2:
+    string_types = basestring,
+else:
+    string_types = str,
+
+
+# python2/python3 compatible method to identify iterable that are not strings
+if PY2:   # pragma: no cover
+    def is_nonstr_iter(v):
+        return hasattr(v, '__iter__')
+else:
+    def is_nonstr_iter(v):
+        if isinstance(v, str):
+            return False
+        return hasattr(v, '__iter__')
+
+# python2/python3 compatible pathname2url import
+if PY2:   # pragma: no cover
+    from urllib import pathname2url
+else:
+    from urllib.request import pathname2url

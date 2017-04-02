@@ -769,3 +769,183 @@ Bllllla: fooo
             core = Mock()
             parser = FeatureParser(core, featurefile.name, 1)
             parser.parse.when.called.should.throw(FeatureFileSyntaxError)
+
+
+    def test_parse_simple_background(self):
+        """
+        Test parsing a feature which has a simple background
+        """
+        feature = """
+Feature: some feature
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    Scenario: foo second it
+        When I have a normal scenario
+        Then I expect nothing special
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            feature = parser.parse()
+
+            feature.background.shouldnt.be.none
+            feature.scenarios.should.have.length_of(2)
+
+            feature.background.all_steps.should.have.length_of(2)
+            feature.background.all_steps[0].sentence.should.be.equal("Given I have a proper setup")
+            feature.background.all_steps[1].sentence.should.be.equal("And I have a connection established")
+
+
+    def test_parse_simple_background_with_subsequent_scenario_outline(self):
+        """
+        Test parsing a feature which has a simple background with a subsequent ScenarioOutline
+        """
+        feature = """
+Feature: some feature
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+
+    Scenario Outline: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    Examples:
+        | foo | bar |
+        | 1   | 2   |
+
+    Scenario: foo second it
+        When I have a normal scenario
+        Then I expect nothing special
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            feature = parser.parse()
+
+            feature.background.shouldnt.be.none
+            feature.scenarios.should.have.length_of(2)
+            feature.scenarios[0].should.be.a(ScenarioOutline)
+
+
+    def test_parse_simple_background_with_subsequent_scenario_loop(self):
+        """
+        Test parsing a feature which has a simple background with a subsequent ScenarioLoop
+        """
+        feature = """
+Feature: some feature
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+
+    Scenario Loop 10: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    Scenario: foo second it
+        When I have a normal scenario
+        Then I expect nothing special
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            feature = parser.parse()
+
+            feature.background.shouldnt.be.none
+            feature.scenarios.should.have.length_of(2)
+            feature.scenarios[0].should.be.a(ScenarioLoop)
+
+
+    def test_parse_simple_background_with_subsequent_tag(self):
+        """
+        Test parsing a feature which has a simple background with a subsequent tag
+        """
+        feature = """
+Feature: some feature
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+
+    @constant(foo: bar)
+    @foo
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            feature = parser.parse()
+
+            feature.background.shouldnt.be.none
+            feature.scenarios.should.have.length_of(1)
+            feature.scenarios[0].constants.should.have.length_of(1)
+            feature.scenarios[0].tags.should.have.length_of(2)
+
+
+    def test_parse_misplaced_background(self):
+        """
+        Test parsing a feature which has a misplaced background
+        """
+        feature = """
+Feature: some feature
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            parser.parse.when.called.should.throw(FeatureFileSyntaxError, "The Background block must be placed before any Scenario block")
+
+
+    def test_parse_multiple_backgrounds(self):
+        """
+        Test parsing a feature which has a multiple backgrounds
+        """
+        feature = """
+Feature: some feature
+    Background: Some context
+        Given I have a proper setup
+        And I have a connection established
+
+    Background: Some context 1
+        Given I have a proper setup
+        And I have a connection established
+
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+"""
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+            parser = FeatureParser(core, featurefile.name, 1)
+            parser.parse.when.called.should.throw(FeatureFileSyntaxError, "The Background block may only appear once in a Feature")

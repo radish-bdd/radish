@@ -12,10 +12,11 @@ class Scenario(Model):
     """
         Represents a Scenario
     """
-    def __init__(self, id, keyword, sentence, path, line, parent, tags=None, preconditions=None):
+    def __init__(self, id, keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = None
         self.preconditions = preconditions or []
+        self.background = background
         self.steps = []
         self.context = self.Context()
 
@@ -47,6 +48,9 @@ class Scenario(Model):
             Returns all steps from all preconditions in the correct order
         """
         steps = []
+        if self.background:
+            steps.extend(self.background.all_steps)
+
         for precondition in self.preconditions:
             steps.extend(precondition.all_steps)
         steps.extend(self.steps)
@@ -84,5 +88,9 @@ class Scenario(Model):
         for step_id, step in enumerate(self.all_steps, start=1):
             step.id = step_id
             if step.parent != self:
-                step.as_precondition = step.parent
+                # check if step is from background
+                if self.background and step in self.background.steps:
+                    step.as_background = self.background
+                else:
+                    step.as_precondition = step.parent
                 step.parent = self

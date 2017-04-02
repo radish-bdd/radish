@@ -166,6 +166,43 @@ The information about the precondition is commented out.
 
 *Note: Scenario Preconditions are not standard gherkin*
 
+Background
+----------
+
+A *Background* is a special case of the Scenario. It's used to add some context to each Scenario of the same Feature.
+You can think of it as a setup Scenario for the other Scenarios. It consists of one or more Steps in exactly the same way as
+regular Scenarios. The *Background* is run **after** the *before hooks* of each Scenario but **before** the *Steps* of this Scenario.
+
+To following example illustrates a possible use for a *Background*:
+
+.. code:: gherkin
+
+    Feature: Restricted site support
+        As a user of AwesomeSite
+        I want to restrict my personal sites
+        to specific users.
+
+        Background: Have a multi user setup
+            Given a user named Bruce
+            And a user named Peter
+            And a user named Tony
+            And a personal site owned by Bruce
+
+        Scenario: Grant access to personal site
+            Given Bruce grants access to Tony
+            When I'm logged in as Tony
+            Then I can access Bruce personal site
+
+        Scenario: Deny access to personal site
+            Given Bruce grants access to Tony
+            When I'm logged in as Peter
+            Then I cannot access Bruce personal site
+
+**Note:** the entire example can be found `here <https://github.com/radish-bdd/radish/tree/master/tests/functional/background>`_.
+
+
+Cucumber defined some useful `good practices for using backgrounds <https://github.com/cucumber/cucumber/wiki/Background#good-practices-for-using-background>`_. It's worth to read them carefully.
+
 Steps
 -----
 

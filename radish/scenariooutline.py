@@ -25,8 +25,8 @@ class ScenarioOutline(Scenario):
             self.path = path
             self.line = line
 
-    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None):
-        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent, tags, preconditions)
+    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
+        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent, tags, preconditions, background)
         self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []

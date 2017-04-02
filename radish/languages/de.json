@@ -1,6 +1,7 @@
 {
   "keywords": {
     "feature": "Funktionalität",
+    "background": "Kontext",
     "scenario": "Szenario",
     "scenario_outline": "Szenario Auslagerung",
     "examples": "Beispiele",

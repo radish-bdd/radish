@@ -1,6 +1,7 @@
 {
   "keywords": {
     "feature": "Funcionalidade",
+    "background": "Contexto",
     "scenario": "Cenário",
     "scenario_outline": "Cenário Outline",
     "examples": "Exemplos",

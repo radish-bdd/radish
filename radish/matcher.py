@@ -49,12 +49,12 @@ def merge_steps(features, steps):
     from .scenariooutline import ScenarioOutline
     for feature in features:
         for scenario in feature.all_scenarios:
-            if isinstance(scenario, ScenarioOutline):
-                continue  # ScenarioOutline steps do not have to be merged
-
             if scenario.background:
                 for step in scenario.background.steps:
                     merge_step(step, steps)
+
+            if isinstance(scenario, ScenarioOutline):
+                continue  # ScenarioOutline steps do not have to be merged
 
             for step in scenario.steps:
                 merge_step(step, steps)

@@ -397,7 +397,7 @@ class FeatureParser(object):
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
 
         try:
-            feature = self._core.parse_feature(feature_file)
+            feature = self._core.parse_feature(feature_file, self._feature_tag_expr, self._scenario_tag_expr)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
                 raise FeatureFileSyntaxError("Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))

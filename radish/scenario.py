@@ -25,7 +25,12 @@ class Scenario(Model):
         """
             Returns the state of the scenario
         """
-        for step in self.steps:
+        steps = []
+        if self.background:
+            steps.extend(self.background.steps)
+
+        steps.extend(self.steps)
+        for step in steps:
             if step.state is not Step.State.PASSED:
                 return step.state
         return Step.State.PASSED
@@ -61,7 +66,13 @@ class Scenario(Model):
         """
             Returns the first failed step
         """
-        for step in self.steps:
+        steps = []
+        if self.background:
+            steps.extend(self.background.steps)
+
+        steps.extend(self.steps)
+
+        for step in steps:
             if step.state == Step.State.FAILED:
                 return step
         return None

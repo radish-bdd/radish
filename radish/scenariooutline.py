@@ -44,7 +44,7 @@ class ScenarioOutline(Scenario):
             background = None
             scenario = ExampleScenario(scenario_id, self.keyword, "{0} - row {1}".format(self.sentence, row_id), self.path, self.line, self, example)
             if self.background:
-                background = self.background.create_instance(parent=scenario)
+                background = self.background.create_instance(parent=scenario, steps_runable=True)
                 scenario.background = background
 
             for step_id, outlined_step in enumerate(self.steps):

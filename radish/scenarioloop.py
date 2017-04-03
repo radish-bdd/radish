@@ -30,7 +30,7 @@ class ScenarioLoop(Scenario):
             background = None
             scenario = IterationScenario(scenario_id, self.keyword, "{0} - iteration {1}".format(self.sentence, i), self.path, self.line, self, i)
             if self.background:
-                background = self.background.create_instance(parent=scenario)
+                background = self.background.create_instance(parent=scenario, steps_runable=True)
                 scenario.background = background
 
             for step_id, iteration_step in enumerate(self.steps):

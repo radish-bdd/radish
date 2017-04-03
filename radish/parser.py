@@ -278,7 +278,8 @@ class FeatureParser(object):
                 self._current_state = FeatureParser.State.SKIP_SCENARIO
                 return True
 
-        scenario = scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions, background=self._create_scenario_background())
+        background = self._create_scenario_background(steps_runable=scenario_type is Scenario)
+        scenario = scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions, background=background)
         self.feature.scenarios.append(scenario)
         self._current_scenario = scenario
         self._current_scenario.context.constants = self._current_constants
@@ -343,7 +344,7 @@ class FeatureParser(object):
             return True
 
         step_id = len(self._current_scenario.all_steps) + 1
-        not_runable = isinstance(self._current_scenario, (ScenarioOutline, ScenarioLoop))
+        not_runable = isinstance(self._current_scenario, (ScenarioOutline, ScenarioLoop, Background))
         step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable)
         self._current_scenario.steps.append(step)
         return True
@@ -578,7 +579,7 @@ class FeatureParser(object):
 
         return None
 
-    def _create_scenario_background(self):
+    def _create_scenario_background(self, steps_runable):
         """
         Creates a new instance of the features current
         Background to assign to a new Scenario.
@@ -586,4 +587,4 @@ class FeatureParser(object):
         if not self.feature.background:
             return None
 
-        return self.feature.background.create_instance()
+        return self.feature.background.create_instance(steps_runable=steps_runable)

@@ -6,4 +6,4 @@ update: all
 # specify requirements file
 requirements:
     - requirements.txt
-    - development.txt
+    - requirements-dev.txt

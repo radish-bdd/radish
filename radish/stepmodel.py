@@ -38,6 +38,7 @@ class Step(Model):
         self.failure = None
         self.runable = runable
         self.as_precondition = None
+        self.as_background = None
 
     @property
     def context(self):

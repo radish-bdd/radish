@@ -3,6 +3,7 @@
 from tests.base import *
 
 from radish.scenario import Scenario
+from radish.background import Background
 from radish.stepmodel import Step
 from radish.model import Tag
 
@@ -56,7 +57,7 @@ class ScenarioTestCase(RadishTestCase):
 
     def test_scenario_all_steps(self):
         """
-            Test getting all steps from scenario
+        Test getting all steps from scenario
         """
         step_1 = Mock(state=Step.State.UNTESTED)
         step_2 = Mock(state=Step.State.UNTESTED)
@@ -173,3 +174,117 @@ class ScenarioTestCase(RadishTestCase):
         scenario.all_steps[2].parent.should.be.equal(scenario)
         scenario.all_steps[3].parent.should.be.equal(scenario)
         scenario.all_steps[4].parent.should.be.equal(scenario)
+
+
+    def test_scenario_state_with_background(self):
+        """
+        Test scenario state with assigned background
+        """
+        bg_step_1 = Mock(state=Step.State.UNTESTED)
+        bg_step_2 = Mock(state=Step.State.UNTESTED)
+        bg_step_3 = Mock(state=Step.State.UNTESTED)
+
+        step_1 = Mock(state=Step.State.UNTESTED)
+        step_2 = Mock(state=Step.State.UNTESTED)
+        step_3 = Mock(state=Step.State.UNTESTED)
+
+        all_steps = [bg_step_1, bg_step_2, bg_step_3, step_1, step_2, step_3]
+
+        # create background and scenario
+        background = Background('Background', 'Some Background', None, None, None)
+        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
+
+        # assign background to scenario
+        scenario.background = background
+
+        # assign steps to background and scenario
+        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
+        scenario.steps.extend([step_1, step_2, step_3])
+
+        # in the beginning all steps are untested
+        scenario.state.should.be.equal(Step.State.UNTESTED)
+
+        # lets set them to passed
+        for step in all_steps:
+            step.state = Step.State.PASSED
+
+        # the scenario should be passed
+        scenario.state.should.be.equal(Step.State.PASSED)
+
+        # let's fail a background step
+        bg_step_2.state = Step.State.FAILED
+        scenario.state.should.be.equal(Step.State.FAILED)
+
+        # let's skip a background step
+        bg_step_2.state = Step.State.SKIPPED
+        scenario.state.should.be.equal(Step.State.SKIPPED)
+
+
+    def test_scenario_all_steps_with_background(self):
+        """
+        Test scenario all_steps with assigned background
+        """
+        bg_step_1 = Mock(state=Step.State.UNTESTED)
+        bg_step_2 = Mock(state=Step.State.UNTESTED)
+        bg_step_3 = Mock(state=Step.State.UNTESTED)
+
+        step_1 = Mock(state=Step.State.UNTESTED)
+        step_2 = Mock(state=Step.State.UNTESTED)
+        step_3 = Mock(state=Step.State.UNTESTED)
+
+        # create background and scenario
+        background = Background('Background', 'Some Background', None, None, None)
+        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
+
+        # assign background to scenario
+        scenario.background = background
+
+        # assign steps to background and scenario
+        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
+        scenario.steps.extend([step_1, step_2, step_3])
+
+        # in the beginning all steps are untested
+        all_steps = scenario.all_steps
+        all_steps.should.have.length_of(6)
+        all_steps[0].should.be(bg_step_1)
+        all_steps[3].should.be(step_1)
+
+
+    def test_scenario_failed_step_with_background(self):
+        """
+        Test scenario failed step with assigned background
+        """
+        bg_step_1 = Mock(state=Step.State.UNTESTED)
+        bg_step_2 = Mock(state=Step.State.UNTESTED)
+        bg_step_3 = Mock(state=Step.State.UNTESTED)
+
+        step_1 = Mock(state=Step.State.UNTESTED)
+        step_2 = Mock(state=Step.State.UNTESTED)
+        step_3 = Mock(state=Step.State.UNTESTED)
+
+        all_steps = [bg_step_1, bg_step_2, bg_step_3, step_1, step_2, step_3]
+
+        # create background and scenario
+        background = Background('Background', 'Some Background', None, None, None)
+        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
+
+        # assign background to scenario
+        scenario.background = background
+
+        # assign steps to background and scenario
+        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
+        scenario.steps.extend([step_1, step_2, step_3])
+
+        # in the beginning all steps are untested
+        scenario.state.should.be.equal(Step.State.UNTESTED)
+
+        # lets set them to passed
+        for step in all_steps:
+            step.state = Step.State.PASSED
+
+        # the scenario should be passed
+        scenario.failed_step.should.be.none
+
+        # let's fail a background step
+        bg_step_2.state = Step.State.FAILED
+        scenario.failed_step.should.be(bg_step_2)

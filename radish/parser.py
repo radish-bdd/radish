@@ -16,6 +16,7 @@ from .scenario import Scenario
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
+from .background import Background
 from .model import Tag
 
 
@@ -23,8 +24,9 @@ class Keywords(object):
     """
         Represent config object for gherkin keywords.
     """
-    def __init__(self, feature, scenario, scenario_outline, examples, scenario_loop, iterations):
+    def __init__(self, feature, background, scenario, scenario_outline, examples, scenario_loop, iterations):
         self.feature = feature
+        self.background = background
         self.scenario = scenario
         self.scenario_outline = scenario_outline
         self.examples = examples
@@ -47,6 +49,7 @@ class FeatureParser(object):
         """
         INIT = "init"
         FEATURE = "feature"
+        BACKGROUND = "background"
         SCENARIO = "scenario"
         SCENARIO_OUTLINE = "scenario_outline"
         STEP = "step"
@@ -73,6 +76,7 @@ class FeatureParser(object):
         self._current_tags = []
         self._current_preconditions = []
         self._current_constants = []
+        self._current_scenario = None
         self._in_step_text = False
         self.feature = None
 
@@ -124,8 +128,16 @@ class FeatureParser(object):
 
                     continue
 
-                if self.feature and self._detect_feature(line):
-                    raise FeatureFileSyntaxError("radish supports only one Feature per feature file")
+                if self.feature:
+                    if self._detect_feature(line):
+                        raise FeatureFileSyntaxError("radish supports only one Feature per feature file")
+
+                    if self._detect_background(line):
+                        if self.feature.background:
+                            raise FeatureFileSyntaxError("The Background block may only appear once in a Feature")
+
+                        if self.feature.scenarios:
+                            raise FeatureFileSyntaxError("The Background block must be placed before any Scenario block")
 
                 result = self._parse_context(line)
                 if result is False:
@@ -137,8 +149,8 @@ class FeatureParser(object):
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
-        if self.feature.scenarios:
-            self.feature.scenarios[-1].after_parse()
+        if self._current_scenario:
+            self._current_scenario.after_parse()
 
         return self.feature
 
@@ -183,9 +195,31 @@ class FeatureParser(object):
 
         self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
         self.feature.context.constants = self._current_constants
-        self._current_state = FeatureParser.State.SCENARIO
+        self._current_state = FeatureParser.State.BACKGROUND
         self._current_tags = []
         self._current_constants = []
+        return True
+
+    def _parse_background(self, line):
+        """
+        Parses a background context
+
+        :param str line: the line to parse the background
+        """
+        detected_background = self._detect_background(line)
+        if not detected_background:
+            # try to find a scenario
+            if self._detect_scenario_type(line):
+                self._current_state = FeatureParser.State.SCENARIO
+                return self._parse_scenario(line)
+
+            # this line is interpreted as a feature description line
+            self.feature.description.append(line)
+            return True
+
+        self.feature.background = Background(self.keywords.background, detected_background, self._featurefile, self._current_line, self.feature)
+        self._current_scenario = self.feature.background
+        self._current_state = FeatureParser.State.STEP
         return True
 
     def _parse_scenario(self, line):
@@ -216,8 +250,7 @@ class FeatureParser(object):
                             self._current_constants.append((name, value))
                         return True
 
-                    self.feature.description.append(line)
-                    return True
+                    raise FeatureFileSyntaxError("The parser expected a scenario or a tag on this line. Given: '{0}'".format(line))
 
                 detected_scenario, iterations = detected_scenario  # pylint: disable=unpacking-non-sequence
                 scenario_type = ScenarioLoop
@@ -228,7 +261,7 @@ class FeatureParser(object):
 
         scenario_id = 1
         if self.feature.scenarios:
-            previous_scenario = self.feature.scenarios[-1]
+            previous_scenario = self._current_scenario
             if hasattr(previous_scenario, "scenarios") and previous_scenario.scenarios:
                 scenario_id = previous_scenario.scenarios[-1].id + 1
             else:
@@ -245,14 +278,17 @@ class FeatureParser(object):
                 self._current_state = FeatureParser.State.SKIP_SCENARIO
                 return True
 
-        self.feature.scenarios.append(scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions))
-        self.feature.scenarios[-1].context.constants = self._current_constants
+        background = self._create_scenario_background(steps_runable=scenario_type is Scenario)
+        scenario = scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions, background=background)
+        self.feature.scenarios.append(scenario)
+        self._current_scenario = scenario
+        self._current_scenario.context.constants = self._current_constants
         self._current_tags = []
         self._current_preconditions = []
         self._current_constants = []
 
         if scenario_type == ScenarioLoop:
-            self.feature.scenarios[-1].iterations = iterations
+            self._current_scenario.iterations = iterations
         self._current_state = FeatureParser.State.STEP
         return True
 
@@ -262,10 +298,10 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
-        if not isinstance(self.feature.scenarios[-1], ScenarioOutline):
+        if not isinstance(self._current_scenario, ScenarioOutline):
             raise FeatureFileSyntaxError("Scenario does not support Examples. Use 'Scenario Outline'")
 
-        self.feature.scenarios[-1].examples_header = [x.strip() for x in line.split("|")[1:-1]]
+        self._current_scenario.examples_header = [x.strip() for x in line.split("|")[1:-1]]
         self._current_state = FeatureParser.State.EXAMPLES_ROW
         return True
 
@@ -277,11 +313,11 @@ class FeatureParser(object):
         """
         # detect next keyword
         if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
-            self.feature.scenarios[-1].after_parse()
+            self._current_scenario.after_parse()
             return self._parse_scenario(line)
 
         example = ScenarioOutline.Example([x.strip() for x in line.split("|")[1:-1]], self._featurefile, self._current_line)
-        self.feature.scenarios[-1].examples.append(example)
+        self._current_scenario.examples.append(example)
         return True
 
     def _parse_step(self, line):
@@ -292,7 +328,7 @@ class FeatureParser(object):
         """
         # detect next keyword
         if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
-            self.feature.scenarios[-1].after_parse()
+            self._current_scenario.after_parse()
             return self._parse_scenario(line)
 
         if self._detect_step_text(line):
@@ -307,10 +343,10 @@ class FeatureParser(object):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
-        step_id = len(self.feature.scenarios[-1].all_steps) + 1
-        not_runable = isinstance(self.feature.scenarios[-1], (ScenarioOutline, ScenarioLoop))
-        step = Step(step_id, line, self._featurefile, self._current_line, self.feature.scenarios[-1], not not_runable)
-        self.feature.scenarios[-1].steps.append(step)
+        step_id = len(self._current_scenario.all_steps) + 1
+        not_runable = isinstance(self._current_scenario, (ScenarioOutline, ScenarioLoop, Background))
+        step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable)
+        self._current_scenario.steps.append(step)
         return True
 
     def _parse_table(self, line):
@@ -319,10 +355,10 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
-        if not self.feature.scenarios[-1].steps:
+        if not self._current_scenario.steps:
             raise FeatureFileSyntaxError("Found step table without previous step definition on line {0}".format(self._current_line))
 
-        self.feature.scenarios[-1].steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
+        self._current_scenario.steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
         return True
 
     def _parse_step_text(self, line):
@@ -341,7 +377,7 @@ class FeatureParser(object):
             line = line[:-3]
 
         if line:
-            self.feature.scenarios[-1].steps[-1].raw_text.append(line.strip())
+            self._current_scenario.steps[-1].raw_text.append(line.strip())
         return True
 
     def _parse_precondition(self, arguments):
@@ -361,7 +397,7 @@ class FeatureParser(object):
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
 
         try:
-            feature = self._core.parse_feature(feature_file)
+            feature = self._core.parse_feature(feature_file, self._feature_tag_expr, self._scenario_tag_expr)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
                 raise FeatureFileSyntaxError("Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
@@ -407,6 +443,32 @@ class FeatureParser(object):
             return line[len(self.keywords.feature) + len(self._keywords_delimiter):].strip()
 
         return None
+
+    def _detect_background(self, line):
+        """
+            Detects a background on the given line
+
+            :param string line: the line to detect a background
+
+            :returns: if the background was found on the given line
+            :rtype: bool
+        """
+        if line.startswith(self.keywords.background + self._keywords_delimiter):
+            return line[len(self.keywords.background) + len(self._keywords_delimiter):].strip()
+
+        return None
+
+    def _detect_scenario_type(self, line):
+        """
+        Detect a Scenario/ScenarioOutline/ScenarioLoop/Tag on the given line.
+
+        :returns: if a scenario of any type is present on the given line
+        :rtype: bool
+        """
+        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
+            return True
+
+        return False
 
     def _detect_scenario(self, line):
         """
@@ -516,3 +578,13 @@ class FeatureParser(object):
             return match.group(1), match.group(2)
 
         return None
+
+    def _create_scenario_background(self, steps_runable):
+        """
+        Creates a new instance of the features current
+        Background to assign to a new Scenario.
+        """
+        if not self.feature.background:
+            return None
+
+        return self.feature.background.create_instance(steps_runable=steps_runable)

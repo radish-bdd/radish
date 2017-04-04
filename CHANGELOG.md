@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-*Nothing here yet...*
+### Added
+- Support for Background. Refs #57
 
 ## [v0.3.2]
 

@@ -43,6 +43,7 @@ class ConsoleWriter(object):
         after.each_step(self.console_writer_after_each_step)
 
         self.last_precondition = None
+        self.last_background = None
 
     def get_color_func(self, state):
         """
@@ -112,6 +113,15 @@ class ConsoleWriter(object):
             leading,
             colorful.white("\n    ".join(feature.description))
         )
+
+        if feature.background:
+            output += u"\n\n    {0}: {1}".format(
+                colorful.bold_white(feature.background.keyword),
+                colorful.bold_white(feature.background.sentence)
+            )
+            for step in feature.background.all_steps:
+                output += '\n' + self._get_step_before_output(step, colorful.cyan)
+
         write(output)
 
     def console_writer_before_each_scenario(self, scenario):
@@ -166,11 +176,19 @@ class ConsoleWriter(object):
         output = ""
         if step.as_precondition and self.last_precondition != step.as_precondition:
             output += colorful.white(u"      As precondition from {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
-        elif not step.as_precondition and self.last_precondition:
+        elif step.as_background and self.last_background != step.as_background:
+            output += colorful.white(u"      From background: {0}\n".format(step.as_background.sentence))
+        elif (not step.as_precondition and self.last_precondition) or (not step.as_background and self.last_background):
             output += colorful.white(u"      From scenario\n")
 
         self.last_precondition = step.as_precondition
-        output += u"\r        {0}{1}".format(self.get_id_sentence_prefix(step, colorful.bold_brown), colorful.bold_brown(step.sentence))
+        self.last_background = step.as_background
+        output += self._get_step_before_output(step)
+
+        write(output)
+
+    def _get_step_before_output(self, step, color_func=colorful.bold_brown):
+        output = u"\r        {0}{1}".format(self.get_id_sentence_prefix(step, color_func), color_func(step.sentence))
 
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
@@ -183,10 +201,11 @@ class ConsoleWriter(object):
             col_widths = self.get_table_col_widths(step.table)
             for row in step.table:
                 output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
-                    colorful.bold_brown(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+                    color_func(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
                 ))
 
-        write(output)
+        return output
+
 
     def console_writer_after_each_step(self, step):
         """

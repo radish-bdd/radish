@@ -25,8 +25,8 @@ class ScenarioOutline(Scenario):
             self.path = path
             self.line = line
 
-    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None):
-        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent, tags, preconditions)
+    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
+        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent, tags, preconditions, background)
         self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []
@@ -41,7 +41,12 @@ class ScenarioOutline(Scenario):
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))
             scenario_id = self.id + row_id + 1
+            background = None
             scenario = ExampleScenario(scenario_id, self.keyword, "{0} - row {1}".format(self.sentence, row_id), self.path, self.line, self, example)
+            if self.background:
+                background = self.background.create_instance(parent=scenario, steps_runable=True)
+                scenario.background = background
+
             for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
                 step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, True)

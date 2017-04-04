@@ -2,4 +2,4 @@
 nose
 rednose
 sure
-sphinx
+sphinx==1.5.5

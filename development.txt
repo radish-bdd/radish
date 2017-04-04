@@ -1,5 +1,5 @@
 -r requirements.txt
-nose
+nose==1.3.7
 rednose
-sure
+sure==1.4.5
 sphinx==1.5.5

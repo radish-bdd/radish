@@ -6,4 +6,4 @@ tag-expressions>=1.0.0
 lxml==3.7.3
 parse==1.8.0
 coverage==4.3.4
-PyYAML
+PyYAML==3.12

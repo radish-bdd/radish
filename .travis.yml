@@ -15,7 +15,7 @@ before_install:
     - pip install codecov
 
 install:
-    - pip install -r development.txt
+    - pip install -r requirements-dev.txt
 
 script:
     - nosetests --rednose -v tests/unit --with-cover --cover-package=radish

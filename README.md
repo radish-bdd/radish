@@ -54,3 +54,7 @@ Please have a look at the [Contributing Guidelines](https://github.com/radish-bd
 # Special Thanks
 
 A special thanks goes to [Hassan Ashraf](mailto:info@cyberavanza.com) from the company [Cyber Avanza](http://www.cyberavanza.com) for creating an awesome logo for free! I really appreciate their work and time!
+
+***
+
+*<p align="center">This project is published under [MIT](LICENSE).<br>A [Timo Furrer](https://tuxtimo.me) project.<br>- :tada: -</p>*

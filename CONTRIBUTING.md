@@ -38,7 +38,7 @@ However, if you want to test your code on certain circumstances you can create a
 cd ~/work/radish
 virtualenv env
 source env/bin/activate
-pip install -r development.txt
+pip install -r requirements-dev.txt
 pip install .
 nosetests --rednose -v tests/unit --with-cover --cover-package=radish/
 ```

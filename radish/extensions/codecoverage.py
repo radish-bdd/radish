@@ -8,8 +8,6 @@ coverage measurements.
 import sys
 import re
 
-from coverage import Coverage
-
 from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.terrain import world
@@ -37,6 +35,11 @@ class CodeCoverage(object):
     LOAD_PRIORITY = 70
 
     def __init__(self):
+        try:
+            from coverage import Coverage
+        except ImportError:
+            raise RadishError('if you want to use the code coverage you have to "pip install radish-bdd[coverage]"')
+
         before.all(self.coverage_start)
         after.all(self.coverage_stop)
 
@@ -52,6 +55,7 @@ class CodeCoverage(object):
         """
         Start the coverage measurement
         """
+        from coverage import Coverage
         # if no explicit modules are specified we just
         # use the ones loaded from radish's basedir.
         # During the plugin init the basedir modules are

@@ -948,6 +948,11 @@ and someone else is going to use them and implement the feature files.
 In a way your step pattern are the interface of your step implementation and **interfaces ought to be tested properly**.
 
 If you've installed radish a command called ``radish-test`` is available.
+Install it's dependencies with:
+
+.. code:: bash
+
+    pip install radish-bdd[testing]
 
 The ``matches`` sub command is used to test your step pattern inside your *base dir* (``-b`` / ``--basedir``) against some
 sentences defined in a YAML file. We call those files **match configs**. A *match config* file has the following format:

@@ -9,6 +9,7 @@ import re
 import sys
 import fnmatch
 import traceback
+import warnings
 
 from .compat import u
 from .terrain import world
@@ -86,6 +87,7 @@ def get_debugger():
             IPShell(argv=[""])
             pdb = Pdb()
         except ImportError:
+            warnings.warn('pdb was selected as a debugger. If you want to use ipython as a debugger you have to "pip install radish-bdd[ipython-debugger]"')
             import pdb
 
     return pdb

@@ -6,7 +6,6 @@
 
 from getpass import getuser
 from socket import gethostname
-from lxml import etree
 from datetime import timedelta
 import re
 
@@ -17,6 +16,7 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.exceptions import RadishError
 import radish.utils as utils
 
 
@@ -30,12 +30,18 @@ class BDDXMLWriter(object):
     LOAD_PRIORITY = 60
 
     def __init__(self):
+        try:
+            from lxml import etree
+        except ImportError:
+            raise RadishError('if you want to use the BDD xml writer you have to "pip install radish-bdd[bdd-xml]"')
+
         after.all(self.generate_bdd_xml)
 
     def _get_element_from_model(self, what, model):
         """
             Create a etree.Element from a given model
         """
+        from lxml import etree
 
         # round duration to 10 decimal points, to avoid it being printed in
         # scientific notation
@@ -62,6 +68,7 @@ class BDDXMLWriter(object):
         """
             Generates the bdd xml
         """
+        from lxml import etree
         if not features:
             raise RadishError("No features given to generate BDD xml file")
 

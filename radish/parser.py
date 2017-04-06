@@ -59,15 +59,14 @@ class FeatureParser(object):
         STEP_TEXT = "step_text"
         SKIP_SCENARIO = "skip_scenario"
 
-    def __init__(self, core, featurefile, featureid, feature_tag_expr=None, scenario_tag_expr=None, language="en"):
+    def __init__(self, core, featurefile, featureid, tag_expr=None, language="en"):
         if not os.path.exists(featurefile):
             raise OSError("Feature file at '{0}' does not exist".format(featurefile))
 
         self._core = core
         self._featureid = featureid
         self._featurefile = featurefile
-        self._feature_tag_expr = feature_tag_expr
-        self._scenario_tag_expr = scenario_tag_expr
+        self._tag_expr = tag_expr
         self.keywords = {}
         self._keywords_delimiter = ":"
 
@@ -149,6 +148,9 @@ class FeatureParser(object):
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
+        if not self.feature.scenarios:
+            return None
+
         if self._current_scenario:
             self._current_scenario.after_parse()
 
@@ -185,13 +187,6 @@ class FeatureParser(object):
                 return True
 
             return False
-
-        # all tags of this feature have been consumed so we can
-        # check if this feature has to be evaluated or not.
-        if self._feature_tag_expr:
-            feature_in_tags = self._feature_tag_expr.evaluate([t.name for t in self._current_tags])
-            if not feature_in_tags:  # this feature does not match the given tag expression.
-                return None
 
         self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
         self.feature.context.constants = self._current_constants
@@ -269,8 +264,10 @@ class FeatureParser(object):
 
         # all tags of this scneario have been consumed so we can
         # check if this scenario has to be evaluated or not
-        if self._scenario_tag_expr:
-            scenario_in_tags = self._scenario_tag_expr.evaluate([t.name for t in self._current_tags])
+        if self._tag_expr:
+            # inherit the tags from the current feature
+            current_tags = self._current_tags + self.feature.tags
+            scenario_in_tags = self._tag_expr.evaluate([t.name for t in current_tags])
             if not scenario_in_tags:  # this scenario does not match the given tag expression
                 self._current_tags = []
                 self._current_preconditions = []
@@ -397,7 +394,7 @@ class FeatureParser(object):
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
 
         try:
-            feature = self._core.parse_feature(feature_file, self._feature_tag_expr, self._scenario_tag_expr)
+            feature = self._core.parse_feature(feature_file, self._tag_expr)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
                 raise FeatureFileSyntaxError("Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))

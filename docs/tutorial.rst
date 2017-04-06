@@ -533,8 +533,10 @@ Tags are declared with a similar syntax as decorators in python:
       Scenario: Some bad case test
           ...
 
-When triggering radish you can pass the ``--feature-tags`` and the ``--scenario-tags``
-command line option followed by a tag expression. Tag expressions are parsed with
+**Note:** a Scenario inherits all tags of the Feature it is defined in!
+
+When triggering radish you can pass the ``--tags`` command line option
+followed by a tag expression. Tag expressions are parsed with
 `tag-expressions <https://github.com/timofurrer/tag-expressions>`_.
 Only these Features/Scenarios are ran.
 
@@ -542,15 +544,13 @@ Run all regression tests:
 
 .. code:: bash
 
-   radish features/ --feature-tags regression
+   radish features/ --tags regression
 
 Run all *good case* or *bad case* tests:
 
 .. code:: bash
 
-   radish features/ --scenario-tags 'good_case or bad_case'
-
-These two options can also be combined.
+   radish features/ --tags 'good_case or bad_case'
 
 Constants
 ---------

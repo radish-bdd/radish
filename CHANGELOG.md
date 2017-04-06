@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Support for Background. Refs #57
+- **API break**, Merged `--feature-tags` and `--scenario-tags` to `--tags` command line option. Refs #72
 
 ## [v0.3.2]
 

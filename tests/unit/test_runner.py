@@ -32,8 +32,7 @@ class RunnerTestCase(RadishTestCase):
             "--scenarios": None,
             "--shuffle": False,
             "--write-ids": False,
-            "--feature-tags": None,
-            "--scenario-tags": None,
+            "--tags": None,
             "--expand": True,
         })
 

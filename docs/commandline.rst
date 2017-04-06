@@ -177,7 +177,7 @@ Run - Specify certain Features and/or Scenarios by tags
 -------------------------------------------------------
 
 Radish is able to run only a selection of certain Features and/or Scenarios
-using the ``--feature-tags`` or ``--scenario-tags`` command line options.
+using the ``--tags`` command line option.
 You can specify the tags of Features/Scenarios which should be run. The command line
 option value has to be a valid tag expression.
 Radish uses `tag-expressions <https://github.com/timofurrer/tag-expressions>`_.
@@ -186,11 +186,13 @@ The following are some valid tag expressions:
 
 .. code:: bash
 
-  radish SomeFeature.feature --feature-tags 'regression'
-  radish SomeFeature.feature --scenario-tags 'good_case and in_progress'
-  radish SomeFeature.feature --scenario-tags 'good_case' --feature-tags 'regression'
-  radish SomeFeature.feature --feature-tags 'regression and good_case and not real_hardware'
-  radish SomeFeature.feature --feature-tags 'database or filesystem and bad_case'
+  radish SomeFeature.feature --tags 'regression'
+  radish SomeFeature.feature --tags 'good_case and in_progress'
+  radish SomeFeature.feature --tags 'good_case'
+  radish SomeFeature.feature --tags 'regression and good_case and not real_hardware'
+  radish SomeFeature.feature --tags 'database or filesystem and bad_case'
+
+Be aware that Scenarios inherit the tags from the Feature they are defined it.
 
 To learn how to tag Features and Scenarios please refer to :ref:`tutorial#tags`
 section.
@@ -267,7 +269,7 @@ Run - Log all features, scenarios, and steps to syslog
 ------------------------------------------------------
 
 Radish provides the `--syslog` command line option which can be used to log all of your
-features, scenarios, and steps to the syslog. The caveat here is this option is only 
+features, scenarios, and steps to the syslog. The caveat here is this option is only
 supported on systems where the Python standard library supports the system logger
 (syslog). This command line option works well in UNIX and UNIX-like systems (Linux) but
 will not work on Windows machines.
@@ -424,8 +426,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [-d | --dry-run]
              [-s=<scenarios> | --scenarios=<scenarios>]
              [--shuffle]
-             [--feature-tags=<feature_tags>]
-             [--scenario-tags=<scenario_tags>]
+             [--tags=<tags>]
              [--bdd-xml=<bddxml>]
              [--with-coverage]
              [--cover-packages=<cover_packages>]
@@ -454,8 +455,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       -d --dry-run                                make dry run for the given feature files
       -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
       --shuffle                                   shuttle run order of features and scenarios
-      --feature-tags=<feature_tags>               only run features with the given tags
-      --scenario-tags=<scenario_tags>             only run scenarios with the given tags
+      --tags=<tags>                               only run features/scenarios with the given tags
       --expand                                    expand the feature file (all preconditions)
       --bdd-xml=<bddxml>                          write BDD XML result file after run
       --with-coverage                             enable code coverage
@@ -470,7 +470,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --cucumber-json=<ccjson>                    write cucumber json result file after run
       --debug-after-failure                       start python debugger after failure
       --inspect-after-failure                     start python shell after failure
-      --syslog                                    log all of your features, scenarios, and steps to the syslog 
+      --syslog                                    log all of your features, scenarios, and steps to the syslog
       --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
       --no-line-jump                              print features without line jumps (overwriting steps)
       --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)

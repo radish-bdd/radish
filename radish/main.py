@@ -99,8 +99,7 @@ Usage:
            [-d | --dry-run]
            [-s=<scenarios> | --scenarios=<scenarios>]
            [--shuffle]
-           [--feature-tags=<feature_tags>]
-           [--scenario-tags=<scenario_tags>]
+           [--tags=<tags>]
            {0}
     radish (-h | --help)
     radish (-v | --version)
@@ -120,8 +119,7 @@ Options:
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
     --shuffle                                   shuttle run order of features and scenarios
-    --feature-tags=<feature_tags>               only run features with the given tags
-    --scenario-tags=<scenario_tags>             only run scenarios with the given tags
+    --tags=<feature_tags>                       only run Scenarios with the given tags
     --expand                                    expand the feature file (all preconditions)
     {1}
 
@@ -159,20 +157,17 @@ Options:
 
         feature_files.append(given_feature)
 
-    # parse feature and scenario tag expressions
-    feature_tag_expression = None
-    if world.config.feature_tags:
-        feature_tag_expression = tagexpressions.parse(world.config.feature_tags)
+    # parse tag expressions
+    tag_expression = None
+    if world.config.tags:
+        tag_expression = tagexpressions.parse(world.config.tags)
 
-    scenario_tag_expression = None
-    if world.config.scenario_tags:
-        scenario_tag_expression = tagexpressions.parse(world.config.scenario_tags)
-    core.parse_features(feature_files, feature_tag_expression, scenario_tag_expression)
+    core.parse_features(feature_files, tag_expression)
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
         print(colorful.bold_red('Error: ') + colorful.red('please specify at least one feature to run'))
-        if feature_tag_expression or scenario_tag_expression:
-            print(colorful.red('You have specified a feature or scenario expression. Make sure those are valid and actually yield some features to run.'))
+        if tag_expression:
+            print(colorful.red('You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run.'))
         return 1
 
     argument_dispatcher = [

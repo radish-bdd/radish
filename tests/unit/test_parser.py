@@ -712,7 +712,7 @@ Feature: some feature
             featurefile.flush()
 
             core = Mock()
-            parser = FeatureParser(core, featurefile.name, 1, feature_tag_expr=tagexpressions.parse('not some_feature'))
+            parser = FeatureParser(core, featurefile.name, 1, tag_expr=tagexpressions.parse('not some_feature'))
             feature = parser.parse()
 
             feature.should.be.none
@@ -746,10 +746,56 @@ Feature: some feature
             featurefile.flush()
 
             core = Mock()
-            parser = FeatureParser(core, featurefile.name, 1, scenario_tag_expr=tagexpressions.parse('not bad_case'))
+            parser = FeatureParser(core, featurefile.name, 1, tag_expr=tagexpressions.parse('not bad_case'))
             feature = parser.parse()
 
             feature.scenarios.should.have.length_of(2)
+
+    def test_parse_scenario_tag_inheritance(self):
+        """
+            Test parsing a Scenario which inherits tags
+        """
+        feature = """
+@foo
+Feature: some feature
+    @good_case
+    Scenario: foo
+        When I have a normal scenario
+        Then I expect nothing special
+
+    @bad_case
+    Scenario: bad case
+        Given I have the number 1
+        When I add 3 to my number
+        Then I expect my number not to be 4
+
+    @good_case
+    Scenario: foo second it
+        When I have a normal scenario
+        Then I expect nothing special
+
+    """
+
+        with NamedTemporaryFile("w+") as featurefile:
+            featurefile.write(feature)
+            featurefile.flush()
+
+            core = Mock()
+
+            # expect all three Scenarios parsed
+            parser = FeatureParser(core, featurefile.name, 1, tag_expr=tagexpressions.parse('foo'))
+            feature = parser.parse()
+            feature.scenarios.should.have.length_of(3)
+
+            # expect only good case Scenarios parsed
+            parser = FeatureParser(core, featurefile.name, 1, tag_expr=tagexpressions.parse('good_case'))
+            feature = parser.parse()
+            feature.scenarios.should.have.length_of(2)
+
+            # expect only bad case Scenarios parsed
+            parser = FeatureParser(core, featurefile.name, 1, tag_expr=tagexpressions.parse('bad_case'))
+            feature = parser.parse()
+            feature.scenarios.should.have.length_of(1)
 
     def test_parse_feature_with_syntax_error(self):
         """

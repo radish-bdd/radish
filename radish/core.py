@@ -75,12 +75,12 @@ class Core(object):
             self._scenario_id += 1
             return self._scenario_id
 
-    def parse_features(self, feature_files, feature_tag_expr, scenario_tag_expr):
+    def parse_features(self, feature_files, tag_expr):
         """
             Parses the given feature files
         """
         for featurefile in feature_files:
-            feature = self.parse_feature(featurefile, feature_tag_expr, scenario_tag_expr, self.next_feature_id)
+            feature = self.parse_feature(featurefile, tag_expr, self.next_feature_id)
 
             if feature is not None:
                 for scenario in feature.scenarios:
@@ -88,7 +88,7 @@ class Core(object):
 
                 self._features_to_run[featurefile] = feature
 
-    def parse_feature(self, featurefile, feature_tag_expr, scenario_tag_expr, featureid=0):
+    def parse_feature(self, featurefile, tag_expr, featureid=0):
         """
             Parses the given feature file
             If the feature is alreay parsed then it will just return it
@@ -96,7 +96,7 @@ class Core(object):
             :returns: the parsed feature
             :rtype: Feature
         """
-        featureparser = FeatureParser(self, featurefile, featureid, feature_tag_expr, scenario_tag_expr)
+        featureparser = FeatureParser(self, featurefile, featureid, tag_expr)
         feature = featureparser.parse()
 
         if feature is None:

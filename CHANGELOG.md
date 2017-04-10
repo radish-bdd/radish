@@ -4,9 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+*Nothing here yet*
+
+## [v0.4.0]
 ### Added
 - Support for Background. Refs #57
 - **API break**, Merged `--feature-tags` and `--scenario-tags` to `--tags` command line option. Refs #72
+- Pinned colorful version to 0.1.3 until new colorful version is out.
 
 ## [v0.3.2]
 
@@ -40,7 +44,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.4.0...HEAD
+[v0.4.0]: https://github.com/radish-bdd/radish/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/radish-bdd/radish/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/radish-bdd/radish/compare/v0.3.0...v0.3.1
 [v0.3.0]: https://github.com/radish-bdd/radish/compare/v0.2.12...v0.3.0

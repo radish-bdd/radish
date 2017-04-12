@@ -1,0 +1,11 @@
+{
+  "keywords": {
+    "feature": "Característica",
+    "background": "Contexto",
+    "scenario": "Escenario",
+    "scenario_outline": "Esbozo do escenario",
+    "examples": "Exemplos",
+    "scenario_loop": "Escenario en bucle",
+    "iterations": "Iteracións"
+  }
+}

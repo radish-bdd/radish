@@ -26,7 +26,7 @@ class Runner(object):
                 Actual decorator
             """
             if self._required_exit:  # pylint: disable=protected-access
-                return None
+                return 1
 
             return func(self, *args, **kwargs)  # pylint: disable=not-callable
         return _decorator

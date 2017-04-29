@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+*Nothing to here yet*
+
+## [v0.4.1]
 ### Added
 - Use new colorful
 - Galician language
@@ -51,7 +54,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.4.1...HEAD
+[v0.4.1]: https://github.com/radish-bdd/radish/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/radish-bdd/radish/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/radish-bdd/radish/compare/v0.3.1...v0.3.2
 [v0.3.1]: https://github.com/radish-bdd/radish/compare/v0.3.0...v0.3.1

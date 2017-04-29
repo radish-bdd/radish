@@ -8,7 +8,7 @@
 # pylint: disable=no-member
 
 import os
-from colorful import colorful
+import colorful
 
 from radish.terrain import world
 from radish.hookregistry import before, after
@@ -54,7 +54,7 @@ class ConsoleWriter(object):
         elif state == Step.State.FAILED:
             return colorful.bold_red
         elif state == Step.State.PENDING:
-            return colorful.bold_brown
+            return colorful.bold_yellow
         elif state:
             return colorful.cyan
 
@@ -135,22 +135,22 @@ class ConsoleWriter(object):
             if world.config.write_steps_once:
                 return
 
-            id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_brown, len(scenario.parent.scenarios))
+            id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_yellow, len(scenario.parent.scenarios))
             colored_pipe = colorful.bold_white("|")
             output = u"        {0}{1} {2} {1}".format(
                 id_prefix,
                 colored_pipe,
                 (u" {0} ").format(colored_pipe).join(
-                    colorful.bold_brown(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
+                    str(colorful.bold_yellow(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x))) for i, x in enumerate(scenario.example.data)
                 )
             )
         elif isinstance(scenario.parent, ScenarioLoop):
             if world.config.write_steps_once:
                 return
 
-            id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_brown, len(scenario.parent.scenarios))
+            id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_yellow, len(scenario.parent.scenarios))
             colored_pipe = colorful.bold_white("|")
-            output = u"        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, colorful.bold_brown(scenario.iteration))
+            output = u"        {0}{1} {2: <18} {1}".format(id_prefix, colored_pipe, str(colorful.bold_yellow(scenario.iteration)))
         else:
             id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_cyan)
             for tag in scenario.tags:
@@ -187,7 +187,9 @@ class ConsoleWriter(object):
 
         write(output)
 
-    def _get_step_before_output(self, step, color_func=colorful.bold_brown):
+    def _get_step_before_output(self, step, color_func=None):
+        if color_func is None:
+            color_func = colorful.bold_yellow
         output = u"\r        {0}{1}".format(self.get_id_sentence_prefix(step, color_func), color_func(step.sentence))
 
         if step.text:
@@ -201,7 +203,7 @@ class ConsoleWriter(object):
             col_widths = self.get_table_col_widths(step.table)
             for row in step.table:
                 output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
-                    color_func(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+                    str(color_func(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(row)
                 ))
 
         return output
@@ -231,12 +233,12 @@ class ConsoleWriter(object):
             col_widths = self.get_table_col_widths(step.table)
             for row in step.table:
                 output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
-                    color_func(u"{1: <{0}}".format(col_widths[i], x)) for i, x in enumerate(row)
+                    str(color_func(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(row)
                 ))
 
         if step.state == step.State.FAILED:
             if world.config.with_traceback:
-                output += u"\n          {0}{1}".format(self.get_id_padding(len(step.parent.steps) - 2), "\n          ".join([colorful.red(l) for l in step.failure.traceback.split("\n")[:-2]]))
+                output += u"\n          {0}{1}".format(self.get_id_padding(len(step.parent.steps) - 2), "\n          ".join([str(colorful.red(l)) for l in step.failure.traceback.split("\n")[:-2]]))
             output += u"\n          {0}{1}: {2}".format(self.get_id_padding(len(step.parent.steps) - 2), colorful.bold_red(step.failure.name), colorful.red(step.failure.reason))
 
         write(output)
@@ -264,24 +266,24 @@ class ConsoleWriter(object):
                 self.get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)),
                 colored_pipe,
                 (u" {0} ").format(colored_pipe).join(
-                    color_func(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x)) for i, x in enumerate(scenario.example.data)
+                    str(color_func(u"{1: <{0}}".format(scenario.parent.get_column_width(i), x))) for i, x in enumerate(scenario.example.data)
                 )
             )
 
             if scenario.state == Step.State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
-                    output += u"\n          {0}{1}".format(self.get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
+                    output += u"\n          {0}{1}".format(self.get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]))
                 output += u"\n          {0}{1}: {2}".format(self.get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
         elif isinstance(scenario.parent, ScenarioLoop):
             colored_pipe = colorful.bold_white("|")
             color_func = self.get_color_func(scenario.state)
-            output += u"{0}        {1}{2} {3: <18} {2}".format(self.get_line_jump_seq(), self.get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)), colored_pipe, color_func(scenario.iteration))
+            output += u"{0}        {1}{2} {3: <18} {2}".format(self.get_line_jump_seq(), self.get_id_sentence_prefix(scenario, colorful.bold_cyan, len(scenario.parent.scenarios)), colored_pipe, str(color_func(scenario.iteration)))
 
             if scenario.state == Step.State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
-                    output += u"\n          {0}{1}".format(self.get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([colorful.red(l) for l in failed_step.failure.traceback.split("\n")[:-2]]))
+                    output += u"\n          {0}{1}".format(self.get_id_padding(len(scenario.parent.scenarios)), "\n          ".join([str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]))
                 output += u"\n          {0}{1}: {2}".format(self.get_id_padding(len(scenario.parent.scenarios)), colorful.bold_red(failed_step.failure.name), colorful.red(failed_step.failure.reason))
 
         if output:

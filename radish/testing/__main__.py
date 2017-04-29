@@ -7,10 +7,16 @@ radish step implementations
 
 import sys
 
+import colorful
 from docopt import docopt
 
 from radish import __VERSION__
 from radish.testing.matches import test_step_matches_configs
+
+
+# use only 8 ANSI colors
+# FIXME(TF): change to true colors!
+colorful.use_8_ansi_colors()
 
 
 def main():

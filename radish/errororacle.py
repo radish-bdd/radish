@@ -7,7 +7,8 @@
 
 import sys
 from functools import wraps
-from colorful import colorful
+
+import colorful
 
 from .terrain import world
 from .exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError, SameStepError

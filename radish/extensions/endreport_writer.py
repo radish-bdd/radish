@@ -8,7 +8,9 @@
 # pylint: disable=no-member
 
 from datetime import timedelta
-from colorful import colorful
+
+import colorful
+
 from radish.hookregistry import after
 from radish.stepmodel import Step
 from radish.utils import console_write as write, make_unique_obj_list, get_func_code
@@ -75,7 +77,7 @@ class EndreportWriter(object):
         passed_word = colorful.bold_green("{0} passed")
         failed_word = colorful.bold_red("{0} failed")
         skipped_word = colorful.cyan("{0} skipped")
-        pending_word = colorful.bold_brown("{0} pending")
+        pending_word = colorful.bold_yellow("{0} pending")
 
         output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
         output += passed_word.format(stats["features"]["passed"])

@@ -38,7 +38,7 @@ __META_DATA__ = read_metafile(__META_FILE__)
 requirements = [
     'docopt',
     'pysingleton',
-    'colorful==0.1.3',
+    'colorful>=0.3.11',
     'tag-expressions>=1.0.0',
     'parse>=1.8.0'
 ]

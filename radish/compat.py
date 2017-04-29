@@ -26,6 +26,6 @@ def u(text):  # pragma: no cover
     """
     # look for unicode in the builtins which only exists in python 2
     if PY2 is True:
-        return unicode(text, "utf-8")
+        return unicode(text)
 
-    return text
+    return str(text)

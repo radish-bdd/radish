@@ -5,7 +5,7 @@ import sys
 from time import time
 
 from docopt import docopt
-from colorful import colorful
+import colorful
 import tagexpressions
 
 from . import __VERSION__
@@ -21,6 +21,10 @@ from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
 from . import utils
+
+# use only 8 ANSI colors
+# FIXME(TF): change to true colors!
+colorful.use_8_ansi_colors()
 
 
 def setup_config(arguments):
@@ -140,6 +144,10 @@ Options:
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
+
+    # disable colors if necessary
+    if world.config.no_ansi:
+        colorful.disable()
 
     # load needed extensions
     extensions.load(world.config)

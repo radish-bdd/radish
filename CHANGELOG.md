@@ -4,7 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-*Nothing here yet*
+### Added
+- Use new colorful
+- Galician language
+- Declare extension dependencies as extra requirements. Refs #73
+
+### Fixed
+- Traceback when `--early-exit` was set and a run failed. Refs #92
+
 
 ## [v0.4.0]
 ### Added

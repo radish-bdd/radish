@@ -10,12 +10,13 @@ import sys
 import codecs
 
 import yaml
-from colorful import colorful
+import colorful
 
 from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location
+from radish.compat import u
 
 
 def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None, cover_show_missing=False):
@@ -24,8 +25,8 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
     matched step implementations.
     """
     if cover_min_percentage is not None and float(cover_min_percentage) > 100:
-        sys.stderr.write(colorful.magenta('You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n'.format(
-            float(cover_min_percentage))))
+        sys.stderr.write(str(colorful.magenta('You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n'.format(
+            float(cover_min_percentage)))))
         return 3
 
     # load user's custom python files
@@ -33,8 +34,8 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
     steps = StepRegistry().steps
 
     if not steps:
-        sys.stderr.write(colorful.magenta('No step implementations found in {0}, thus doesn\'t make sense to continue'.format(
-            basedir)))
+        sys.stderr.write(str(colorful.magenta('No step implementations found in {0}, thus doesn\'t make sense to continue'.format(
+            basedir))))
         return 4
 
     failed = 0
@@ -50,7 +51,7 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
             print(colorful.magenta('No sentences found in {0} to test against'.format(match_config_file)))
             return 5
         else:
-            print(colorful.brown('Testing sentences from {0}:'.format(colorful.bold_brown(match_config_file))))
+            print(colorful.yellow('Testing sentences from {0}:'.format(colorful.bold_yellow(match_config_file))))
             failed_sentences, passed_senteces = test_step_matches(match_config, steps)
             failed += failed_sentences
             passed += passed_senteces
@@ -95,7 +96,7 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
     if cover_show_missing:
         missing_steps = get_missing_steps(steps, covered_steps)
         if missing_steps:
-            missing_step_report = colorful.bold_brown('Missing steps:\n')
+            missing_step_report = colorful.bold_yellow('Missing steps:\n')
             for step in missing_steps:
                 missing_step_report += '- {0} at '.format(
                     colorful.cyan(step[0]))
@@ -121,7 +122,7 @@ def test_step_matches(match_config, steps):
         expected_step = item['should_match']
 
         sys.stdout.write('{0} STEP "{1}" SHOULD MATCH {2}    '.format(
-            colorful.brown('>>'), colorful.cyan(sentence), colorful.cyan(expected_step)))
+            colorful.yellow('>>'), colorful.cyan(sentence), colorful.cyan(expected_step)))
 
         result = match_step(item['sentence'], steps)
         if not result:
@@ -147,7 +148,7 @@ def test_step_matches(match_config, steps):
                 continue
 
         # check if arguments match
-        print(colorful.bold_green('✔'))
+        print(u(colorful.bold_green(u'✔')))
         passed += 1
 
     return failed, passed
@@ -157,14 +158,14 @@ def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    sys.stdout.write(colorful.bold_red('✘'))
+    sys.stdout.write(u(colorful.bold_red(u'✘')))
     if step_func is not None:
-        sys.stdout.write(colorful.red(' (at {0})'.format(get_func_location(step_func))))
+        sys.stdout.write(u(colorful.red(' (at {0})'.format(get_func_location(step_func)))))
 
     sys.stdout.write('\n')
 
     for error in errors:
-        print(colorful.red('  - {0}'.format(error)))
+        print(u(colorful.red('  - {0}'.format(error))))
 
 
 def check_step_arguments(expected_arguments, arguments):

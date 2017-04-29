@@ -5,14 +5,12 @@
 """
 
 import os
-import re
 import sys
 import fnmatch
 import traceback
 import warnings
 
 from .compat import u
-from .terrain import world
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -40,9 +38,6 @@ def console_write(text):
 
         If the --no-colors flag is given all colors are removed from the text
     """
-    if world.config.no_ansi:
-        text = re.sub(r"\x1b[^m]*m", "", text)
-
     print(text)
 
 

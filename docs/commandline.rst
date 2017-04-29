@@ -205,6 +205,12 @@ Radish can report it's test run results to a XML file after a test run using
 the ``--bdd-xml`` command line switch. The command line option value must be
 a file path where the XML file should be written to.
 
+To write the XML file ``lxml`` is required. Install it with:
+
+.. code:: bash
+
+    pip install radish-bdd[bddxml]
+
 .. code:: bash
 
   radish SomeFeature.feature --bdd-xml /tmp/result.xml
@@ -221,6 +227,12 @@ limit which packages it generates metrics for by providing file paths or
 package names using ``--cover-packages``. The ``--cover-packages`` command line option
 is the ``--source`` command line switch used by ``coverage``.
 See `coverage documention <https://coverage.readthedocs.io/en/latest/cmd.html#execution>`_
+
+To use the code coverage feature you have to install the necessary extra dependencies with:
+
+.. code:: bash
+
+    pip install radish-bdd[coverage]
 
 The following options are also available to configure the coverage measurement and report:
 
@@ -307,6 +319,12 @@ Run - Inspect code after failure
 
 Radish debugging mechanisms include the ability to drop into a IPython shell
 upon code failures using the ``--inspect-after-failure`` command line option.
+
+To inspect code with IPython install the necessary extra dependencies with:
+
+.. code:: bash
+
+    pip install radish-bdd[ipython-debugger]
 
 .. code:: bash
 

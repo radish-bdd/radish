@@ -32,6 +32,6 @@ class FailureInspector(object):
         try:
             from IPython import embed
         except ImportError as e:
-            raise RadishError("Cannot import IPython embed function: {0}".format(e))
+            raise RadishError('if you want to use the failure inspector extension you have to "pip install radish-bdd[ipython-debugger]"')
 
         embed()

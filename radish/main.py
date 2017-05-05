@@ -58,7 +58,8 @@ def run_features(core):
     world.config.expand = True
 
     # load user's custom python files
-    load_modules(world.config.basedir)
+    for basedir in world.config.basedir:
+        load_modules(basedir)
 
     # match feature file steps with user's step definitions
     merge_steps(core.features, StepRegistry().steps)
@@ -94,7 +95,7 @@ Usage:
            [--expand]
            [--no-ansi]
     radish <features>...
-           [-b=<basedir> | --basedir=<basedir>]
+           [-b=<basedir> | --basedir=<basedir>...]
            [-e | --early-exit]
            [--debug-steps]
            [-t | --with-traceback]
@@ -119,7 +120,8 @@ Options:
     -t --with-traceback                         show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
     -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation
-    -b=<basedir> --basedir=<basedir>            set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
+    -b=<basedir> --basedir=<basedir>...         set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
+                                                You can specify -b|--basedir multiple times. All files will be imported.
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
     --shuffle                                   shuttle run order of features and scenarios

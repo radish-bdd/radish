@@ -106,7 +106,7 @@ def my_step(step):
     def __init__(self, step):
         self.step = step
         super(StepDefinitionNotFoundError, self).__init__(StepDefinitionNotFoundError.MESSAGE_TEMPLATE.format(
-            sentence=step.sentence, step_path=step.path, step_line=step.line, basedir=world.config.basedir))
+            sentence=step.sentence, step_path=step.path, step_line=step.line, basedir=' or '.join(world.config.basedir)))
 
 
 class RunnerEarlyExit(RadishError):

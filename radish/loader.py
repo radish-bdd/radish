@@ -30,13 +30,20 @@ def load_module(path):
 
         :param string path: the path to the module to load
     """
-    parent = os.path.dirname(utils.expandpath(path))
-    sys.path.insert(0, parent)
     module_name = os.path.splitext(os.path.split(path)[1])[0]
     try:
-        __import__(module_name)
+        if sys.version_info >= (3, 5):
+            # the imp module is deprecated since Python 3.6
+            import importlib
+            spec = importlib.util.spec_from_file_location(module_name, path)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+        else:
+            import imp
+            parent = os.path.dirname(utils.expandpath(path))
+            f, pathname, desc = imp.find_module(module_name, [parent])
+            imp.load_module(module_name, f, pathname, desc)
+            f.close()
     except Exception as e:
         #raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e))
         raise e
-    finally:
-        sys.path.remove(parent)

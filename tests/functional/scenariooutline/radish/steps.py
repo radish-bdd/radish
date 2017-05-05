@@ -7,9 +7,11 @@ from radish import given, when, then
 def have_number(step, number):
     step.context.numbers.append(number)
 
+
 @when("I divide them")
 def sum_numbres(step):
     step.context.result = step.context.numbers[0] / step.context.numbers[1]
+
 
 @then("I expect the result to be {result:g}")
 def expect_result(step, result):

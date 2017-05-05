@@ -4,7 +4,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-*Nothing to here yet*
+### Fixed
+- Parsing of tagged Scenario after Scenario Outline Example Table. Refs #105
 
 ## [v0.4.1]
 ### Added

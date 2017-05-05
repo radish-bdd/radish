@@ -309,7 +309,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line):
+        if self._detect_scenario_type(line):
             self._current_scenario.after_parse()
             return self._parse_scenario(line)
 
@@ -324,7 +324,7 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         # detect next keyword
-        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
+        if self._detect_scenario_type(line):
             self._current_scenario.after_parse()
             return self._parse_scenario(line)
 
@@ -422,7 +422,7 @@ class FeatureParser(object):
         """
         Parses the next lines until the next scenario is reached
         """
-        if self._detect_tag(line) or self._detect_scenario(line) or self._detect_scenario_loop(line) or self._detect_scenario_outline(line):
+        if self._detect_scenario_type(line):
             return self._parse_scenario(line)
 
         return True

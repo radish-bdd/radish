@@ -632,7 +632,7 @@ called for Features, Scenarios or Steps with the according tags.
 
     from radish import after
 
-    @after.scenario(on_tags='bad_case or crash')
+    @after.each_scenario(on_tags='bad_case or crash')
     def cleanup(scenario):
         # do some heavy cleanup!
         pass

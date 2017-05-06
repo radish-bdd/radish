@@ -4,6 +4,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+*Stay tuned...*
+
+## [v0.5.0]
+
+### Added
+- Support tag specific hooks
+- Support multiple basedirs for single run call. Refs #40
+
 ### Fixed
 - Parsing of tagged Scenario after Scenario Outline Example Table. Refs #105
 
@@ -55,7 +63,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.4.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.5.0...HEAD
+[v0.5.0]: https://github.com/radish-bdd/radish/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/radish-bdd/radish/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/radish-bdd/radish/compare/v0.3.2...v0.4.0
 [v0.3.2]: https://github.com/radish-bdd/radish/compare/v0.3.1...v0.3.2

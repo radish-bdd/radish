@@ -595,7 +595,7 @@ These can be combined with the following hook subjects:
 * each_scenario
 * each_step
 
-Hooks are simply registered by adding these hooks objects and subjects as decorators to python functions:
+Hooks are simply registered by adding these hook objects and subjects as decorators to python functions:
 
 .. code:: python
 
@@ -624,6 +624,18 @@ a second argument which is the radish run marker (a unique run id):
       scenario.context.database.disconnect()
 
 The hooks are called in the order of registration.
+
+If you are using :ref:`tutorial#tags` you can specify that a certain hook is only
+called for Features, Scenarios or Steps with the according tags.
+
+.. code:: python
+
+    from radish import after
+
+    @after.scenario(on_tags='bad_case or crash')
+    def cleanup(scenario):
+        # do some heavy cleanup!
+        pass
 
 
 Contexts

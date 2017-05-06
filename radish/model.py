@@ -47,6 +47,16 @@ class Model(object):
         self.endtime = None
 
     @property
+    def all_tags(self):
+        """
+        Return all tags for this model and all it's parents
+        """
+        tags = self.tags
+        if self.parent:
+            tags.extend(self.parent.all_tags)
+        return tags
+
+    @property
     def duration(self):
         """
             Returns the duration of this model

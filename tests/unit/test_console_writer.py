@@ -95,6 +95,7 @@ class ConsoleWriterTestCase(RadishTestCase):
         scenario = Scenario(1, "Scenario", "Some scenario", "somefile.feature", 2, None)
         scenario.parent = Mock(spec=Feature)
         scenario.parent.id = 1
+        scenario.parent.all_tags = []
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_scenario", scenario)
@@ -113,12 +114,13 @@ class ConsoleWriterTestCase(RadishTestCase):
             data.console = text
 
         scenario_mock = Mock()
+        scenario_mock.id = 1
         scenario_mock.parent = None
+        scenario_mock.all_tags = []
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
-        step.parent = Mock()
-        step.parent.id = 1
         step.parent.parent = Mock(spec=Feature)
         step.parent.parent.id = 1
+        step.parent.parent.all_tags = []
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("before", "each_step", step)
@@ -137,12 +139,13 @@ class ConsoleWriterTestCase(RadishTestCase):
             data.console = text
 
         scenario_mock = Mock()
+        scenario_mock.id = 1
         scenario_mock.parent = None
+        scenario_mock.all_tags = []
         step = Step(1, "I test the console writer", "somefile.feature", 3, scenario_mock, False)
-        step.parent = Mock()
-        step.parent.id = 1
         step.parent.parent = Mock(spec=Feature)
         step.parent.parent.id = 1
+        step.parent.parent.all_tags = []
 
         with patch("radish.extensions.console_writer.write", side_effect=patched_write):
             HookRegistry().call("after", "each_step", step)

@@ -22,7 +22,7 @@ class MatcherTestCase(RadishTestCase):
             Setup config object
         """
         setup_config({
-            "--basedir": 'foo',
+            "--basedir": ['foo'],
         })
 
     def test_match_steps(self):

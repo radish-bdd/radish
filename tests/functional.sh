@@ -21,13 +21,21 @@ cd "${ROOT}/${TESTS_ROOT}"
 for t in *; do
     export COVERAGE_FILE=${BASE_COVERAGE_FILE}.${t}
 
-    BASE_DIR="${t}/radish"
-    FEATURES_DIR="${t}/features"
-    MATCHES_FILE="${t}/tests/radish-matches.yml"
-    CMDLINE_FILE="${t}/cmdline"
+    FEATURES_DIR="features"
+    MATCHES_FILE="tests/radish-matches.yml"
+    CMDLINE_FILE="cmdline"
+    TEST_CMDLINE_FILE="test-cmdline"
+
+    cd "${t}" || exit 1
 
     if [ -f "${MATCHES_FILE}" ]; then
-        PYTHONPATH="${t}" coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches -b "${BASE_DIR}" "${MATCHES_FILE}"
+        # check if custom cmdline arguments are specified
+        custom_cmdline_args=""
+        if [ -f "${TEST_CMDLINE_FILE}" ]; then
+            custom_cmdline_args=$(cat "${TEST_CMDLINE_FILE}")
+        fi
+
+        echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches "${MATCHES_FILE}"
         if [ $? -ne 0 ]; then
             echo "Functional tests from '${t}' failed to match steps with status $?"
             exit 1
@@ -40,9 +48,11 @@ for t in *; do
         custom_cmdline_args=$(cat "${CMDLINE_FILE}")
     fi
 
-    echo "${custom_cmdline_args}" | PYTHONPATH="${t}" xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" -b "${BASE_DIR}" "${FEATURES_DIR}"
+    echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" "${FEATURES_DIR}"
     if [ $? -ne 0 ]; then
         echo "Functional tests from '${t}' failed with status $?"
         exit 1
     fi
+
+    cd - || exit 1
 done

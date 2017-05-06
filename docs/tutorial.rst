@@ -208,7 +208,7 @@ Steps
 
 The steps are the heart piece of every Feature file. A line in a *Scenario* is called *Step*. The steps are the only thing which are really executed in a test. A Step is written in a human readable language. Each step is parsed by radish and matched with a step implementation written in python. If a Step does not match any step implementation radish will raise an exception and abort the run.
 
-All steps are implemented in python files located inside the *radish basedir*. Per default this base directory points to *$PWD/radish*. However, the base directory location can be changed by specifying the *-b* option when triggering radish.
+All steps are implemented in python files located inside the *radish basedirs*. Per default this base directory points to *$PWD/radish*. However, the base directory location can be changed by specifying the *-b* option when triggering radish. You can also specify ``-b`` multiple times to load from multiple locations.
 There are several ways how to implement steps. The most common way is by decorating your step implementation functions with one of the following decorators:
 
 * @step(pattern)
@@ -954,7 +954,7 @@ Install it's dependencies with:
 
     pip install radish-bdd[testing]
 
-The ``matches`` sub command is used to test your step pattern inside your *base dir* (``-b`` / ``--basedir``) against some
+The ``matches`` sub command is used to test your step pattern inside your *base dirs* (``-b`` / ``--basedir``) against some
 sentences defined in a YAML file. We call those files **match configs**. A *match config* file has the following format:
 
 .. code:: yaml

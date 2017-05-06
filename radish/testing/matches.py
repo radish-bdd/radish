@@ -19,7 +19,7 @@ from radish.utils import get_func_arg_names, get_func_location
 from radish.compat import u
 
 
-def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=None, cover_show_missing=False):
+def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False):
     """
     Test if the given match config files matches the actual
     matched step implementations.
@@ -30,12 +30,14 @@ def test_step_matches_configs(match_config_files, basedir, cover_min_percentage=
         return 3
 
     # load user's custom python files
-    load_modules(basedir)
+    for basedir in basedirs:
+        load_modules(basedir)
+
     steps = StepRegistry().steps
 
     if not steps:
         sys.stderr.write(str(colorful.magenta('No step implementations found in {0}, thus doesn\'t make sense to continue'.format(
-            basedir))))
+            basedirs))))
         return 4
 
     failed = 0

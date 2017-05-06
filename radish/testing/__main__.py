@@ -23,7 +23,7 @@ def main():
     """
 Usage:
     radish-test matches <match-configs>...
-        [-b=<basedir> | --basedir=<basedir>]
+        [-b=<basedir> | --basedir=<basedir>...]
         [--cover-min-percentage=<cover-min-percentage>]
         [--cover-show-missing]
     radish-test (-h | --help)
@@ -38,7 +38,8 @@ Commands:
 Options:
     -h --help                                      show this screen
     -v --version                                   show version
-    -b=<basedir> --basedir=<basedir>               set base dir from where the step.py and terrain.py will be loaded [default: $PWD/radish]
+    -b=<basedir> --basedir=<basedir>...            set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
+                                                   You can specify -b|--basedir multiple times. All files will be imported.
     --cover-min-percentage=<cover-min-percentage>  minimum percentage of step coverage for tests to pass
     --cover-show-missing                           show steps which are not tested
 

@@ -6,3 +6,4 @@ source =
 [run]
 omit =
     radish/vendor/*
+    tests/*

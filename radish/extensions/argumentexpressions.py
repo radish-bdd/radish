@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides some default ArgumentExpressions
+This module provides some default custom types
 """
 
-from radish.argexpregistry import arg_expr
+from radish.customtyperegistry import custom_type
 
 
-@arg_expr("MathExpression", r"[0-9 +\-*/%.e]+")
-def arg_expr_mathexpression(text):
+@custom_type("MathExpression", r"[0-9 +\-*/%.e]+")
+def math_expression_type(text):
     """
-        Argument Expression which expects a valid math expression
+        Custom Type which expects a valid math expression
 
         :param str text: the text which was matched as math expression
 

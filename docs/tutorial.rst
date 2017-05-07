@@ -291,7 +291,8 @@ Step Pattern
 ------------
 
 The pattern for each *Step* can be defined in two ways.
-The default ways is to specify the *Step pattern* in a format similar to the one used by python's ``str.format()`` method.
+The default way is to specify the *Step pattern* in a format similar to the one used by python's ``str.format()`` method -
+but in the opposite way.
 The pattern can be a simple string:
 
 .. code:: python
@@ -299,7 +300,7 @@ The pattern can be a simple string:
    @given("I sum all my numbers")
    ...
 
-This *Step pattern* doesn't have any arguments. To specify arguments use the ``{ARGUMENT_NAME:ARGUMENT_TYPE}`` format:
+This *Step pattern* doesn't have any arguments. To specify arguments use the ``{NAME:TYPE}`` format:
 
 .. code:: python
 
@@ -317,7 +318,7 @@ If no name is specified the arguments are positional:
    def have_numbers(step, number1, number2):
        ...
 
-Per default the following *argument types* are supported:
+Per default the following *types* are supported:
 
 +----------------+-------------------------------------------------------------------------------+-------------+
 | Type           | Characters matched                                                            | Output type |
@@ -374,19 +375,19 @@ This could be useful to directly inject more advanced objects to the step implem
 
 .. code:: python
 
-   from radish import arg_expr
+   from radish import custom_type
 
-   @arg_expr("User", r"[A-Z][a-z]+ [A-Z][a-z]+")
-   def user_argument_expression(text):
+   @custom_type("User", r"[A-Z][a-z]+ [A-Z][a-z]+")
+   def user_type(text):
        """
-           Return a user object by the given name
+        Return a user object by the given name
        """
        if text not in world.database.users:  # no user found
            return None
 
        return world.database.users[text]
 
-This *argument type* can be used like this in the *Step pattern*:
+This *custom type* can be used like this in the *Step pattern*:
 
 .. code-block:: python
 

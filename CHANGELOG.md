@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.5.1]
+### Fixed
+- Fix parsing Scenarios with tag and last in feature. Refs #111
+- Fix background and precondition console writing
+
 ## [v0.5.0]
 
 ### Added
@@ -63,7 +68,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.5.1...HEAD
+[v0.5.1]: https://github.com/radish-bdd/radish/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/radish-bdd/radish/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/radish-bdd/radish/compare/v0.4.0...v0.4.1
 [v0.4.0]: https://github.com/radish-bdd/radish/compare/v0.3.2...v0.4.0

@@ -67,7 +67,7 @@ def merge_step(step, steps):
         :param Step step: the step from a feature file to merge
         :param list steps: the registered steps
     """
-    match = match_step(step.expanded_sentence, steps)
+    match = match_step(step.context_sensitive_sentence, steps)
     if not match or not match.func:
         raise StepDefinitionNotFoundError(step)
 

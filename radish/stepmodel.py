@@ -28,8 +28,9 @@ class Step(Model):
         FAILED = "failed"
         PENDING = "pending"
 
-    def __init__(self, id, sentence, path, line, parent, runable):
+    def __init__(self, id, sentence, path, line, parent, runable, context_class=None):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
+        self.context_class = context_class
         self.table = []
         self.raw_text = []
         self.definition_func = None
@@ -57,6 +58,18 @@ class Step(Model):
         sentence = self.sentence
         for name, value in self.parent.constants:
             sentence = sentence.replace("${{{0}}}".format(name), value)
+        return sentence
+
+    @property
+    def context_sensitive_sentence(self):
+        """
+        Return the context class sensitive
+        step sentence.
+        """
+        sentence = self.expanded_sentence
+        if self.context_class:
+            return utils.str_lreplace('(?i)and ', self.context_class.capitalize() + ' ', sentence)
+
         return sentence
 
     @property

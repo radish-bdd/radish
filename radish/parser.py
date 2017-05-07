@@ -42,6 +42,7 @@ class FeatureParser(object):
 
     LANGUAGE_LOCATION = os.path.join(os.path.dirname(__file__), "languages")
     DEFAULT_LANGUAGE = "en"
+    CONTEXT_CLASSES = ['given', 'when', 'then', 'but']
 
     class State(object):
         """
@@ -74,6 +75,12 @@ class FeatureParser(object):
         self._current_preconditions = []
         self._current_constants = []
         self._current_scenario = None
+        #: Holds the current context class for a Step.
+        #  eg. If a step is: 'And I have the number'
+        #  and this step was preceeded by 'Given I have the number
+        #  it's context class is 'Given'. This is used to correctly
+        #  match the 'And' sentences
+        self._current_context_class = None
         self._in_step_text = False
         self.feature = None
 
@@ -337,9 +344,14 @@ class FeatureParser(object):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
+        # get context class
+        step_context_class = line.split()[0].lower()
+        if step_context_class in FeatureParser.CONTEXT_CLASSES:
+            self._current_context_class = step_context_class
+
         step_id = len(self._current_scenario.all_steps) + 1
         not_runable = isinstance(self._current_scenario, (ScenarioOutline, ScenarioLoop, Background))
-        step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable)
+        step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable, context_class=self._current_context_class)
         self._current_scenario.steps.append(step)
         return True
 

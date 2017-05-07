@@ -5,6 +5,7 @@
 """
 
 import os
+import re
 import sys
 import fnmatch
 import traceback
@@ -143,3 +144,14 @@ def get_func_location(func):
     """
     func_code = get_func_code(func)
     return '{0}:{1}'.format(func_code.co_filename, func_code.co_firstlineno)
+
+
+def str_lreplace(pattern, replacement, string, escape_pattern=False):
+    """
+    Only replace the pattern with replacement
+    if the string starts with the pattern.
+    """
+    if escape_pattern:
+        pattern = re.escape(pattern)
+
+    return re.sub(r'^{0}'.format(pattern), replacement, string)

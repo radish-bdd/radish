@@ -51,11 +51,9 @@ class FeatureParser(object):
         FEATURE = "feature"
         BACKGROUND = "background"
         SCENARIO = "scenario"
-        SCENARIO_OUTLINE = "scenario_outline"
         STEP = "step"
         EXAMPLES = "examples"
         EXAMPLES_ROW = "examples_row"
-        SCENARIO_LOOP = "scenario_loop"
         STEP_TEXT = "step_text"
         SKIP_SCENARIO = "skip_scenario"
 
@@ -151,7 +149,7 @@ class FeatureParser(object):
         if not self.feature.scenarios:
             return None
 
-        if self._current_scenario:
+        if self._current_scenario and not self._current_scenario.complete:  # for the last scenario
             self._current_scenario.after_parse()
 
         return self.feature
@@ -205,7 +203,6 @@ class FeatureParser(object):
         if not detected_background:
             # try to find a scenario
             if self._detect_scenario_type(line):
-                self._current_state = FeatureParser.State.SCENARIO
                 return self._parse_scenario(line)
 
             # this line is interpreted as a feature description line
@@ -463,6 +460,7 @@ class FeatureParser(object):
         :rtype: bool
         """
         if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
+            self._current_state = FeatureParser.State.SCENARIO
             return True
 
         return False

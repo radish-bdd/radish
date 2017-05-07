@@ -3,6 +3,7 @@ Feature: Test dividing numbers
   Scenario Outline features of
   radish I test dividing numbers.
 
+  @bar
   Scenario Outline: Divide Numbers
     Given I have the number <number1>
       And I have the number <number2>

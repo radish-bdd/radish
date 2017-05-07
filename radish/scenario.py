@@ -19,6 +19,7 @@ class Scenario(Model):
         self.background = background
         self.steps = []
         self.context = self.Context()
+        self.complete = False
 
     @property
     def state(self):
@@ -105,3 +106,4 @@ class Scenario(Model):
                 else:
                     step.as_precondition = step.parent
                 step.parent = self
+        self.complete = True

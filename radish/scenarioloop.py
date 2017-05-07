@@ -44,3 +44,4 @@ class ScenarioLoop(Scenario):
         """
         Scenario.after_parse(self)
         self.build_scenarios()
+        self.complete = True

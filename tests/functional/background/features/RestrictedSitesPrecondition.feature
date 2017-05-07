@@ -3,11 +3,11 @@ Feature: Restricted site support
     I want to restrict my personal sites
     to specific users.
 
-    #Background: Have a multi user setup
-        #Given a user named Bruce
-        #And a user named Peter
-        #And a user named Tony
-        #And a personal site owned by Bruce
+    Background: Have a multi user setup
+        Given a user named Bruce
+        And a user named Peter
+        And a user named Tony
+        And a personal site owned by Bruce
 
     @precondition(RestrictedSites.feature: Grant access to personal site)
     Scenario: Do some more stuff

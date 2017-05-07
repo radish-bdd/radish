@@ -175,11 +175,16 @@ class ConsoleWriter(object):
 
         output = ""
         if step.as_precondition and self.last_precondition != step.as_precondition:
-            output += colorful.white(u"      As precondition from {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
+            if step.as_background:
+                output += colorful.italic_white(u"      As Background Precondition from {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
+            else:
+                output += colorful.italic_white(u"      As Precondition from {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
         elif step.as_background and self.last_background != step.as_background:
-            output += colorful.white(u"      From background: {0}\n".format(step.as_background.sentence))
+            output += colorful.italic_white(u"      From Background: {0}\n".format(step.as_background.sentence))
+        elif step.as_precondition and self.last_precondition and not step.as_background and self.last_background:
+            output += colorful.italic_white(u"      From Precondition Scenario: {0}: {1}\n".format(os.path.basename(step.as_precondition.path), step.as_precondition.sentence))
         elif (not step.as_precondition and self.last_precondition) or (not step.as_background and self.last_background):
-            output += colorful.white(u"      From scenario\n")
+            output += colorful.italic_white(u"      From Scenario\n")
 
         self.last_precondition = step.as_precondition
         self.last_background = step.as_background

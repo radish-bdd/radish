@@ -13,6 +13,6 @@ __BUGTRACK_URL__ = "https://github.com/radish-bdd/radish/issues"
 from .terrain import world, pick
 from .hookregistry import before, after
 from .stepregistry import step, given, when, then, steps
-from .customtyperegistry import custom_type
+from .customtyperegistry import custom_type, register_custom_type, TypeBuilder
 from .extensionregistry import extension
 from .exceptions import ValidationError

@@ -8,6 +8,8 @@ from singleton import singleton
 
 from .exceptions import RadishError
 
+from parse_type import TypeBuilder
+
 
 @singleton()
 class CustomTypeRegistry(object):
@@ -40,3 +42,11 @@ def custom_type(name, pattern):
 
         return func
     return _decorator
+
+
+def register_custom_type(**kwargs):
+    """
+    Register the given custom types
+    """
+    for name, func in kwargs.items():
+        CustomTypeRegistry().register(name, func)

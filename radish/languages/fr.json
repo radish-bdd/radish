@@ -1,0 +1,11 @@
+{
+  "keywords": {
+    "feature": "Fonctionnalité",
+    "background": "Contexte",
+    "scenario": "Scénario",
+    "scenario_outline": "Schéma de scénario",
+    "examples": "Exemples",
+    "scenario_loop": "Boucle de scénario",
+    "iterations": "Itération"
+  }
+}

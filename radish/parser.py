@@ -465,7 +465,7 @@ class FeatureParser(object):
         match = re.match(pattern, line)
 
         if match:
-            return line[line.index(self._keywords_delimiter):].strip()
+            return line[line.index(self._keywords_delimiter) + 1:].strip()
 
         return None
 

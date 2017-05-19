@@ -24,6 +24,7 @@ class Keywords(object):
     """
         Represent config object for gherkin keywords.
     """
+
     def __init__(self, feature, background, scenario, scenario_outline, examples, scenario_loop, iterations):
         self.feature = feature
         self.background = background
@@ -141,11 +142,13 @@ class FeatureParser(object):
                             raise FeatureFileSyntaxError("The Background block may only appear once in a Feature")
 
                         if self.feature.scenarios:
-                            raise FeatureFileSyntaxError("The Background block must be placed before any Scenario block")
+                            raise FeatureFileSyntaxError(
+                                "The Background block must be placed before any Scenario block")
 
                 result = self._parse_context(line)
                 if result is False:
-                    raise FeatureFileSyntaxError("Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
+                    raise FeatureFileSyntaxError(
+                        "Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
 
                 if result is None:  # feature did not match tag expression, thus do not continue to parse
                     return None
@@ -193,7 +196,8 @@ class FeatureParser(object):
 
             return False
 
-        self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile, self._current_line, self._current_tags)
+        self.feature = Feature(self._featureid, self.keywords.feature, detected_feature, self._featurefile,
+                               self._current_line, self._current_tags)
         self.feature.context.constants = self._current_constants
         self._current_state = FeatureParser.State.BACKGROUND
         self._current_tags = []
@@ -216,7 +220,8 @@ class FeatureParser(object):
             self.feature.description.append(line)
             return True
 
-        self.feature.background = Background(self.keywords.background, detected_background, self._featurefile, self._current_line, self.feature)
+        self.feature.background = Background(self.keywords.background, detected_background, self._featurefile,
+                                             self._current_line, self.feature)
         self._current_scenario = self.feature.background
         self._current_state = FeatureParser.State.STEP
         return True
@@ -249,14 +254,16 @@ class FeatureParser(object):
                             self._current_constants.append((name, value))
                         return True
 
-                    raise FeatureFileSyntaxError("The parser expected a scenario or a tag on this line. Given: '{0}'".format(line))
+                    raise FeatureFileSyntaxError(
+                        "The parser expected a scenario or a tag on this line. Given: '{0}'".format(line))
 
                 detected_scenario, iterations = detected_scenario  # pylint: disable=unpacking-non-sequence
                 scenario_type = ScenarioLoop
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
         if detected_scenario in self.feature:
-            raise FeatureFileSyntaxError("Scenario with name '{0}' defined twice in feature '{1}'".format(detected_scenario, self.feature.path))
+            raise FeatureFileSyntaxError(
+                "Scenario with name '{0}' defined twice in feature '{1}'".format(detected_scenario, self.feature.path))
 
         scenario_id = 1
         if self.feature.scenarios:
@@ -280,7 +287,9 @@ class FeatureParser(object):
                 return True
 
         background = self._create_scenario_background(steps_runable=scenario_type is Scenario)
-        scenario = scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile, line=self._current_line, parent=self.feature, tags=self._current_tags, preconditions=self._current_preconditions, background=background)
+        scenario = scenario_type(scenario_id, *keywords, sentence=detected_scenario, path=self._featurefile,
+                                 line=self._current_line, parent=self.feature, tags=self._current_tags,
+                                 preconditions=self._current_preconditions, background=background)
         self.feature.scenarios.append(scenario)
         self._current_scenario = scenario
         self._current_scenario.context.constants = self._current_constants
@@ -317,7 +326,8 @@ class FeatureParser(object):
             self._current_scenario.after_parse()
             return self._parse_scenario(line)
 
-        example = ScenarioOutline.Example([x.strip() for x in line.split("|")[1:-1]], self._featurefile, self._current_line)
+        example = ScenarioOutline.Example([x.strip() for x in line.split("|")[1:-1]], self._featurefile,
+                                          self._current_line)
         self._current_scenario.examples.append(example)
         return True
 
@@ -351,7 +361,8 @@ class FeatureParser(object):
 
         step_id = len(self._current_scenario.all_steps) + 1
         not_runable = isinstance(self._current_scenario, (ScenarioOutline, ScenarioLoop, Background))
-        step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable, context_class=self._current_context_class)
+        step = Step(step_id, line, self._featurefile, self._current_line, self._current_scenario, not not_runable,
+                    context_class=self._current_context_class)
         self._current_scenario.steps.append(step)
         return True
 
@@ -362,7 +373,8 @@ class FeatureParser(object):
             :param string line: the line to parse from
         """
         if not self._current_scenario.steps:
-            raise FeatureFileSyntaxError("Found step table without previous step definition on line {0}".format(self._current_line))
+            raise FeatureFileSyntaxError(
+                "Found step table without previous step definition on line {0}".format(self._current_line))
 
         self._current_scenario.steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
         return True
@@ -397,7 +409,8 @@ class FeatureParser(object):
         """
         match = re.search(r"(.*?\.feature): (.*)", arguments)
         if not match:
-            raise FeatureFileSyntaxError("Scenario @precondition tag must have argument in format: 'test.feature: Some scenario'")
+            raise FeatureFileSyntaxError(
+                "Scenario @precondition tag must have argument in format: 'test.feature: Some scenario'")
 
         feature_file_name, scenario_sentence = match.groups()
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
@@ -406,11 +419,15 @@ class FeatureParser(object):
             feature = self._core.parse_feature(feature_file, self._tag_expr)
         except RuntimeError as e:
             if str(e) == "maximum recursion depth exceeded":  # precondition cycling
-                raise FeatureFileSyntaxError("Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(self._featurefile, feature_file_name, scenario_sentence, self._current_line))
+                raise FeatureFileSyntaxError(
+                    "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(
+                        self._featurefile, feature_file_name, scenario_sentence, self._current_line))
             raise
 
         if scenario_sentence not in feature:
-            raise FeatureFileSyntaxError("Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(scenario_sentence, feature_file))
+            raise FeatureFileSyntaxError(
+                "Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(
+                    scenario_sentence, feature_file))
 
         return feature[scenario_sentence]
 
@@ -436,19 +453,35 @@ class FeatureParser(object):
 
         return True
 
+    def _detect_keyword(self, keyword, line):
+        """
+        Detects a keyword on a given line
+        :param keyword: the keyword to detect
+        :param line: the line in which we want to detect the keyword
+        :return: the line without the detected keyword
+        :rtype: string or None
+        """
+
+        pattern = "^{keyword}\s*{delimiter}(.*)$".format(
+            keyword=keyword, delimiter=self._keywords_delimiter)
+        match = re.match(pattern, line)
+
+        if match:
+            return match.group(1).strip()
+
+        return None
+
     def _detect_feature(self, line):
         """
             Detects a feature on the given line
 
             :param string line: the line to detect a feature
 
-            :returns: if a feature was found on the given line
-            :rtype: bool
+            :returns: the detected feature on the given line
+            :rtype: string or None
         """
-        if line.startswith(self.keywords.feature + self._keywords_delimiter):
-            return line[len(self.keywords.feature) + len(self._keywords_delimiter):].strip()
 
-        return None
+        return self._detect_keyword(self.keywords.feature, line)
 
     def _detect_background(self, line):
         """
@@ -456,13 +489,11 @@ class FeatureParser(object):
 
             :param string line: the line to detect a background
 
-            :returns: if the background was found on the given line
-            :rtype: bool
+            :returns: the detected background on the given line
+            :rtype: string or None
         """
-        if line.startswith(self.keywords.background + self._keywords_delimiter):
-            return line[len(self.keywords.background) + len(self._keywords_delimiter):].strip()
 
-        return None
+        return self._detect_keyword(self.keywords.background, line)
 
     def _detect_scenario_type(self, line):
         """
@@ -471,7 +502,8 @@ class FeatureParser(object):
         :returns: if a scenario of any type is present on the given line
         :rtype: bool
         """
-        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(line) or self._detect_tag(line):
+        if self._detect_scenario(line) or self._detect_scenario_outline(line) or self._detect_scenario_loop(
+                line) or self._detect_tag(line):
             self._current_state = FeatureParser.State.SCENARIO
             return True
 
@@ -483,13 +515,11 @@ class FeatureParser(object):
 
             :param string line: the line to detect a scenario
 
-            :returns: if a scenario was found on the given line
-            :rtype: bool
+            :returns: the scenario detected on the given line
+            :rtype: string or None
         """
-        if line.startswith(self.keywords.scenario + self._keywords_delimiter):
-            return line[len(self.keywords.scenario) + len(self._keywords_delimiter):].strip()
 
-        return None
+        return self._detect_keyword(self.keywords.scenario, line)
 
     def _detect_scenario_outline(self, line):
         """
@@ -497,13 +527,11 @@ class FeatureParser(object):
 
             :param string line: the line to detect a scenario outline
 
-            :returns: if a scenario outline was found on the given line
-            :rtype: bool
+            :returns: the scenario outline detected on the given line
+            :rtype: string or None
         """
-        if line.startswith(self.keywords.scenario_outline + self._keywords_delimiter):
-            return line[len(self.keywords.scenario_outline) + len(self._keywords_delimiter):].strip()
 
-        return None
+        return self._detect_keyword(self.keywords.scenario_outline, line)
 
     def _detect_examples(self, line):
         """
@@ -514,10 +542,8 @@ class FeatureParser(object):
             :returns: if an Examples block was found on the given line
             :rtype: bool
         """
-        if line.startswith(self.keywords.examples + self._keywords_delimiter):
-            return True
 
-        return None
+        return self._detect_keyword(self.keywords.examples, line) is not None
 
     def _detect_scenario_loop(self, line):
         """

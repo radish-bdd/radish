@@ -461,11 +461,13 @@ class FeatureParser(object):
         :return: the line without the detected keyword
         :rtype: string or None
         """
-        pattern = "^%s\s*%s" % (keyword, self._keywords_delimiter)
+
+        pattern = "^{keyword}\s*{delimiter}(.*)$".format(
+            keyword=keyword, delimiter=self._keywords_delimiter)
         match = re.match(pattern, line)
 
         if match:
-            return line[line.index(self._keywords_delimiter) + 1:].strip()
+            return match.group(1).strip()
 
         return None
 

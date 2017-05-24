@@ -46,7 +46,7 @@ class ConsoleWriter(object):
         self.last_precondition = None
         self.last_background = None
 
-        self._placeholder_regex = re.compile(r'(<\w+>)', flags=re.UNICODE)
+        self._placeholder_regex = re.compile(r'(<[\w-]+>)', flags=re.UNICODE)
 
     def get_color_func(self, state):
         """
@@ -231,11 +231,11 @@ class ConsoleWriter(object):
         output = u'{0}        '.format(line_jump_seq)
 
         if isinstance(step.parent, ScenarioOutline):
-            # Highlight Scenario Outline placeholders e.g. '<method>'
-            output += (u''.join([str(colorful.bold_white(item) if (self._placeholder_regex.search(item)
-                                 and item.strip('<>') in step.parent.examples_header)
-                                 else color_func(item))
-                                 for item in self._placeholder_regex.split(step.sentence)]))
+            # Highlight ScenarioOutline placeholders e.g. '<method>'
+            output += (u''.join(str(colorful.white(item) if (self._placeholder_regex.search(item)
+                                and item.strip('<>') in step.parent.examples_header)
+                                else color_func(item))
+                                for item in self._placeholder_regex.split(step.sentence)))
         else:
             output += u"{0}{1}".format(self.get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
 

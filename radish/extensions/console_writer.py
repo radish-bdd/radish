@@ -8,6 +8,7 @@
 # pylint: disable=no-member
 
 import os
+import re
 import colorful
 
 from radish.terrain import world
@@ -44,6 +45,8 @@ class ConsoleWriter(object):
 
         self.last_precondition = None
         self.last_background = None
+
+        self._placeholder_regex = re.compile(r'(<[\w-]+>)', flags=re.UNICODE)
 
     def get_color_func(self, state):
         """
@@ -225,7 +228,16 @@ class ConsoleWriter(object):
 
         color_func = self.get_color_func(step.state)
         line_jump_seq = self.get_line_jump_seq() * (((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) if step.table else 0))
-        output = u"{0}        {1}{2}".format(line_jump_seq, self.get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
+        output = u'{0}        '.format(line_jump_seq)
+
+        if isinstance(step.parent, ScenarioOutline):
+            # Highlight ScenarioOutline placeholders e.g. '<method>'
+            output += (u''.join(str(colorful.white(item) if (self._placeholder_regex.search(item)
+                                and item.strip('<>') in step.parent.examples_header)
+                                else color_func(item))
+                                for item in self._placeholder_regex.split(step.sentence)))
+        else:
+            output += u"{0}{1}".format(self.get_id_sentence_prefix(step, colorful.bold_cyan), color_func(step.sentence))
 
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))

@@ -34,7 +34,7 @@ def load_module(path):
     try:
         if sys.version_info >= (3, 5):
             # the imp module is deprecated since Python 3.6
-            import importlib
+            import importlib.util
             spec = importlib.util.spec_from_file_location(module_name, path)
             module = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(module)

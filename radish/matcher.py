@@ -99,7 +99,7 @@ def match_step(sentence, steps):
             except ValueError as e:
                 raise StepPatternError(pattern, func.__name__, e)
 
-            match = compiled.search(sentence, evaluate_result=False)
+            match = compiled.parse(sentence, evaluate_result=False)
             argument_match = ParseStepArguments(match)
             if match:
                 longest_group = get_longest_group(match.match.regs)

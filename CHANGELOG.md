@@ -6,6 +6,19 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.6.0]
+### Added
+- Support cardinalities in step patterns. Refs #62, #113
+- Highlight placeholders in Scenario Outline. Refs #60, #122
+- Correctly support step gherkin context (`Given`, `When`, `Then`) when using `And`. Refs #61
+- Add french translation
+
+### Changed
+- Renamed *argument expressions* to *custom types*
+
+### Fixed
+- Fixed importing `importlib.util`. Refs #123
+
 ## [v0.5.1]
 ### Fixed
 - Fix parsing Scenarios with tag and last in feature. Refs #111
@@ -68,7 +81,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.5.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.0...HEAD
+[v0.6.0]: https://github.com/radish-bdd/radish/compare/v0.5.1...v0.6.0
 [v0.5.1]: https://github.com/radish-bdd/radish/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/radish-bdd/radish/compare/v0.4.1...v0.5.0
 [v0.4.1]: https://github.com/radish-bdd/radish/compare/v0.4.0...v0.4.1

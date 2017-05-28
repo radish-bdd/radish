@@ -7,9 +7,12 @@
 import re
 from collections import namedtuple
 
-import parse
+try:
+    from parse_type.cfparse import Parser
+except ImportError:
+    from parse import Parser
 
-from .argexpregistry import ArgExpRegistry
+from .customtyperegistry import CustomTypeRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError
 
 StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
@@ -95,11 +98,11 @@ def match_step(sentence, steps):
                 longest_group = 0
         else:
             try:
-                compiled = parse.compile(pattern, ArgExpRegistry().expressions)
+                parser = Parser(pattern, CustomTypeRegistry().custom_types)
             except ValueError as e:
                 raise StepPatternError(pattern, func.__name__, e)
 
-            match = compiled.search(sentence, evaluate_result=False)
+            match = parser.search(sentence, evaluate_result=False)
             argument_match = ParseStepArguments(match)
             if match:
                 longest_group = get_longest_group(match.match.regs)

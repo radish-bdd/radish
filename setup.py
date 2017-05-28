@@ -40,7 +40,10 @@ requirements = [
     'pysingleton',
     'colorful>=0.3.11',
     'tag-expressions>=1.0.0',
-    'parse>=1.8.0'
+    # FIXME(TF): this is a forked repository with
+    #            the parse version included we need.
+    #            change to upstream parse_type asap.
+    'radish-parse_type>0.3.4'
 ]
 
 

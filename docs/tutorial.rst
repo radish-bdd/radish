@@ -291,7 +291,8 @@ Step Pattern
 ------------
 
 The pattern for each *Step* can be defined in two ways.
-The default ways is to specify the *Step pattern* in a format similar to the one used by python's ``str.format()`` method.
+The default way is to specify the *Step pattern* in a format similar to the one used by python's ``str.format()`` method -
+but in the opposite way. radish uses `parse_type <https://github.com/jenisys/parse_type>`_ to parse this pattern.
 The pattern can be a simple string:
 
 .. code:: python
@@ -299,7 +300,7 @@ The pattern can be a simple string:
    @given("I sum all my numbers")
    ...
 
-This *Step pattern* doesn't have any arguments. To specify arguments use the ``{ARGUMENT_NAME:ARGUMENT_TYPE}`` format:
+This *Step pattern* doesn't have any arguments. To specify arguments use the ``{NAME:TYPE}`` format:
 
 .. code:: python
 
@@ -317,7 +318,7 @@ If no name is specified the arguments are positional:
    def have_numbers(step, number1, number2):
        ...
 
-Per default the following *argument types* are supported:
+Per default the following *types* are supported:
 
 +----------------+-------------------------------------------------------------------------------+-------------+
 | Type           | Characters matched                                                            | Output type |
@@ -369,24 +370,59 @@ Per default the following *argument types* are supported:
 | MathExpression | Mathematic expression containing: [0-9 +\-\*/%.e]+                            | float       |
 +----------------+-------------------------------------------------------------------------------+-------------+
 
-Radish provides a way to extend these types.
+These standard types can be combined with the following cardinalities:
+
+.. code:: text
+
+    "{numbers:d}"     #< Cardinality: 1    (one; the normal case)
+    "{number:d?}"     #< Cardinality: 0..1 (zero or one  = optional)
+    "{numbers:d*}"    #< Cardinality: 0..* (zero or more = many0)
+    "{numbers:d+}"    #< Cardinality: 1..* (one  or more = many)
+
+If you accept one or more numbers for your step you could therefor do:
+
+.. code:: python
+
+    @given('I have the numbers {numbers:d+}')
+    def have_numbers(step, numbers)
+        ...
+
+By default the ``,`` (comma) is used as a separator, but you are able to specify your own.
+Let's assume you want to use ``and`` instead of ``,``:
+
+.. code:: python
+
+    from radish import custom_type, register_custom_type, TypeBuilder
+
+    @custom_type('Number', r'\d+')
+    def parse_number(text):
+        return int(text)
+
+    # register the NumberList type
+    register_custom_type(NumberList=TypeBuilder.with_many(
+        parse_number, listsep='and'))
+
+Now you can use ``NumberList`` as the type in your step pattern.
+
+As you've seen you can use the ``custom_type`` decorator, the ``register_custom_type`` function
+and the ``TypeBuilder`` to extend the default types.
 This could be useful to directly inject more advanced objects to the step implementations:
 
 .. code:: python
 
-   from radish import arg_expr
+   from radish import custom_type
 
-   @arg_expr("User", r"[A-Z][a-z]+ [A-Z][a-z]+")
-   def user_argument_expression(text):
+   @custom_type("User", r"[A-Z][a-z]+ [A-Z][a-z]+")
+   def user_type(text):
        """
-           Return a user object by the given name
+        Return a user object by the given name
        """
        if text not in world.database.users:  # no user found
            return None
 
        return world.database.users[text]
 
-This *argument type* can be used like this in the *Step pattern*:
+This *custom type* can be used like this in the *Step pattern*:
 
 .. code-block:: python
 
@@ -396,6 +432,26 @@ This *argument type* can be used like this in the *Step pattern*:
    def expect_user_has_email(step, user, expected_email):
        assert user.email == expected_email, "User has email '{0}'.
           Expected was email '{1}'".format(user.email, expected_email)
+
+
+The ``TypeBuilder`` provides the following functionality:
+
+: ``TypeBuilder.with_many(func[,listsep=','])`` :
+    Extend the given parse function to accept multiple values of ``func``.
+    See: https://github.com/jenisys/parse_type#cardinality
+: ``TypeBuilder.with_optional(func)`` :
+    Make the string parsed by ``func`` optional.
+    See: https://github.com/jenisys/parse_type#cardinality
+: ``TypeBuilder.make_enum(enum : dict)`` :
+    Create a type for an enum represented by a ``dict``.
+    See: https://github.com/jenisys/parse_type#enumeration-name-to-value-mapping
+: ``TypeBuilder.make_choice(choices : list)`` :
+    Create a type which accepts the values in the given list
+    See: https://github.com/jenisys/parse_type#choice-name-enumeration
+: ``TypeBuilder.make_variant(variants: list)`` :
+    Create a type which can be one of the given types
+    See: https://github.com/jenisys/parse_type#variant-type-alternatives
+
 
 If these *Step patterns* do not fit all your use cases you could use your own **Regular Expression** to match a *Step sentence*:
 

@@ -6,7 +6,6 @@
 
 import re
 import inspect
-import parse
 from singleton import singleton
 
 from .exceptions import RadishError, SameStepError, StepRegexError

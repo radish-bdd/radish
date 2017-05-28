@@ -3,7 +3,6 @@
 import re
 from radish.terrain import world
 from radish.stepregistry import step
-from radish.argexpregistry import arg_expr
 
 world.number = 0
 

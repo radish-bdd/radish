@@ -1,3 +1,9 @@
+radish-bdd (0.6.1~mirror~alpha1) unstable; urgency=low
+
+  * new release
+
+ -- Timo Furrer <tuxtimo@gmail.com>  Mon, 29 May 2017 10:09:21 +0200
+
 radish-bdd (0.6.0~mirror~alpha1) unstable; urgency=low
 
   * new release

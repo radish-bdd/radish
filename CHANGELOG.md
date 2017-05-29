@@ -7,6 +7,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 *Stay tuned...*
 
 ## [v0.6.0]
+### Fixed
+- Fix syslog extension
+
+## [v0.6.0]
 ### Added
 - Support cardinalities in step patterns. Refs #62, #113
 - Highlight placeholders in Scenario Outline. Refs #60, #122
@@ -81,7 +85,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.1...HEAD
+[v0.6.1]: https://github.com/radish-bdd/radish/compare/v0.6.0...v0.6.1
 [v0.6.0]: https://github.com/radish-bdd/radish/compare/v0.5.1...v0.6.0
 [v0.5.1]: https://github.com/radish-bdd/radish/compare/v0.5.0...v0.5.1
 [v0.5.0]: https://github.com/radish-bdd/radish/compare/v0.4.1...v0.5.0

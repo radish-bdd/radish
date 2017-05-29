@@ -52,6 +52,8 @@ class SyslogWriter(object):
 
             :param string message: the message to log
         """
+        import syslog
+
         try:
             if isinstance(message, unicode):
                 message = message.encode("utf8")
@@ -64,6 +66,8 @@ class SyslogWriter(object):
         """
             Opens the syslog
         """
+        import syslog
+
         syslog.openlog("radish")
         self.log(u"begin run {0}".format(marker))
 
@@ -71,6 +75,8 @@ class SyslogWriter(object):
         """
             Closes the syslog
         """
+        import syslog
+
         self.log(u"end run {0}".format(marker))
         syslog.closelog()
 

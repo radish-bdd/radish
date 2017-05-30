@@ -19,7 +19,7 @@ class UserData(object):
         User Data radish extension
     """
     OPTIONS = [("-u=<userdata> | --user-data=<userdata>...",
-               "User data as 'key=value' pair. See world.config.user_data. You can specify --user-data multiple times.")
+               "User data as 'key=value' pair. You can specify --user-data multiple times.")
                ]
     LOAD_IF = staticmethod(lambda config: config.user_data)
     LOAD_PRIORITY = 2  # This should probably load early in-case another extension needs to inspect this data.

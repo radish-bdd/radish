@@ -4,7 +4,6 @@ import os
 import sys
 import warnings
 from time import time
-import logging
 
 from docopt import docopt
 import colorful

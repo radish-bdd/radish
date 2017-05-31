@@ -2,6 +2,7 @@
 
 import os
 import sys
+import warnings
 from time import time
 
 from docopt import docopt
@@ -132,6 +133,8 @@ Options:
 (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
     """
 
+    warnings.simplefilter('always', DeprecationWarning)
+
     # load extensions
     load_modules(os.path.join(os.path.dirname(__file__), "extensions"))
 
@@ -155,6 +158,11 @@ Options:
     extensions.load(world.config)
 
     core = Core()
+
+    if world.config.profile:
+        msg = ('Command line argument -p/--profile will be removed in a future version.  Please '
+               'use -u/--user-data instead.')
+        warnings.warn(msg, DeprecationWarning, stacklevel=1)
 
     feature_files = []
     for given_feature in world.config.features:

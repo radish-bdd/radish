@@ -132,6 +132,8 @@ A common usage of ``profile`` s setting it to some environment value such as
   radish SomeFeature.feature -p stage
   radish SomeFeature.feature --profile stage
 
+Note: ``-p`` / ``--profile`` is being deprecated and will be removed in a future version of Radish. Please use ``-u`` / ``--user-data`` instead.  See :ref:`Arbitrary User Data <commandline#user_data>` for details.
+
 
 Run - Dry run
 -------------
@@ -304,7 +306,7 @@ If you are unfamiliar with the syslog feature, please consult the official `sysl
 documentation <https://docs.python.org/3/library/syslog.html#module-syslog>`_.
 
 Run - Debug code after failure
--------------------------------
+------------------------------
 
 Radish debugging mechanisms include the ability to drop into either IPython debugger or
 the Python debugger on code failures using the ``--debug-after-failure`` command
@@ -419,6 +421,21 @@ It can also be useful when using the ``-s`` / ``--scenarios`` command line optio
 since the Scenarios are numbered in the run order.
 
 
+.. _commandline#user_data:
+
+Run - Specifying Arbitrary User Data on the command-line
+--------------------------------------------------------
+
+Radish allows you to specify arbitrary user data on the command-line as ``key=value`` pairs.
+You can access the user data from your tests by accessing the ``world.config.user_data`` dictionary.
+
+Note: All keys/values are treated as strings. If you specify the same key more than once, the last occurrence of the key will replace previous occurrences.
+
+.. code:: bash
+
+  radish SomeFeature.feature --user-data="my_key=1" --user-data="my_key2=my_value2" -u "my-key3=value3"
+
+
 Show - Expand feature
 ---------------------
 
@@ -455,13 +472,22 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [--bdd-xml=<bddxml>]
              [--with-coverage]
              [--cover-packages=<cover_packages>]
-             [--cucumber-json=<ccjson>]
-             [--debug-after-failure]
-             [--inspect-after-failure]
+             [--cover-append]
+             [--cover-config-file=<cover_config_file>]
+             [--cover-branches]
+             [--cover-erase]
+             [--cover-min-percentage=<cover_min_percentage>]
+             [--cover-html=<cover_html_dir>]
+             [--cover-xml=<cover_xml_file>]
              [--no-ansi]
              [--no-line-jump]
              [--write-steps-once]
              [--write-ids]
+             [--cucumber-json=<ccjson>]
+             [--debug-after-failure]
+             [--inspect-after-failure]
+             [--syslog]
+             [-u=<userdata> | --user-data=<userdata>...]
       radish (-h | --help)
       radish (-v | --version)
 
@@ -481,7 +507,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       -d --dry-run                                make dry run for the given feature files
       -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
       --shuffle                                   shuttle run order of features and scenarios
-      --tags=<tags>                               only run features/scenarios with the given tags
+      --tags=<feature_tags>                       only run Scenarios with the given tags
       --expand                                    expand the feature file (all preconditions)
       --bdd-xml=<bddxml>                          write BDD XML result file after run
       --with-coverage                             enable code coverage
@@ -493,11 +519,12 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --cover-min-percentage=<cover_min_percentage> fail if the given minimum coverage percentage is not reached
       --cover-html=<cover_html_dir>               specify a directory where to store HTML coverage report
       --cover-xml=<cover_xml_file>                specify a file where to store XML coverage report
-      --cucumber-json=<ccjson>                    write cucumber json result file after run
-      --debug-after-failure                       start python debugger after failure
-      --inspect-after-failure                     start python shell after failure
-      --syslog                                    log all of your features, scenarios, and steps to the syslog
       --no-ansi                                   print features without any ANSI sequences (like colors, line jump)
       --no-line-jump                              print features without line jumps (overwriting steps)
       --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
       --write-ids                                 write the feature, scenario and step id before the sentences
+      --cucumber-json=<ccjson>                    write cucumber json result file after run
+      --debug-after-failure                       start python debugger after failure
+      --inspect-after-failure                     start python shell after failure
+      --syslog                                    log all of your features, scenarios, and steps to the syslog
+      -u=<userdata> | --user-data=<userdata>...   User data as 'key=value' pair. You can specify --user-data multiple times.

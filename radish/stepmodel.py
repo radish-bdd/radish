@@ -4,6 +4,8 @@
     This module provides a class to represent a Step
 """
 
+import re
+
 from .model import Model
 from .exceptions import RadishError
 from .terrain import world
@@ -68,7 +70,7 @@ class Step(Model):
         """
         sentence = self.expanded_sentence
         if self.context_class:
-            return utils.str_lreplace('(?i)and ', self.context_class.capitalize() + ' ', sentence)
+            return utils.str_lreplace('and ', self.context_class.capitalize() + ' ', sentence, flags=re.IGNORECASE)
 
         return sentence
 

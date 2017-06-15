@@ -146,7 +146,7 @@ def get_func_location(func):
     return '{0}:{1}'.format(func_code.co_filename, func_code.co_firstlineno)
 
 
-def str_lreplace(pattern, replacement, string, escape_pattern=False):
+def str_lreplace(pattern, replacement, string, escape_pattern=False, flags=0):
     """
     Only replace the pattern with replacement
     if the string starts with the pattern.
@@ -154,4 +154,4 @@ def str_lreplace(pattern, replacement, string, escape_pattern=False):
     if escape_pattern:
         pattern = re.escape(pattern)
 
-    return re.sub(r'^{0}'.format(pattern), replacement, string)
+    return re.sub(r'^{0}'.format(pattern), replacement, string, flags=flags)

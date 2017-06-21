@@ -16,26 +16,31 @@ if [ -n "${VIRTUAL_ENV}" ]; then
     RADISH_TEST_BIN=${VIRTUAL_ENV_BIN}/radish-test
 fi
 
-cd "${ROOT}/${TESTS_ROOT}"
+cd "${ROOT}/${TESTS_ROOT}" || exit 1
 
 for t in *; do
+    if [ -f "${t}/disabled" ]; then
+        # skip all disabled tests
+        continue
+    fi
+
     export COVERAGE_FILE=${BASE_COVERAGE_FILE}.${t}
 
     FEATURES_DIR="features"
-    MATCHES_FILE="tests/radish-matches.yml"
+    TESTS_DIR="tests/"
     CMDLINE_FILE="cmdline"
     TEST_CMDLINE_FILE="test-cmdline"
 
     cd "${t}" || exit 1
 
-    if [ -f "${MATCHES_FILE}" ]; then
+    if [ -n "$(ls -A "${TESTS_DIR}" 2>/dev/null)" ]; then
         # check if custom cmdline arguments are specified
         custom_cmdline_args=""
         if [ -f "${TEST_CMDLINE_FILE}" ]; then
             custom_cmdline_args=$(cat "${TEST_CMDLINE_FILE}")
         fi
 
-        echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches "${MATCHES_FILE}"
+        echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches "${TESTS_DIR}"/*
         if [ $? -ne 0 ]; then
             echo "Functional tests from '${t}' failed to match steps with status $?"
             exit 1

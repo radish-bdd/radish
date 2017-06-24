@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.6.4]
+### Added
+- Support QuotedString custom type. Refs #134
+- Support Boolean custom type. Refs #132
+
+### Fixed
+- Precondition Scenarios from same Feature. Fixes #136
+
 ## [v0.6.3]
 ### Fixed
 - Remove `DeprecationWarning` when using Python 3.6. Refs #133
@@ -93,7 +101,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.3...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.4...HEAD
+[v0.6.4]: https://github.com/radish-bdd/radish/compare/v0.6.3...v0.6.4
 [v0.6.3]: https://github.com/radish-bdd/radish/compare/v0.6.2...v0.6.3
 [v0.6.2]: https://github.com/radish-bdd/radish/compare/v0.6.1...v0.6.2
 [v0.6.1]: https://github.com/radish-bdd/radish/compare/v0.6.0...v0.6.1

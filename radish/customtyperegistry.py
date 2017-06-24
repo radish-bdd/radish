@@ -74,3 +74,18 @@ def quoted_string_type(text):
     backslash within the double quotes.
     """
     return text[1:-1]
+
+
+@custom_type('Boolean',
+             r'(0|1|yes|Yes|YES|y|Y|no|No|NO|n|N|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)')
+def boolean_type(text):
+    """
+    Custom type to parse a boolean value.
+
+    The same values are parsed as YAML does:
+        http://yaml.org/type/bool.html
+
+    Plus 0 and 1
+    """
+    text = text.lower()
+    return text == '1' or text.startswith('y') or text == 'true' or text == 'on'

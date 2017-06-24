@@ -369,6 +369,13 @@ Per default the following *types* are supported:
 +----------------+-------------------------------------------------------------------------------+-------------+
 | MathExpression | Mathematic expression containing: [0-9 +\-\*/%.e]+                            | float       |
 +----------------+-------------------------------------------------------------------------------+-------------+
+| QuotedString   | String inside double quotes ("). Double quotes inside the string can be       | text        |
+|                | escaped with a backslash                                                      | w/o quotes  |
++----------------+-------------------------------------------------------------------------------+-------------+
+| Boolean        | Boolean value:                                                                | bool        |
+|                | True: 1, y, Y, yes, Yes, YES, true, True, TRUE, on, On, ON                    |             |
+|                | False: 0, n, N, no, No, NO, false, False, FALSE, off, Off, OFF                |             |
++----------------+-------------------------------------------------------------------------------+-------------+
 
 These standard types can be combined with the following cardinalities:
 

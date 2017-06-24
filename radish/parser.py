@@ -9,7 +9,10 @@ import os
 import codecs
 import re
 import json
+import filecmp
+import copy
 
+from .compat import RecursionError
 from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
 from .feature import Feature
 from .scenario import Scenario
@@ -415,14 +418,25 @@ class FeatureParser(object):
         feature_file_name, scenario_sentence = match.groups()
         feature_file = os.path.join(os.path.dirname(self._featurefile), feature_file_name)
 
-        try:
-            feature = self._core.parse_feature(feature_file, self._tag_expr)
-        except RuntimeError as e:
-            if str(e) == "maximum recursion depth exceeded":  # precondition cycling
+        # check if the precondition Scenario is in the same feature file.
+        # If this happens to be the case the current feature is just copied as is.
+        if filecmp.cmp(self._featurefile, feature_file):
+            if scenario_sentence not in self.feature:
                 raise FeatureFileSyntaxError(
-                    "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(
-                        self._featurefile, feature_file_name, scenario_sentence, self._current_line))
-            raise
+                    "Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(
+                        scenario_sentence, feature_file))
+
+            feature = copy.deepcopy(self.feature)
+            self._core.features.append(feature)
+        else:
+            try:
+                feature = self._core.parse_feature(feature_file, self._tag_expr)
+            except (RuntimeError, RecursionError) as e:
+                if str(e).startswith('maximum recursion depth exceeded'):  # precondition cycling
+                    raise FeatureFileSyntaxError(
+                        "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(
+                            self._featurefile, feature_file_name, scenario_sentence, self._current_line))
+                raise
 
         if scenario_sentence not in feature:
             raise FeatureFileSyntaxError(

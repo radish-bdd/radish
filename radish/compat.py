@@ -15,6 +15,9 @@ except ImportError:
 # flags to indicate Python versions
 PY2 = sys.version_info[0] == 2
 
+# RecursionError does not exist in Python < 3.5
+RecursionError = RuntimeError if sys.version_info < (3, 5) else RecursionError
+
 
 def u(text):  # pragma: no cover
     """

@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.6.5]
+### Fixed
+- Precondition with tags from other Scenario parsed correctly
+- Fix printing of tags
+
 ## [v0.6.4]
 ### Added
 - Support QuotedString custom type. Refs #134
@@ -101,7 +106,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.4...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.5...HEAD
+[v0.6.5]: https://github.com/radish-bdd/radish/compare/v0.6.4...v0.6.5
 [v0.6.4]: https://github.com/radish-bdd/radish/compare/v0.6.3...v0.6.4
 [v0.6.3]: https://github.com/radish-bdd/radish/compare/v0.6.2...v0.6.3
 [v0.6.2]: https://github.com/radish-bdd/radish/compare/v0.6.1...v0.6.2

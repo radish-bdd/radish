@@ -62,7 +62,7 @@ class FeatureParser(object):
         STEP_TEXT = "step_text"
         SKIP_SCENARIO = "skip_scenario"
 
-    def __init__(self, core, featurefile, featureid, tag_expr=None, language="en"):
+    def __init__(self, core, featurefile, featureid, tag_expr=None, inherited_tags=None, language="en"):
         if not os.path.exists(featurefile):
             raise OSError("Feature file at '{0}' does not exist".format(featurefile))
 
@@ -72,6 +72,7 @@ class FeatureParser(object):
         self._tag_expr = tag_expr
         self.keywords = {}
         self._keywords_delimiter = ":"
+        self._inherited_tags = inherited_tags or []
 
         self._current_state = FeatureParser.State.FEATURE
         self._current_line = 0
@@ -276,11 +277,12 @@ class FeatureParser(object):
             else:
                 scenario_id = previous_scenario.id + 1
 
-        # all tags of this scneario have been consumed so we can
+        # all tags of this scenario have been consumed so we can
         # check if this scenario has to be evaluated or not
         if self._tag_expr:
-            # inherit the tags from the current feature
-            current_tags = self._current_tags + self.feature.tags
+            # inherit the tags from the current feature and the explicitely
+            # inherited tags given to the parser. This tags are coming from precondition scenarios
+            current_tags = self._current_tags + self.feature.tags + self._inherited_tags
             scenario_in_tags = self._tag_expr.evaluate([t.name for t in current_tags])
             if not scenario_in_tags:  # this scenario does not match the given tag expression
                 self._current_tags = []
@@ -430,7 +432,8 @@ class FeatureParser(object):
             self._core.features.append(feature)
         else:
             try:
-                feature = self._core.parse_feature(feature_file, self._tag_expr)
+                current_tags = self._current_tags + self.feature.tags + self._inherited_tags
+                feature = self._core.parse_feature(feature_file, self._tag_expr, inherited_tags=current_tags)
             except (RuntimeError, RecursionError) as e:
                 if str(e).startswith('maximum recursion depth exceeded'):  # precondition cycling
                     raise FeatureFileSyntaxError(

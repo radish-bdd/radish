@@ -61,7 +61,7 @@ class BDDXMLWriter(object):
         """
             Strips ANSI modifiers from the given text
         """
-        pattern = re.compile("(\\033\[\d+(?:;\d+)*m)")
+        pattern = re.compile(r"(\\033\[\d+(?:;\d+)*m)")
         return pattern.sub("", text)
 
     def generate_bdd_xml(self, features, marker):
@@ -94,12 +94,29 @@ class BDDXMLWriter(object):
             description_element = etree.Element("description")
             description_element.text = etree.CDATA("\n".join(feature.description))
 
+            tags_element = etree.Element('tags')
+
+            for tag in feature.tags:
+                tag_element = etree.Element('tag')
+                tag_element.text = tag.name
+                tags_element.append(tag_element)
+
             scenarios_element = etree.Element("scenarios")
 
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_element = self._get_element_from_model("scenario", scenario)
+
+                scenario_tags_element = etree.Element('tags')
+                scenario_element.append(scenario_tags_element)
+
+                for tag in scenario.tags:
+                    tag_element = etree.Element('tag')
+                    tag_element.text = tag.name
+                    if tag.arg:
+                        tag_element.text += '({0})'.format(tag.arg)
+                    scenario_tags_element.append(tag_element)
 
                 for step in scenario.all_steps:
                     step_element = self._get_element_from_model("step", step)
@@ -114,6 +131,7 @@ class BDDXMLWriter(object):
                     scenario_element.append(step_element)
                 scenarios_element.append(scenario_element)
             feature_element.append(description_element)
+            feature_element.append(tags_element)
             feature_element.append(scenarios_element)
             testrun_element.append(feature_element)
 

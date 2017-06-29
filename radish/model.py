@@ -51,10 +51,10 @@ class Model(object):
         """
         Return all tags for this model and all it's parents
         """
-        tags = self.tags
+        tags = []
         if self.parent:
             tags.extend(self.parent.all_tags)
-        return tags
+        return tags + self.tags
 
     @property
     def duration(self):

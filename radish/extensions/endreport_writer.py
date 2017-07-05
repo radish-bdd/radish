@@ -10,6 +10,7 @@
 from datetime import timedelta
 
 import colorful
+import humanize
 
 from radish.hookregistry import after
 from radish.stepmodel import Step
@@ -123,6 +124,6 @@ class EndreportWriter(object):
             ))
 
         output += "\n"
-        output += colorful.cyan("Run {0} finished within {1}:{2} minutes".format(marker, int(duration.total_seconds()) / 60, duration.total_seconds() % 60.0))
+        output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
 
         write(output)

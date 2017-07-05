@@ -43,7 +43,8 @@ requirements = [
     # FIXME(TF): this is a forked repository with
     #            the parse version included we need.
     #            change to upstream parse_type asap.
-    'radish-parse_type>0.3.4'
+    'radish-parse_type>0.3.4',
+    'humanize'
 ]
 
 

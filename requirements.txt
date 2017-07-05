@@ -7,3 +7,4 @@ lxml==3.8.0
 radish-parse_type==0.3.5
 coverage==4.4.1
 PyYAML==3.12
+humanize==0.5.1

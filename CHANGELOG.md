@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.6.6]
+### Fixed
+- Beautify duration output. Refs #138
+
 ## [v0.6.5]
 ### Fixed
 - Precondition with tags from other Scenario parsed correctly
@@ -106,7 +110,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.5...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.6...HEAD
+[v0.6.6]: https://github.com/radish-bdd/radish/compare/v0.6.5...v0.6.6
 [v0.6.5]: https://github.com/radish-bdd/radish/compare/v0.6.4...v0.6.5
 [v0.6.4]: https://github.com/radish-bdd/radish/compare/v0.6.3...v0.6.4
 [v0.6.3]: https://github.com/radish-bdd/radish/compare/v0.6.2...v0.6.3

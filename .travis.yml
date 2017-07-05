@@ -18,7 +18,7 @@ install:
     - pip install -r requirements-dev.txt
 
 script:
-    - nosetests --rednose -v tests/unit --with-cover --cover-package=radish
+    - coverage run --source radish -m pytest tests/unit/ -v
     - pip install --editable .
     - bash ./tests/functional.sh
     - coverage combine -a

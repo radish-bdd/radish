@@ -61,3 +61,20 @@ def mock_world_config():
     world.config = Configuration(arguments)
     yield
     delattr(world, 'config')
+
+
+@pytest.fixture()
+def mock_utils_debugger(mocker):
+    """
+    Fixture to mock the pdf Python debugger
+    """
+    def call_orig_func(func, *args, **kwargs):
+        """
+        Helper to mock pdf.runcall interface
+        """
+        return func(*args, **kwargs)
+
+
+    debugger_mock = mocker.patch('radish.utils.get_debugger')
+    debugger_mock.return_value.runcall = mocker.MagicMock(side_effect=call_orig_func)
+    return debugger_mock.return_value

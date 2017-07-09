@@ -41,10 +41,11 @@ class Scenario(Model):
         """
             Returns all constants
         """
-        constants = self.context.constants
-        for name, value in constants:
+        constants = []
+        for name, value in self.context.constants:
             for parent_name, parent_value in self.parent.constants:
                 value = value.replace("${{{0}}}".format(parent_name), parent_value)
+            constants.append((name, value))
         constants.extend(self.parent.constants)
         return constants
 
@@ -72,6 +73,8 @@ class Scenario(Model):
             steps.extend(self.background.steps)
 
         steps.extend(self.steps)
+
+        # FIXME(TF): what about Scenario Precondition Steps?
 
         for step in steps:
             if step.state == Step.State.FAILED:

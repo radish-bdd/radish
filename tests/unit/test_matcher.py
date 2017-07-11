@@ -142,3 +142,20 @@ class MatcherTestCase(RadishTestCase):
         feature.scenarios.append(scenario)
 
         merge_steps.when.called_with([feature], steps).should.throw(StepDefinitionNotFoundError)
+
+    def test_match_longer_sentence(self):
+        """
+            Test matching steps with a longer sentence
+        """
+        steps = {"This is a short sentence": "some_func",
+                 "a short example sentence": "some_other_func"}
+
+        match, func = match_step("This is a short sentence to test something", steps)
+        arguments, keyword_arguments = match.evaluate()
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_func")
+
+        match, func = match_step("I see a short example sentence to test", steps)
+        arguments, keyword_arguments = match.evaluate()
+        keyword_arguments.should.be.equal({})
+        func.should.be.equal("some_other_func")

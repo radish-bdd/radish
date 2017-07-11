@@ -88,6 +88,7 @@ def match_step(sentence, steps):
         :returns: the arguments and the func which were matched
         :rtype: tuple
     """
+    potentional_matches = []
     for pattern, func in steps.items():
         if isinstance(pattern, re._pattern_type):  # pylint: disable=protected-access
             match = pattern.search(sentence)
@@ -110,8 +111,18 @@ def match_step(sentence, steps):
                 longest_group = 0
 
         if match:
+            step_match = StepMatch(argument_match=argument_match, func=func)
             if len(sentence) == longest_group:
-                return StepMatch(argument_match=argument_match, func=func)
+                # if perfect match can be made we return it no
+                # matter of the other potentional matches
+                return step_match
+
+            distance_to_perfect = abs(len(sentence) - longest_group)
+            potentional_matches.append((step_match, distance_to_perfect))
+
+    if potentional_matches:
+        # get best match
+        return min(potentional_matches, key=lambda x: x[1])[0]
 
     return None
 

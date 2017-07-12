@@ -5,6 +5,8 @@
     One Feature file parser instance is able to parse one feature file.
 """
 
+from __future__ import unicode_literals
+
 import os
 import codecs
 import re
@@ -154,9 +156,6 @@ class FeatureParser(object):
                     raise FeatureFileSyntaxError(
                         "Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
 
-                if result is None:  # feature did not match tag expression, thus do not continue to parse
-                    return None
-
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
@@ -174,9 +173,9 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
-        parse_context_func = getattr(self, "_parse_" + self._current_state)
+        parse_context_func = getattr(self, "_parse_" + self._current_state, None)
         if not parse_context_func:
-            raise RadishError("FeatureParser state {0} is not support".format(self._current_state))
+            raise RadishError("FeatureParser state {0} is not supported".format(self._current_state))
 
         return parse_context_func(line)
 

@@ -21,6 +21,15 @@ class Tag(object):
         self.name = name
         self.arg = arg
 
+    def __hash__(self):
+        return hash(self.name, self.arg)
+
+    def __eq__(self, other):
+        if not isinstance(other, Tag):
+            return False
+
+        return self.name == other.name and self.arg == other.arg
+
 
 # FIXME: make ABC
 class Model(object):

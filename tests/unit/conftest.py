@@ -9,10 +9,16 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
+import os
+
 import pytest
 
 from radish.terrain import world
-from radish.core import Configuration
+from radish.core import Core, Configuration
+from radish.parser import FeatureParser
+
+#: Holds the path to the Feature file resources
+__FEATURE_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'features')
 
 
 @pytest.fixture(scope='function', autouse=True)
@@ -78,3 +84,42 @@ def mock_utils_debugger(mocker):
     debugger_mock = mocker.patch('radish.utils.get_debugger')
     debugger_mock.return_value.runcall = mocker.MagicMock(side_effect=call_orig_func)
     return debugger_mock.return_value
+
+
+@pytest.fixture()
+def core():
+    """
+    Fixture to radish.core.Core
+    """
+    return Core()
+
+
+@pytest.fixture()
+def featurefile(request):
+    """
+    Fixture to get the path to a Feature File
+    """
+    featurename = request.param[0]
+    return os.path.join(__FEATURE_FILES_DIR__, featurename + '.feature')
+
+
+@pytest.fixture()
+def parser(request, core):
+    """
+    Fixture to create a Feature Parser ready to parse the given Feature File
+    """
+    featurename = request.param[0]
+    # get parser positional arguments
+    try:
+        parser_args = request.param[1]
+    except IndexError:
+        parser_args = []
+    # get parser keyword arguments
+    try:
+        parser_kwargs = request.param[2]
+    except IndexError:
+        parser_kwargs = {}
+
+    # create the Feature Parser instance
+    return FeatureParser(core, os.path.join(__FEATURE_FILES_DIR__, featurename + '.feature'),
+                         1, *parser_args, **parser_kwargs)

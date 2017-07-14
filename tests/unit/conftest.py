@@ -16,6 +16,7 @@ import pytest
 from radish.terrain import world
 from radish.core import Core, Configuration
 from radish.parser import FeatureParser
+from radish.stepregistry import StepRegistry
 
 #: Holds the path to the Feature file resources
 __FEATURE_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'features')
@@ -123,3 +124,12 @@ def parser(request, core):
     # create the Feature Parser instance
     return FeatureParser(core, os.path.join(__FEATURE_FILES_DIR__, featurename + '.feature'),
                          1, *parser_args, **parser_kwargs)
+
+@pytest.fixture()
+def stepregistry():
+    """
+    Fixture to create and get a clean StepRegistry instance.
+    """
+    registry = StepRegistry()
+    registry.clear()
+    return registry

@@ -18,6 +18,7 @@ from radish.core import Core, Configuration
 from radish.parser import FeatureParser
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
+from radish.extensionregistry import ExtensionRegistry
 
 #: Holds the path to the Feature file resources
 __FEATURE_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'features')
@@ -143,5 +144,15 @@ def hookregistry():
     Fixture to create and get a clean HookRegistry instance.
     """
     registry = HookRegistry()
+    registry.reset()
+    return registry
+
+
+@pytest.fixture()
+def extensionregistry():
+    """
+    Fixture to create and get a clean ExtensionRegistry instance.
+    """
+    registry = ExtensionRegistry()
     registry.reset()
     return registry

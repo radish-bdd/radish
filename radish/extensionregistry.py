@@ -18,6 +18,13 @@ class ExtensionRegistry(object):
         self.extensions = []
         self.loaded_extensions = []
 
+    def reset(self):
+        """
+        Reset all registered extensions
+        """
+        self.extensions = []
+        self.loaded_extensions = []
+
     def register(self, extension_class):
         """
             Registers the class as a radish extension

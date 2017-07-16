@@ -18,7 +18,7 @@ install:
     - pip install -r requirements-dev.txt
 
 script:
-    - coverage run --source radish -m pytest tests/unit/ -v
+    - coverage run --source radish -m pytest tests/unit/
     - pip install --editable .
     - bash ./tests/functional.sh
     - coverage combine -a

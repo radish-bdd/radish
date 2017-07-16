@@ -54,7 +54,7 @@ def test_loading_simple_extension(extensionregistry, mocker):
     # given
     @extension
     class SimpleExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
 
     # when
     extensionregistry.load(mocker.MagicMock())
@@ -91,7 +91,7 @@ def test_loading_extension_which_raises_exceptions_init(extensionregistry, mocke
     # given
     @extension
     class SimpleExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
         def __init__(self):
             raise AssertionError('some error')
 
@@ -110,11 +110,11 @@ def test_loading_simple_extension_if_wanted(extensionregistry, mocker):
     # given
     @extension
     class WantedExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
 
     @extension
     class UnwantedExtension(object):
-        LOAD_IF = lambda config: False
+        LOAD_IF = staticmethod(lambda config: False)
 
     # when
     extensionregistry.load(mocker.MagicMock())
@@ -132,17 +132,17 @@ def test_extension_loading_order(extensionregistry, mocker):
     # given
     @extension
     class SecondExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
         # default prio = 1000
 
     @extension
     class FirstExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
         LOAD_PRIORITY = 1
 
     @extension
     class ThirdExtension(object):
-        LOAD_IF = lambda config: True
+        LOAD_IF = staticmethod(lambda config: True)
         LOAD_PRIORITY = 10000
 
     # when

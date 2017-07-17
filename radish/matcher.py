@@ -94,7 +94,7 @@ def match_step(sentence, steps):
             match = pattern.search(sentence)
             argument_match = RegexStepArguments(match)
             if match:
-                longest_group = get_longest_group(match.regs)
+                longest_group = get_longest_group(match)
             else:
                 longest_group = 0
         else:
@@ -106,7 +106,7 @@ def match_step(sentence, steps):
             match = parser.search(sentence, evaluate_result=False)
             argument_match = ParseStepArguments(match)
             if match:
-                longest_group = get_longest_group(match.match.regs)
+                longest_group = get_longest_group(match.match)
             else:
                 longest_group = 0
 
@@ -127,14 +127,6 @@ def match_step(sentence, steps):
     return None
 
 
-def get_longest_group(regs):
-    if len(regs) < 1:
-        return 0
-
-    longest_group = regs[0][1]
-
-    for reg in regs[1:]:
-        candidate = reg[1]
-        if candidate > longest_group:
-            longest_group = candidate
-    return longest_group
+def get_longest_group(match):
+    # FIXME(TF): check if match.start() and match.end() matches sentence?!
+    return len(match.group())

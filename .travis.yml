@@ -21,7 +21,7 @@ script:
     - coverage run --source radish -m pytest tests/unit/
     - coverage run -a --source radish -m pytest tests/functional/
     - pip install --editable .
-    - bash ./tests/integration.sh
+    - bash ./tests/exploratory.sh
     - coverage combine -a
     - coverage report -m
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ROOT=$(dirname "$0")
-TESTS_ROOT=integration
+TESTS_ROOT=exploratory
 
 RADISH_BIN=radish/main.py
 RADISH_TEST_BIN=radish/main.py
@@ -42,7 +42,7 @@ for t in *; do
 
         echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_TEST_BIN}" matches "${TESTS_DIR}"/*
         if [ $? -ne 0 ]; then
-            echo "Integration tests from '${t}' failed to match steps with status $?"
+            echo "Exploratory tests from '${t}' failed to match steps with status $?"
             exit 1
         fi
     fi
@@ -55,7 +55,7 @@ for t in *; do
 
     echo "${custom_cmdline_args}" | PYTHONPATH=. xargs coverage run -a --rcfile="${COVERAGE_RC}" --source=radish "${RADISH_BIN}" "${FEATURES_DIR}"
     if [ $? -ne 0 ]; then
-        echo "Integration tests from '${t}' failed with status $?"
+        echo "Exploratory tests from '${t}' failed with status $?"
         exit 1
     fi
 

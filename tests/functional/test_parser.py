@@ -23,8 +23,6 @@ from radish.scenarioloop import ScenarioLoop
 from radish.background import Background
 import radish.exceptions as errors
 
-# FIXME(TF): these are more like Functional tests
-
 
 @pytest.mark.parametrize('parser', [
     ('empty-feature',)

@@ -20,6 +20,7 @@ install:
 script:
     - coverage run --source radish -m pytest tests/unit/
     - coverage run -a --source radish -m pytest tests/functional/
+    - coverage run -a --source radish -m pytest tests/integration/
     - pip install --editable .
     - bash ./tests/exploratory.sh
     - coverage combine -a

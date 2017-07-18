@@ -5,5 +5,5 @@ Feature: Ignore comments in Parser
 
     Scenario: A Scenario
         # Oh a comment instead of a Step
-        Given I do something
+        When I do something
         # Oh another comment

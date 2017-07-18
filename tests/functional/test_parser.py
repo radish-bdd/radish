@@ -249,7 +249,7 @@ def test_parse_featurefile_with_comments(parser):
     assert feature.description[0] == 'Radish shall ignore comments in Feature Files'
     assert len(feature.scenarios) == 1
     assert len(feature.scenarios[0].steps) == 1
-    assert feature.scenarios[0].steps[0].sentence == 'Given I do something'
+    assert feature.scenarios[0].steps[0].sentence == 'When I do something'
 
 
 @pytest.mark.parametrize('parser', [

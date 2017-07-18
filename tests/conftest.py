@@ -22,6 +22,8 @@ from radish.extensionregistry import ExtensionRegistry
 
 #: Holds the path to the Feature file resources
 __FEATURE_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'features')
+__RADISH_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'radish')
+__OUTPUT_DIR__ = os.path.join(os.path.dirname(__file__), 'output')
 
 
 @pytest.fixture(scope='function', autouse=True)
@@ -72,6 +74,16 @@ def mock_world_config():
     delattr(world, 'config')
 
 
+@pytest.fixture(scope='function', autouse=True)
+def reset_registries():
+    """
+    Fixture to automatically reset singleton registries
+    """
+    StepRegistry().clear()
+    HookRegistry().reset()
+    ExtensionRegistry().reset()
+
+
 @pytest.fixture
 def world_config(mock_world_config):
     """
@@ -115,6 +127,30 @@ def featurefile(request):
 
 
 @pytest.fixture()
+def featurefiledir():
+    """
+    Fixture to return the location of the test feature file dir
+    """
+    return __FEATURE_FILES_DIR__
+
+
+@pytest.fixture()
+def radishdir():
+    """
+    Fixture to return the location of the test radish files dir
+    """
+    return __RADISH_FILES_DIR__
+
+
+@pytest.fixture()
+def outputdir():
+    """
+    Fixture to return the location of the test output dir
+    """
+    return __OUTPUT_DIR__
+
+
+@pytest.fixture()
 def parser(request, core):
     """
     Fixture to create a Feature Parser ready to parse the given Feature File
@@ -142,9 +178,7 @@ def stepregistry():
     Fixture to create and get a clean StepRegistry instance.
     """
     registry = StepRegistry()
-    registry.clear()
     yield registry
-    registry.clear()
 
 
 @pytest.fixture()
@@ -153,9 +187,7 @@ def hookregistry():
     Fixture to create and get a clean HookRegistry instance.
     """
     registry = HookRegistry()
-    registry.reset()
     yield registry
-    registry.reset()
 
 
 @pytest.fixture()
@@ -164,6 +196,4 @@ def extensionregistry():
     Fixture to create and get a clean ExtensionRegistry instance.
     """
     registry = ExtensionRegistry()
-    registry.reset()
     yield registry
-    registry.reset()

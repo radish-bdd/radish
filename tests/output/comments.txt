@@ -1,0 +1,11 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mIgnore comments in Parser[22m[39m[26m  # [1m[30mfeatures/comments.feature[22m[39m[26m
+    [37mRadish shall ignore comments in Feature Files[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mA Scenario[22m[39m[26m
+        [1m[33mWhen I do something[22m[39m[26m
+[A[K        [1m[32mWhen I do something[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 steps ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

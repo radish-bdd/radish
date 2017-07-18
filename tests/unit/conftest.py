@@ -68,8 +68,16 @@ def mock_world_config():
         'show': False
     }
     world.config = Configuration(arguments)
-    yield
+    yield world.config
     delattr(world, 'config')
+
+
+@pytest.fixture
+def world_config(mock_world_config):
+    """
+    Fixture to work with world.config object
+    """
+    yield mock_world_config
 
 
 @pytest.fixture()
@@ -135,7 +143,8 @@ def stepregistry():
     """
     registry = StepRegistry()
     registry.clear()
-    return registry
+    yield registry
+    registry.clear()
 
 
 @pytest.fixture()
@@ -145,7 +154,8 @@ def hookregistry():
     """
     registry = HookRegistry()
     registry.reset()
-    return registry
+    yield registry
+    registry.reset()
 
 
 @pytest.fixture()
@@ -155,4 +165,5 @@ def extensionregistry():
     """
     registry = ExtensionRegistry()
     registry.reset()
-    return registry
+    yield registry
+    registry.reset()

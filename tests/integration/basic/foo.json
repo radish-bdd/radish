@@ -1,0 +1,34 @@
+[
+    {
+        "description": "In order to test the basic\nfeatures of radish I test\nto sum numbers.",
+        "elements": [
+            {
+                "description": "",
+                "id": "1",
+                "keyword": "Scenario",
+                "line": 6,
+                "name": "Sum two numbers",
+                "steps": [
+                    {
+                        "keyword": "Given",
+                        "line": 7,
+                        "name": "Given I have the number 5",
+                        "result": {
+                            "duration": 100016255000.0,
+                            "status": "passed"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
+            }
+        ],
+        "id": "1",
+        "keyword": "Feature",
+        "line": 1,
+        "name": "Test summing numbers",
+        "tags": [],
+        "type": "feature",
+        "uri": "features/SumNumbers.feature"
+    }
+]

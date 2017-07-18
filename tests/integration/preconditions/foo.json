@@ -1,0 +1,140 @@
+[
+    {
+        "description": "I want to be able to use a Scenario as precondition\nfor a Scenario within the same Feature.",
+        "elements": [
+            {
+                "description": "",
+                "id": "1",
+                "keyword": "Scenario",
+                "line": 5,
+                "name": "Precondition",
+                "steps": [
+                    {
+                        "keyword": "Given",
+                        "line": 6,
+                        "name": "Given a user named Bruce",
+                        "result": {
+                            "duration": 62000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 7,
+                        "name": "And a user named Peter",
+                        "result": {
+                            "duration": 83000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 8,
+                        "name": "And a user named Tony",
+                        "result": {
+                            "duration": 49000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 9,
+                        "name": "And a personal site owned by Bruce",
+                        "result": {
+                            "duration": 236000.0,
+                            "status": "passed"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
+            },
+            {
+                "description": "",
+                "id": "2",
+                "keyword": "Scenario",
+                "line": 12,
+                "name": "Grant access to personal site",
+                "steps": [
+                    {
+                        "keyword": "Given",
+                        "line": 6,
+                        "name": "Given a user named Bruce",
+                        "result": {
+                            "duration": 141000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 7,
+                        "name": "And a user named Peter",
+                        "result": {
+                            "duration": 82000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 8,
+                        "name": "And a user named Tony",
+                        "result": {
+                            "duration": 74000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 9,
+                        "name": "And a personal site owned by Bruce",
+                        "result": {
+                            "duration": 55000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "Given",
+                        "line": 13,
+                        "name": "Given Bruce grants access to Tony",
+                        "result": {
+                            "duration": 99000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "When",
+                        "line": 14,
+                        "name": "When I'm logged in as Tony",
+                        "result": {
+                            "duration": 64000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "Then",
+                        "line": 15,
+                        "name": "Then I can access Bruce personal site",
+                        "result": {
+                            "duration": 51000.0,
+                            "status": "passed"
+                        }
+                    }
+                ],
+                "tags": [
+                    {
+                        "line": 11,
+                        "name": "@precondition"
+                    }
+                ],
+                "type": "scenario"
+            }
+        ],
+        "id": "1",
+        "keyword": "Feature",
+        "line": 1,
+        "name": "Support Precondition from same feature",
+        "tags": [],
+        "type": "feature",
+        "uri": "features/Same.feature"
+    }
+]

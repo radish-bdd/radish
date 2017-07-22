@@ -9,8 +9,6 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-from __future__ import unicode_literals
-
 import os
 import sys
 import tempfile
@@ -46,13 +44,14 @@ def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, e
     featurefiles = [os.path.join(featurefiledir, x + '.feature') for x in given_featurefiles]
     cli_args = featurefiles + ['-b', radishdir] + given_cli_args
 
-    with open(os.path.join(outputdir, expected_output + '.txt'), 'r', encoding='utf-8') as output_file:
+    expected_output_file = os.path.join(outputdir, expected_output + '.txt')
+    with open(expected_output_file, 'r') as output_file:
         expected_output_string = output_file.read()
 
     # when
     original_stdout = sys.stdout
 
-    with tempfile.TemporaryFile(mode='w+', encoding='utf-8') as tmp_stdout:
+    with tempfile.TemporaryFile(mode='w+') as tmp_stdout:
         # patch sys.stdout
         sys.stdout = tmp_stdout
 

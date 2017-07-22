@@ -4,6 +4,9 @@
     This module provides several utility functions
 """
 
+from __future__ import unicode_literals
+from __future__ import print_function
+
 import os
 import re
 import sys
@@ -11,7 +14,7 @@ import fnmatch
 import traceback
 import warnings
 
-from .compat import u
+from .compat import PY2, u
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -39,6 +42,9 @@ def console_write(text):
 
         If the --no-colors flag is given all colors are removed from the text
     """
+    if PY2 and isinstance(text, unicode):
+        text = text.encode('utf-8')
+
     print(text)
 
 

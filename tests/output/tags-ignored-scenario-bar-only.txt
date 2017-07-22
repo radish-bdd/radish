@@ -1,0 +1,17 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mIgnore Scenario via Tag[22m[39m[26m  # [1m[30mfeatures/tags-ignored-scenario.feature[22m[39m[26m
+    [37mRadish shall support to ignore a
+    Scenario via Tags[39m[26m
+
+[36m    @bar
+[39m    [1m[37mScenario[22m[39m[26m: [1m[37mParsed Scenario[22m[39m[26m
+        [1m[33mGiven I have a Step[22m[39m[26m
+[A[K        [1m[32mGiven I have a Step[22m[39m[26m
+        [1m[33mWhen I do something[22m[39m[26m
+[A[K        [1m[32mWhen I do something[22m[39m[26m
+        [1m[33mThen I expect something[22m[39m[26m
+[A[K        [1m[32mThen I expect something[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

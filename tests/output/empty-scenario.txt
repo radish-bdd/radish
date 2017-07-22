@@ -1,0 +1,9 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mScenarios can be empty[22m[39m[26m  # [1m[30mfeatures/empty-scenario.feature[22m[39m[26m
+    [37mRadish should allow empty Scenarios[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mThis is an empty Scenario[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m0 steps ([22m[39m[1m[32m0 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

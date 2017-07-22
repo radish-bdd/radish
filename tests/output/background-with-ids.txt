@@ -1,0 +1,38 @@
+[1m[36m1. [22m[39m[26m[1m[37mFeature[22m[39m[26m: [1m[37mSimple Background[22m[39m[26m  # [1m[30mfeatures/background.feature[22m[39m[26m
+    [37mRadish shall support simple Scenario
+    Backgrounds.
+    The Background shall be assigned to
+    each Scenario.[39m[26m
+
+    [1m[37mBackground[22m[39m[26m: [1m[37mA simple Background[22m[39m[26m
+        [36m1. [39m[26m[36mGiven I have the number 5[39m[26m
+        [36m2. [39m[26m[36mAnd I have the number 3[39m[26m
+
+    [1m[36m1. [22m[39m[26m[1m[37mScenario[22m[39m[26m: [1m[37mAdd numbers[22m[39m[26m
+[3m[37m      From Background: A simple Background
+[23m[39m        [1m[33m1. [22m[39m[26m[1m[33mGiven I have the number 5[22m[39m[26m
+[A[K        [1m[36m1. [22m[39m[26m[1m[32mGiven I have the number 5[22m[39m[26m
+        [1m[33m2. [22m[39m[26m[1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [1m[36m2. [22m[39m[26m[1m[32mAnd I have the number 3[22m[39m[26m
+[3m[37m      From Scenario
+[23m[39m        [1m[33m3. [22m[39m[26m[1m[33mWhen I add them up[22m[39m[26m
+[A[K        [1m[36m3. [22m[39m[26m[1m[32mWhen I add them up[22m[39m[26m
+        [1m[33m4. [22m[39m[26m[1m[33mThen I expect the sum to be 8[22m[39m[26m
+[A[K        [1m[36m4. [22m[39m[26m[1m[32mThen I expect the sum to be 8[22m[39m[26m
+
+    [1m[36m2. [22m[39m[26m[1m[37mScenario[22m[39m[26m: [1m[37mSubtract numbers[22m[39m[26m
+[3m[37m      From Background: A simple Background
+[23m[39m        [1m[33m1. [22m[39m[26m[1m[33mGiven I have the number 5[22m[39m[26m
+[A[K        [1m[36m1. [22m[39m[26m[1m[32mGiven I have the number 5[22m[39m[26m
+        [1m[33m2. [22m[39m[26m[1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [1m[36m2. [22m[39m[26m[1m[32mAnd I have the number 3[22m[39m[26m
+[3m[37m      From Scenario
+[23m[39m        [1m[33m3. [22m[39m[26m[1m[33mWhen I subtract them[22m[39m[26m
+[A[K        [1m[36m3. [22m[39m[26m[1m[32mWhen I subtract them[22m[39m[26m
+        [1m[33m4. [22m[39m[26m[1m[33mThen I expect the difference to be 2[22m[39m[26m
+[A[K        [1m[36m4. [22m[39m[26m[1m[32mThen I expect the difference to be 2[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m4 steps ([22m[39m[1m[32m4 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

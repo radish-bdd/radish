@@ -1,194 +1,231 @@
 # -*- coding: utf-8 -*-
 
+"""
+    radish
+    ~~~~~~
+
+    Behavior Driven Development tool for Python - the root from red to green
+
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
 import os
 import re
 import tempfile
 
-from tests.base import *
+import pytest
+
+import colorful
 
 import radish.testing.matches as matches
 
 
-class MatchesTestCase(RadishTestCase):
+@pytest.fixture(scope='module', autouse=True)
+def disable_colors():
     """
-    Unit tests for testing.matches module.
+    Fixture to disable colors
     """
-    def test_unreasonable_min_coverage(self):
-        """
-        Test unreasonable minimum test coverage
-        """
-        matches.test_step_matches_configs.when.called_with(None, [], 101).should.return_value(3)
-
-    def test_no_steps_found(self):
-        """
-        Test if basedir does not contain any steps to test against
-        """
-        with patch('radish.testing.matches.load_modules'):
-            matches.test_step_matches_configs.when.called_with(None, []).should.return_value(4)
+    colorful.disable()
+    yield
+    colorful.use_8_ansi_colors()
 
 
-    def test_empty_matches_config(self):
-        """
-        Test empty matches config file
-        """
-        # create temporary file
-        fd, tmpfile = tempfile.mkstemp()
-        os.close(fd)
+def test_unreasonable_min_coverage(capsys):
+    """
+    Test unreasonable minimum test coverage
+    """
+    # given
+    min_coverage = 101
+    expected_returncode = 3
 
-        with patch('radish.testing.matches.load_modules'), patch('radish.testing.matches.StepRegistry.steps') as steps_mock:
-            steps_mock.return_value = [1, 2]
-            matches.test_step_matches_configs.when.called_with([tmpfile], []).should.return_value(5)
+    # when
+    actual_returncode = matches.test_step_matches_configs(None, [], min_coverage)
+    _, err = capsys.readouterr()
 
-        # delete temporary file
-        os.remove(tmpfile)
-
-    def test_step_matches_invalid_match_config(self):
-        """
-        Test match config without a sentence and a should_match attribute
-        """
-        # test config with missing should_match function attribute
-        config = [{
-            'sentence': None
-        }]
-
-        matches.test_step_matches.when.called_with(config, []).should.throw(ValueError,
-            'You have to provide a sentence and the function name which should be matched (should_match)')  # pylint: disable=bad-continuation
+    # then
+    assert actual_returncode == expected_returncode
+    assert err == 'You are a little cocky to think you can reach a minimum coverage of 101.00%\n'
 
 
-        # test config with missing sentence attribute
-        config = [{
-            'should_match': None
-        }]
+def test_no_steps_found(mocker, capsys):
+    """
+    Test if basedir does not contain any Steps to test against
+    """
+    # given
+    mocker.patch('radish.testing.matches.load_modules')
+    expected_returncode = 4
 
-        matches.test_step_matches.when.called_with(config, []).should.throw(ValueError,
-            'You have to provide a sentence and the function name which should be matched (should_match)')  # pylint: disable=bad-continuation
+    # when
+    actual_returncode = matches.test_step_matches_configs(None, [])
+    _, err = capsys.readouterr()
 
-
-        # test empty config
-        config = [{}]
-
-        matches.test_step_matches.when.called_with(config, []).should.throw(ValueError,
-            'You have to provide a sentence and the function name which should be matched (should_match)')  # pylint: disable=bad-continuation
-
-    def test_sentence_no_step_match(self):
-        """
-        Test if sentence does not match any step pattern
-        """
-        steps = {}
-        config = [{
-            'sentence': 'foo', 'should_match': 'bar'
-        }]
-
-        with patch('sys.stdout', new=StringIO()) as out:
-            matches.test_step_matches.when.called_with(config, steps).should.return_value((1, 0))
-            out.seek(0)
-            out.read().should.contain('Expected sentence didn\'t match any step implemention')
-
-    def test_sentence_match_wrong_step(self):
-        """
-        Test if sentence matched wrong step
-        """
-        def foo():
-            "Test step func"
-            pass
+    # then
+    assert actual_returncode == expected_returncode
+    assert err == 'No step implementations found in [], thus doesn\'t make sense to continue'
 
 
-        steps = {
-            re.compile('foo'): foo
-        }
-        config = [{
-            'sentence': 'foo', 'should_match': 'bar'
-        }]
+def test_empty_matches_config(mocker, capsys):
+    """
+    Test empty matches config file
+    """
+    # given
+    expected_returncode = 5
 
-        with patch('sys.stdout', new=StringIO()) as out:
-            matches.test_step_matches.when.called_with(config, steps).should.return_value((1, 0))
-            out.seek(0)
-            out.read().should.contain('Expected sentence matched foo instead of bar')
+    fd, tmpfile = tempfile.mkstemp()
+    os.close(fd)
 
-    def test_sentence_argument_errors(self):
-        """
-        Test if sentence arguments do not match
-        """
-        def foo(step, foo, bar):
-            "Test step func"
-            pass
+    mocker.patch('radish.testing.matches.load_modules')
+    steps_mock = mocker.patch('radish.testing.matches.StepRegistry.steps')
+    steps_mock.return_value = [1, 2]
+
+    # when
+    actual_returncode = matches.test_step_matches_configs([tmpfile], [])
+    out, _ = capsys.readouterr()
+
+    # then
+    assert actual_returncode == expected_returncode
+    assert out == 'No sentences found in {0} to test against\n'.format(tmpfile)
 
 
-        steps = {
-            re.compile(r'What (.*?) can (.*)'): foo
-        }
-        config = [{
-            'sentence': 'What FOO can BAR', 'should_match': 'foo',
-            'with-arguments': [
-                {'foo': 'foooooooo'},
-                {'bar': 'baaaaaaar'}
-            ]
-        }]
+@pytest.mark.parametrize('given_invalid_config', [
+    [{'sentence': None}],
+    [{'should_match': None}],
+    [{}]
+], ids=[
+    'test config with missing should_match function attribute',
+    'test config with missing sentence attribute',
+    'test empty config'
+])
+def test_step_matches_invalid_config(given_invalid_config):
+    """
+    Test match config without a sentence and a should_match attribute
+    """
+    # given & when
+    with pytest.raises(ValueError) as exc:
+        matches.test_step_matches(given_invalid_config, [])
 
-        with patch('sys.stdout', new=StringIO()) as out:
-            matches.test_step_matches.when.called_with(config, steps).should.return_value((1, 0))
-            out.seek(0)
-            output = out.read()
-            output.should.contain('Expected argument "foo" with value "foooooooo" does not match value "FOO"')
-            output.should.contain('Expected argument "bar" with value "baaaaaaar" does not match value "BAR"')
+    # then
+    assert str(exc.value) == 'You have to provide a sentence and the function name which should be matched (should_match)'
 
-    def test_sentence_step_arguments_no_corresponding(self):
-        """
-        Test sentence step arguments without corresponding actual argument
-        """
-        expected_arguments = {
-            'foo': 'fooo'
-        }
 
-        actual_arguments = {
-            'FOO': None
-        }
+def test_sentence_no_step_match(capsys):
+    """
+    Test if sentence does not match any Step Pattern
+    """
+    # given
+    steps = {}
+    config = [{
+        'sentence': 'foo', 'should_match': 'bar'
+    }]
+    expected_returncode = (1, 0)
 
-        matches.check_step_arguments.when.called_with(expected_arguments, actual_arguments).should.return_value([
-            'Expected argument "foo" is not in matched arguments [\'FOO\']'])
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
 
-    def test_sentence_step_arguments_type_mismatch(self):
-        """
-        Test sentence step arguments with type mismatch
-        """
-        expected_arguments = {
-            'foo': 'fooo'
-        }
+    # then
+    assert 'Expected sentence didn\'t match any step implemention' in out
+    assert actual_returncode == expected_returncode
 
-        actual_arguments = {
-            'foo': 42
-        }
 
-        matches.check_step_arguments.when.called_with(expected_arguments, actual_arguments).should.return_value([
-            'Expected argument "foo" is of type "int" instead "str"'])
+def test_sentence_match_wrong_step(capsys):
+    """
+    Test if sentence matched wrong step
+    """
+    # given
+    def foo(): pass
 
-    def test_sentence_step_arguments_value_mismatch(self):
-        """
-        Test sentence step arguments with value mismatch
-        """
-        expected_arguments = {
-            'foo': 'fooo'
-        }
+    steps = {'foo': foo}
+    config = [{
+        'sentence': 'foo', 'should_match': 'bar'
+    }]
+    expected_returncode = (1, 0)
 
-        actual_arguments = {
-            'foo': 'foo'
-        }
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
 
-        matches.check_step_arguments.when.called_with(expected_arguments, actual_arguments).should.return_value([
-            'Expected argument "foo" with value "fooo" does not match value "foo"'])
+    # then
+    assert 'Expected sentence matched foo instead of bar' in out
+    assert actual_returncode == expected_returncode
 
-    def test_sentence_step_arguments_match(self):
-        """
-        Test sentence step arguments match
-        """
-        expected_arguments = {
-            'foo': 'foo',
-            'bar': 'bar'
-        }
 
-        actual_arguments = {
-            'foo': 'foo',
-            'bar': 'bar'
-        }
+def test_sentence_argument_errors(capsys):
+    """
+    Test if sentence arguments do not match
+    """
+    # given
+    def foo(step, foo, bar): pass
 
-        matches.check_step_arguments.when.called_with(expected_arguments, actual_arguments).should.return_value([])
+    steps = {re.compile(r'What (.*?) can (.*)'): foo}
+    config = [{
+        'sentence': 'What FOO can BAR', 'should_match': 'foo',
+        'with-arguments': [
+            {'foo': 'foooooooo'},
+            {'bar': 'baaaaaaar'}
+        ]
+    }]
+    expected_returncode = (1, 0)
+
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
+
+    # then
+    assert 'Expected argument "foo" with value "foooooooo" does not match value "FOO"' in out
+    assert 'Expected argument "bar" with value "baaaaaaar" does not match value "BAR"' in out
+    assert actual_returncode == expected_returncode
+
+
+@pytest.mark.parametrize('given_actual_arguments, expected_messages', [
+    (
+        {'FOO': None},
+        ['Expected argument "foo" is not in matched arguments [\'FOO\']']
+    ),
+    (
+        {'foo': 42},
+        ['Expected argument "foo" is of type "int" instead "str"']
+    ),
+    (
+        {'foo': 'foo'},
+        ['Expected argument "foo" with value "fooo" does not match value "foo"']
+    )
+], ids=[
+    'Missing argument',
+    'Wrong type argument',
+    'Wrong value argument'
+])
+def test_checking_step_arguments_errors(given_actual_arguments, expected_messages):
+    """
+    Test step argument checking errors
+    """
+    # given
+    expected_arguments = {'foo': 'fooo'}
+
+    # when
+    messages = matches.check_step_arguments(expected_arguments, given_actual_arguments)
+
+    # then
+    assert messages == expected_messages
+
+
+def test_checking_step_arguments():
+    """
+    Test sentence step arguments match
+    """
+    # given
+    expected_arguments = {
+        'foo': 'foo',
+        'bar': 42
+    }
+
+    actual_arguments = {
+        'foo': 'foo',
+        'bar': 42
+    }
+
+    # when
+    messages = matches.check_step_arguments(expected_arguments, actual_arguments)
+
+    # then
+    assert messages == []

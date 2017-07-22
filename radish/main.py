@@ -82,12 +82,15 @@ def run_features(core):
 
 
 @error_oracle
-def main():
+def main(args=None):
     """
     Entrypont to radish.
     Setup up configuration, loads extensions, reads feature files and runs
     radish
     """
+
+    if args is None:
+        args = sys.argv[1:]
 
     # note: using doc string for usage, messes up Sphinx documantation
     usage = """
@@ -145,7 +148,7 @@ Options:
     sys.excepthook = catch_unhandled_exception
 
     # add version to the usage
-    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), version=__VERSION__)
+    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
@@ -153,6 +156,8 @@ Options:
     # disable colors if necessary
     if world.config.no_ansi:
         colorful.disable()
+    else:
+        colorful.use_8_ansi_colors()
 
     # load needed extensions
     extensions.load(world.config)

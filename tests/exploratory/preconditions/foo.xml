@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testrun agent="tuxtimo@krypton" duration="0.002727" endtime="2017-06-29T22:34:50" starttime="2017-06-29T22:34:50">
+  <feature duration="0.0027270000" endtime="2017-06-29T22:34:50" id="1" result="passed" sentence="Support Precondition from same feature" starttime="2017-06-29T22:34:50" testfile="features/Same.feature">
+    <description><![CDATA[I want to be able to use a Scenario as precondition
+for a Scenario within the same Feature.]]></description>
+    <tags>
+      <tag>foo</tag>
+    </tags>
+    <scenarios>
+      <scenario duration="0.0010150000" endtime="2017-06-29T22:34:50" id="1" result="passed" sentence="Precondition" starttime="2017-06-29T22:34:50" testfile="features/Same.feature">
+        <tags/>
+        <step duration="0.0001510000" endtime="2017-06-29T22:34:50" id="1" result="passed" sentence="Given a user named Bruce" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001010000" endtime="2017-06-29T22:34:50" id="2" result="passed" sentence="And a user named Peter" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001150000" endtime="2017-06-29T22:34:50" id="3" result="passed" sentence="And a user named Tony" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001910000" endtime="2017-06-29T22:34:50" id="4" result="passed" sentence="And a personal site owned by Bruce" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+      </scenario>
+      <scenario duration="0.0014850000" endtime="2017-06-29T22:34:50" id="2" result="passed" sentence="Grant access to personal site" starttime="2017-06-29T22:34:50" testfile="features/Same.feature">
+        <tags>
+          <tag>bar</tag>
+          <tag>precondition(Same.feature: Precondition)</tag>
+        </tags>
+        <step duration="0.0001300000" endtime="2017-06-29T22:34:50" id="1" result="passed" sentence="Given a user named Bruce" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0000960000" endtime="2017-06-29T22:34:50" id="2" result="passed" sentence="And a user named Peter" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001170000" endtime="2017-06-29T22:34:50" id="3" result="passed" sentence="And a user named Tony" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0000960000" endtime="2017-06-29T22:34:50" id="4" result="passed" sentence="And a personal site owned by Bruce" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001130000" endtime="2017-06-29T22:34:50" id="5" result="passed" sentence="Given Bruce grants access to Tony" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001220000" endtime="2017-06-29T22:34:50" id="6" result="passed" sentence="When I'm logged in as Tony" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+        <step duration="0.0001260000" endtime="2017-06-29T22:34:50" id="7" result="passed" sentence="Then I can access Bruce personal site" starttime="2017-06-29T22:34:50" testfile="features/Same.feature"/>
+      </scenario>
+    </scenarios>
+  </feature>
+</testrun>

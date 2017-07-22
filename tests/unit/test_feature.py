@@ -1,146 +1,272 @@
 # -*- coding: utf-8 -*-
 
-from tests.base import *
+"""
+    radish
+    ~~~~~~
+
+    Behavior Driven Development tool for Python - the root from red to green
+
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
+import pytest
 
 from radish.feature import Feature
-from radish.scenario import Scenario
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
-from radish.main import setup_config
-from radish.model import Tag
 
 
-class FeatureTestCase(RadishTestCase):
+def test_creating_simple_feature():
     """
-        Tests for the feature model class
+    Test creating a simple Feature
     """
-    @classmethod
-    def setUpClass(cls):
-        """
-            Setup config object
-        """
-        setup_config({
-            "--early_exit": False,
-            "--debug-steps": False,
-            "--debug-after-failure": False,
-            "--inspect-after-failure": False,
-            "--bdd-xml": False,
-            "--no-ansi": False,
-            "--no-line-jump": False,
-            "--write-steps-once": False,
-            "--scenarios": None,
-            "--shuffle": False,
-            "--write-ids": False,
-            "--tags": None,
-            "--expand": True,
-        })
+    # given & when
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
 
-    def test_feature_all_scenarios(self):
-        """
-            Test getting all scenario from feature
-        """
-        feature = Feature(1, "Feature", "Some feature", None, None)
+    # then
+    assert feature.id == 1
+    assert feature.keyword == 'Feature'
+    assert feature.sentence == 'I am a feature'
+    assert feature.path == 'foo.feature'
+    assert feature.line == 1
+    assert feature.tags == []
 
-        scenario_1 = Mock(spec=Scenario)
-        scenario_outline_1_example_1 = Mock(spec=Scenario)
-        scenario_outline_1_example_2 = Mock(spec=Scenario)
-        scenario_outline_1 = Mock(spec=ScenarioOutline, scenarios=[scenario_outline_1_example_1, scenario_outline_1_example_2])
-        scenario_loop_1_example_1 = Mock(spec=Scenario)
-        scenario_loop_1_example_2 = Mock(spec=Scenario)
-        scenario_loop_1 = Mock(spec=ScenarioLoop, scenarios=[scenario_loop_1_example_1, scenario_loop_1_example_2])
-        scenario_2 = Mock(spec=Scenario)
 
-        feature.scenarios.extend([scenario_1, scenario_outline_1, scenario_loop_1, scenario_2])
+def test_feature_representation():
+    """
+    Test Feature representation with str() and repr()
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
 
-        feature.all_scenarios.should.have.length_of(8)
-        feature.all_scenarios[0].should.be.equal(scenario_1)
-        feature.all_scenarios[1].should.be.equal(scenario_outline_1)
-        feature.all_scenarios[2].should.be.equal(scenario_outline_1_example_1)
-        feature.all_scenarios[3].should.be.equal(scenario_outline_1_example_2)
-        feature.all_scenarios[4].should.be.equal(scenario_loop_1)
-        feature.all_scenarios[5].should.be.equal(scenario_loop_1_example_1)
-        feature.all_scenarios[6].should.be.equal(scenario_loop_1_example_2)
-        feature.all_scenarios[7].should.be.equal(scenario_2)
+    # when
+    str_repr = str(feature)
+    repr_repr = repr(feature)
 
-    def test_feature_representations(self):
-        """
-            Test feature representations
-        """
-        feature = Feature(1, "Feature", "Some feature", "sometest.feature", 1)
-        str(feature).should.be.equal("Feature: Some feature from sometest.feature:1")
-        repr(feature).should.be.equal("<Feature: Some feature from sometest.feature:1>")
+    # then
+    assert str_repr == 'Feature: I am a feature from foo.feature:1'
+    assert repr_repr == '<Feature: I am a feature from foo.feature:1>'
 
-    def test_feature_scenario_iterator(self):
-        """
-            Test using a feature as iterator which iterates over its scenarios
-        """
-        feature = Feature(1, "Feature", "Some feature", None, None)
-        feature.scenarios.append(Mock(id=1))
-        feature.scenarios.append(Mock(id=2))
-        feature.scenarios.append(Mock(id=3))
-        feature.scenarios.append(Mock(id=4))
 
-        for expected_scenario_id, scenario in enumerate(feature, start=1):
-            scenario.id.should.be.equal(expected_scenario_id)
+def test_feature_scenario_iterator(mocker):
+    """
+    Test iterating over Scenarios within a Feature
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add Scenarios to Feature
+    feature.scenarios.extend([
+        mocker.MagicMock(id=1), mocker.MagicMock(id=2), mocker.MagicMock(id=3)
+    ])
 
-    def test_feature_get_scenario_by_sentence(self):
-        """
-            Test getting scenario by sentence from feature
-        """
-        feature = Feature(1, "Feature", "Some feature", None, None)
-        scenario_1 = Mock(sentence="First scenario")
-        scenario_2 = Mock(sentence="Second scenario")
-        scenario_3 = Mock(sentence="Third scenario")
-        feature.scenarios.extend([scenario_1, scenario_2, scenario_3])
+    # when
+    scenario_iterator = iter(feature)
 
-        feature["First scenario"].should.be.equal(scenario_1)
-        feature["Second scenario"].should.be.equal(scenario_2)
-        feature["Third scenario"].should.be.equal(scenario_3)
+    # then
+    assert next(scenario_iterator).id == 1
+    assert next(scenario_iterator).id == 2
+    assert next(scenario_iterator).id == 3
 
-    def test_feature_state(self):
-        """
-            Test getting the state of a feature
-        """
-        feature = Feature(1, "Feature", "Some feature", None, None)
-        scenario_1 = Mock(state=Step.State.UNTESTED)
-        scenario_2 = Mock(state=Step.State.UNTESTED)
-        scenario_outline = Mock(spec=ScenarioOutline, scenarios=[])
-        scenario_loop = Mock(spec=ScenarioLoop, scenarios=[])
-        scenario_3 = Mock(state=Step.State.UNTESTED)
-        feature.scenarios.extend([scenario_1, scenario_2, scenario_outline, scenario_loop, scenario_3])
+    with pytest.raises(StopIteration):
+        next(scenario_iterator)
 
-        feature.state.should.be.equal(Step.State.UNTESTED)
 
-        scenario_1.state = Step.State.SKIPPED
-        feature.state.should.be.equal(Step.State.SKIPPED)
+def test_feature_scenario_iterator_empty():
+    """
+    Test iterating over Scenarios within a Feature when no Scenarios
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
 
-        scenario_1.state = Step.State.FAILED
-        feature.state.should.be.equal(Step.State.FAILED)
+    # when
+    scenario_iterator = iter(feature)
 
-        scenario_2.state = Step.State.PASSED
-        feature.state.should.be.equal(Step.State.FAILED)
+    # then
+    with pytest.raises(StopIteration):
+        next(scenario_iterator)
 
-        scenario_3.state = Step.State.PASSED
-        feature.state.should.be.equal(Step.State.FAILED)
 
-        scenario_1.state = Step.State.PASSED
-        feature.state.should.be.equal(Step.State.PASSED)
+@pytest.mark.parametrize('scenario_sentences, expected_scenario, found', [
+    (('foo', 'bar'), 'foo', True),
+    (('bar'), 'foo', False),
+    ([], 'foo', False)
+])
+def test_feature_contains_scenario(scenario_sentences, expected_scenario, found, mocker):
+    """
+    Test contains protocol for Feature to check if it contains a Scenario
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add Scenarios to Feature
+    for sentence in scenario_sentences:
+        feature.scenarios.append(mocker.MagicMock(sentence=sentence))
 
-    def test_feature_has_to_run(self):
-        """
-            Test feature's has to run functionality
-        """
-        f = Feature(1, "Feature", "Some feature", None, None)
-        f.has_to_run.when.called_with(None).should.return_value(True)
+    # when
+    contains = expected_scenario in feature
 
-        f.scenarios.append(Mock(absolute_id=1, has_to_run=lambda x: False))
-        f.scenarios.append(Mock(absolute_id=2, has_to_run=lambda x: False))
-        f.scenarios.append(Mock(absolute_id=3, has_to_run=lambda x: False))
+    # then
+    assert contains is found
 
-        f.has_to_run.when.called_with([1]).should.return_value(True)
-        f.has_to_run.when.called_with([1, 2]).should.return_value(True)
-        f.has_to_run.when.called_with([3]).should.return_value(True)
-        f.has_to_run.when.called_with([1, 4]).should.return_value(True)
-        f.has_to_run.when.called_with([5, 4]).should.return_value(False)
-        f.has_to_run.when.called_with([6]).should.return_value(False)
+
+@pytest.mark.parametrize('scenario_sentences, needle_scenario, expected_scenario', [
+    (('foo', 'bar'), 'foo', 'foo'),
+    (('bar'), 'foo', None),
+    ([], 'foo', None)
+])
+def test_feature_get_scenario_as_item(scenario_sentences, needle_scenario, expected_scenario, mocker):
+    """
+    Test getitem protocol for Feature to get specific Scenario
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add Scenarios to Feature
+    for sentence in scenario_sentences:
+        feature.scenarios.append(mocker.MagicMock(sentence=sentence))
+
+    # when
+    actual_scenario = feature[needle_scenario]
+
+    # then
+    if expected_scenario is None:
+        assert actual_scenario is None
+    else:
+        assert actual_scenario.sentence == expected_scenario
+
+
+def test_feature_all_scenarios(mocker):
+    """
+    Test getting expanded list of all Scenarios of a Feature
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add regular Scenarios to Feature
+    feature.scenarios.extend([mocker.MagicMock(id=1), mocker.MagicMock(id=2)])
+    # add Scenario Outline to Feature
+    feature.scenarios.append(
+        mocker.MagicMock(spec=ScenarioOutline, id=3, scenarios=[
+            mocker.MagicMock(id=4), mocker.MagicMock(id=5)]))
+    # add Scenario Loop to Feature
+    feature.scenarios.append(
+        mocker.MagicMock(spec=ScenarioLoop, id=6, scenarios=[
+            mocker.MagicMock(id=7), mocker.MagicMock(id=8)]))
+
+    # when
+    all_scenarios = feature.all_scenarios
+
+    # then
+    assert len(all_scenarios) == 8
+    assert all_scenarios[0].id == 1
+    assert all_scenarios[1].id == 2
+    assert all_scenarios[2].id == 3
+    assert all_scenarios[3].id == 4
+    assert all_scenarios[4].id == 5
+    assert all_scenarios[5].id == 6
+    assert all_scenarios[6].id == 7
+    assert all_scenarios[7].id == 8
+
+
+def test_feature_constants(mocker):
+    """
+    Test getting all constants of this Feature
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add constants to Feature context -> this is directly done by the parser
+    feature.context.constants = [mocker.MagicMock(value=1), mocker.MagicMock(value=2)]
+
+    # when
+    constants = feature.constants
+
+    # then
+    assert len(constants) == 2
+    assert constants[0].value == 1
+    assert constants[1].value == 2
+
+
+def test_feature_state(mocker):
+    """
+    Test the state of a Feature according to the Scenario states
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add regular Scenarios to Feature
+    regular_scenario = mocker.MagicMock(state=Step.State.PASSED)
+    feature.scenarios.extend([regular_scenario, mocker.MagicMock(state=Step.State.PASSED)])
+    # add Scenario Outline to Feature
+    scenario_outline_example = mocker.MagicMock(state=Step.State.PASSED)
+    scenario_outline = mocker.MagicMock(spec=ScenarioOutline, state=Step.State.PASSED, scenarios=[
+        scenario_outline_example, mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    feature.scenarios.append(scenario_outline)
+    # add Scenario Loop to Feature
+    scenario_loop_iteration = mocker.MagicMock(state=Step.State.PASSED)
+    scenario_loop = mocker.MagicMock(spec=ScenarioLoop, state=Step.State.PASSED, scenarios=[
+        scenario_loop_iteration, mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    feature.scenarios.append(scenario_loop)
+
+    # when all Scenarios pass then the Feature passes
+    assert feature.state == Step.State.PASSED
+
+    # when one Scenario is pending then the Feature is pending
+    regular_scenario.state = Step.State.PENDING
+    assert feature.state == Step.State.PENDING
+
+    # when one Scenario is skipped then the Feature is skipped
+    regular_scenario.state = Step.State.SKIPPED
+    assert feature.state == Step.State.SKIPPED
+
+    # when one Scenario is failed then the Feature is failed
+    regular_scenario.state = Step.State.FAILED
+    assert feature.state == Step.State.FAILED
+
+    # when one Scenario is failed then the Feature is failed
+    regular_scenario.state = Step.State.UNTESTED
+    assert feature.state == Step.State.UNTESTED
+    regular_scenario.state = Step.State.PASSED
+
+    # Scenario Outline and Scenario Loop states are ignored
+    scenario_outline.state = Step.State.FAILED
+    assert feature.state == Step.State.PASSED
+    scenario_loop.state = Step.State.FAILED
+    assert feature.state == Step.State.PASSED
+
+    # when a Scenario Outline Example is not passed the Feature is not passed
+    scenario_outline_example.state = Step.State.FAILED
+    assert feature.state == Step.State.FAILED
+    scenario_outline_example.state = Step.State.PASSED
+
+    # when a Scenario Loop Iteration is not passed the Feature is not passed
+    scenario_loop_iteration.state = Step.State.FAILED
+    assert feature.state == Step.State.FAILED
+    scenario_loop_iteration.state = Step.State.PASSED
+
+    # when a Scenario is untested which does not have to be run then the Feature is passed
+    regular_scenario.state = Step.State.UNTESTED
+    regular_scenario.has_to_run.return_value = False
+    assert feature.state == Step.State.PASSED
+
+
+@pytest.mark.parametrize('scenario_ids, scenario_choice, expected_has_to_run', [
+    ((1, 2, 3), [], True),
+    ((1, 2, 3), [1], True),
+    ((1, 2, 3), [1, 2, 5], True),
+    ((1, 2, 3), [4], False),
+    ((1, 2, 3), [4, 5], False),
+])
+def test_feature_scenario_has_to_run(scenario_ids, scenario_choice, expected_has_to_run, mocker):
+    """
+    Test logic to check whether a Scenario within a Feature has to run or not
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    # add Scenarios to Feature
+    for scenario_id in scenario_ids:
+        feature.scenarios.append(mocker.MagicMock(absolute_id=scenario_id))
+
+    # when
+    actual_has_to_run = feature.has_to_run(scenario_choice)
+
+    # then
+    assert actual_has_to_run is expected_has_to_run

@@ -59,7 +59,7 @@ class StepRegistry(object):
 
             :param function func: the step definition function
         """
-        docstr = func.__doc__.strip()
+        docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:
             raise RadishError("Step definition '{0}' from class must have step regex in docstring".format(func.__name__))
 
@@ -108,6 +108,12 @@ def steps(cls):
         Decorator for classes with step definitions inside
     """
     old_cls_init = getattr(cls, "__init__")
+
+    # ignore new_cls_init method
+    if not hasattr(cls, 'ignore'):
+        cls.ignore = []
+
+    cls.ignore.append('__init__')
 
     def new_cls_init(self, *args, **kwargs):
         """

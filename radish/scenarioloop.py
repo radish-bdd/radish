@@ -34,7 +34,7 @@ class ScenarioLoop(Scenario):
                 scenario.background = background
 
             for step_id, iteration_step in enumerate(self.steps):
-                step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, True)
+                step = Step(step_id + 1, iteration_step.sentence, iteration_step.path, iteration_step.line, scenario, True, context_class=iteration_step.context_class)
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
 

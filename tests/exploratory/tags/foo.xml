@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testrun agent="tuxtimo@krypton" duration="0.002161" endtime="2017-06-29T22:32:39" starttime="2017-06-29T22:32:39">
+  <feature duration="0.0021610000" endtime="2017-06-29T22:32:39" id="1" result="passed" sentence="Test summing numbers" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature">
+    <description><![CDATA[In order to test the basic
+features of radish I test
+to sum numbers.]]></description>
+    <tags>
+      <tag>Foo</tag>
+    </tags>
+    <scenarios>
+      <scenario duration="0.0010060000" endtime="2017-06-29T22:32:39" id="1" result="passed" sentence="Sum two numbers" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature">
+        <tags>
+          <tag>FooBar</tag>
+        </tags>
+        <step duration="0.0001730000" endtime="2017-06-29T22:32:39" id="1" result="passed" sentence="Given I have the number 5" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0000620000" endtime="2017-06-29T22:32:39" id="2" result="passed" sentence="And I have the number 3" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0001260000" endtime="2017-06-29T22:32:39" id="3" result="passed" sentence="When I sum them" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0001250000" endtime="2017-06-29T22:32:39" id="4" result="passed" sentence="Then I expect the result to be 8" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+      </scenario>
+      <scenario duration="0.0009740000" endtime="2017-06-29T22:32:39" id="2" result="passed" sentence="Sum three numbers" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature">
+        <tags>
+          <tag>BarFoo</tag>
+        </tags>
+        <step duration="0.0001000000" endtime="2017-06-29T22:32:39" id="1" result="passed" sentence="Given I have the number 5" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0001140000" endtime="2017-06-29T22:32:39" id="2" result="passed" sentence="And I have the number 3" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0000800000" endtime="2017-06-29T22:32:39" id="3" result="passed" sentence="And I have the number 2" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0000880000" endtime="2017-06-29T22:32:39" id="4" result="passed" sentence="When I sum them" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+        <step duration="0.0000930000" endtime="2017-06-29T22:32:39" id="5" result="passed" sentence="Then I expect the result to be 10" starttime="2017-06-29T22:32:39" testfile="features/SumNumbers.feature"/>
+      </scenario>
+    </scenarios>
+  </feature>
+</testrun>

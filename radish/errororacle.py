@@ -12,31 +12,24 @@ import colorful
 
 from .terrain import world
 from .exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError, SameStepError
-from .utils import Failure
+from .utils import Failure, console_write
 
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
-
-
-def write(text):
-    """
-        Writes the given text to the console
-    """
-    print(text)
 
 
 def write_error(text):
     """
         Writes the given text to the console
     """
-    write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
+    console_write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
 
 
 def write_failure(failure):
     """
         Writes the failure to the console
     """
-    write("\n{0}".format(colorful.red(failure.traceback)))
+    console_write("\n{0}".format(colorful.red(failure.traceback)))
 
 
 def abort(return_code):
@@ -86,7 +79,7 @@ def handle_exception(exception):
         write_error(exception)
         abort(1)
     elif isinstance(exception, KeyboardInterrupt):
-        write("Aborted by the user...")
+        console_write("Aborted by the user...")
         abort(1)
     else:
         write_error(exception)

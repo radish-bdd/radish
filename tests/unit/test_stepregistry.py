@@ -1,84 +1,270 @@
 # -*- coding: utf-8 -*-
 
-from tests.base import *
+"""
+    radish
+    ~~~~~~
 
-from radish.stepregistry import StepRegistry
-from radish.exceptions import SameStepError
+    Behavior Driven Development tool for Python - the root from red to green
+
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
+import re
+
+import pytest
+
+from radish.stepregistry import step, steps
+from radish.stepregistry import given, when, then
+import radish.exceptions as errors
 
 
-class StepRegistryTestCase(RadishTestCase):
+def test_registering_simple_steps(stepregistry):
     """
-        Tests for the StepRegistry class
+    Test registering simple Step functions
     """
-    def test_registering_steps(self):
-        """
-            Test registering multiple steps
-        """
-        registry = StepRegistry()
-        registry.steps.should.be.empty
+    # given
+    def step_a(): pass
+    def step_b(): pass
 
-        def step_a():
+    # when
+    stepregistry.register('step_pattern_a', step_a)
+    stepregistry.register('step_pattern_b', step_b)
+
+    # then
+    assert len(stepregistry.steps) == 2
+    assert stepregistry.steps['step_pattern_a'] == step_a
+    assert stepregistry.steps['step_pattern_b'] == step_b
+
+
+def test_registering_step_pattern_twice(stepregistry):
+    """
+    Test registering the same Step pattern twice
+    """
+    # given
+    def step_a(): pass
+    def step_b(): pass
+
+    stepregistry.register('step_pattern_a', step_a)
+
+    # when
+    with pytest.raises(errors.SameStepError) as exc:
+        stepregistry.register('step_pattern_a', step_b)
+
+    # then
+    assert str(exc.value).startswith(
+        "Cannot register step step_b with regex 'step_pattern_a' because it is already used by step step_a")
+
+
+def test_registering_steps_via_object(stepregistry):
+    """
+    Test registering Steps via object
+    """
+    # given
+    class MySteps(object):
+        def some_step(self):
+            """When I call some step"""
+
+        def some_other_step(self):
+            """
+            I do some stuff
+
+            This is not part of the step pattern
+            """
+
+    # when
+    steps_object = MySteps()
+    stepregistry.register_object(steps_object)
+
+    # then
+    assert len(stepregistry.steps) == 2
+    assert stepregistry.steps['When I call some step'] == steps_object.some_step
+    assert stepregistry.steps['I do some stuff'] == steps_object.some_other_step
+
+
+def test_ignore_methods_registering_object(stepregistry):
+    """
+    Test ignoring methods when registering an object
+    """
+    # given
+    class MySteps(object):
+        ignore = ['some_method']
+
+        def some_step(self):
+            """When I call some step"""
+
+        def some_method(self):
             pass
 
-        def step_b():
+    # when
+    steps_object = MySteps()
+    stepregistry.register_object(steps_object)
+
+    # then
+    assert len(stepregistry.steps) == 1
+    assert stepregistry.steps['When I call some step'] == steps_object.some_step
+
+
+def test_error_if_no_step_regex_given_for_object(stepregistry):
+    """
+    Test error if a step method in object has no regex
+    """
+    # given
+    class MySteps(object):
+        def some_step(self):
             pass
 
-        registry.register("abc", step_a)
-        registry.steps.should.have.length_of(1)
-        registry.steps["abc"].should.be.equal(step_a)
+    # when
+    steps_object = MySteps()
 
-        registry.register("def", step_b)
-        registry.steps.should.have.length_of(2)
-        registry.steps["def"].should.be.equal(step_b)
+    with pytest.raises(errors.RadishError) as exc:
+        stepregistry.register_object(steps_object)
 
-    def test_registering_same_step(self):
-        """
-            Test registering step with same regex
-        """
-        registry = StepRegistry()
-        registry.steps.should.be.empty
+    # then
+    assert str(exc.value) == "Step definition 'some_step' from class must have step regex in docstring"
 
-        def step_a():
-            pass
 
-        def step_b():
-            pass
+def test_invalid_regex_step_pattern_in_method_docstring(stepregistry):
+    """
+    Test invalid regex Step pattern in method docstring
+    """
+    # given
+    class MySteps(object):
+        def some_step(self):
+            """
+            So (( invalid )(
+            """
 
-        registry.register("abc", step_a)
-        registry.steps.should.have.length_of(1)
-        registry.steps["abc"].should.be.equal(step_a)
+    # when
+    steps_object = MySteps()
 
-        registry.register.when.called_with("abc", step_b).should.throw(SameStepError, "Cannot register step step_b with regex 'abc' because it is already used by step step_a")
+    with pytest.raises(errors.StepRegexError) as exc:
+        stepregistry.register_object(steps_object)
 
-        registry.steps.should.have.length_of(1)
-        registry.steps["abc"].should.be.equal(step_a)
+    # then
+    assert str(exc.value).startswith("Cannot compile regex 'So (( invalid )(' from step")
 
-    def test_registering_object(self):
-        """
-            Test registering object as steps
-        """
-        registry = StepRegistry()
-        registry.steps.should.be.empty
 
-        class MySteps(object):
-            ignore = ["no_step_method"]
+@pytest.mark.parametrize('pattern', [
+    'I do some stuff',
+    re.compile('I do some stuff')
+], ids=[
+    'Step with Step Pattern',
+    'Step with Regex'
+])
+def test_registering_step_function_via_step_decorator(pattern, stepregistry):
+    """
+    Test registering Step function via step decorator
+    """
+    # given & when
+    @step(pattern)
+    def step_a(step): pass
 
-            def some_step(step):
-                """When I call some step"""
+    # then
+    assert len(stepregistry.steps) == 1
+    assert stepregistry.steps[pattern] == step_a
 
-            def some_other_step(step):
-                """
-                    Then I expect some behaviour
-                """
 
-            def no_step_method(data):
-                """
-                    This is not a step method
-                """
+@pytest.mark.parametrize('pattern, expected_pattern', [
+    ('I do some stuff', 'Given I do some stuff'),
+    (re.compile('I do some stuff'), re.compile('Given I do some stuff'))
+], ids=[
+    'Step with Step Pattern',
+    'Step with Regex'
+])
+def test_registering_step_function_via_given_decorator(pattern, expected_pattern, stepregistry):
+    """
+    Test registering Step function via given decorator
+    """
+    # given & when
+    @given(pattern)
+    def step_a(step): pass
 
-        steps_object = MySteps()
-        registry.register_object(steps_object)
+    # then
+    assert len(stepregistry.steps) == 1
+    assert stepregistry.steps[expected_pattern] == step_a
 
-        registry.steps.should.have.length_of(2)
-        registry.steps["When I call some step"].should.be.equal(steps_object.some_step)
-        registry.steps["Then I expect some behaviour"].should.be.equal(steps_object.some_other_step)
+
+@pytest.mark.parametrize('pattern, expected_pattern', [
+    ('I do some stuff', 'When I do some stuff'),
+    (re.compile('I do some stuff'), re.compile('When I do some stuff'))
+], ids=[
+    'Step with Step Pattern',
+    'Step with Regex'
+])
+def test_registering_step_function_via_when_decorator(pattern, expected_pattern, stepregistry):
+    """
+    Test registering Step function via when decorator
+    """
+    # given & when
+    @when(pattern)
+    def step_a(step): pass
+
+    # then
+    assert len(stepregistry.steps) == 1
+    assert stepregistry.steps[expected_pattern] == step_a
+
+
+@pytest.mark.parametrize('pattern, expected_pattern', [
+    ('I do some stuff', 'Then I do some stuff'),
+    (re.compile('I do some stuff'), re.compile('Then I do some stuff'))
+], ids=[
+    'Step with Step Pattern',
+    'Step with Regex'
+])
+def test_registering_step_function_via_then_decorator(pattern, expected_pattern, stepregistry):
+    """
+    Test registering Step function via then decorator
+    """
+    # given & when
+    @then(pattern)
+    def step_a(step): pass
+
+    # then
+    assert len(stepregistry.steps) == 1
+    assert stepregistry.steps[expected_pattern] == step_a
+
+
+def test_registering_steps_from_object_via_steps_decorator(stepregistry):
+    """
+    Test registering Steps from object via steps decorator
+    """
+    # given & when
+    @steps
+    class MySteps(object):
+        def some_step(self):
+            """When I call some step"""
+
+        def some_other_step(self):
+            """
+            I do some stuff
+
+            This is not part of the step pattern
+            """
+
+    # then
+    assert len(stepregistry.steps) == 2
+    assert 'When I call some step' in stepregistry.steps
+    assert 'I do some stuff' in stepregistry.steps
+
+
+def test_getting_pattern_of_specific_func(stepregistry):
+    """
+    Test getting the pattern of a specific func
+    """
+    # given
+    def step_a(): pass
+    def step_b(): pass
+    def step_c(): pass
+
+    stepregistry.register('step_pattern_a', step_a)
+    stepregistry.register('step_pattern_b', step_b)
+
+    # when
+    pattern_a = stepregistry.get_pattern(step_a)
+    pattern_b = stepregistry.get_pattern(step_b)
+    pattern_c = stepregistry.get_pattern(step_c)
+
+    # then
+    assert pattern_a == 'step_pattern_a'
+    assert pattern_b == 'step_pattern_b'
+    assert pattern_c == 'Unknown'

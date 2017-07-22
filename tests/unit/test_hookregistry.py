@@ -1,234 +1,138 @@
 # -*- coding: utf-8 -*-
 
-import threading
+"""
+    radish
+    ~~~~~~
 
-from tests.base import *
+    Behavior Driven Development tool for Python - the root from red to green
 
-from radish.hookregistry import HookRegistry, before, after
-from radish.feature import Feature
-from radish.stepmodel import Step
-from radish.scenario import Scenario
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
+import pytest
+
+from radish.model import Tag
+from radish.hookregistry import before, after
+import radish.exceptions as errors
 
 
-class HookRegistryTestCase(RadishTestCase):
+def test_available_hooks():
     """
-        Tests for the HookRegistry class
+    Test that all expected hooks are available
     """
-    def test_initializing_hook_registry(self):
-        """
-            Test the initialization of the hook registry
-        """
-        empty_hook = {"before": [], "after": []}
+    # then
+    assert callable(before.all)
+    assert callable(after.all)
 
-        hookregistry = HookRegistry()
-        hookregistry.hooks.should.have.length_of(4)
-        hookregistry.hooks["all"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_feature"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_scenario"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_step"].should.be.equal(empty_hook)
+    assert callable(before.each_feature)
+    assert callable(after.each_feature)
 
-        HookRegistry.Hook.should.have.property("all")
-        HookRegistry.Hook.should.have.property("each_feature")
-        HookRegistry.Hook.should.have.property("each_scenario")
-        HookRegistry.Hook.should.have.property("each_step")
+    assert callable(before.each_scenario)
+    assert callable(after.each_scenario)
 
-    def test_register_as_hook(self):
-        """
-            Test registering function as hook
-        """
-        empty_hook = {"before": [], "after": []}
-
-        hookregistry = HookRegistry()
-        hookregistry.hooks.should.have.length_of(4)
-        hookregistry.hooks["all"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_feature"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_scenario"].should.be.equal(empty_hook)
-        hookregistry.hooks["each_step"].should.be.equal(empty_hook)
-
-        hookregistry.hooks["all"]["before"].should.have.length_of(0)
-        hookregistry.register("before", "all", "some_func")
-        hookregistry.hooks["all"]["before"].should.have.length_of(1)
-        hookregistry.hooks["all"]["after"].should.have.length_of(0)
-
-        hookregistry.hooks["each_feature"]["before"].should.have.length_of(0)
-        hookregistry.register("before", "each_feature", "some_func")
-        hookregistry.hooks["each_feature"]["before"].should.have.length_of(1)
-        hookregistry.hooks["each_feature"]["after"].should.have.length_of(0)
-
-        hookregistry.hooks["each_scenario"]["before"].should.have.length_of(0)
-        hookregistry.register("before", "each_scenario", "some_func")
-        hookregistry.hooks["each_scenario"]["before"].should.have.length_of(1)
-        hookregistry.hooks["each_scenario"]["after"].should.have.length_of(0)
-
-        hookregistry.hooks["each_step"]["before"].should.have.length_of(0)
-        hookregistry.register("before", "each_step", "some_func")
-        hookregistry.hooks["each_step"]["before"].should.have.length_of(1)
-        hookregistry.hooks["each_step"]["after"].should.have.length_of(0)
-
-    def test_decorating_with_hook(self):
-        """
-            Test decorating function as hook
-        """
-        hookregistry = HookRegistry()
-
-        def some_func():
-            pass
-
-        hookregistry.hooks["each_feature"]["before"].should.have.length_of(0)
-        before.each_feature(some_func)
-        hookregistry.hooks["each_feature"]["before"].should.have.length_of(1)
-        hookregistry.hooks["each_feature"]["before"][0][1].should.be.equal(some_func)
-
-        hookregistry.hooks["each_step"]["after"].should.have.length_of(0)
-        after.each_step(some_func)
-        hookregistry.hooks["each_step"]["after"].should.have.length_of(1)
-        hookregistry.hooks["each_step"]["after"][0][1].should.be.equal(some_func)
-
-    def test_calling_registered_hooks(self):
-        """
-            Test calling registered hooks
-        """
-        hookregistry = HookRegistry()
-
-        data = threading.local()
-        data.called_hooked_a = False
-        data.called_hooked_b = False
-        data.called_hooked_c = False
-
-        def hooked_a(feature):
-            data.called_hooked_a = True
-
-        def hooked_b(step):
-            data.called_hooked_b = True
-
-        def hooked_c(feature):
-            data.called_hooked_c = True
-
-        before.each_feature(hooked_a)
-        after.each_step(hooked_b)
-        before.each_feature(hooked_c)
-
-        feature_mock = Mock(spec=Feature)
-        feature_mock.all_tags = []
-        hookregistry.call("before", "each_feature", feature_mock)
-        data.called_hooked_a.should.be.true
-        data.called_hooked_b.should.be.false
-        data.called_hooked_c.should.be.true
-
-        step_mock = Mock(spec=Step)
-        step_mock.all_tags = []
-        hookregistry.call("after", "each_step", step_mock)
-        data.called_hooked_a.should.be.true
-        data.called_hooked_b.should.be.true
-        data.called_hooked_c.should.be.true
-
-    def test_calling_registered_hooks_with_arguments(self):
-        """
-            Test calling registered hooks with arguments
-        """
-        hookregistry = HookRegistry()
-
-        data = threading.local()
-        data.hooked_a_feature = None
-        data.hooked_b_step = None
-        data.hooked_c_feature = None
-
-        def hooked_a(feature):
-            data.hooked_a_feature = feature
-
-        def hooked_b(step):
-            data.hooked_b_step = step
-
-        def hooked_c(feature):
-            data.hooked_c_feature = feature
-
-        before.each_feature(hooked_a)
-        after.each_step(hooked_b)
-        before.each_feature(hooked_c)
-
-        feature_mock = Mock(spec=Feature)
-        feature_mock.all_tags = []
-        step_mock = Mock(spec=Step)
-        step_mock.all_tags = []
-
-        hookregistry.call("before", "each_feature", feature_mock)
-        data.hooked_a_feature.should.be.equal(feature_mock)
-        data.hooked_b_step.should.be.none
-        data.hooked_c_feature.should.be.equal(feature_mock)
-
-        hookregistry.call("after", "each_step", step_mock)
-        data.hooked_b_step.should.be.equal(step_mock)
-
-    def test_tag_specific_hooks(self):
-        """
-        Test calling tag specific hooks
-        """
-        hookregistry = HookRegistry()
-
-        data = threading.local()
-        data.before_good_feature = None
-        data.before_bad_feature = None
-        data.after_step = None
-        data.cleanup_feature = None
+    assert callable(before.each_step)
+    assert callable(after.each_step)
 
 
-        def before_good(feature):
-            data.before_good_feature = feature
-
-        def before_bad(feature):
-            data.before_bad_feature = feature
-
-        def after_step(step):
-            data.after_step = step
-
-        def cleanup_feature(feature):
-            data.cleanup_feature = feature
+def test_registering_simple_hook(hookregistry):
+    """
+    Test registering simple hooks
+    """
+    # given & when
+    @before.all
+    def before_all_hook_legacy():
+        pass
 
 
-        mock_good_case_tag = Mock()
-        mock_good_case_tag.name = 'good_case'
-        mock_bad_case_tag = Mock()
-        mock_bad_case_tag.name = 'bad_case'
-        mock_needs_cleanup_tag = Mock()
-        mock_needs_cleanup_tag.name = 'needs_cleanup'
+    @before.all()
+    def before_all_hook():
+        pass
+
+    # then
+    assert len(hookregistry.hooks['all']['before']) == 2
 
 
-        good_feature = Feature(1, "Feature", "Some feature", None, None, tags=[mock_good_case_tag])
-        bad_feature = Feature(2, "Feature", "Some feature", None, None, tags=[mock_bad_case_tag, mock_needs_cleanup_tag])
-        scenario = Scenario(1, "Scenario", "Some Scenario", None, None, good_feature, tags=[])
-        step = Step(1, "Some Step", None, None, scenario, None)
+def test_call_hook(hookregistry, mocker):
+    """
+    Test calling registered hooks
+    """
+    # given
+    @before.all()
+    def before_all(features, stub):
+        stub()
 
-        scenario.steps.append(step)
 
-        before.each_feature(on_tags='good_case')(before_good)
-        before.each_feature(on_tags='bad_case')(before_bad)
-        after.each_step(on_tags='good_case')(after_step)
-        after.each_feature(on_tags='needs_cleanup')(cleanup_feature)
+    @before.each_step()
+    def before_each_step(step, stub):
+        stub()
 
-        hookregistry.call("before", "each_feature", good_feature)
-        data.before_good_feature.should.be.equal(good_feature)
-        data.before_bad_feature.should.be.none
-        data.after_step.should.be.none
-        data.cleanup_feature.should.be.none
-        data.before_good_feature = None
+    hook_call_stub = mocker.stub()
 
-        hookregistry.call("before", "each_feature", bad_feature)
-        data.before_good_feature.should.be.none
-        data.before_bad_feature.should.be.equal(bad_feature)
-        data.after_step.should.be.none
-        data.cleanup_feature.should.be.none
-        data.before_bad_feature = None
+    # when & then
+    hookregistry.call('before', 'all', mocker.MagicMock(), hook_call_stub)
+    assert hook_call_stub.call_count == 1
 
-        hookregistry.call("after", "each_step", step)
-        data.before_good_feature.should.be.none
-        data.before_bad_feature.should.be.none
-        data.after_step.should.be.equal(step)
-        data.cleanup_feature.should.be.none
-        data.after_step = None
+    hookregistry.call('before', 'each_step', mocker.MagicMock(), hook_call_stub)
+    assert hook_call_stub.call_count == 2
 
-        hookregistry.call("after", "each_feature", bad_feature)
-        data.before_good_feature.should.be.none
-        data.before_bad_feature.should.be.none
-        data.after_step.should.be.none
-        data.cleanup_feature.should.be.equal(bad_feature)
-        data.cleanup_feature = None
+
+def test_call_hook_exception(hookregistry, mocker):
+    """
+    Test calling registered hook which raises an exception
+    """
+    # given
+    @before.all()
+    def before_all(features):
+        raise AssertionError('some error')
+
+    # when
+    with pytest.raises(errors.HookError) as exc:
+        hookregistry.call('before', 'all', mocker.MagicMock())
+
+    # then
+    assert exc.match(r'.*AssertionError: some error')
+
+
+def test_call_hooks_filtered_by_tags(hookregistry, mocker):
+    """
+    Test calling filtered hooks by tags
+    """
+    # given
+    @after.all()
+    def generic_cleanup(features, stub):
+        stub()
+
+    @after.all(on_tags='bad_case')
+    def bad_case_cleanup(features, stub):
+        stub()
+
+    @after.all(on_tags='good_case')
+    def good_case_cleanup(features, stub):
+        stub()
+
+    hook_call_stub = mocker.stub()
+    model = mocker.MagicMock(all_tags=[])
+
+    models = [
+        mocker.MagicMock(all_tags=[Tag(name='good_case')]),
+        mocker.MagicMock(all_tags=[Tag(name='bad_case')])
+    ]
+
+    # when & then
+    # all tags
+    hookregistry.call('after', 'all', model, hook_call_stub)
+    assert hook_call_stub.call_count == 1
+
+    # only generic & good case
+    model.all_tags = [Tag(name='good_case')]
+    hookregistry.call('after', 'all', model, hook_call_stub)
+    assert hook_call_stub.call_count == 3
+
+    # only generic & bad case
+    model.all_tags = [Tag(name='bad_case')]
+    hookregistry.call('after', 'all', model, hook_call_stub)
+    assert hook_call_stub.call_count == 5
+
+    # good case & bad case because of model list
+    hookregistry.call('after', 'all', models, hook_call_stub)
+    assert hook_call_stub.call_count == 8

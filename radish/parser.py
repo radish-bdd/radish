@@ -5,8 +5,10 @@
     One Feature file parser instance is able to parse one feature file.
 """
 
+from __future__ import unicode_literals
+
 import os
-import codecs
+import io
 import re
 import json
 import filecmp
@@ -108,7 +110,7 @@ class FeatureParser(object):
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
         try:
-            with codecs.open(language_path, "rb", "utf-8") as f:
+            with io.open(language_path, "r", encoding="utf-8") as f:
                 language_pkg = json.load(f)
         except IOError:
             raise LanguageNotSupportedError(language)
@@ -122,7 +124,7 @@ class FeatureParser(object):
             :returns: if the parsing was successful or not
             :rtype: bool
         """
-        with codecs.open(self._featurefile, "rb", "utf-8") as f:
+        with io.open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line = line.strip()
@@ -154,9 +156,6 @@ class FeatureParser(object):
                     raise FeatureFileSyntaxError(
                         "Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line))
 
-                if result is None:  # feature did not match tag expression, thus do not continue to parse
-                    return None
-
         if not self.feature:
             raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
 
@@ -174,9 +173,9 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
-        parse_context_func = getattr(self, "_parse_" + self._current_state)
+        parse_context_func = getattr(self, "_parse_" + self._current_state, None)
         if not parse_context_func:
-            raise RadishError("FeatureParser state {0} is not support".format(self._current_state))
+            raise RadishError("FeatureParser state {0} is not supported".format(self._current_state))
 
         return parse_context_func(line)
 

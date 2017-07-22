@@ -1,185 +1,138 @@
 # -*- coding: utf-8 -*-
 
-import threading
+"""
+    radish
+    ~~~~~~
 
-from tests.base import *
+    Behavior Driven Development tool for Python - the root from red to green
+
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
+import pytest
 
 from radish.runner import Runner
-from radish.feature import Feature
-from radish.scenario import Scenario
 from radish.stepmodel import Step
-from radish.main import setup_config
 
 
-class RunnerTestCase(RadishTestCase):
+@pytest.mark.parametrize('run_state, expected_returncode', [
+    (Step.State.PASSED, 0),
+    (Step.State.UNTESTED, 0),
+    (Step.State.SKIPPED, 0),
+    (Step.State.PENDING, 0),
+    (Step.State.FAILED, 1),
+], ids=[
+    'Running Step returing PASSED',
+    'Running Step returing UNTESTED',
+    'Running Step returing SKIPPED',
+    'Running Step returing PENDING',
+    'Running Step returing FAILED',
+])
+def test_run_single_step(run_state, expected_returncode, hookregistry, mocker):
     """
-        Tests for the runner class
+    Test running a single Step
     """
-    @classmethod
-    def setUpClass(cls):
-        """
-            Setup config object
-        """
-        setup_config({
-            "--early_exit": False,
-            "--debug-steps": False,
-            "--debug-after-failure": False,
-            "--inspect-after-failure": False,
-            "--bdd-xml": False,
-            "--no-ansi": False,
-            "--no-line-jump": False,
-            "--write-steps-once": False,
-            "--scenarios": None,
-            "--shuffle": False,
-            "--write-ids": False,
-            "--tags": None,
-            "--expand": True,
-        })
+    # given
+    runner = Runner(hookregistry)
+    step = mocker.MagicMock()
+    step.run.return_value = run_state
 
-    def test_running_a_step(self):
-        """
-            Test running a step
-        """
-        data = threading.local()
-        data.step_was_called = False
+    # when
+    returncode = runner.run_step(step)
 
-        def some_step(step):
-            data.step_was_called = True
+    # then
+    assert returncode == expected_returncode
+    assert step.run.call_count == 1
 
-        step = Step(1, "Some step", "somefile.feature", 3, None, True)
-        step.definition_func = some_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step.argument_match = argument_match_mock
 
-        hook_mock = Mock()
-        hook_mock.call.return_value = True
-        runner = Runner(hook_mock)
-        returncode = runner.run_step(step)
-        returncode.should.be.equal(0)
-        step.state.should.be.equal(Step.State.PASSED)
-        data.step_was_called.should.be.true
+@pytest.mark.parametrize('debug_state, expected_returncode', [
+    (Step.State.PASSED, 0),
+    (Step.State.UNTESTED, 0),
+    (Step.State.SKIPPED, 0),
+    (Step.State.PENDING, 0),
+    (Step.State.FAILED, 1),
+], ids=[
+    'Debugging Step returing PASSED',
+    'Debugging Step returing UNTESTED',
+    'Debugging Step returing SKIPPED',
+    'Debugging Step returing PENDING',
+    'Debugging Step returing FAILED',
+])
+def test_debug_single_step(debug_state, expected_returncode, world_config, hookregistry, mocker):
+    """
+    Test debugging a single Step
+    """
+    # given
+    runner = Runner(hookregistry)
+    step = mocker.MagicMock()
+    step.debug.return_value = debug_state
 
-    def test_running_a_scenario(self):
-        """
-            Test running a scenario
-        """
-        data = threading.local()
-        data.step_was_called = False
+    # set debug mode
+    world_config.debug_steps = True
 
-        def some_step(step):
-            data.step_was_called = True
+    # when
+    returncode = runner.run_step(step)
 
-        step = Step(1, "Some step", "somefile.feature", 3, None, True)
-        step.definition_func = some_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step.argument_match = argument_match_mock
+    # then
+    assert returncode == expected_returncode
+    assert step.debug.call_count == 1
 
-        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, None)
-        scenario.steps.append(step)
 
-        hook_mock = Mock()
-        hook_mock.call.return_value = True
-        runner = Runner(hook_mock)
-        returncode = runner.run_scenario(scenario)
-        returncode.should.be.equal(0)
-        step.state.should.be.equal(Step.State.PASSED)
-        data.step_was_called.should.be.true
+def test_run_single_step_show_only(hookregistry, mocker):
+    """
+    Test running single step when show only mode is on
+    """
+    # given
+    runner = Runner(hookregistry, show_only=True)
+    step = mocker.MagicMock()
+    step.run.return_value = Step.State.FAILED
 
-    def test_running_a_feature(self):
-        """
-            Test running a feature
-        """
-        data = threading.local()
-        data.step_was_called = False
+    # when
+    returncode = runner.run_step(step)
 
-        def some_step(step):
-            data.step_was_called = True
+    # then
+    assert returncode == 0
+    assert step.run.call_count == 0
 
-        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
 
-        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
-        feature.scenarios.append(scenario)
+def test_skip_single_step(hookregistry, mocker):
+    """
+    Test skipping a single Step
+    """
+    # given
+    runner = Runner(hookregistry)
+    step = mocker.MagicMock()
+    step.skip.return_value = None
 
-        step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
-        step.definition_func = some_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step.argument_match = argument_match_mock
-        scenario.steps.append(step)
+    # when
+    runner.skip_step(step)
 
-        hook_mock = Mock()
-        hook_mock.call.return_value = True
-        runner = Runner(hook_mock)
-        runner.run_feature(feature)
-        step.state.should.be.equal(Step.State.PASSED)
-        data.step_was_called.should.be.true
+    # then
+    assert step.skip.call_count == 1
 
-    def test_running_all(self):
-        """
-            Test running a all features
-        """
-        data = threading.local()
-        data.step_was_called = False
 
-        def some_step(step):
-            data.step_was_called = True
+@pytest.mark.parametrize('run_or_skip', [
+    'run_step', 'skip_step'
+])
+def test_run_skip_step_hooks(run_or_skip, hookregistry, mocker):
+    """
+    Test that Hooks are executed when running or skipping a Step
+    """
+    # given
+    # register hooks in registry
+    before_step_stub = mocker.stub()
+    after_step_stub = mocker.stub()
+    hookregistry.register('before', 'each_step', before_step_stub)
+    hookregistry.register('after', 'each_step', after_step_stub)
+    # create runner
+    runner = Runner(hookregistry, show_only=True)
 
-        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
+    step = mocker.MagicMock(all_tags=[])
 
-        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
-        feature.scenarios.append(scenario)
+    # when
+    method = getattr(runner, run_or_skip)
+    method(step)
 
-        step = Step(1, "Some step", "somefile.feature", 3, scenario, True)
-        step.definition_func = some_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step.argument_match = argument_match_mock
-        scenario.steps.append(step)
-
-        hook_mock = Mock()
-        hook_mock.call.return_value = True
-        runner = Runner(hook_mock)
-        runner.start([feature], None)
-        step.state.should.be.equal(Step.State.PASSED)
-        data.step_was_called.should.be.true
-
-    def test_returncode_of_runner(self):
-        """
-            Test returncode of run functions in Runner
-        """
-        def some_passed_step(step):
-            pass
-
-        def some_failed_step(step):
-            raise AttributeError("I expect this error to test the behavior of a failed step")
-
-        feature = Feature(1, "Feature", "Some feature", "somefile.feature", 1)
-
-        scenario = Scenario(1, 1, "Scenario", "Some scenario", "somefile.feature", 2, feature)
-        feature.scenarios.append(scenario)
-
-        step1 = Step(1, "Some passed step", "somefile.feature", 3, scenario, True)
-        step1.definition_func = some_passed_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step1.argument_match = argument_match_mock
-        scenario.steps.append(step1)
-
-        step2 = Step(2, "Some failed step", "somefile.feature", 4, scenario, True)
-        step2.definition_func = some_failed_step
-        argument_match_mock = Mock()
-        argument_match_mock.evaluate.return_value = (tuple(), {})
-        step2.argument_match = argument_match_mock
-        scenario.steps.append(step2)
-
-        hook_mock = Mock()
-        hook_mock.call.return_value = True
-        runner = Runner(hook_mock)
-        returncode = runner.run_feature(feature)
-        returncode.should.be.equal(1)
-        step1.state.should.be.equal(Step.State.PASSED)
-        step2.state.should.be.equal(Step.State.FAILED)
-        scenario.state.should.be.equal(Step.State.FAILED)
-        feature.state.should.be.equal(Step.State.FAILED)
+    # then
+    assert before_step_stub.call_count == 1
+    assert after_step_stub.call_count == 1

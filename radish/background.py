@@ -25,7 +25,7 @@ class Background(Scenario):
 
         for step in self.all_steps:
             # FIXME(TF): move to Step.copy
-            step_copy = Step(step.id, step.sentence, step.path, step.line, parent, steps_runable)
+            step_copy = Step(step.id, step.sentence, step.path, step.line, parent, steps_runable, step.context_class)
             step_copy.table = step.table
             step_copy.raw_text = step.raw_text
             background.steps.append(step_copy)

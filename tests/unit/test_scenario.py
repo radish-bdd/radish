@@ -1,290 +1,278 @@
 # -*- coding: utf-8 -*-
 
-from tests.base import *
+"""
+    radish
+    ~~~~~~
 
+    Behavior Driven Development tool for Python - the root from red to green
+
+    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+"""
+
+import pytest
+
+from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.background import Background
 from radish.stepmodel import Step
-from radish.model import Tag
 
 
-class ScenarioTestCase(RadishTestCase):
+def test_creating_simple_scenario():
     """
-        Tests for the scenario model class
+    Test creating a simple Scenario
     """
-    def test_scenario_state(self):
-        """
-            Test scenario's state
-        """
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        scenario.state.should.be.equal(Step.State.UNTESTED)
-
-        step_1.state = Step.State.SKIPPED
-        scenario.state.should.be.equal(Step.State.SKIPPED)
-
-        step_1.state = Step.State.FAILED
-        scenario.state.should.be.equal(Step.State.FAILED)
-
-        step_2.state = Step.State.PASSED
-        scenario.state.should.be.equal(Step.State.FAILED)
-
-        step_3.state = Step.State.PASSED
-        scenario.state.should.be.equal(Step.State.FAILED)
-
-        step_1.state = Step.State.PASSED
-        scenario.state.should.be.equal(Step.State.PASSED)
-
-    def test_scenario_constants(self):
-        """
-            Test scenario's constants
-        """
-        feature = Mock(constants=[("feature_var_1", "1"), ("feature_var_2", "2")])
-
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, feature)
-        scenario.context.constants.extend([("scenario_var_1", "3"), ("scenario_var_2", "4")])
-
-        scenario.constants.should.have.length_of(4)
-        scenario.constants[0].should.be.equal(("scenario_var_1", "3"))
-        scenario.constants[1].should.be.equal(("scenario_var_2", "4"))
-        scenario.constants[2].should.be.equal(("feature_var_1", "1"))
-        scenario.constants[3].should.be.equal(("feature_var_2", "2"))
-
-    def test_scenario_all_steps(self):
-        """
-        Test getting all steps from scenario
-        """
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        scenario.all_steps.should.have.length_of(3)
-        scenario.all_steps[0].should.be.equal(step_1)
-        scenario.all_steps[1].should.be.equal(step_2)
-        scenario.all_steps[2].should.be.equal(step_3)
-
-        precond_step_1 = Mock(state=Step.State.UNTESTED)
-        precond_step_2 = Mock(state=Step.State.UNTESTED)
-        scenario_precond = Scenario(2, "Scenario", "Some precond scenario", None, None, None)
-        scenario_precond.steps.extend([precond_step_1, precond_step_2])
-
-        scenario.preconditions.append(scenario_precond)
-
-        scenario.all_steps.should.have.length_of(5)
-        scenario.all_steps[0].should.be.equal(precond_step_1)
-        scenario.all_steps[1].should.be.equal(precond_step_2)
-        scenario.all_steps[2].should.be.equal(step_1)
-        scenario.all_steps[3].should.be.equal(step_2)
-        scenario.all_steps[4].should.be.equal(step_3)
-
-    def test_scenario_get_failed_step(self):
-        """
-            Test getting first failed step from scenario
-        """
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        scenario.failed_step.should.be.equal(None)
-
-        step_1.state = Step.State.FAILED
-        scenario.failed_step.should.be.equal(step_1)
-
-        step_1.state = Step.State.PASSED
-        scenario.failed_step.should.be.equal(None)
-
-        step_2.state = Step.State.FAILED
-        scenario.failed_step.should.be.equal(step_2)
-
-    def test_scenario_has_to_run(self):
-        """
-            Test scenario's has to run functionality
-        """
-        feature = Mock()
-
-        s = Scenario(1, "Scenario", "Some scenario", None, None, feature)
-        s.absolute_id = 1
-        s.has_to_run.when.called_with(None).should.return_value(True)
-
-        s.has_to_run.when.called_with([1]).should.return_value(True)
-        s.has_to_run.when.called_with([1, 2]).should.return_value(True)
-        s.has_to_run.when.called_with([2]).should.return_value(False)
-
-    def test_scenario_after_parse_hook(self):
-        """
-            Test scenario after parse hook
-        """
-        step_1 = Mock(state=Step.State.UNTESTED, id=1)
-        step_2 = Mock(state=Step.State.UNTESTED, id=2)
-        step_3 = Mock(state=Step.State.UNTESTED, id=3)
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        step_1.parent = scenario
-        step_2.parent = scenario
-        step_3.parent = scenario
-
-        scenario.all_steps.should.have.length_of(3)
-        scenario.all_steps[0].should.be.equal(step_1)
-        scenario.all_steps[1].should.be.equal(step_2)
-        scenario.all_steps[2].should.be.equal(step_3)
-
-        scenario_precond = Scenario(2, "Scenario", "Some precond scenario", None, None, None)
-        precond_step_1 = Mock(state=Step.State.UNTESTED, id=1)
-        precond_step_2 = Mock(state=Step.State.UNTESTED, id=2)
-        scenario_precond.steps.extend([precond_step_1, precond_step_2])
-
-        precond_step_1.parent = scenario_precond
-        precond_step_2.parent = scenario_precond
-
-        scenario.preconditions.append(scenario_precond)
-
-        # check before 'after_parse': step id and parent should be wrong
-        scenario.all_steps[0].id.should.be.equal(1)
-        scenario.all_steps[1].id.should.be.equal(2)
-        scenario.all_steps[2].id.should.be.equal(1)
-        scenario.all_steps[3].id.should.be.equal(2)
-        scenario.all_steps[4].id.should.be.equal(3)
-        scenario.all_steps[0].parent.should.be.equal(scenario_precond)
-        scenario.all_steps[1].parent.should.be.equal(scenario_precond)
-        scenario.all_steps[2].parent.should.be.equal(scenario)
-        scenario.all_steps[3].parent.should.be.equal(scenario)
-        scenario.all_steps[4].parent.should.be.equal(scenario)
-
-        scenario.after_parse()
-
-        scenario.all_steps[0].id.should.be.equal(1)
-        scenario.all_steps[1].id.should.be.equal(2)
-        scenario.all_steps[2].id.should.be.equal(3)
-        scenario.all_steps[3].id.should.be.equal(4)
-        scenario.all_steps[4].id.should.be.equal(5)
-        scenario.all_steps[0].parent.should.be.equal(scenario)
-        scenario.all_steps[1].parent.should.be.equal(scenario)
-        scenario.all_steps[2].parent.should.be.equal(scenario)
-        scenario.all_steps[3].parent.should.be.equal(scenario)
-        scenario.all_steps[4].parent.should.be.equal(scenario)
-
-
-    def test_scenario_state_with_background(self):
-        """
-        Test scenario state with assigned background
-        """
-        bg_step_1 = Mock(state=Step.State.UNTESTED)
-        bg_step_2 = Mock(state=Step.State.UNTESTED)
-        bg_step_3 = Mock(state=Step.State.UNTESTED)
-
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        all_steps = [bg_step_1, bg_step_2, bg_step_3, step_1, step_2, step_3]
-
-        # create background and scenario
-        background = Background('Background', 'Some Background', None, None, None)
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-
-        # assign background to scenario
-        scenario.background = background
-
-        # assign steps to background and scenario
-        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        # in the beginning all steps are untested
-        scenario.state.should.be.equal(Step.State.UNTESTED)
-
-        # lets set them to passed
-        for step in all_steps:
-            step.state = Step.State.PASSED
-
-        # the scenario should be passed
-        scenario.state.should.be.equal(Step.State.PASSED)
-
-        # let's fail a background step
-        bg_step_2.state = Step.State.FAILED
-        scenario.state.should.be.equal(Step.State.FAILED)
-
-        # let's skip a background step
-        bg_step_2.state = Step.State.SKIPPED
-        scenario.state.should.be.equal(Step.State.SKIPPED)
-
-
-    def test_scenario_all_steps_with_background(self):
-        """
-        Test scenario all_steps with assigned background
-        """
-        bg_step_1 = Mock(state=Step.State.UNTESTED)
-        bg_step_2 = Mock(state=Step.State.UNTESTED)
-        bg_step_3 = Mock(state=Step.State.UNTESTED)
-
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        # create background and scenario
-        background = Background('Background', 'Some Background', None, None, None)
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-
-        # assign background to scenario
-        scenario.background = background
-
-        # assign steps to background and scenario
-        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        # in the beginning all steps are untested
-        all_steps = scenario.all_steps
-        all_steps.should.have.length_of(6)
-        all_steps[0].should.be(bg_step_1)
-        all_steps[3].should.be(step_1)
-
-
-    def test_scenario_failed_step_with_background(self):
-        """
-        Test scenario failed step with assigned background
-        """
-        bg_step_1 = Mock(state=Step.State.UNTESTED)
-        bg_step_2 = Mock(state=Step.State.UNTESTED)
-        bg_step_3 = Mock(state=Step.State.UNTESTED)
-
-        step_1 = Mock(state=Step.State.UNTESTED)
-        step_2 = Mock(state=Step.State.UNTESTED)
-        step_3 = Mock(state=Step.State.UNTESTED)
-
-        all_steps = [bg_step_1, bg_step_2, bg_step_3, step_1, step_2, step_3]
-
-        # create background and scenario
-        background = Background('Background', 'Some Background', None, None, None)
-        scenario = Scenario(1, "Scenario", "Some scenario", None, None, None)
-
-        # assign background to scenario
-        scenario.background = background
-
-        # assign steps to background and scenario
-        background.steps.extend([bg_step_1, bg_step_2, bg_step_3])
-        scenario.steps.extend([step_1, step_2, step_3])
-
-        # in the beginning all steps are untested
-        scenario.state.should.be.equal(Step.State.UNTESTED)
-
-        # lets set them to passed
-        for step in all_steps:
-            step.state = Step.State.PASSED
-
-        # the scenario should be passed
-        scenario.failed_step.should.be.none
-
-        # let's fail a background step
-        bg_step_2.state = Step.State.FAILED
-        scenario.failed_step.should.be(bg_step_2)
+    # given & when
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=None, background=None)
+
+    # then
+    assert scenario.id == 1
+    assert scenario.keyword == 'Scenario'
+    assert scenario.sentence == 'I am a Scenario'
+    assert scenario.path == 'foo.feature'
+    assert scenario.line == 1
+    assert scenario.parent is None
+    assert scenario.tags == []
+    assert scenario.preconditions == []
+    assert scenario.background is None
+
+
+def test_scenario_state(mocker):
+    """
+    Test getting the Scenario state according to it's Steps states
+    """
+    # given
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=None, background=None)
+    # add Steps to this Scenario
+    scenario.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # get the step to modify
+    step = scenario.steps[1]
+
+    # when all Steps are passed the Scenario is passed
+    assert scenario.state == Step.State.PASSED
+
+    # when one Step is failed the Scenario is failed
+    step.state = Step.State.FAILED
+    assert scenario.state == Step.State.FAILED
+
+    # when one Step is pending the Scenario is pending
+    step.state = Step.State.PENDING
+    assert scenario.state == Step.State.PENDING
+
+    # when one Step is skipped the Scenario is skipped
+    step.state = Step.State.SKIPPED
+    assert scenario.state == Step.State.SKIPPED
+
+    # when one Step is untested the Scenario is untested
+    step.state = Step.State.UNTESTED
+    assert scenario.state == Step.State.UNTESTED
+
+
+def test_scenario_state_with_background(mocker):
+    """
+    Test getting the Scenario state according to it's Steps states including a Background
+    """
+    # given
+    background = mocker.MagicMock(steps=[])
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=None, background=background)
+    # add Steps to this Scenario
+    scenario.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # add Steps to the background
+    background.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # get the step to modify
+    step = background.steps[1]
+
+    # when all Steps are passed the Scenario is passed
+    assert scenario.state == Step.State.PASSED
+
+    # when a Background Step is failed the Scenario is failed
+    step.state = Step.State.FAILED
+    assert scenario.state == Step.State.FAILED
+
+
+def test_scenario_all_steps(mocker):
+    """
+    Test getting all Steps which are part of a Scenario
+    """
+    # given
+    background = mocker.MagicMock(all_steps=[])
+    precondition_scenario = mocker.MagicMock(all_steps=[])
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=[precondition_scenario], background=background)
+
+    # when
+    # add Steps to this Scenario
+    scenario.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # add Steps to the Background
+    background.all_steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # add Steps to the precondition Scenario
+    precondition_scenario.all_steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+
+    # then
+    assert len(scenario.all_steps) == 6
+
+
+def test_get_scenario_constants():
+    """
+    Test getting all constants from a Scenario
+    """
+    # given
+    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 2, parent=feature,
+                        tags=None, preconditions=None, background=None)
+    # add Feature constants
+    feature.context.constants = [('foo', '1'), ('bar', '42')]
+    # add Scenario constants
+    scenario.context.constants = [('some_foo', '${foo}3'), ('answer', '${bar}')]
+
+    # when
+    constants = scenario.constants
+
+    assert len(constants) == 4
+    assert constants[0] == ('some_foo', '13')
+    assert constants[1] == ('answer', '42')
+    assert constants[2] == ('foo', '1')
+    assert constants[3] == ('bar', '42')
+
+
+def test_scenario_failed_step(mocker):
+    """
+    Test getting the first failed Step from a Scenario
+    """
+    # given
+    background = mocker.MagicMock(steps=[])
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=None, background=background)
+
+    # when
+    # add Steps to this Scenario
+    scenario.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+    # add Steps to the Background
+    background.steps.extend([
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED),
+        mocker.MagicMock(state=Step.State.PASSED)
+    ])
+
+    # when no Step failed
+    assert scenario.failed_step is None
+
+    # when a Scenario Step fails it should be returned
+    scenario.steps[0].state = Step.State.FAILED
+    assert scenario.failed_step == scenario.steps[0]
+    scenario.steps[0].state = Step.State.PASSED
+
+    # when a Background Step fails it should be returned
+    background.steps[0].state = Step.State.FAILED
+    assert scenario.failed_step == background.steps[0]
+    background.steps[0].state = Step.State.PASSED
+
+    # when a Background and a Scenario Step fails the
+    # Background Step should be returned
+    background.steps[0].state = Step.State.FAILED
+    scenario.steps[0].state = Step.State.FAILED
+    assert scenario.failed_step == background.steps[0]
+
+
+@pytest.mark.parametrize('scenario_id, scenario_choice, expected_has_to_run', [
+    (1, [], True),
+    (1, [1], True),
+    (2, [1, 2, 5], True),
+    (1, [4], False),
+    (1, [4, 5], False),
+])
+def test_scenario_has_to_run(scenario_id, scenario_choice, expected_has_to_run):
+    """
+    Test logic to check whether a Scenario has to run or not
+    """
+    # given
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=None, background=None)
+    scenario.absolute_id = scenario_id
+
+    # when
+    actual_has_to_run = scenario.has_to_run(scenario_choice)
+
+    # then
+    assert actual_has_to_run is expected_has_to_run
+
+
+def test_scenario_after_parse_logic(mocker):
+    """
+    Test logic which is used to complete the parsing of Scenario
+    """
+    # given
+    background = Background(1, 'Background', 'I am a Background', 'foo.feature', 1)
+    precondition_scenario = Scenario(2, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None)
+    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
+                        tags=None, preconditions=[precondition_scenario], background=background)
+    # add Steps to this Scenario
+    scenario.steps.extend([
+        mocker.MagicMock(id=99, as_background=False, as_precondition=False),
+    ])
+    # set Scenario Step parents
+    for step in scenario.steps:
+        step.parent = scenario
+    # add Steps to the Background
+    background.steps.extend([
+        mocker.MagicMock(id=5, as_background=False, as_precondition=False),
+        mocker.MagicMock(id=6, as_background=False, as_precondition=False),
+        mocker.MagicMock(id=66, as_background=False, as_precondition=False)
+    ])
+    # set Background Step parents
+    for background_step in background.steps:
+        background_step.parent = background
+    # add Steps to the precondition Scenario
+    precondition_scenario.steps.extend([
+        mocker.MagicMock(id=5, as_background=False, as_precondition=False),
+        mocker.MagicMock(id=77, as_background=False, as_precondition=False)
+    ])
+    # set Precondition Scenario Step parents
+    for step in precondition_scenario.steps:
+        step.parent = precondition_scenario
+
+    # when after_parse() was not called it's not completed
+    assert scenario.complete is False
+
+    # when
+    scenario.after_parse()
+    steps = scenario.all_steps
+
+    # then - the Scenario is completed
+    assert scenario.complete is True
+
+    # then - the step id's are in valid order
+    assert steps[0].id == 1
+    assert steps[1].id == 2
+    assert steps[2].id == 3
+    assert steps[3].id == 4
+    assert steps[4].id == 5
+    assert steps[5].id == 6
+
+    # then - check as_background flags
+    assert all(step.as_background for step in background.steps)
+    # then - check as_precondition flags
+    assert all(step.as_precondition for step in precondition_scenario.steps)

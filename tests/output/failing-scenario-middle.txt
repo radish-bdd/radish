@@ -1,0 +1,17 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mAdd some numbers[22m[39m[26m  # [1m[30mfeatures/failing-scenario-middle.feature[22m[39m[26m[37m[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mAdd some numbers[22m[39m[26m
+        [1m[33mGiven I have the number 1[22m[39m[26m
+[A[K        [1m[32mGiven I have the number 1[22m[39m[26m
+        [1m[33mAnd I have the number 2[22m[39m[26m
+[A[K        [1m[32mAnd I have the number 2[22m[39m[26m
+        [1m[33mWhen I add them up with failure[22m[39m[26m
+[A[K        [1m[31mWhen I add them up with failure[22m[39m[26m
+          [1m[31mAssertionError[22m[39m[26m: [31mUnable to add numbers: [1, 2][39m[26m
+        [1m[33mThen I expect the sum to be 42[22m[39m[26m
+[A[K        [36mThen I expect the sum to be 42[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m0 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m0 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m4 steps ([22m[39m[1m[32m2 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m, [22m[39m[36m1 skipped[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 
 import os
-import codecs
+import io
 import re
 import json
 import filecmp
@@ -110,7 +110,7 @@ class FeatureParser(object):
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
         try:
-            with codecs.open(language_path, "rb", "utf-8") as f:
+            with io.open(language_path, "r", encoding="utf-8") as f:
                 language_pkg = json.load(f)
         except IOError:
             raise LanguageNotSupportedError(language)
@@ -124,7 +124,7 @@ class FeatureParser(object):
             :returns: if the parsing was successful or not
             :rtype: bool
         """
-        with codecs.open(self._featurefile, "rb", "utf-8") as f:
+        with io.open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line = line.strip()

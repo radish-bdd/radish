@@ -94,6 +94,7 @@ def test_parse_featurefile_with_language_tag(parser):
 
     # then
     assert parser.feature.sentence == 'Das ist eine radish Funktionalität'
+    assert parser.feature.scenarios[0].sentence == 'Dies ist ein Szenario'
 
 
 def test_parse_not_existing_featurefile(core):

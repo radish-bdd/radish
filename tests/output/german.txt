@@ -1,0 +1,16 @@
+[1m[37mFunktionalität[22m[39m[26m: [1m[37mDas ist eine radish Funktionalität[22m[39m[26m  # [1m[30mfeatures/german.feature[22m[39m[26m
+    [37mAls radish Nutzer moechte ich meine Testcases
+    auch in Deutsch schreiben koennen.[39m[26m
+
+    [1m[37mSzenario[22m[39m[26m: [1m[37mDies ist ein Szenario[22m[39m[26m
+        [1m[33mGegeben sei etwas[22m[39m[26m
+[A[K        [1m[32mGegeben sei etwas[22m[39m[26m
+        [1m[33mWenn ich etwas mache[22m[39m[26m
+[A[K        [1m[32mWenn ich etwas mache[22m[39m[26m
+        [1m[33mDann erwarte ich etwas[22m[39m[26m
+[A[K        [1m[32mDann erwarte ich etwas[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

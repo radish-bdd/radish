@@ -29,8 +29,21 @@ from radish.main import main
         ['empty'], [], 1, 'empty'
     ),
     (
+        ['empty-feature'], [], 1, 'empty-feature'
+    ),
+    (
         ['comments'], [], 0, 'comments'
     ),
+    (
+        ['german'], [], 0, 'german'
+    ),
+], ids=[
+    'Feature with one Scenario and Steps',
+    'Feature with multiple Scenarios',
+    'Empty Feature File',
+    'Empty Featre',
+    'Comments in Feature',
+    'German Keywords'
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
                         featurefiledir, radishdir, outputdir):
@@ -72,5 +85,5 @@ def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, e
         actual_output = actual_output.replace(featurefile, rel_featurefile)
 
     # then
-    assert actual_exitcode == expected_exitcode
     assert actual_output == expected_output_string
+    assert actual_exitcode == expected_exitcode

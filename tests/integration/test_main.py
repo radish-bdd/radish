@@ -214,16 +214,15 @@ from radish.main import main
     (
         ['scenario-loop'], ['--no-ansi', '--write-steps-once'], 0, 'scenario-loop-no-ansi-write-once'
     ),
-    # FIXME(TF): fails on Python 2.7
-    # (
-        # ['feature-scenario-steps'], ['--no-line-jump'], 0, 'feature-scenario-steps-no-line-jump'
-    # ),
-    # (
-        # ['scenario-outline'], ['--no-line-jump'], 0, 'scenario-outline-no-line-jump'
-    # ),
-    # (
-        # ['scenario-loop'], ['--no-line-jump'], 0, 'scenario-loop-no-line-jump'
-    # ),
+    (
+        ['feature-scenario-steps'], ['--no-line-jump'], 0, 'feature-scenario-steps-no-line-jump'
+    ),
+    (
+        ['scenario-outline'], ['--no-line-jump'], 0, 'scenario-outline-no-line-jump'
+    ),
+    (
+        ['scenario-loop'], ['--no-line-jump'], 0, 'scenario-loop-no-line-jump'
+    ),
     (
         ['feature-scenario-steps'], ['--bdd-xml', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
     ),
@@ -296,9 +295,9 @@ from radish.main import main
     'Scenario Outline with no ANSI and Steps once',
     'Scenario Loop with no ANSI',
     'Scenario Loop with no ANSI and Steps once',
-    # 'Feature with single Scenario and Steps with no line jump',
-    # 'Scenario Outline with no line jump',
-    # 'Scenario Loop with no line jump',
+    'Feature with single Scenario and Steps with no line jump',
+    'Scenario Outline with no line jump',
+    'Scenario Loop with no line jump',
     'Feature with single Scenario and Steps producing BDD XML',
     'Feature with single Scenario and Steps producing Cucumber JSON',
 ])

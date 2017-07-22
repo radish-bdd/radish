@@ -156,6 +156,8 @@ Options:
     # disable colors if necessary
     if world.config.no_ansi:
         colorful.disable()
+    else:
+        colorful.use_8_ansi_colors()
 
     # load needed extensions
     extensions.load(world.config)

@@ -46,6 +46,12 @@ def sum_numbers(step):
     step.context.sum = sum(step.context.numbers)
 
 
+@when('I add them up with failure')
+def sum_numbers(step):
+    "When I add them up with failure"
+    assert False, 'Unable to add numbers: {0}'.format(step.context.numbers)
+
+
 @when('I subtract them')
 def subtract_numbers(step):
     "When I subtract them up"
@@ -58,13 +64,15 @@ def subtract_numbers(step):
 @then('I expect the sum to be {expected_sum:d}')
 def expect_sum(step, expected_sum):
     "Then I expect the sum to be <n>"
-    assert step.context.sum == expected_sum
+    assert step.context.sum == expected_sum, 'The expected sum {0} does not match actual sum {1}'.format(
+        expected_sum, step.context.sum)
 
 
 @then('I expect the difference to be {expected_diff:d}')
 def expect_sum(step, expected_diff):
     "Then I expect the difference to be <n>"
-    assert step.context.difference == expected_diff
+    assert step.context.difference == expected_diff, 'The expected difference {0} does not match actual difference {1}'.format(
+        expected_diff. step.context.difference)
 
 
 @given('I have an instable function')

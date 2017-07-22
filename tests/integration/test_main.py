@@ -163,6 +163,73 @@ from radish.main import main
     (
         ['precondition-malformed'], [], 1, 'precondition-malformed'
     ),
+    (
+        ['failing-scenario'], [], 1, 'failing-scenario'
+    ),
+    (
+        ['failing-scenario-middle'], [], 1, 'failing-scenario-middle'
+    ),
+    (
+        ['failing-scenario-outline'], [], 1, 'failing-scenario-outline'
+    ),
+    (
+        ['failing-scenario-outline-middle'], [], 1, 'failing-scenario-outline-middle'
+    ),
+    (
+        ['failing-scenario-outline-middle'], ['--early-exit'], 1, 'failing-scenario-outline-middle-exit-early'
+    ),
+    (
+        ['failing-scenario-loop'], [], 1, 'failing-scenario-loop'
+    ),
+    (
+        ['failing-scenario-loop'], ['--early-exit'], 1, 'failing-scenario-loop-exit-early'
+    ),
+    (
+        ['feature-scenario-steps'], ['--write-ids'], 0, 'feature-scenario-steps-with-ids'
+    ),
+    (
+        ['scenario-outline'], ['--write-ids'], 0, 'scenario-outline-with-ids'
+    ),
+    (
+        ['scenario-loop'], ['--write-ids'], 0, 'scenario-loop-with-ids'
+    ),
+    (
+        ['background'], ['--write-ids'], 0, 'background-with-ids'
+    ),
+    (
+        ['feature-scenario-steps'], ['--no-ansi'], 0, 'feature-scenario-steps-no-ansi'
+    ),
+    (
+        ['feature-scenario-steps'], ['--no-ansi', '--write-steps-once'], 0, 'feature-scenario-steps-no-ansi-write-once'
+    ),
+    (
+        ['scenario-outline'], ['--no-ansi'], 0, 'scenario-outline-no-ansi'
+    ),
+    (
+        ['scenario-outline'], ['--no-ansi', '--write-steps-once'], 0, 'scenario-outline-no-ansi-write-once'
+    ),
+    (
+        ['scenario-loop'], ['--no-ansi'], 0, 'scenario-loop-no-ansi'
+    ),
+    (
+        ['scenario-loop'], ['--no-ansi', '--write-steps-once'], 0, 'scenario-loop-no-ansi-write-once'
+    ),
+    # FIXME(TF): fails on Python 2.7
+    # (
+        # ['feature-scenario-steps'], ['--no-line-jump'], 0, 'feature-scenario-steps-no-line-jump'
+    # ),
+    # (
+        # ['scenario-outline'], ['--no-line-jump'], 0, 'scenario-outline-no-line-jump'
+    # ),
+    # (
+        # ['scenario-loop'], ['--no-line-jump'], 0, 'scenario-loop-no-line-jump'
+    # ),
+    (
+        ['feature-scenario-steps'], ['--bdd-xml', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
+    ),
+    (
+        ['feature-scenario-steps'], ['--cucumber-json', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
+    ),
 ], ids=[
     'Empty Feature File',
     'Empty Featre',
@@ -211,7 +278,29 @@ from radish.main import main
     'Precondition Level 2',
     'Precondition from same Feature',
     'Precondition with unknown Scenario from same Feature',
-    'Precondition which is malformed'
+    'Precondition which is malformed',
+    'Failing Scenario',
+    'Failing Scenario in the middle',
+    'Failing Scenario Outline',
+    'Failing Scenario Outline in the middle',
+    'Failing Scenario Outline in the middle with early exit',
+    'Failing Scenario Loop',
+    'Failing Scenario Loop with early exit',
+    'Feature with single Scenario and Steps with Ids',
+    'Scenario Outline with Ids',
+    'Scenario Loop with Ids',
+    'Background with Ids',
+    'Feature with single Scenario and Steps with no ANSI',
+    'Feature with single Scenario and Steps with no ANSI and Steps once',
+    'Scenario Outline with no ANSI',
+    'Scenario Outline with no ANSI and Steps once',
+    'Scenario Loop with no ANSI',
+    'Scenario Loop with no ANSI and Steps once',
+    # 'Feature with single Scenario and Steps with no line jump',
+    # 'Scenario Outline with no line jump',
+    # 'Scenario Loop with no line jump',
+    'Feature with single Scenario and Steps producing BDD XML',
+    'Feature with single Scenario and Steps producing Cucumber JSON',
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
                         featurefiledir, radishdir, outputdir):

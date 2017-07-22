@@ -10,9 +10,9 @@ Feature: Background for Scenario Outline
 
     Scenario Outline: Add numbers
         When I <operator> them up
-        Then I expect the sum to be <result>
+        Then I expect the <result_name> to be <result>
 
     Examples:
-        | operator | result |
-        | add      | 8      |
-        | subtract | 2      |
+        | operator | result_name | result |
+        | add      | sum         | 8      |
+        | subtract | difference  | 2      |

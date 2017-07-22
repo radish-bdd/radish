@@ -4,4 +4,6 @@ Feature: Tag with Arguments
 
     @sometag(somevalue)
     Scenario: Some Scenario
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something

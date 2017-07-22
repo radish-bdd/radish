@@ -6,5 +6,7 @@ Feature: Step Tabular Data
         Given I have the following heros
             | Bruce | Wayne  | Batman    |
             | Peter | Parker | Spiderman |
-        When I admire them
-        Then I am a freak
+        When I capitalize their first name
+        Then I have the following names
+            | BRUCE |
+            | PETER |

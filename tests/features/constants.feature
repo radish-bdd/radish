@@ -8,13 +8,13 @@ Feature: Test summing numbers
   Scenario: Sum two numbers
     Given I have the number ${SomeNumber}
       And I have the number 3
-    When I sum them
-    Then I expect the result to be ${ExpectedResult}
+    When I add them up
+    Then I expect the sum to be ${ExpectedResult}
 
   @constant(ExpectedResult: 10)
   Scenario: Sum three numbers
     Given I have the number ${SomeNumber}
       And I have the number 3
       And I have the number 2
-    When I sum them
-    Then I expect the result to be ${ExpectedResult}
+    When I add them up
+    Then I expect the sum to be ${ExpectedResult}

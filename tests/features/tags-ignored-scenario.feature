@@ -4,11 +4,17 @@ Feature: Ignore Scenario via Tag
 
     @foo
     Scenario: Ignored Scenario
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something
 
     @bar
     Scenario: Parsed Scenario
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something
 
     Scenario: Another parsed Scenario
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something

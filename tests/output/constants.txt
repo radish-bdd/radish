@@ -1,0 +1,34 @@
+[36m@constant(SomeNumber: 5)
+[39m[1m[37mFeature[22m[39m[26m: [1m[37mTest summing numbers[22m[39m[26m  # [1m[30mfeatures/constants.feature[22m[39m[26m
+    [37mIn order to test the constant
+    features of radish I test
+    to sum numbers.[39m[26m
+
+[36m    @constant(ExpectedResult: 8)
+[39m    [1m[37mScenario[22m[39m[26m: [1m[37mSum two numbers[22m[39m[26m
+        [1m[33mGiven I have the number ${SomeNumber}[22m[39m[26m
+[A[K        [1m[32mGiven I have the number ${SomeNumber}[22m[39m[26m
+        [1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [1m[32mAnd I have the number 3[22m[39m[26m
+        [1m[33mWhen I add them up[22m[39m[26m
+[A[K        [1m[32mWhen I add them up[22m[39m[26m
+        [1m[33mThen I expect the sum to be ${ExpectedResult}[22m[39m[26m
+[A[K        [1m[32mThen I expect the sum to be ${ExpectedResult}[22m[39m[26m
+
+[36m    @constant(ExpectedResult: 10)
+[39m    [1m[37mScenario[22m[39m[26m: [1m[37mSum three numbers[22m[39m[26m
+        [1m[33mGiven I have the number ${SomeNumber}[22m[39m[26m
+[A[K        [1m[32mGiven I have the number ${SomeNumber}[22m[39m[26m
+        [1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [1m[32mAnd I have the number 3[22m[39m[26m
+        [1m[33mAnd I have the number 2[22m[39m[26m
+[A[K        [1m[32mAnd I have the number 2[22m[39m[26m
+        [1m[33mWhen I add them up[22m[39m[26m
+[A[K        [1m[32mWhen I add them up[22m[39m[26m
+        [1m[33mThen I expect the sum to be ${ExpectedResult}[22m[39m[26m
+[A[K        [1m[32mThen I expect the sum to be ${ExpectedResult}[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m9 steps ([22m[39m[1m[32m9 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

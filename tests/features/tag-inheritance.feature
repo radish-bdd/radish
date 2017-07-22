@@ -4,12 +4,18 @@ Feature: Support Tag Inheritance
 
     @good_case
     Scenario: Some good case Scenario test
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something
 
     @bad_case
     Scenario: Some bad case Scenario test
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something
 
     @good_case
     Scenario: Some other good case Scenario test
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something

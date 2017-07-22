@@ -21,9 +21,10 @@ from radish.hookregistry import HookRegistry
 from radish.extensionregistry import ExtensionRegistry
 
 #: Holds the path to the Feature file resources
-__FEATURE_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'features')
-__RADISH_FILES_DIR__ = os.path.join(os.path.dirname(__file__), 'radish')
-__OUTPUT_DIR__ = os.path.join(os.path.dirname(__file__), 'output')
+__TEST_BASE_DIR__ = os.path.dirname(__file__)
+__FEATURE_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, 'features')
+__RADISH_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, 'radish')
+__OUTPUT_DIR__ = os.path.join(__TEST_BASE_DIR__, 'output')
 
 
 @pytest.fixture(scope='function', autouse=True)

@@ -29,3 +29,93 @@ def do_something(step):
 def expect_something(step):
     "Then I expect something"
     pass
+
+
+@given('I have the number {number:d}')
+def have_number(step, number):
+    "Given I have the number <n>"
+    if not hasattr(step.context, 'numbers'):
+        step.context.numbers = []
+
+    step.context.numbers.append(number)
+
+
+@when('I add them up')
+def sum_numbers(step):
+    "When I add them up"
+    step.context.sum = sum(step.context.numbers)
+
+
+@when('I subtract them')
+def subtract_numbers(step):
+    "When I subtract them up"
+    difference = step.context.numbers[0]
+    for n in step.context.numbers[1:]:
+        difference -= n
+    step.context.difference = difference
+
+
+@then('I expect the sum to be {expected_sum:d}')
+def expect_sum(step, expected_sum):
+    "Then I expect the sum to be <n>"
+    assert step.context.sum == expected_sum
+
+
+@then('I expect the difference to be {expected_diff:d}')
+def expect_sum(step, expected_diff):
+    "Then I expect the difference to be <n>"
+    assert step.context.difference == expected_diff
+
+
+@given('I have an instable function')
+def have_instable_function(step):
+    "Given I have an instable function"
+    pass
+
+
+@when('I execute it')
+def execute_instable_function(step):
+    "When I execute it"
+    pass
+
+
+@then('I expect it to pass')
+def expect_instable_function_pass(step):
+    "Then I expect it to pass"
+    pass
+
+
+@given('I have the following heros')
+def have_heros(step):
+    "Given I have the following heros"
+    step.context.heros = step.table
+
+
+@when('I capitalize their first name')
+def cap_first_name(step):
+    "When I capitalize their first name"
+    step.context.heros = [[row[0].upper()] + row[1:] for row in step.context.heros]
+
+
+@then('I have the following names')
+def have_names(step):
+    "Then I have the following names"
+    assert list(zip(*step.context.heros))[0] == list(zip(*step.table))[0]
+
+
+@given('I have the following quote')
+def have_quote(step):
+    "Given I have the following quote"
+    step.context.quote = step.text
+
+
+@when("I look for it's author")
+def lookup_author(step):
+    "When I look for it's author"
+    step.context.author = 'Shakespeare'
+
+
+@then('I will find {:S}')
+def expect_author(step, author):
+    "Then I will find <author>"
+    assert step.context.author == author

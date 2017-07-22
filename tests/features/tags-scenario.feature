@@ -4,4 +4,6 @@ Feature: Tagged Scenarios
     @foo
     @bar
     Scenario: Scenario with Tags
-        I do some stuff
+        Given I have a Step
+        When I do something
+        Then I expect something

@@ -1,0 +1,28 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mRestricted site support[22m[39m[26m  # [1m[30mfeatures/precondition-level-1.feature[22m[39m[26m
+    [37mAs a user of AwesomeSite
+    I want to restrict my personal sites
+    to specific users.[39m[26m
+
+[36m    @precondition(precondition-level-0.feature: Have a multi user setup)
+[39m    [1m[37mScenario[22m[39m[26m: [1m[37mGrant access to personal site[22m[39m[26m
+[3m[37m      As Precondition from precondition-level-0.feature: Have a multi user setup
+[23m[39m        [1m[33mGiven a user named Bruce[22m[39m[26m
+[A[K        [1m[32mGiven a user named Bruce[22m[39m[26m
+        [1m[33mAnd a user named Peter[22m[39m[26m
+[A[K        [1m[32mAnd a user named Peter[22m[39m[26m
+        [1m[33mAnd a user named Tony[22m[39m[26m
+[A[K        [1m[32mAnd a user named Tony[22m[39m[26m
+        [1m[33mAnd a personal site owned by Bruce[22m[39m[26m
+[A[K        [1m[32mAnd a personal site owned by Bruce[22m[39m[26m
+[3m[37m      From Scenario
+[23m[39m        [1m[33mGiven Bruce grants access to Tony[22m[39m[26m
+[A[K        [1m[32mGiven Bruce grants access to Tony[22m[39m[26m
+        [1m[33mWhen I'm logged in as Tony[22m[39m[26m
+[A[K        [1m[32mWhen I'm logged in as Tony[22m[39m[26m
+        [1m[33mThen I can access Bruce personal site[22m[39m[26m
+[A[K        [1m[32mThen I can access Bruce personal site[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

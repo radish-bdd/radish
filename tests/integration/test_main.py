@@ -20,16 +20,19 @@ from radish.main import main
 
 @pytest.mark.parametrize('given_featurefiles, given_cli_args, expected_exitcode, expected_output', [
     (
-        ['feature-scenario-steps'], [], 0, 'feature-scenario-steps'
-    ),
-    (
-        ['feature-scenarios'], [], 0, 'feature-scenarios'
-    ),
-    (
         ['empty'], [], 1, 'empty'
     ),
     (
         ['empty-feature'], [], 1, 'empty-feature'
+    ),
+    (
+        ['feature-only-description'], [], 1, 'feature-only-description'
+    ),
+    (
+        ['feature-scenario-steps'], [], 0, 'feature-scenario-steps'
+    ),
+    (
+        ['feature-scenarios'], [], 0, 'feature-scenarios'
     ),
     (
         ['comments'], [], 0, 'comments'
@@ -37,13 +40,178 @@ from radish.main import main
     (
         ['german'], [], 0, 'german'
     ),
+    (
+        ['multi-features'], [], 1, 'multi-features'
+    ),
+    (
+        ['empty-scenario'], [], 0, 'empty-scenario'
+    ),
+    (
+        ['scenario-outline'], [], 0, 'scenario-outline'
+    ),
+    (
+        ['regular-scenario-examples'], [], 1, 'regular-scenario-examples'
+    ),
+    (
+        ['scenario-loop'], [], 0, 'scenario-loop'
+    ),
+    (
+        ['step-tabular-data'], [], 0, 'step-tabular-data'
+    ),
+    (
+        ['step-tabular-data-invalid'], [], 1, 'step-tabular-data-invalid'
+    ),
+    (
+        ['step-text-data'], [], 0, 'step-text-data',
+    ),
+    (
+        ['tags-feature'], [], 0, 'tags-feature',
+    ),
+    (
+        ['tags-feature'], ['--tags', 'foo'], 0, 'tags-feature',
+    ),
+    (
+        ['tags-feature'], ['--tags', 'foo or bar'], 0, 'tags-feature',
+    ),
+    (
+        ['tags-feature'], ['--tags', 'foo and bar'], 0, 'tags-feature',
+    ),
+    (
+        ['tags-scenario'], [], 0, 'tags-scenario',
+    ),
+    (
+        ['tags-scenario'], ['--tags', 'foo'], 0, 'tags-scenario',
+    ),
+    (
+        ['tags-scenario'], ['--tags', 'foo or bar'], 0, 'tags-scenario',
+    ),
+    (
+        ['tags-scenario'], ['--tags', 'foo and bar'], 0, 'tags-scenario',
+    ),
+    (
+        ['tags-everywhere'], [], 0, 'tags-everywhere',
+    ),
+    (
+        ['tags-everywhere'], ['--tags', 'regular_scenario'], 0, 'tags-everywhere-regular-scenario-only',
+    ),
+    (
+        ['tags-everywhere'], ['--tags', 'scenario_outline'], 0, 'tags-everywhere-scenario-outline-only',
+    ),
+    (
+        ['tags-everywhere'], ['--tags', 'scenario_loop'], 0, 'tags-everywhere-scenario-loop-only',
+    ),
+    (
+        ['tags-everywhere'], ['--tags', 'scenario_loop or scenario_outline'], 0, 'tags-everywhere-scenario-loop-and-outline',
+    ),
+    (
+        ['tags-arguments'], [], 0, 'tags-arguments'
+    ),
+    (
+        ['tags-ignored-scenario'], [], 0, 'tags-ignored-scenario'
+    ),
+    (
+        ['tags-ignored-scenario'], ['--tags', 'foo'], 0, 'tags-ignored-scenario-foo-only'
+    ),
+    (
+        ['tags-ignored-scenario'], ['--tags', 'bar'], 0, 'tags-ignored-scenario-bar-only'
+    ),
+    (
+        ['tags-ignored-scenario'], ['--tags', 'bar or foo'], 0, 'tags-ignored-scenario-bar-or-foo'
+    ),
+    (
+        ['tags-ignored-scenario'], ['--tags', 'not bar and not foo'], 0, 'tags-ignored-scenario-not-bar-not-foo'
+    ),
+    (
+        ['background'], [], 0, 'background'
+    ),
+    (
+        ['background-scenariooutline'], [], 0, 'background-scenariooutline'
+    ),
+    (
+        ['background-scenarioloop'], [], 0, 'background-scenarioloop'
+    ),
+    (
+        ['background-subsequent-tag'], [], 0, 'background-subsequent-tag'
+    ),
+    (
+        ['background-misplaced'], [], 1, 'background-misplaced'
+    ),
+    (
+        ['background-multiple'], [], 1, 'background-multiple'
+    ),
+    (
+        ['constants'], [], 0, 'constants'
+    ),
+    (
+        ['scenario-sentence-duplicate'], [], 1, 'scenario-sentence-duplicate'
+    ),
+    (
+        ['precondition-level-0'], [], 0, 'precondition-level-0'
+    ),
+    (
+        ['precondition-level-1'], [], 0, 'precondition-level-1'
+    ),
+    (
+        ['precondition-level-2'], [], 0, 'precondition-level-2'
+    ),
+    (
+        ['precondition-same-feature'], [], 0, 'precondition-same-feature'
+    ),
+    (
+        ['precondition-unknown-scenario-same-feature'], [], 1, 'precondition-unknown-scenario-same-feature',
+    ),
+    (
+        ['precondition-malformed'], [], 1, 'precondition-malformed'
+    ),
 ], ids=[
-    'Feature with one Scenario and Steps',
-    'Feature with multiple Scenarios',
     'Empty Feature File',
     'Empty Featre',
+    'Feature with description only',
+    'Feature with one Scenario and Steps',
+    'Feature with multiple Scenarios',
     'Comments in Feature',
-    'German Keywords'
+    'German Keywords',
+    'Multiple Features in single Feature File',
+    'Empty Scenario',
+    'Scenario Outline',
+    'Regular Scenario with Scenario Outline Examples',
+    'Scenario Loop',
+    'Step with Tabular data',
+    'Step Tabular data without previous Step',
+    'Step with Text data',
+    'Feature with Tags',
+    'Feature with Tags filtered by Foo',
+    'Feature with Tags filtered by Foo or Bar',
+    'Feature with Tags filtered by Foo and Bar',
+    'Scenario with Tags',
+    'Scenario with Tags filtered by Foo',
+    'Scenario with Tags filtered by Foo or Bar',
+    'Scenario with Tags filtered by Foo and Bar',
+    'Feature and Scenario, Scenario Outline and Loop with Tags',
+    'Feature and Scenario, Scenario Outline and Loop with Tags filtered by regular_scenario',
+    'Feature and Scenario, Scenario Outline and Loop with Tags filtered by scenario_outline',
+    'Feature and Scenario, Scenario Outline and Loop with Tags filtered by scenario_loop',
+    'Feature and Scenario, Scenario Outline and Loop with Tags filtered by scenario_loop or scenario_outline',
+    'Tag Arguments for Feature and Scenario Tags',
+    'Feature and Scenario with Tags to ignore',
+    'Only show Scenarios tagged with foo',
+    'Only show Scenarios tagged with bar',
+    'Only show Scenarios tagged with foo or bar',
+    'Only show Scenarios tagged not with foo and bar',
+    'Background',
+    'Background for Scenario Outline',
+    'Background for Scenario Loop',
+    'Background with subsequent Tag',
+    'Background which is misplaced',
+    'Multiple Background in one Feature',
+    'Feature and Scenario Constants',
+    'Scenario Sentence Duplicate',
+    'Precondition Level 0',
+    'Precondition Level 1',
+    'Precondition Level 2',
+    'Precondition from same Feature',
+    'Precondition with unknown Scenario from same Feature',
+    'Precondition which is malformed'
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
                         featurefiledir, radishdir, outputdir):
@@ -54,8 +222,16 @@ def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, e
     if '-m' not in given_cli_args and '--marker' not in given_cli_args:
         given_cli_args.extend(['--marker', 'test-marker'])
 
+    if '-b' not in given_cli_args and '--basedir' not in given_cli_args:
+        given_cli_args.extend(['-b', radishdir])
+    else:
+        # fixup basedir paths
+        base_dir_idx = [i for i, x in enumerate(given_cli_args) if x in ('-b', '--basedir')]
+        for idx in base_dir_idx:
+            given_cli_args[idx + 1] = os.path.join(radishdir, given_cli_args[idx + 1])
+
     featurefiles = [os.path.join(featurefiledir, x + '.feature') for x in given_featurefiles]
-    cli_args = featurefiles + ['-b', radishdir] + given_cli_args
+    cli_args = featurefiles + given_cli_args
 
     expected_output_file = os.path.join(outputdir, expected_output + '.txt')
     with open(expected_output_file, 'r') as output_file:

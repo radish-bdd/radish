@@ -1,0 +1,19 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mRestricted site support[22m[39m[26m  # [1m[30mfeatures/precondition-level-0.feature[22m[39m[26m
+    [37mAs a user of AwesomeSite
+    I want to restrict my personal sites
+    to specific users.[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mHave a multi user setup[22m[39m[26m
+        [1m[33mGiven a user named Bruce[22m[39m[26m
+[A[K        [1m[32mGiven a user named Bruce[22m[39m[26m
+        [1m[33mAnd a user named Peter[22m[39m[26m
+[A[K        [1m[32mAnd a user named Peter[22m[39m[26m
+        [1m[33mAnd a user named Tony[22m[39m[26m
+[A[K        [1m[32mAnd a user named Tony[22m[39m[26m
+        [1m[33mAnd a personal site owned by Bruce[22m[39m[26m
+[A[K        [1m[32mAnd a personal site owned by Bruce[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m4 steps ([22m[39m[1m[32m4 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

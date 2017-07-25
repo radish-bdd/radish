@@ -160,7 +160,7 @@ def test_sentence_argument_errors(capsys):
     steps = {re.compile(r'What (.*?) can (.*)'): foo}
     config = [{
         'sentence': 'What FOO can BAR', 'should_match': 'foo',
-        'with-arguments': [
+        'with_arguments': [
             {'foo': 'foooooooo'},
             {'bar': 'baaaaaaar'}
         ]

@@ -1036,7 +1036,7 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
 
     - sentence: <SOME STEP SENTENCE>
       should_match: <THE STEP FUNCTION NAME IT SHOULD MATCH>
-      with-arguments:
+      with_arguments:
         # argument check if implicit type
         - <ARGUMENT 1 NAME>: <ARGUMENT 1 VALUE>
         # argument check with explicit type
@@ -1052,7 +1052,7 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
 :should_match:
     **Required**. This is the name of the python Step implementation
     function which you expect the sentence will match with.
-:with-arguments:
+:with_arguments:
     **Optional**. This is a list of arguments which you expect
     will be passed in the python Step implementation function.
     The arguments can be specified as key-value pairs or as an object
@@ -1090,7 +1090,7 @@ And a ``step-matches.yml`` file like this:
 
     - sentence: Given I have the number 5
       should_match: have_number
-      with-arguments:
+      with_arguments:
           - number:
                 type: float
                 value: 5.0
@@ -1100,7 +1100,7 @@ And a ``step-matches.yml`` file like this:
 
     - sentence: Then I expect the result to be 8
       should_match: expect_result
-      with-arguments:
+      with_arguments:
           - result: 8.0
 
 We can check the ``step.py`` implementation against the ``step-matches.yml`` match config file using the ``radish-test`` CLI application:

@@ -138,7 +138,7 @@ def test_step_matches(match_config, steps):
             continue
 
 
-        expected_arguments = item.get('with-arguments')
+        expected_arguments = item.get('with_arguments')
 
         if expected_arguments:
             arguments = merge_step_args(result)

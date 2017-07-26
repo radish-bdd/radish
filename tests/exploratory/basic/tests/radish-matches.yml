@@ -5,8 +5,8 @@
             type: float
             value: 5.0
 
-- sentence: Given I have the number X
-  should_not_match: have_number
+#- sentence: Given I have the number X
+  #should_not_match: have_number
 
 - sentence: When I sum them
   should_match: sum_numbers

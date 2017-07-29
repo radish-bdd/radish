@@ -128,7 +128,7 @@ def test_step_matches(match_config, steps):
 
         result = match_step(item['sentence'], steps)
         if not result:
-            output_failure(None, ['Expected sentence didn\'t match any step implemention'])
+            output_failure(None, ['Expected sentence didn\'t match any step implementation'])
             failed += 1
             continue
 

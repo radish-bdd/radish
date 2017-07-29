@@ -33,7 +33,7 @@ Arguments:
     match-configs                                  configuration files of step matcher tests
 
 Commands:
-    matches                                        test if the step implementions actually match the expected sentences
+    matches                                        test if the step implementations actually match the expected sentences
 
 Options:
     -h --help                                      show this screen

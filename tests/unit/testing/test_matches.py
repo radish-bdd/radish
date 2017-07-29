@@ -124,7 +124,7 @@ def test_sentence_no_step_match(capsys):
     out, _ = capsys.readouterr()
 
     # then
-    assert 'Expected sentence didn\'t match any step implemention' in out
+    assert 'Expected sentence didn\'t match any step implementation' in out
     assert actual_returncode == expected_returncode
 
 

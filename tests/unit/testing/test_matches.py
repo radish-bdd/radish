@@ -87,16 +87,22 @@ def test_empty_matches_config(mocker, capsys):
     assert out == 'No sentences found in {0} to test against\n'.format(tmpfile)
 
 
-@pytest.mark.parametrize('given_invalid_config', [
-    [{'sentence': None}],
-    [{'should_match': None}],
-    [{}]
+@pytest.mark.parametrize('given_invalid_config, expected_error_msg', [
+    ([{'sentence': None}],
+     'You have to provide a sentence and the function name which should be matched (should_match)'),
+    ([{'should_match': None}],
+     'You have to provide a sentence and the function name which should be matched (should_match)'),
+    ([{}],
+     'You have to provide a sentence and the function name which should be matched (should_match)'),
+    ([{'foo': None}],
+     'The config attributes foo are invalid. Use only sentence, should_match, with_arguments')
 ], ids=[
     'test config with missing should_match function attribute',
     'test config with missing sentence attribute',
-    'test empty config'
+    'test empty config',
+    'test invalid config items'
 ])
-def test_step_matches_invalid_config(given_invalid_config):
+def test_step_matches_invalid_config(given_invalid_config, expected_error_msg):
     """
     Test match config without a sentence and a should_match attribute
     """
@@ -105,7 +111,7 @@ def test_step_matches_invalid_config(given_invalid_config):
         matches.test_step_matches(given_invalid_config, [])
 
     # then
-    assert str(exc.value) == 'You have to provide a sentence and the function name which should be matched (should_match)'
+    assert str(exc.value) == expected_error_msg
 
 
 def test_sentence_no_step_match(capsys):

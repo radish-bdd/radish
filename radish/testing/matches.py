@@ -52,13 +52,13 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         if not match_config:
             print(colorful.magenta('No sentences found in {0} to test against'.format(match_config_file)))
             return 5
-        else:
-            print(colorful.yellow('Testing sentences from {0}:'.format(colorful.bold_yellow(match_config_file))))
-            failed_sentences, passed_senteces = test_step_matches(match_config, steps)
-            failed += failed_sentences
-            passed += passed_senteces
 
-            covered_steps = covered_steps.union(x['should_match'] for x in match_config)
+        print(colorful.yellow('Testing sentences from {0}:'.format(colorful.bold_yellow(match_config_file))))
+        failed_sentences, passed_senteces = test_step_matches(match_config, steps)
+        failed += failed_sentences
+        passed += passed_senteces
+
+        covered_steps = covered_steps.union(x['should_match'] for x in match_config)
 
         # newline
         sys.stdout.write('\n')
@@ -117,8 +117,7 @@ def test_step_matches(match_config, steps):
     passed = 0
 
     for item in match_config:
-        if 'sentence' not in item or 'should_match' not in item:
-            raise ValueError('You have to provide a sentence and the function name which should be matched (should_match)')
+        validate_config_item(item)
 
         sentence = item['sentence']
         expected_step = item['should_match']
@@ -154,6 +153,22 @@ def test_step_matches(match_config, steps):
         passed += 1
 
     return failed, passed
+
+
+VALID_CONFIG_ITEMS = {'sentence', 'should_match', 'with_arguments'}
+
+
+def validate_config_item(config):
+    """
+    Validate the given config object
+    """
+    given_attributes = set(config.keys())
+    if not given_attributes.issubset(VALID_CONFIG_ITEMS):
+        raise ValueError('The config attributes {0} are invalid. Use only {1}'.format(
+            ', '.join(sorted(given_attributes.difference(VALID_CONFIG_ITEMS))), ', '.join(sorted(VALID_CONFIG_ITEMS))))
+
+    if 'sentence' not in config or 'should_match' not in config:
+        raise ValueError('You have to provide a sentence and the function name which should be matched (should_match)')
 
 
 def output_failure(step_func, errors):

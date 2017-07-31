@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.6.8]
+### Refactored
+- Entire test suite is using pytest
+
+### Fixed
+- Typo in matches
+
 ## [v0.6.7]
 ### Fixed
 - Correctly match "matching" sentences which do not match perfectly
@@ -114,7 +121,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.7...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.8...HEAD
+[v0.6.8]: https://github.com/radish-bdd/radish/compare/v0.6.7...v0.6.8
 [v0.6.7]: https://github.com/radish-bdd/radish/compare/v0.6.6...v0.6.7
 [v0.6.5]: https://github.com/radish-bdd/radish/compare/v0.6.4...v0.6.5
 [v0.6.4]: https://github.com/radish-bdd/radish/compare/v0.6.3...v0.6.4

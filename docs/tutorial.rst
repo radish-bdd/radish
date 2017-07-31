@@ -1043,6 +1043,11 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
         - <ARGUMENT 2 NAME>:
             type: <ARGUMENT 2 TYPE NAME>
             value: <ARGUMENT 2 VALUE>
+        # argument check with explicit type and type cast
+        - <ARGUMENT 3 NAME>:
+            type: <ARGUMENT 3 TYPE NAME>
+            value: <ARGUMENT 3 VALUE>
+            cast: yes
 
 
 :sentence:
@@ -1056,7 +1061,8 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
     **Optional**. This is a list of arguments which you expect
     will be passed in the python Step implementation function.
     The arguments can be specified as key-value pairs or as an object
-    with a *type* and *value*. This could be useful if a custom argument expression
+    with a *type* and *value* and a boolean value *cast*.
+    This could be useful if a custom argument expression
     is used to parse the arguments.
 
 Example

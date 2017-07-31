@@ -3,10 +3,8 @@
   with_arguments:
       - number:
             type: float
-            value: 5.0
-
-#- sentence: Given I have the number X
-  #should_not_match: have_number
+            value: '5.0'
+            cast: yes
 
 - sentence: When I sum them
   should_match: sum_numbers

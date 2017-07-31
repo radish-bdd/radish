@@ -13,6 +13,7 @@ import sys
 import fnmatch
 import traceback
 import warnings
+import pydoc
 
 from .compat import PY2, u
 
@@ -161,3 +162,14 @@ def str_lreplace(pattern, replacement, string, escape_pattern=False, flags=0):
         pattern = re.escape(pattern)
 
     return re.sub(r'^{0}'.format(pattern), replacement, string, flags=flags)
+
+
+def locate(name):
+    """
+    Locate the object for the given name
+    """
+    obj = pydoc.locate(name)
+    if not obj:
+        obj = globals().get(name, None)
+
+    return obj

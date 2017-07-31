@@ -15,7 +15,7 @@ import colorful
 from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
-from radish.utils import get_func_arg_names, get_func_location
+from radish.utils import get_func_arg_names, get_func_location, locate
 from radish.compat import u
 
 
@@ -201,9 +201,29 @@ def check_step_arguments(expected_arguments, arguments):
         if isinstance(arg_value, dict):
             _type = arg_value['type']
             value = arg_value['value']
+
+            # check if value should be casted to the given type
+            if 'cast' in arg_value and arg_value['cast'] is True:
+                obj_type = locate(_type)
+                if obj_type is None:
+                    errors.append('Cannot cast to type "{0}" because it is unknown'.format(
+                        _type))
+                    continue
+
+                try:
+                    value = obj_type(value)
+                except Exception as exc:
+                    errors.append('Failed to cast "{0}" to given type "{1}"'.format(
+                        value, type))
+                    continue
         else:
             _type = type(arg_value).__name__
             value = arg_value
+
+        if _type != type(value).__name__:
+            errors.append('Conflicting argument configuration: given value is actually of type "{0}" although it should match a value of type "{1}"'.format(
+                type(value).__name__, _type))
+            continue
 
         if type(arguments[arg_name]).__name__ != _type:
             errors.append('Expected argument "{0}" is of type "{1}" instead "{2}"'.format(

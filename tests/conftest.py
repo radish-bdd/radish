@@ -53,6 +53,7 @@ def mock_world_config():
         '--expand': False,
         '--help': False,
         '--inspect-after-failure': False,
+        '--junit-xml' : None,
         '--marker': 'time.time()',
         '--no-ansi': False,
         '--no-line-jump': False,

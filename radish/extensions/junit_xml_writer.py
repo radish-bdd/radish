@@ -29,7 +29,7 @@ class JUnitXMLWriter(object):
         try:
             from lxml import etree
         except ImportError:
-            raise RadishError('if you want to use the JUinit xml writer you have to "pip install radish-bdd[junit-xml]"')
+            raise RadishError('if you want to use the JUnit xml writer you have to "pip install radish-bdd[junit-xml]"')
 
         after.all(self.generate_junit_xml)
 

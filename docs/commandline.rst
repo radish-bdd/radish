@@ -285,6 +285,16 @@ value must be a file path where the JSON file should be written to.
 Documentation describing the format of the Cucumber JSON file can be found
 here: https://www.relishapp.com/cucumber/cucumber/docs/formatters/json-output-formatter
 
+Run - Write JUnit XML file
+------------------------------
+
+Radish can report it's test run results to a JUnit style XML file after a
+test run using the ``--junit-xml`` command line option. The command line option
+value must be a file path where the XML file should be written to.
+
+.. code:: bash
+
+  radish SomeFeature.feature --junit-xml /tmp/result.xml
 
 Run - Log all features, scenarios, and steps to syslog
 ------------------------------------------------------
@@ -484,6 +494,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [--write-steps-once]
              [--write-ids]
              [--cucumber-json=<ccjson>]
+             [--junit-xml=<junitxml>]             
              [--debug-after-failure]
              [--inspect-after-failure]
              [--syslog]
@@ -524,6 +535,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
       --write-ids                                 write the feature, scenario and step id before the sentences
       --cucumber-json=<ccjson>                    write cucumber json result file after run
+      --junit-xml=<junitxml>                      write JUnit XML result file after run      
       --debug-after-failure                       start python debugger after failure
       --inspect-after-failure                     start python shell after failure
       --syslog                                    log all of your features, scenarios, and steps to the syslog

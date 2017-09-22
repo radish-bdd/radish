@@ -1,3 +1,9 @@
+radish-bdd (0.6.8-4) unstable; urgency=medium
+
+  * bump version 0.6.8-4
+
+ -- Timo Furrer <timo.furrer@roche.com>  Fri, 22 Sep 2017 14:34:54 +0200
+
 radish-bdd (0.6.8-3) unstable; urgency=medium
 
   * bump version 0.6.8-3

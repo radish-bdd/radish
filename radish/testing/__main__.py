@@ -11,6 +11,7 @@ import colorful
 from docopt import docopt
 
 from radish import __VERSION__
+import radish.utils as utils
 from radish.testing.matches import test_step_matches_configs
 
 
@@ -39,7 +40,7 @@ Options:
     -h --help                                      show this screen
     -v --version                                   show version
     -b=<basedir> --basedir=<basedir>...            set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
-                                                   You can specify -b|--basedir multiple times. All files will be imported.
+                                                   You can specify -b|--basedir multiple times or split multiple paths with a colon (:) similar to $PATH. All files will be imported.
     --cover-min-percentage=<cover-min-percentage>  minimum percentage of step coverage for tests to pass
     --cover-show-missing                           show steps which are not tested
 
@@ -51,7 +52,7 @@ Options:
 
     if arguments['matches']:
         return test_step_matches_configs(arguments['<match-configs>'],
-             arguments['--basedir'], arguments['--cover-min-percentage'], arguments['--cover-show-missing'])
+             utils.flattened_basedirs(arguments['--basedir']), arguments['--cover-min-percentage'], arguments['--cover-show-missing'])
 
 
 if __name__ == "__main__":

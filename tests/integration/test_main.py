@@ -229,6 +229,9 @@ from radish.main import main
     (
         ['feature-scenario-steps'], ['--cucumber-json', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
     ),
+    (
+        ['feature-scenario-steps'], ['--junit-xml', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
+    ),    
 ], ids=[
     'Empty Feature File',
     'Empty Featre',
@@ -300,6 +303,7 @@ from radish.main import main
     'Scenario Loop with no line jump',
     'Feature with single Scenario and Steps producing BDD XML',
     'Feature with single Scenario and Steps producing Cucumber JSON',
+    'Feature with single Scenario and Steps producing JUnit XML',
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
                         featurefiledir, radishdir, outputdir):

@@ -59,7 +59,7 @@ def run_features(core):
     world.config.expand = True
 
     # load user's custom python files
-    for basedir in world.config.basedir:
+    for basedir in utils.flattened_basedirs(world.config.basedir):
         load_modules(basedir)
 
     # match feature file steps with user's step definitions
@@ -125,7 +125,7 @@ Options:
     -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
     -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation
     -b=<basedir> --basedir=<basedir>...         set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
-                                                You can specify -b|--basedir multiple times. All files will be imported.
+                                                You can specify -b|--basedir multiple times or split multiple paths with a colon (:) similar to $PATH. All files will be imported.
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
     --shuffle                                   shuttle run order of features and scenarios

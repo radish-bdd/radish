@@ -38,6 +38,9 @@ containing steps and terrain functions from multiple locations:
 
     radish -b tests/radish -b custom/radish SomeFeature.feature
 
+Since version v0.7.0 you can use multiple basedirs within one ``-b`` flag split
+by a colon (:). Similar to the possibilities you've got with ``$PATH``.
+
 
 Run - Early exit
 ----------------
@@ -494,7 +497,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [--write-steps-once]
              [--write-ids]
              [--cucumber-json=<ccjson>]
-             [--junit-xml=<junitxml>]             
+             [--junit-xml=<junitxml>]
              [--debug-after-failure]
              [--inspect-after-failure]
              [--syslog]
@@ -535,7 +538,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --write-steps-once                          does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)
       --write-ids                                 write the feature, scenario and step id before the sentences
       --cucumber-json=<ccjson>                    write cucumber json result file after run
-      --junit-xml=<junitxml>                      write JUnit XML result file after run      
+      --junit-xml=<junitxml>                      write JUnit XML result file after run
       --debug-after-failure                       start python debugger after failure
       --inspect-after-failure                     start python shell after failure
       --syslog                                    log all of your features, scenarios, and steps to the syslog

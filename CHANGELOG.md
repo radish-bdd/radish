@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.7.0]
+### Added
+- Split multiple basepaths with a colon (:)
+
 ## [v0.6.8]
 ### Refactored
 - Entire test suite is using pytest
@@ -121,7 +125,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.6.8...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.0...HEAD
+[v0.7.0]: https://github.com/radish-bdd/radish/compare/v0.6.8...v0.7.0
 [v0.6.8]: https://github.com/radish-bdd/radish/compare/v0.6.7...v0.6.8
 [v0.6.7]: https://github.com/radish-bdd/radish/compare/v0.6.6...v0.6.7
 [v0.6.5]: https://github.com/radish-bdd/radish/compare/v0.6.4...v0.6.5

@@ -14,6 +14,7 @@ import fnmatch
 import traceback
 import warnings
 import pydoc
+import itertools
 
 from .compat import PY2, u
 
@@ -173,3 +174,13 @@ def locate(name):
         obj = globals().get(name, None)
 
     return obj
+
+
+def flattened_basedirs(basedirs):
+    """
+    Flatten a list of basedirs.
+
+    Multiple basedirs can be specified within a
+    single element split by a colon.
+    """
+    return list(itertools.chain(*(x.split(':') for x in basedirs)))

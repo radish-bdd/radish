@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.7.1]
+### Fixed
+- Allow leading and trailing colon for basepath
+
 ## [v0.7.0]
 ### Added
 - Split multiple basepaths with a colon (:)
@@ -125,7 +129,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.1...HEAD
+[v0.7.1]: https://github.com/radish-bdd/radish/compare/v0.7.0...v0.7.1
 [v0.7.0]: https://github.com/radish-bdd/radish/compare/v0.6.8...v0.7.0
 [v0.6.8]: https://github.com/radish-bdd/radish/compare/v0.6.7...v0.6.8
 [v0.6.7]: https://github.com/radish-bdd/radish/compare/v0.6.6...v0.6.7

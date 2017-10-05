@@ -183,4 +183,4 @@ def flattened_basedirs(basedirs):
     Multiple basedirs can be specified within a
     single element split by a colon.
     """
-    return list(itertools.chain(*(x.split(':') for x in basedirs)))
+    return list(x for x in itertools.chain(*(x.split(':') for x in basedirs)) if x)

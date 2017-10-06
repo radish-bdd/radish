@@ -12,7 +12,7 @@ XS-Python3-Version: >= 3.2
 
 Package: radish-bdd
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-colorful (>= 0.4.3)
+Depends: ${misc:Depends}, ${python:Depends}, python-colorful (>= 0.4.3), python-colorful (<= 0.5.0)
 Description: Behavior Driven Development tool for python
  radish is a Behavior Driven Development tool completely written in python.
  It supports all gherkin language features. In addition to that,

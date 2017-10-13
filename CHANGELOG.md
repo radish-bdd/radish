@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.7.2]
+### Added
+- Support bad-case testing for step patterns
+
 ## [v0.7.1]
 ### Fixed
 - Allow leading and trailing colon for basepath
@@ -129,7 +133,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.2...HEAD
+[v0.7.2]: https://github.com/radish-bdd/radish/compare/v0.7.1...v0.7.2
 [v0.7.1]: https://github.com/radish-bdd/radish/compare/v0.7.0...v0.7.1
 [v0.7.0]: https://github.com/radish-bdd/radish/compare/v0.6.8...v0.7.0
 [v0.6.8]: https://github.com/radish-bdd/radish/compare/v0.6.7...v0.6.8

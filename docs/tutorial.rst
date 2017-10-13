@@ -1036,6 +1036,7 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
 
     - sentence: <SOME STEP SENTENCE>
       should_match: <THE STEP FUNCTION NAME IT SHOULD MATCH>
+      should_not_match: <THE STEP FUNCTION NAME IT SHOULD NOT MATCH>
       with_arguments:
         # argument check if implicit type
         - <ARGUMENT 1 NAME>: <ARGUMENT 1 VALUE>
@@ -1055,10 +1056,13 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
     It's an example of a sentence which should match
     a certain Step pattern.
 :should_match:
-    **Required**. This is the name of the python Step implementation
+    **Required if should_not_match omitted**. This is the name of the Python Step implementation
     function which you expect the sentence will match with.
+:should_not_match:
+    **Required if should_match omitted**. This is the name of a Python Step implementation
+    function which you expect the sentence will **not** match with.
 :with_arguments:
-    **Optional**. This is a list of arguments which you expect
+    **Optional for should_match**. This is a list of arguments which you expect
     will be passed in the python Step implementation function.
     The arguments can be specified as key-value pairs or as an object
     with a *type* and *value* and a boolean value *cast*.
@@ -1104,6 +1108,13 @@ And a ``step-matches.yml`` file like this:
     - sentence: When I sum them
       should_match: sum_numbers
 
+    - sentence: When I divide them
+      should_not_match: sum_numbers
+
+    - sentence: When I do some weird stuff
+      # if no step is given it shouldn't match any at all
+      should_not_match:
+
     - sentence: Then I expect the result to be 8
       should_match: expect_result
       with_arguments:
@@ -1126,9 +1137,10 @@ For the ``radish-test`` call above we would get the following output:
     Testing sentences from tests/step-matches.yml:
     >> STEP "Given I have the number 5" SHOULD MATCH have_number ✔
     >> STEP "When I sum them" SHOULD MATCH sum_numbers ✔
+    >> STEP "When I divide them" SHOULD NOT MATCH sum_numbers ✔
     >> STEP "Then I expect the result to be 8" SHOULD MATCH expect_result ✔
 
-    3 sentences (3 passed)
+    4 sentences (4 passed)
     Covered 3 of 3 step implementations
 
 In case of success we get the exit code **0** and in case of failure we'd get an exit code which is greater than **0**.

@@ -9,6 +9,15 @@
 - sentence: When I sum them
   should_match: sum_numbers
 
+- sentence: When I sum them
+  should_not_match: have_number
+
+- sentence: When I divide them
+  should_not_match:
+
+- sentence: When I divide them
+  should_not_match: sum_numbers
+
 - sentence: Then I expect the result to be 8
   should_match: expect_result
   with_arguments:

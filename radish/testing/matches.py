@@ -58,7 +58,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         failed += failed_sentences
         passed += passed_senteces
 
-        covered_steps = covered_steps.union(x['should_match'] for x in match_config)
+        covered_steps = covered_steps.union(x['should_match'] for x in match_config if 'should_match' in x)
 
         # newline
         sys.stdout.write('\n')
@@ -120,42 +120,66 @@ def test_step_matches(match_config, steps):
         validate_config_item(item)
 
         sentence = item['sentence']
-        expected_step = item['should_match']
 
-        sys.stdout.write('{0} STEP "{1}" SHOULD MATCH {2}    '.format(
-            colorful.yellow('>>'), colorful.cyan(sentence), colorful.cyan(expected_step)))
+        if 'should_match' in item:
+            has_passed = test_step_match(sentence, item['should_match'],
+                                         item.get('with_arguments', None), steps)
+        else:
+            has_passed = test_step_not_match(sentence, item['should_not_match'], steps)
 
-        result = match_step(item['sentence'], steps)
-        if not result:
-            output_failure(None, ['Expected sentence didn\'t match any step implementation'])
+        if has_passed:
+            passed += 1
+        else:
             failed += 1
-            continue
-
-        if expected_step != result.func.__name__:
-            output_failure(result.func, ['Expected sentence matched {0} instead of {1}'.format(result.func.__name__, expected_step)])
-            failed += 1
-            continue
-
-
-        expected_arguments = item.get('with_arguments')
-
-        if expected_arguments:
-            arguments = merge_step_args(result)
-            expected_arguments = {k: v for expected_arguments in expected_arguments for k, v in expected_arguments.items()}
-            argument_errors = check_step_arguments(expected_arguments, arguments)
-            if argument_errors:
-                output_failure(result.func, argument_errors)
-                failed += 1
-                continue
-
-        # check if arguments match
-        print(u(colorful.bold_green(u'✔')))
-        passed += 1
 
     return failed, passed
 
 
-VALID_CONFIG_ITEMS = {'sentence', 'should_match', 'with_arguments'}
+def test_step_match(sentence, expected_step, expected_arguments, steps):
+    sys.stdout.write('{0} STEP "{1}" SHOULD MATCH {2}    '.format(
+        colorful.yellow('>>'), colorful.cyan(sentence), colorful.cyan(expected_step)))
+
+    result = match_step(sentence, steps)
+    if not result:
+        output_failure(None, ['Expected sentence didn\'t match any step implementation'])
+        return False
+
+    if expected_step != result.func.__name__:
+        output_failure(result.func,
+                       ['Expected sentence matched {0} instead of {1}'.format(
+                           result.func.__name__, expected_step)])
+        return False
+
+    if expected_arguments:
+        arguments = merge_step_args(result)
+        expected_arguments = {k: v for expected_arguments in expected_arguments
+                              for k, v in expected_arguments.items()}
+        argument_errors = check_step_arguments(expected_arguments, arguments)
+        if argument_errors:
+            output_failure(result.func, argument_errors)
+            return False
+
+    print(u(colorful.bold_green(u'✔')))
+    return True
+
+
+def test_step_not_match(sentence, expected_not_matching_step, steps):
+    step_to_print = colorful.cyan(expected_not_matching_step) if expected_not_matching_step else 'ANY'
+    sys.stdout.write('{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(
+        colorful.yellow('>>'), colorful.cyan(sentence), step_to_print))
+
+    result = match_step(sentence, steps)
+    if result:
+        if not expected_not_matching_step or result.func.__name__ == expected_not_matching_step:
+            output_failure(None, ['Expected sentence did match {0} but it shouldn\'t'.format(
+                expected_not_matching_step)])
+            return False
+
+    print(u(colorful.bold_green(u'✔')))
+    return True
+
+
+VALID_CONFIG_ITEMS = {'sentence', 'should_match', 'should_not_match', 'with_arguments'}
 
 
 def validate_config_item(config):
@@ -167,8 +191,8 @@ def validate_config_item(config):
         raise ValueError('The config attributes {0} are invalid. Use only {1}'.format(
             ', '.join(sorted(given_attributes.difference(VALID_CONFIG_ITEMS))), ', '.join(sorted(VALID_CONFIG_ITEMS))))
 
-    if 'sentence' not in config or 'should_match' not in config:
-        raise ValueError('You have to provide a sentence and the function name which should be matched (should_match)')
+    if 'sentence' not in config or ('should_match' not in config and 'should_not_match' not in config):
+        raise ValueError('You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)')
 
 
 def output_failure(step_func, errors):

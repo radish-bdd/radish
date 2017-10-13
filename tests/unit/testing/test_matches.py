@@ -89,13 +89,13 @@ def test_empty_matches_config(mocker, capsys):
 
 @pytest.mark.parametrize('given_invalid_config, expected_error_msg', [
     ([{'sentence': None}],
-     'You have to provide a sentence and the function name which should be matched (should_match)'),
+     'You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)'),
     ([{'should_match': None}],
-     'You have to provide a sentence and the function name which should be matched (should_match)'),
+     'You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)'),
     ([{}],
-     'You have to provide a sentence and the function name which should be matched (should_match)'),
+     'You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)'),
     ([{'foo': None}],
-     'The config attributes foo are invalid. Use only sentence, should_match, with_arguments')
+     'The config attributes foo are invalid. Use only sentence, should_match, should_not_match, with_arguments')
 ], ids=[
     'test config with missing should_match function attribute',
     'test config with missing sentence attribute',
@@ -180,6 +180,96 @@ def test_sentence_argument_errors(capsys):
     # then
     assert 'Expected argument "foo" with value "foooooooo" does not match value "FOO"' in out
     assert 'Expected argument "bar" with value "baaaaaaar" does not match value "BAR"' in out
+    assert actual_returncode == expected_returncode
+
+
+def test_sentence_not_match(capsys):
+    """
+    Test if sentence does not match if that's expected
+    """
+    # given
+    def foo(step, foo, bar): pass
+
+    steps = {re.compile(r'What (.*?) can (.*)'): foo}
+    config = [{
+        'sentence': 'foo', 'should_not_match': 'foo'
+    }]
+    expected_returncode = (0, 1)
+
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
+
+    # then
+    assert actual_returncode == expected_returncode
+
+
+def test_sentence_not_match_anything(capsys):
+    """
+    Test if sentence does not match any steps
+    """
+    # given
+    def foo(step, foo, bar): pass
+
+    steps = {re.compile(r'What (.*?) can (.*)'): foo}
+    config = [{
+        'sentence': 'foo', 'should_not_match': ''
+    }]
+    expected_returncode = (0, 1)
+
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
+
+    # then
+    assert actual_returncode == expected_returncode
+
+
+def test_sentence_not_match_specific_step(capsys):
+    """
+    Test if sentence does not match specific step
+    """
+    # given
+    def foo(step): pass
+
+    def bar(step): pass
+
+    steps = {
+        re.compile(r'foo'): foo,
+        re.compile(r'bar'): bar,
+    }
+    config = [{
+        'sentence': 'foo', 'should_not_match': 'bar'
+    }]
+    expected_returncode = (0, 1)
+
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
+
+    # then
+    assert actual_returncode == expected_returncode
+
+
+def test_sentence_not_match_but_does(capsys):
+    """
+    Test if sentence matched step but shouldn't
+    """
+    # given
+    def foo(): pass
+
+    steps = {'foo': foo}
+    config = [{
+        'sentence': 'foo', 'should_not_match': 'foo'
+    }]
+    expected_returncode = (1, 0)
+
+    # when
+    actual_returncode = matches.test_step_matches(config, steps)
+    out, _ = capsys.readouterr()
+
+    # then
+    assert 'Expected sentence did match foo but it shouldn\'t' in out
     assert actual_returncode == expected_returncode
 
 

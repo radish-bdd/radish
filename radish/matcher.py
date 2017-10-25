@@ -7,10 +7,7 @@
 import re
 from collections import namedtuple
 
-try:
-    from parse_type.cfparse import Parser
-except ImportError:
-    from parse import Parser
+from parse_type.cfparse import Parser
 
 from .customtyperegistry import CustomTypeRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError

@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.7.3]
+### Fixed
+- Do not import alternative parse class
+
 ## [v0.7.2]
 ### Added
 - Support bad-case testing for step patterns
@@ -133,7 +137,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.2...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.7.3...HEAD
+[v0.7.3]: https://github.com/radish-bdd/radish/compare/v0.7.2...v0.7.3
 [v0.7.2]: https://github.com/radish-bdd/radish/compare/v0.7.1...v0.7.2
 [v0.7.1]: https://github.com/radish-bdd/radish/compare/v0.7.0...v0.7.1
 [v0.7.0]: https://github.com/radish-bdd/radish/compare/v0.6.8...v0.7.0

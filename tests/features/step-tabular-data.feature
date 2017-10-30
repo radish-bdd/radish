@@ -4,9 +4,11 @@ Feature: Step Tabular Data
 
     Scenario: Tabular Data for a Step
         Given I have the following heros
-            | Bruce | Wayne  | Batman    |
-            | Peter | Parker | Spiderman |
+            | firstname | surname | heroname |
+            | Bruce     | Wayne   | Batman    |
+            | Peter     | Parker  | Spiderman |
         When I capitalize their first name
         Then I have the following names
-            | BRUCE |
-            | PETER |
+            | cap_heroname |
+            | BRUCE        |
+            | PETER        |

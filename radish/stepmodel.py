@@ -33,6 +33,8 @@ class Step(Model):
     def __init__(self, id, sentence, path, line, parent, runable, context_class=None):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
         self.context_class = context_class
+        self.table_header = None
+        self.table_data = []
         self.table = []
         self.raw_text = []
         self.definition_func = None

@@ -4,7 +4,8 @@ Feature: Get User from database
 
     Scenario: Get User from database
         Given I have the following heros in the database
-            | Peter | Parker | Spiderman |
-            | Bruce | Wayne  | Batman    |
+            | forename | surname | hero      |
+            | Peter    | Parker  | Spiderman |
+            | Bruce    | Wayne   | Batman    |
         When I query for the hero with name Spiderman
         Then I expect it's name to be Peter Parker

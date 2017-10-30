@@ -10,7 +10,10 @@ def have_number(step):
 @when("I add them to the database")
 def sum_numbres(step):
     for user in step.context.users:
-        step.context.database.users.append({"forename": user[0], "lastname": user[1], "nickname": user[2]})
+        step.context.database.users.append({
+            "forename": user['forename'],
+            "surname": user['surname'],
+            "hero": user['hero']})
 
 @then("I expect {number:g} users in the database")
 def expect_result(step, number):

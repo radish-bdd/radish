@@ -102,13 +102,15 @@ def have_heros(step):
 @when('I capitalize their first name')
 def cap_first_name(step):
     "When I capitalize their first name"
-    step.context.heros = [[row[0].upper()] + row[1:] for row in step.context.heros]
+    for hero in step.context.heros:
+        hero['firstname'] = hero['firstname'].upper()
 
 
 @then('I have the following names')
 def have_names(step):
     "Then I have the following names"
-    assert list(zip(*step.context.heros))[0] == list(zip(*step.table))[0]
+    assert list(x['firstname'] for x in step.context.heros) == list(
+            x['cap_heroname'] for x in step.table)
 
 
 @given('I have the following quote')

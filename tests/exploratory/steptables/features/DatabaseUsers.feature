@@ -5,7 +5,8 @@ Feature: Test adding user to database
 
   Scenario: Add users to the database
     Given I have the following users
-      | Peter | Parker | Spiderman |
-      | Bruce | Wayne  | Batman    |
+      | forename | surname | hero      |
+      | Peter    | Parker  | Spiderman |
+      | Bruce    | Wayne   | Batman    |
     When I add them to the database
     Then I expect 2 users in the database

@@ -209,10 +209,17 @@ class ConsoleWriter(object):
             output += colorful.cyan(u"".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
             output += colorful.bold_white(u'\n            {0}"""'.format(id_padding))
 
-        if step.table:
+        if step.table_header:
             colored_pipe = colorful.bold_white("|")
-            col_widths = self.get_table_col_widths(step.table)
-            for row in step.table:
+            col_widths = self.get_table_col_widths([step.table_header] + step.table_data)
+
+            # output table header
+            output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
+                str(colorful.white(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(step.table_header)
+            ))
+
+            # output table data
+            for row in step.table_data:
                 output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
                     str(color_func(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(row)
                 ))
@@ -230,7 +237,7 @@ class ConsoleWriter(object):
             return
 
         color_func = self.get_color_func(step.state)
-        line_jump_seq = self.get_line_jump_seq() * (((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) if step.table else 0))
+        line_jump_seq = self.get_line_jump_seq() * (((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) + 1 if step.table_header else 0))
         output = u'{0}        '.format(line_jump_seq)
 
         if isinstance(step.parent, ScenarioOutline):
@@ -248,10 +255,17 @@ class ConsoleWriter(object):
             output += colorful.cyan(u"".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
             output += colorful.bold_white(u'\n            {0}"""'.format(id_padding))
 
-        if step.table:
+        if step.table_header:
             colored_pipe = colorful.bold_white("|")
-            col_widths = self.get_table_col_widths(step.table)
-            for row in step.table:
+            col_widths = self.get_table_col_widths([step.table_header] + step.table_data)
+
+            # output table header
+            output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
+                str(colorful.white(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(step.table_header)
+            ))
+
+            # output table data
+            for row in step.table_data:
                 output += u"\n          {0} {1} {0}".format(colored_pipe, (" {0} ").format(colored_pipe).join(
                     str(color_func(u"{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(row)
                 ))

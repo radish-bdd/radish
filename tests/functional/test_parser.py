@@ -331,9 +331,13 @@ def test_parse_step_tabular_data(parser):
 
     # then
     assert len(feature.scenarios[0].steps) == 3
+    assert len(feature.scenarios[0].steps[0].table_header) == 3
+    assert feature.scenarios[0].steps[0].table_header == ['firstname', 'surname', 'heroname']
     assert len(feature.scenarios[0].steps[0].table) == 2
-    assert feature.scenarios[0].steps[0].table[0] == ['Bruce', 'Wayne', 'Batman']
-    assert feature.scenarios[0].steps[0].table[1] == ['Peter', 'Parker', 'Spiderman']
+    assert feature.scenarios[0].steps[0].table[0] == {
+            'firstname': 'Bruce', 'surname': 'Wayne', 'heroname': 'Batman'}
+    assert feature.scenarios[0].steps[0].table[1] == {
+            'firstname': 'Peter', 'surname': 'Parker', 'heroname': 'Spiderman'}
 
 
 @pytest.mark.parametrize('parser', [

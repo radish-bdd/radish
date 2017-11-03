@@ -684,8 +684,8 @@ a second argument which is the radish run marker (a unique run id):
    from radish import after
 
    @after.all
-   def connect_database(features, marker):
-      scenario.context.database.disconnect()
+   def cleanup(features, marker):
+      os.remove('foo')
 
 The hooks are called in the order of registration.
 

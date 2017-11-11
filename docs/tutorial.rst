@@ -1,7 +1,7 @@
 Tutorial
 ========
 
-This chapter covers the whole Tutorial about radish and it's features.
+This chapter covers the whole Tutorial about radish and its features.
 
 Feature files
 -------------

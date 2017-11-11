@@ -6,7 +6,7 @@ In this chapter we will write our first feature file and python step implementat
 Writing the first feature file
 ------------------------------
 
-Let's assume we've written a really awesome calculator class and want to this it with radish.
+Let's assume we've written a really awesome calculator class and want to test it with radish.
 Our first feature file should test if the calculator is able to correctly sum numbers.
 Feature files are nothing more than a text file containing a *Feature* with one or more *Scenarios*. Each *Scenario* contains one or more *Steps*:
 

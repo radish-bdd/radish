@@ -214,7 +214,7 @@ class FeatureParser(object):
         :param str line: the line to parse the background
         """
         detected_background = self._detect_background(line)
-        if not detected_background:
+        if detected_background is None:
             # try to find a scenario
             if self._detect_scenario_type(line):
                 return self._parse_scenario(line)

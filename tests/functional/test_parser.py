@@ -479,6 +479,22 @@ def test_parse_simple_background(parser):
     assert len(feature.scenarios) == 2
     assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios)
 
+@pytest.mark.parametrize('parser', [
+    ('background-no-sentence',)
+], indirect=['parser'])
+def test_parse_background_no_sentence(parser):
+    """
+    Test parsing a Feature with unnamed Background
+    """
+    # when
+    feature = parser.parse()
+
+    # then
+    assert isinstance(feature.background, Background)
+    assert feature.background.sentence == ''
+    assert len(feature.scenarios) == 2
+    assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios)
+
 
 @pytest.mark.parametrize('parser', [
     ('background-scenariooutline',)

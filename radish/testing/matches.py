@@ -222,7 +222,10 @@ def check_step_arguments(expected_arguments, arguments):
             continue
 
         # check if argument value is a dict, if yes we'll do thorough comparison
-        if isinstance(arg_value, dict):
+        if isinstance(arg_value, dict) and 'type' not in arg_value.keys():
+            _type = 'dict'
+            value = arg_value
+        elif isinstance(arg_value, dict):
             _type = arg_value['type']
             value = arg_value['value']
 

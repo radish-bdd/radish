@@ -325,3 +325,24 @@ def test_checking_step_arguments():
 
     # then
     assert messages == []
+
+def test_checking_step_arguments_directory():
+    """
+    Test sentence step argument directory match
+    """
+    #given
+    expected_arguments = {
+        'foobar': {'foo':'foo', 'bar':'bar'}
+    }
+
+    actual_arguments = {
+        'foobar': {'foo':'foo', 'bar':'bar'}
+    }
+
+    #when
+    messages = matches.check_step_arguments(expected_arguments, actual_arguments)
+
+    #then
+    assert messages == []
+
+

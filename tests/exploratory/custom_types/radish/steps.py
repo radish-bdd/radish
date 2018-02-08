@@ -8,7 +8,7 @@ from example.model import Hero
 
 @given('I have the following heros in the database')
 def add_heros_to_db(step):
-    world.heros = [Hero(*row) for row in step.table]
+    world.heros = [Hero(**row) for row in step.table]
 
 
 @when('I query for the hero with name {hero:Hero}')

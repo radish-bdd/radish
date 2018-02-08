@@ -45,5 +45,5 @@ def load_module(path):
             imp.load_module(module_name, f, pathname, desc)
             f.close()
     except Exception as e:
-        #raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e))
-        raise e
+        raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(
+              module_name, path, e))

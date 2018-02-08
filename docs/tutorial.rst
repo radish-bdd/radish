@@ -1,7 +1,7 @@
 Tutorial
 ========
 
-This chapter covers the whole Tutorial about radish and it's features.
+This chapter covers the whole Tutorial about radish and its features.
 
 Feature files
 -------------
@@ -501,12 +501,13 @@ Step Tables are used to provide table-like data to a Step. The *Step Table* synt
    ...
    Scenario: Check database
        Given I have the following users
-          | Peter | Parker | Spiderman |
-          | Bruce | Wayne  | Batman    |
+          | forename  | lastname | nickname  |
+          | Peter     | Parker   | Spiderman |
+          | Bruce     | Wayne    | Batman    |
        When I add them to the database
        Then I expect 2 users in the database
 
-The *Step Table* can be accessed in the *Step Implementation function* through the ``step.table`` attribute which is a list of lists:
+The *Step Table* can be accessed in the *Step Implementation function* through the ``step.table`` attribute which is a ``list`` of ``dict``:
 
 .. code:: python
 
@@ -522,8 +523,8 @@ The *Step Table* can be accessed in the *Step Implementation function* through t
   @when("I add them to the database")
   def sum_numbres(step):
     for user in step.context.users:
-        step.context.database.users.add(forename=user[0], \
-            lastname=user[1], nickname=user[2])
+        step.context.database.users.add(forename=user['firstname'], \
+            lastname=user['lastname'], nickname=user['nickname'])
 
 
   @then("I expect {number:g} users in the database")
@@ -683,8 +684,8 @@ a second argument which is the radish run marker (a unique run id):
    from radish import after
 
    @after.all
-   def connect_database(features, marker):
-      scenario.context.database.disconnect()
+   def cleanup(features, marker):
+      os.remove('foo')
 
 The hooks are called in the order of registration.
 

@@ -214,7 +214,7 @@ class FeatureParser(object):
         :param str line: the line to parse the background
         """
         detected_background = self._detect_background(line)
-        if not detected_background:
+        if detected_background is None:
             # try to find a scenario
             if self._detect_scenario_type(line):
                 return self._parse_scenario(line)
@@ -378,9 +378,17 @@ class FeatureParser(object):
         """
         if not self._current_scenario.steps:
             raise FeatureFileSyntaxError(
-                "Found step table without previous step definition on line {0}".format(self._current_line))
+                "Found step table without previous step definition on line {0}".format(
+                    self._current_line))
 
-        self._current_scenario.steps[-1].table.append([x.strip() for x in line.split("|")[1:-1]])
+        current_step = self._current_scenario.steps[-1]
+        table_columns = [x.strip() for x in line.split("|")[1:-1]]
+        if not current_step.table_header:  # it's the table heading
+            current_step.table_header = table_columns
+        else:  # it's a table data row
+            table_data = {k: v for k, v in zip(current_step.table_header, table_columns)}
+            current_step.table_data.append(table_columns)
+            current_step.table.append(table_data)
         return True
 
     def _parse_step_text(self, line):

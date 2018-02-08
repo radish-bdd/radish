@@ -2,7 +2,7 @@
 
 
 class Hero(object):
-    def __init__(self, forename, surname, heroname):
+    def __init__(self, forename, surname, hero):
         self.forename = forename
         self.surname = surname
-        self.heroname = heroname
+        self.heroname = hero

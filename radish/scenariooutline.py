@@ -4,6 +4,8 @@
     This module provides a class to represent a Scenario Outline
 """
 
+import copy
+
 from .scenario import Scenario
 from .examplescenario import ExampleScenario
 from .stepmodel import Step
@@ -26,7 +28,9 @@ class ScenarioOutline(Scenario):
             self.line = line
 
     def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
-        super(ScenarioOutline, self).__init__(id, keyword, sentence, path, line, parent, tags, preconditions, background)
+        super(ScenarioOutline, self).__init__(
+                id, keyword, sentence, path, line, parent,
+                tags, preconditions, background)
         self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []
@@ -36,20 +40,33 @@ class ScenarioOutline(Scenario):
         """
             Builds the scenarios with the parsed Examples
 
-            Note: This must be done before mering the steps from the feature file with the step definitions
+            Note: This must be done before mering the steps
+                  from the feature file with the step definitions
         """
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))
             scenario_id = self.id + row_id + 1
             background = None
-            scenario = ExampleScenario(scenario_id, self.keyword, "{0} - row {1}".format(self.sentence, row_id), self.path, self.line, self, example)
+            scenario = ExampleScenario(
+                    scenario_id, self.keyword,
+                    "{0} - row {1}".format(
+                        self.sentence, row_id), self.path, self.line, self, example)
             if self.background:
                 background = self.background.create_instance(parent=scenario, steps_runable=True)
                 scenario.background = background
 
             for step_id, outlined_step in enumerate(self.steps):
                 sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
-                step = Step(step_id + 1, sentence, outlined_step.path, example.line, scenario, True, context_class=outlined_step.context_class)
+                step = Step(
+                        step_id + 1, sentence, outlined_step.path, example.line,
+                        scenario, True, context_class=outlined_step.context_class)
+                # copy extended attributes
+                step.table_header = copy.copy(outlined_step.table_header)
+                step.table_data = copy.copy(outlined_step.table_data)
+                step.table = copy.copy(outlined_step.table)
+                step.raw_text = copy.copy(outlined_step.raw_text)
+
+                # add step to scenario
                 scenario.steps.append(step)
             self.scenarios.append(scenario)
 

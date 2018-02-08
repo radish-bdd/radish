@@ -281,6 +281,27 @@ def test_parse_feature_with_scenario_outline(parser):
 
 
 @pytest.mark.parametrize('parser', [
+    ('scenario-outline-step-text',)
+], indirect=['parser'])
+def test_parse_scenario_outline_with_step_text(parser):
+    """
+    Test parsing a Scenario Outline with a Step with Text
+    """
+    # when
+    feature = parser.parse()
+
+    # then
+    assert len(feature.scenarios) == 1
+    assert isinstance(feature.scenarios[0], ScenarioOutline)
+    assert len(feature.scenarios[0].scenarios) == 3
+
+    # then - expect correct scenario steps with replaced fields
+    assert feature.scenarios[0].scenarios[0].steps[0].sentence == 'Given I have the number 10'
+    assert feature.scenarios[0].scenarios[0].steps[1].sentence == 'And I have the text'
+    assert feature.scenarios[0].scenarios[0].steps[1].text == 'foobar'
+
+
+@pytest.mark.parametrize('parser', [
     ('regular-scenario-examples',)
 ], indirect=['parser'])
 def test_parse_feature_with_scenario_and_examples(parser):

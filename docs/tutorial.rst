@@ -760,7 +760,7 @@ For example ``--bdd-xml`` argument can be accessed using
    print(world.config.basedir)
 
    # print profile
-   print(worl.config.profile)
+   print(world.config.profile)
 
 
 Sometimes it's useful to have specific variables and functions available during

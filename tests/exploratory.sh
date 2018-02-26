@@ -18,6 +18,9 @@ fi
 
 cd "${ROOT}/${TESTS_ROOT}" || exit 1
 
+${RADISH_BIN} --version
+whereis ${RADISH_BIN}
+
 for t in *; do
     if [ -f "${t}/disabled" ]; then
         # skip all disabled tests

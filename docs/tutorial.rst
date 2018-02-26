@@ -1050,6 +1050,11 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
             type: <ARGUMENT 3 TYPE NAME>
             value: <ARGUMENT 3 VALUE>
             cast: yes
+        # argument check with explicit type and using repr() for the value
+        - <ARGUMENT 4 NAME>:
+            type: <ARGUMENT 4 TYPE NAME>
+            value: <ARGUMENT 4 VALUE>
+            use_repr: yes
 
 
 :sentence:
@@ -1066,9 +1071,10 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
     **Optional for should_match**. This is a list of arguments which you expect
     will be passed in the python Step implementation function.
     The arguments can be specified as key-value pairs or as an object
-    with a *type* and *value* and a boolean value *cast*.
+    with a *type* and *value* and a boolean value *cast* and a *use_repr* flag.
     This could be useful if a custom argument expression
     is used to parse the arguments.
+    The *use_repr* flag should be used when comparing with a user defined type.
 
 Example
 ~~~~~~~

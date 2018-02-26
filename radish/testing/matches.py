@@ -221,6 +221,8 @@ def check_step_arguments(expected_arguments, arguments):
                 arg_name, list(arguments.keys())))
             continue
 
+        use_repr = False
+
         # check if argument value is a dict, if yes we'll do thorough comparison
         if isinstance(arg_value, dict) and 'type' not in arg_value.keys():
             _type = 'dict'
@@ -228,6 +230,8 @@ def check_step_arguments(expected_arguments, arguments):
         elif isinstance(arg_value, dict):
             _type = arg_value['type']
             value = arg_value['value']
+            # Use repr protocol to match argument values
+            use_repr = 'use_repr' in arg_value and arg_value['use_repr']
 
             # check if value should be casted to the given type
             if 'cast' in arg_value and arg_value['cast'] is True:
@@ -247,7 +251,7 @@ def check_step_arguments(expected_arguments, arguments):
             _type = type(arg_value).__name__
             value = arg_value
 
-        if _type != type(value).__name__:
+        if not use_repr and _type != type(value).__name__:
             errors.append('Conflicting argument configuration: given value is actually of type "{0}" although it should match a value of type "{1}"'.format(
                 type(value).__name__, _type))
             continue
@@ -257,7 +261,13 @@ def check_step_arguments(expected_arguments, arguments):
                 arg_name, type(arguments[arg_name]).__name__, _type))
             continue
 
-        if arguments[arg_name] != value:
+        matched = None
+        if use_repr:
+            matched = repr(arguments[arg_name]) != value
+        else:
+            matched = arguments[arg_name] != value
+
+        if matched:
             errors.append('Expected argument "{0}" with value "{1}" does not match value "{2}"'.format(
                 arg_name, value, arguments[arg_name]))
     return errors

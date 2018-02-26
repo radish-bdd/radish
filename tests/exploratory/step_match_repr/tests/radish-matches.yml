@@ -1,0 +1,21 @@
+- sentence: Given I setup the hero database
+  should_match: setup_hero_db
+
+- sentence: When I query for the hero with name Batman
+  should_match: query_hero
+  with_arguments:
+    - hero:
+        type: Hero
+        value: Hero(Bruce, Wayne, Batman)
+        use_repr: True
+
+- sentence: When I query for the hero with name Spiderman
+  should_match: query_hero
+  with_arguments:
+    - hero:
+        type: Hero
+        value: Hero(Peter, Parker, Spiderman)
+        use_repr: True
+
+- sentence: Then I expect it's name to be Peter Parker
+  should_match: expect_hero

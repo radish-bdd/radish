@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.8.3]
+### Added
+- Implement `use_repr` flag to use repr protocol for argument value testing
+
 ## [v0.8.2]
 ### Fixed
 - Copy extended step data for outlined and iteration steps. Refs #208
@@ -150,7 +154,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.8.2...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.8.3...HEAD
+[v0.8.3]: https://github.com/radish-bdd/radish/compare/v0.8.2...v0.8.3
 [v0.8.2]: https://github.com/radish-bdd/radish/compare/v0.8.1...v0.8.2
 [v0.8.1]: https://github.com/radish-bdd/radish/compare/v0.8.0...v0.8.1
 [v0.8.0]: https://github.com/radish-bdd/radish/compare/v0.7.3...v0.8.0

@@ -32,7 +32,7 @@ def get_meta(name):
 
 __META_FILE__ = os.path.join('radish', '__init__.py')
 __META_DATA__ = read_metafile(__META_FILE__)
-__README_CONTENTS__ = read_metafile('README.md')
+__README_CONTENTS__ = open('README.md').read()
 
 
 # mandatory requirements for the radish base features

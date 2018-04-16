@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.8.4]
+
+- Use markdown for setuptools long description
+
+
 ## [v0.8.3]
 ### Added
 - Implement `use_repr` flag to use repr protocol for argument value testing
@@ -154,7 +159,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.8.3...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.8.4...HEAD
+[v0.8.4]: https://github.com/radish-bdd/radish/compare/v0.8.3...v0.8.4
 [v0.8.3]: https://github.com/radish-bdd/radish/compare/v0.8.2...v0.8.3
 [v0.8.2]: https://github.com/radish-bdd/radish/compare/v0.8.1...v0.8.2
 [v0.8.1]: https://github.com/radish-bdd/radish/compare/v0.8.0...v0.8.1

@@ -32,6 +32,7 @@ def get_meta(name):
 
 __META_FILE__ = os.path.join('radish', '__init__.py')
 __META_DATA__ = read_metafile(__META_FILE__)
+__README_CONTENTS__ = read_metafile('README.md')
 
 
 # mandatory requirements for the radish base features
@@ -62,6 +63,7 @@ setup(
     version=get_meta('version'),
     license=get_meta('license'),
     description=get_meta('description'),
+    long_description=__README_CONTENTS__,
     author=get_meta('author'),
     author_email=get_meta('author_email'),
     maintainer=get_meta('author'),

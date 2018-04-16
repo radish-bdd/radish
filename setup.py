@@ -64,6 +64,7 @@ setup(
     license=get_meta('license'),
     description=get_meta('description'),
     long_description=__README_CONTENTS__,
+    long_description_content_type='text/markdown',
     author=get_meta('author'),
     author_email=get_meta('author_email'),
     maintainer=get_meta('author'),

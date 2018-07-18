@@ -30,6 +30,7 @@ def test_creating_simple_step():
     assert step.parent is None
     assert step.runable is True
     assert step.context_class is None
+    assert step.embeddings == []
 
 
 def test_getting_step_context_object(mocker):

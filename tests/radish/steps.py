@@ -9,7 +9,6 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-
 from radish import given, when, then
 
 
@@ -129,3 +128,20 @@ def lookup_author(step):
 def expect_author(step, author):
     "Then I will find <author>"
     assert step.context.author == author
+
+
+@when('I embed a text {test_text:QuotedString}')
+def embed_a_text(step, test_text):
+    'When I embed a text "<test_text>"'
+    step.embed(test_text)
+    step.context.step_with_embedded_data = step
+
+
+@then('step with embedded text should have following embedded data')
+def embed_a_text(step):
+    'Then step with embedded text should have following embedded data'
+    assert hasattr(step.context, 'step_with_embedded_data'), \
+        'step_embeddings is missing in context - please check if step with text embedding has been executed'
+    test_step_embeddings = step.context.step_with_embedded_data.embeddings
+    for embeddings in step.table:
+        assert embeddings in test_step_embeddings, '{0} not found in {1}'.format(embeddings, test_step_embeddings)

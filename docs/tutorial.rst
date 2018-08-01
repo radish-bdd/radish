@@ -1011,6 +1011,46 @@ example:
      ]]>
    </failure>
 
+Cucumber json Report
+--------------------
+Radish can write cucumber json result file after run using --cucumber-json=<ccjson>.
+
+With local tools like `Cucumber json report generator
+<https://github.com/damianszczepanik/cucumber-sandwich>`_
+
+    java -jar cucumber-sandwich.jar -n -f path/to/the/folder/containing/json -o path/to/folder/to/generate/reports/into
+
+Or Jenkins `Cucumber Reports Plugin
+<https://wiki.jenkins.io/display/JENKINS/Cucumber+Reports+Plugin>`_
+
+You can simply generate Pretty HTML Reports for Cucumber
+
+Embedding data in cucumber report
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+With radish it is simple to enrich your reports with additional text, html or image data
+
+Here are few code examples:
+
+.. code:: python
+
+  @then("I put some text to my report")
+  def put_text(step):
+      step.embed("This text goes into the report")
+
+  @then("I put selenium screenshot to my report")
+  def put_selenium_screenshot(step):
+      step.embed(context.web_driver.get_screenshot_as_base64(),
+                 mime_type='image/png',
+                 encode_data_to_base64=False)
+
+  @then("I put page source to my report")
+  def put_selenium_page_source(step):
+      step.embed(context.web_driver.page_source,
+                 mime_type='text/html')
+
+Html report output screen example:
+
+.. image:: images/cucumber_embeddings_screenshot.png
 
 Testing Step Patterns
 ---------------------

@@ -8,7 +8,7 @@
 [![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/radish-bdd/radish.svg)](https://gitter.im/radish-bdd/radish?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <br>
-[![Build Status](https://travis-ci.org/radish-bdd/radish.svg?branch=master)](https://travis-ci.org/radish-bdd/radish)
+[![Build Status](https://travis-ci.com/radish-bdd/radish.svg?branch=master)](https://travis-ci.com/radish-bdd/radish)
 [![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
 [![Code Health](https://landscape.io/github/radish-bdd/radish/master/landscape.svg?style=flat)](https://landscape.io/github/radish-bdd/radish/master)
 [![Updates](https://pyup.io/repos/github/radish-bdd/radish/shield.svg)](https://pyup.io/repos/github/radish-bdd/radish/)

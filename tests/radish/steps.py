@@ -9,7 +9,11 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-from radish import given, when, then
+import os
+import json
+
+from radish import given, when, then, world
+from radish.extensions.cucumber_json_writer import CucumberJSONWriter
 
 
 @given('I have a step')
@@ -145,3 +149,19 @@ def embed_a_text(step):
     test_step_embeddings = step.context.step_with_embedded_data.embeddings
     for embeddings in step.table:
         assert embeddings in test_step_embeddings, '{0} not found in {1}'.format(embeddings, test_step_embeddings)
+
+@when('generate cucumber report')
+def generate_cucumber_report(step):
+    cjw = CucumberJSONWriter()
+    cjw.generate_ccjson([step.parent.parent], None)
+
+@then('genreated cucumber json equals to {expected_json_file:QuotedString}')
+def proper_cucumber_json_is_generated(step, expected_json_file):
+    def remove_changing(d):
+        return {k: v for k, v in d.items() if k not in ['duration', 'uri']}
+    with open(world.config.cucumber_json, 'r') as f_cucumber_json:
+        cucumber_json = json.load(f_cucumber_json, object_hook=remove_changing)
+    json_file_path = os.path.join(os.path.dirname(step.path), '..', 'output', expected_json_file)
+    with open(json_file_path, 'r') as f_expected_cucumber_json:
+        expected_cucumber_json = json.load(f_expected_cucumber_json, object_hook=remove_changing) 
+    assert cucumber_json == expected_cucumber_json

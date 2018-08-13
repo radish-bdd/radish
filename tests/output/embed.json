@@ -1,0 +1,78 @@
+[
+    {
+        "description": "",
+        "elements": [
+            {
+                "description": "",
+                "id": "1",
+                "keyword": "Scenario",
+                "line": 3,
+                "name": "Embed text",
+                "steps": [
+                    {
+                        "embeddings": [
+                            {
+                                "data": "dGVzdCB0ZXh0",
+                                "mime_type": "text/plain"
+                            }
+                        ],
+                        "keyword": "When",
+                        "line": 4,
+                        "name": "When I embed a text \"test text\"",
+                        "result": {
+                            "duration": 336000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "Then",
+                        "line": 5,
+                        "name": "Then step with embedded text should have following embedded data",
+                        "result": {
+                            "duration": 259999.99999999997,
+                            "status": "passed"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
+            },
+            {
+                "description": "",
+                "id": "2",
+                "keyword": "Scenario",
+                "line": 9,
+                "name": "Generate cucumber json report",
+                "steps": [
+                    {
+                        "keyword": "When",
+                        "line": 10,
+                        "name": "When generate cucumber report",
+                        "result": {
+                            "duration": 0.0,
+                            "status": "skipped"
+                        }
+                    },
+                    {
+                        "keyword": "Then",
+                        "line": 11,
+                        "name": "Then genreated cucumber json equals to \"embed.json\"",
+                        "result": {
+                            "duration": 0.0,
+                            "status": "pending"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
+            }
+        ],
+        "id": "1",
+        "keyword": "Feature",
+        "line": 1,
+        "name": "A embed feature",
+        "tags": [],
+        "type": "feature",
+        "uri": "/github/radish/tests/features/embed.feature"
+    }
+]

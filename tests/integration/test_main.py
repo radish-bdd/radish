@@ -230,8 +230,14 @@ from radish.main import main
         ['feature-scenario-steps'], ['--cucumber-json', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
     ),
     (
+        ['embed'], ['--cucumber-json', tempfile.mkstemp()[1]], 0, 'embed'
+    ),
+    (
+        ['cucumber-json'], ['--cucumber-json', tempfile.mkstemp()[1]], 1, 'cucumber-json'
+    ),
+    (
         ['feature-scenario-steps'], ['--junit-xml', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
-    ),    
+    ),
 ], ids=[
     'Empty Feature File',
     'Empty Featre',
@@ -303,6 +309,8 @@ from radish.main import main
     'Scenario Loop with no line jump',
     'Feature with single Scenario and Steps producing BDD XML',
     'Feature with single Scenario and Steps producing Cucumber JSON',
+    'Feature with single Scenario and Steps with embedded data producing Cucumber JSON',
+    'Feature with scenario failure producing Cucumber JSON',
     'Feature with single Scenario and Steps producing JUnit XML',
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
@@ -351,7 +359,6 @@ def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, e
     for featurefile in featurefiles:
         rel_featurefile = os.path.relpath(featurefile, feature_parent_dir)
         actual_output = actual_output.replace(featurefile, rel_featurefile)
-
     # then
     assert actual_output == expected_output_string
     assert actual_exitcode == expected_exitcode

@@ -1,0 +1,22 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mA embed feature[22m[39m[26m  # [1m[30mfeatures/embed.feature[22m[39m[26m[37m[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mEmbed text[22m[39m[26m
+        [1m[33mWhen I embed a text "test text"[22m[39m[26m
+[A[K        [1m[32mWhen I embed a text "test text"[22m[39m[26m
+        [1m[33mThen step with embedded text should have following embedded data[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mmime_type [39m [1m[37m|[22m[39m[26m [37mdata        [39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[33mtext/plain[22m[39m [1m[37m|[22m[39m[26m [1m[33mdGVzdCB0ZXh0[22m[39m [1m[37m|[22m[39m[26m
+[A[K[A[K[A[K        [1m[32mThen step with embedded text should have following embedded data[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mmime_type [39m [1m[37m|[22m[39m[26m [37mdata        [39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[32mtext/plain[22m[39m [1m[37m|[22m[39m[26m [1m[32mdGVzdCB0ZXh0[22m[39m [1m[37m|[22m[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mGenerate cucumber json report[22m[39m[26m
+        [1m[33mWhen generate cucumber report[22m[39m[26m
+[A[K        [1m[32mWhen generate cucumber report[22m[39m[26m
+        [1m[33mThen genreated cucumber json equals to "embed.json"[22m[39m[26m
+[A[K        [1m[32mThen genreated cucumber json equals to "embed.json"[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m4 steps ([22m[39m[1m[32m4 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

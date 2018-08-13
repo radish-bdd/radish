@@ -6,7 +6,7 @@
 
 from getpass import getuser
 from socket import gethostname
-from datetime import timedelta
+from datetime import timedelta, datetime
 import re
 import json
 import logging
@@ -44,7 +44,14 @@ class CucumberJSONWriter(object):
         duration = timedelta()
         for feature in features:
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
-                duration += feature.duration
+                # feature file run started
+                if feature.starttime is not None:
+                    # feature file run not finished
+                    if feature.endtime is None:
+                        duration += feature.starttime - datetime.now()
+                    # feature file run finished
+                    else:
+                        duration += feature.duration
 
         ccjson = []
         for feature in features:
@@ -94,7 +101,12 @@ class CucumberJSONWriter(object):
                     if step.state is Step.State.FAILED:
                         step_json["result"]["error_message"] = step.failure.reason
                     if step.state is Step.State.UNTESTED:
-                        step_json["result"]["status"] = "skipped"
+                        if step.starttime is None:
+                            step_json["result"]["status"] = "pending"
+                        else:
+                            step_json["result"]["status"] = "skipped"
+                    if step.embeddings:
+                        step_json["embeddings"] = step.embeddings
                     scenario_json["steps"].append(step_json)
                 feature_json["elements"].append(scenario_json)
             ccjson.append(feature_json)

@@ -3,7 +3,7 @@
 """
     This module provides a class to represent a Step
 """
-
+import base64
 import re
 
 from .model import Model
@@ -44,6 +44,7 @@ class Step(Model):
         self.runable = runable
         self.as_precondition = None
         self.as_background = None
+        self.embeddings = []
 
     @property
     def context(self):
@@ -177,3 +178,21 @@ class Step(Model):
         if new_step.state is Step.State.FAILED:
             new_step.failure.exception.args = ("Step '{0}' failed: '{1}'".format(sentence, new_step.failure.exception.message),)
             raise new_step.failure.exception
+
+    def embed(self, data, mime_type='text/plain', encode_data_to_base64=True):
+        """
+            embed data into step
+                - step embedded data can be used for cucumber json reports
+                - allow to attach text, html or images
+
+        :param data: data attached to report
+            data needs to be encoded in base64 for proper handling by tests reporting tools
+            if not encoded in base64 encoded_data_to_base64 needs to be True (default value)
+        :param mime_type: image/png, image/bmp, text/plain, text/html
+            - mime types with special support by Cucumber reporting
+            - other mime types will be handled with default handling
+        :param encode_data_to_base64: encode data to base64 if True
+        """
+        if encode_data_to_base64:
+            data = base64.standard_b64encode(data.encode()).decode()
+        self.embeddings.append({'data': data, 'mime_type': mime_type})

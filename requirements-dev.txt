@@ -1,4 +1,4 @@
 -r requirements.txt
-pytest==3.9.3
+pytest==4.0.1
 pytest-mock==1.10.0
 sphinx==1.8.2

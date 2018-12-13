@@ -29,7 +29,7 @@ class JUnitXMLWriter(object):
         try:
             from lxml import etree
         except ImportError:
-            raise RadishError('if you want to use the JUnit xml writer you have to "pip install radish-bdd[junit-xml]"')
+            raise RadishError('if you want to use the JUnit xml writer you have to "pip install radish-bdd junit-xml lxml"')
 
         after.all(self.generate_junit_xml)
 
@@ -39,9 +39,10 @@ class JUnitXMLWriter(object):
         """
         from lxml import etree
 
-        # round duration to 10 decimal points, to avoid it being printed in
-        # scientific notation
-        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
+        # round duration to 3 decimal points, to avoid it being printed in
+        # scientific notation (According to the junit people 3 is enough)
+        # https://issues.jenkins-ci.org/browse/JENKINS-52152
+        duration = "%.3f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -76,7 +77,7 @@ class JUnitXMLWriter(object):
 
         testsuites_element = etree.Element(
             "testsuites",
-            time=str(duration.total_seconds())
+            time="%.3f" % duration.total_seconds()
         )
 
         for feature in features:
@@ -106,7 +107,7 @@ class JUnitXMLWriter(object):
                 errors=str(testsuite_states["errors"]),
                 skipped=str(testsuite_states["skipped"]),
                 tests=str(testsuite_states["tests"]),
-                time=str(feature.duration.total_seconds())
+                time="%.3f" % feature.duration.total_seconds()
             )
 
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
@@ -117,7 +118,7 @@ class JUnitXMLWriter(object):
                     "testcase",
                     classname=feature.sentence,
                     name=scenario.sentence,
-                    time=str(scenario.duration.total_seconds())
+                    time="%.3f" % scenario.duration.total_seconds()
                 )
 
                 if scenario.state in [Step.State.UNTESTED, Step.State.PENDING, Step.State.SKIPPED]:

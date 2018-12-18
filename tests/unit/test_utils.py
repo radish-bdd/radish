@@ -30,3 +30,19 @@ def test_flattened_basedirs(basedirs, expected_basedirs):
 
     # then
     assert actual_basedirs == expected_basedirs
+
+
+def test_make_unique_obj_list():
+    """
+    Test filter list by propertyName
+    """
+    object_list = [ type('SomeObjectClass', (object,), {'propertyName' : '1'}),
+                    type('SomeObjectClass', (object,), {'propertyName' : '2'}),
+                    type('SomeObjectClass', (object,), {'propertyName' : '1'}),
+    ]
+
+    value_list = utils.make_unique_obj_list(object_list, lambda x: x.propertyName)
+    value_list = list(map(lambda x: x.propertyName, value_list))
+    value_list.sort()
+
+    assert value_list == ['1', '2']

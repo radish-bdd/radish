@@ -39,7 +39,7 @@ class FeatureFileSyntaxError(RadishError, SyntaxError):
 
 Error Oracle says:
 You have a SyntaxError in your feature file!
-Please have a look into the radish documentation to found out which
+Please have a look into the radish documentation to find out which
 features radish supports and how you could use them:
 Link: {docs_link}"""
 

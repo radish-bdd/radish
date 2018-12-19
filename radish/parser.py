@@ -251,7 +251,8 @@ class FeatureParser(object):
                         self._current_tags.append(Tag(tag[0], tag[1]))
                         if tag[0] == "precondition":
                             scenario = self._parse_precondition(tag[1])
-                            self._current_preconditions.append(scenario)
+                            if scenario is not None:
+                                self._current_preconditions.append(scenario)
                         elif tag[0] == "constant":
                             name, value = self._parse_constant(tag[1])
                             self._current_constants.append((name, value))
@@ -447,6 +448,9 @@ class FeatureParser(object):
                         "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(
                             self._featurefile, feature_file_name, scenario_sentence, self._current_line))
                 raise
+
+        if feature is None:
+            return None
 
         if scenario_sentence not in feature:
             raise FeatureFileSyntaxError(

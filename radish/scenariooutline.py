@@ -40,7 +40,7 @@ class ScenarioOutline(Scenario):
         """
             Builds the scenarios with the parsed Examples
 
-            Note: This must be done before mering the steps
+            Note: This must be done before merging the steps
                   from the feature file with the step definitions
         """
         for row_id, example in enumerate(self.examples):

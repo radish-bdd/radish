@@ -76,6 +76,11 @@ class Runner(object):
 
             returncode |= self.run_feature(feature)
 
+        if world.config.wip:
+            # swap the state from 0 to 1
+            # and the other way around
+            returncode ^= 1
+
         return returncode
 
     @handle_exit

@@ -124,6 +124,23 @@ class EndreportWriter(object):
             ))
 
         output += "\n"
+
+        if world.config.wip:
+            if stats["scenarios"]["passed"] > 0:
+                output += colorful.red("\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n")
+
+                has_passed_scenarios = False
+                for feature in features:
+                    passed_scenarios = list(filter(lambda s: s.state == Step.State.PASSED, feature.all_scenarios))
+                    for scenario in passed_scenarios:
+                        output += colorful.red("\n - {}: {}".format(feature.path, scenario.sentence))
+                        has_passed_scenarios = True
+
+                if has_passed_scenarios:
+                    output += "\n"
+            else:
+                output += colorful.green("\nThe --wip switch was used, so the failures were expected. All is good.\n")
+
         output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
 
         write(output)

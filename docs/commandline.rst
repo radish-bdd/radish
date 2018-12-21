@@ -210,6 +210,27 @@ To learn how to tag Features and Scenarios please refer to :ref:`tutorial#tags`
 section.
 
 
+Run - Work in progress
+-------------------------------
+
+Radish is able change the state of the outcome. Scenarios which
+are still work in progress and are expected to fail, can be run with:
+
+.. code:: bash
+
+   radish SomeFeature.feature --wip
+
+To count as a success all Scenarios in this Feature need to fail.
+If a Scenario passes the run is failed. A suggested workflow is
+to tag WIP Scenarios with a `@wip` tag an run your tests twice.
+
+.. code:: bash
+
+   radish SomeFeature.feature --wip --tags wip
+   radish SomeFeature.feature --wip --tags 'not wip'
+
+
+
 Run - Write BDD XML result file
 -------------------------------
 

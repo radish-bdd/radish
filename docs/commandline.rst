@@ -210,6 +210,20 @@ To learn how to tag Features and Scenarios please refer to :ref:`tutorial#tags`
 section.
 
 
+Run - Work in progress
+-------------------------------
+
+Radish is able change the exception of the outcome. Features which
+are still work in progress and are expected to fail, can be run with:
+
+.. code:: bash
+
+   radish SomeFeature.feature --wip
+
+To count as a success all Scenarios in this Feature need to fail.
+If a Scenario passes the run is failed.
+
+
 Run - Write BDD XML result file
 -------------------------------
 

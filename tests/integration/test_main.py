@@ -238,6 +238,12 @@ from radish.main import main
     (
         ['feature-scenario-steps'], ['--junit-xml', tempfile.mkstemp()[1]], 0, 'feature-scenario-steps'
     ),
+    (
+        ['failing-scenario-middle'], ['--wip'], 0, 'failing-scenario-middle-success-wip'
+    ),
+    (
+        ['scenario-outline'], ['--wip'], 1, 'scenario-outline-failed-wip'
+    ),
 ], ids=[
     'Empty Feature File',
     'Empty Featre',
@@ -312,6 +318,8 @@ from radish.main import main
     'Feature with single Scenario and Steps with embedded data producing Cucumber JSON',
     'Feature with scenario failure producing Cucumber JSON',
     'Feature with single Scenario and Steps producing JUnit XML',
+    'Feature which fails with wip tag',
+    'Feature which does not fail with wip tag',
 ])
 def test_main_cli_calls(given_featurefiles, given_cli_args, expected_exitcode, expected_output,
                         featurefiledir, radishdir, outputdir):

@@ -356,7 +356,7 @@ class FeatureParser(object):
             parent=self.feature,
             tags=self._current_tags,
             preconditions=self._current_preconditions,
-            background=background,
+            background=background
         )
         self.feature.scenarios.append(scenario)
         self._current_scenario = scenario

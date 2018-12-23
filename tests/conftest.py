@@ -175,7 +175,7 @@ def parser(request, core):
         os.path.join(__FEATURE_FILES_DIR__, featurename + ".feature"),
         1,
         *parser_args,
-        **parser_kwargs,
+        **parser_kwargs
     )
 
 

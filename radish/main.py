@@ -110,6 +110,7 @@ Usage:
            [--shuffle]
            [--tags=<tags>]
            [--wip]
+           [-f=<formatter> | --formatter=<formatter>]
            {0}
     radish (-h | --help)
     radish (-v | --version)
@@ -132,6 +133,7 @@ Options:
     --shuffle                                   shuttle run order of features and scenarios
     --tags=<feature_tags>                       only run Scenarios with the given tags
     --wip                                       expects all tests to fail instead of succeeding
+    -f=<formatter> --formatter=<formatter>      the output formatter which should be used. [default: gherkin]
     --expand                                    expand the feature file (all preconditions)
     {1}
 

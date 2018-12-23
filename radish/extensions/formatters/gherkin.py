@@ -35,7 +35,7 @@ class ConsoleWriter(object):
         ("--write-steps-once", "does not rewrite the steps (this option only makes sense in combination with the --no-ansi flag)"),
         ("--write-ids", "write the feature, scenario and step id before the sentences")
     ]
-    LOAD_IF = staticmethod(lambda config: True)
+    LOAD_IF = staticmethod(lambda config: config.formatter == "gherkin")
     LOAD_PRIORITY = 30
 
     def __init__(self):

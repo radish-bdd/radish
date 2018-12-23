@@ -431,6 +431,51 @@ destroying them.
   radish SomeFeature.feature --no-line-jump
 
 
+Run - dots output formatter
+---------------------------
+
+By default the `gherkin` output formatter is used.
+This formatter prints the Features in a gherkin style.
+In most of the cases that's the same as the input Feature File content.
+This gherkin output formatter is rather verbose: all Features, Scenarios and Steps are printed.
+
+You can use the `dots` output formatter with the `-f dots` command line option.
+Every passed Scenario will be printed as a dot (`.`).
+Other possible symbols are:
+
+* `P` for *pending*
+* `U` for *untested*
+* `S` for *skipped*
+* `F` for *failed*
+
+If a Scenario has failed, the failed Step will be printed in the summary in the end:
+
+.. code:: bash
+
+    $ radish SomeFeature.feature -f dots
+
+    features/SomeFeature.feature: ..FFF..
+
+    Failures:
+    features/SomeFeature.feature: Subtract numbers wrongly
+        Then I expect the difference to be 3
+          AttributeError: 'int' object has no attribute 'step'
+
+    features/SomeFeature.feature: A Scenario Outline - row 0
+        Then I expect the sum to be 3
+          AssertionError: The expected sum 3 does not match actual sum 11
+
+    features/SomeFeature.feature: A Scenario Outline - row 1
+        Then I expect the sum to be 9
+          AssertionError: The expected sum 9 does not match actual sum 17
+
+
+    1 features (0 passed, 1 failed)
+    7 scenarios (4 passed, 3 failed)
+    20 steps (17 passed, 3 failed)
+    Run 1545585467 finished within a moment
+
+
 Run - Writing out Scenario and Step ids
 ---------------------------------------
 

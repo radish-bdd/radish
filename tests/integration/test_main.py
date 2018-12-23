@@ -206,6 +206,12 @@ from radish.main import main
             "failing-scenario-middle-success-wip",
         ),
         (["scenario-outline"], ["--wip"], 1, "scenario-outline-failed-wip"),
+        (
+            ["everything_with_failures"],
+            ["-t", "-f", "dots"],
+            1,
+            "everything_with_failures_dot_formatter",
+        ),
     ],
     ids=[
         "Empty Feature File",
@@ -283,6 +289,7 @@ from radish.main import main
         "Feature with single Scenario and Steps producing JUnit XML",
         "Feature which fails with wip tag",
         "Feature which does not fail with wip tag",
+        "Feature which has everything in it and some Scenario fail",
     ],
 )
 def test_main_cli_calls(

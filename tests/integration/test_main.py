@@ -208,7 +208,7 @@ from radish.main import main
         (["scenario-outline"], ["--wip"], 1, "scenario-outline-failed-wip"),
         (
             ["everything_with_failures"],
-            ["-t", "-f", "dots"],
+            ["-f", "dots"],
             1,
             "everything_with_failures_dot_formatter",
         ),

@@ -19,13 +19,15 @@ def test_creating_simple_background():
     Test creating a simple Background
     """
     # given & when
-    background = Background('Background', 'I am a Background', 'foo.feature', 1, parent=None)
+    background = Background(
+        "Background", "I am a Background", "foo.feature", 1, parent=None
+    )
 
     # then
     assert background.id is None
-    assert background.keyword == 'Background'
-    assert background.sentence == 'I am a Background'
-    assert background.path == 'foo.feature'
+    assert background.keyword == "Background"
+    assert background.sentence == "I am a Background"
+    assert background.path == "foo.feature"
     assert background.line == 1
     assert background.parent is None
 
@@ -35,14 +37,12 @@ def test_creating_a_concrete_background_instance():
     Test creating a concrete Background instance
     """
     # given & when
-    background = Background('Background', 'I am a Background', 'foo.feature', 1, parent=None)
+    background = Background(
+        "Background", "I am a Background", "foo.feature", 1, parent=None
+    )
     # add some Steps
-    background.steps.append(
-        Step(1, 'Foo', 'foo.feature', 2, background, False)
-    )
-    background.steps.append(
-        Step(2, 'Foo', 'foo.feature', 3, background, False)
-    )
+    background.steps.append(Step(1, "Foo", "foo.feature", 2, background, False))
+    background.steps.append(Step(2, "Foo", "foo.feature", 3, background, False))
 
     # when
     instance = background.create_instance()

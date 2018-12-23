@@ -43,13 +43,12 @@ def test_registering_simple_hook(hookregistry):
     def before_all_hook_legacy():
         pass
 
-
     @before.all()
     def before_all_hook():
         pass
 
     # then
-    assert len(hookregistry.hooks['all']['before']) == 2
+    assert len(hookregistry.hooks["all"]["before"]) == 2
 
 
 def test_call_hook(hookregistry, mocker):
@@ -61,7 +60,6 @@ def test_call_hook(hookregistry, mocker):
     def before_all(features, stub):
         stub()
 
-
     @before.each_step()
     def before_each_step(step, stub):
         stub()
@@ -69,10 +67,10 @@ def test_call_hook(hookregistry, mocker):
     hook_call_stub = mocker.stub()
 
     # when & then
-    hookregistry.call('before', 'all', mocker.MagicMock(), hook_call_stub)
+    hookregistry.call("before", "all", mocker.MagicMock(), hook_call_stub)
     assert hook_call_stub.call_count == 1
 
-    hookregistry.call('before', 'each_step', mocker.MagicMock(), hook_call_stub)
+    hookregistry.call("before", "each_step", mocker.MagicMock(), hook_call_stub)
     assert hook_call_stub.call_count == 2
 
 
@@ -83,14 +81,14 @@ def test_call_hook_exception(hookregistry, mocker):
     # given
     @before.all()
     def before_all(features):
-        raise AssertionError('some error')
+        raise AssertionError("some error")
 
     # when
     with pytest.raises(errors.HookError) as exc:
-        hookregistry.call('before', 'all', mocker.MagicMock())
+        hookregistry.call("before", "all", mocker.MagicMock())
 
     # then
-    assert exc.match(r'.*AssertionError: some error')
+    assert exc.match(r".*AssertionError: some error")
 
 
 def test_call_hooks_filtered_by_tags(hookregistry, mocker):
@@ -102,11 +100,11 @@ def test_call_hooks_filtered_by_tags(hookregistry, mocker):
     def generic_cleanup(features, stub):
         stub()
 
-    @after.all(on_tags='bad_case')
+    @after.all(on_tags="bad_case")
     def bad_case_cleanup(features, stub):
         stub()
 
-    @after.all(on_tags='good_case')
+    @after.all(on_tags="good_case")
     def good_case_cleanup(features, stub):
         stub()
 
@@ -114,25 +112,25 @@ def test_call_hooks_filtered_by_tags(hookregistry, mocker):
     model = mocker.MagicMock(all_tags=[])
 
     models = [
-        mocker.MagicMock(all_tags=[Tag(name='good_case')]),
-        mocker.MagicMock(all_tags=[Tag(name='bad_case')])
+        mocker.MagicMock(all_tags=[Tag(name="good_case")]),
+        mocker.MagicMock(all_tags=[Tag(name="bad_case")]),
     ]
 
     # when & then
     # all tags
-    hookregistry.call('after', 'all', model, hook_call_stub)
+    hookregistry.call("after", "all", model, hook_call_stub)
     assert hook_call_stub.call_count == 1
 
     # only generic & good case
-    model.all_tags = [Tag(name='good_case')]
-    hookregistry.call('after', 'all', model, hook_call_stub)
+    model.all_tags = [Tag(name="good_case")]
+    hookregistry.call("after", "all", model, hook_call_stub)
     assert hook_call_stub.call_count == 3
 
     # only generic & bad case
-    model.all_tags = [Tag(name='bad_case')]
-    hookregistry.call('after', 'all', model, hook_call_stub)
+    model.all_tags = [Tag(name="bad_case")]
+    hookregistry.call("after", "all", model, hook_call_stub)
     assert hook_call_stub.call_count == 5
 
     # good case & bad case because of model list
-    hookregistry.call('after', 'all', models, hook_call_stub)
+    hookregistry.call("after", "all", models, hook_call_stub)
     assert hook_call_stub.call_count == 8

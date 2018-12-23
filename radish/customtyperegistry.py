@@ -16,6 +16,7 @@ class CustomTypeRegistry(object):
     """
         Registry for all custom argument expressions
     """
+
     def __init__(self):
         self.custom_types = {}
 
@@ -24,7 +25,11 @@ class CustomTypeRegistry(object):
         Registers a custom type
         """
         if name in self.custom_types:
-            raise RadishError("Cannot register custom type with name {0} because it already exists".format(name))
+            raise RadishError(
+                "Cannot register custom type with name {0} because it already exists".format(
+                    name
+                )
+            )
 
         self.custom_types[name] = func
 
@@ -33,6 +38,7 @@ def custom_type(name, pattern):
     """
     Decorator for custom type pattern
     """
+
     def _decorator(func):
         """
         Actual decorator
@@ -41,6 +47,7 @@ def custom_type(name, pattern):
         CustomTypeRegistry().register(name, func)
 
         return func
+
     return _decorator
 
 
@@ -65,7 +72,7 @@ def math_expression_type(text):
     return float(eval(text))
 
 
-@custom_type('QuotedString', r'"(?:[^"\\]|\\.)*"')
+@custom_type("QuotedString", r'"(?:[^"\\]|\\.)*"')
 def quoted_string_type(text):
     """
     Custom type to parse a quoted string.
@@ -76,8 +83,10 @@ def quoted_string_type(text):
     return text[1:-1]
 
 
-@custom_type('Boolean',
-             r'(0|1|yes|Yes|YES|y|Y|no|No|NO|n|N|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)')
+@custom_type(
+    "Boolean",
+    r"(0|1|yes|Yes|YES|y|Y|no|No|NO|n|N|true|True|TRUE|false|False|FALSE|on|On|ON|off|Off|OFF)",
+)
 def boolean_type(text):
     """
     Custom type to parse a boolean value.
@@ -88,4 +97,4 @@ def boolean_type(text):
     Plus 0 and 1
     """
     text = text.lower()
-    return text == '1' or text.startswith('y') or text == 'true' or text == 'on'
+    return text == "1" or text.startswith("y") or text == "true" or text == "on"

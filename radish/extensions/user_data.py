@@ -18,14 +18,20 @@ class UserData(object):
     """
         User Data radish extension
     """
-    OPTIONS = [("-u=<userdata> | --user-data=<userdata>...",
-               "User data as 'key=value' pair. You can specify --user-data multiple times.")
-               ]
+
+    OPTIONS = [
+        (
+            "-u=<userdata> | --user-data=<userdata>...",
+            "User data as 'key=value' pair. You can specify --user-data multiple times.",
+        )
+    ]
     LOAD_IF = staticmethod(lambda config: True)
-    LOAD_PRIORITY = 2  # This should probably load early in-case another extension needs to inspect this data.
+    LOAD_PRIORITY = (
+        2
+    )  # This should probably load early in-case another extension needs to inspect this data.
 
     def __init__(self):
-        self._kv_regex = re.compile(r'\s*=\s*')
+        self._kv_regex = re.compile(r"\s*=\s*")
 
         self._cli_user_data = world.config.user_data  # Save the data to process later
         world.config.user_data = {}  # Initialize user data dictionary

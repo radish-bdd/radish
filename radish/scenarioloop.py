@@ -15,10 +15,31 @@ class ScenarioLoop(Scenario):
     """
         Represents a scenario loop
     """
-    def __init__(self, id, keyword, iterations_keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
+
+    def __init__(
+        self,
+        id,
+        keyword,
+        iterations_keyword,
+        sentence,
+        path,
+        line,
+        parent,
+        tags=None,
+        preconditions=None,
+        background=None,
+    ):
         super(ScenarioLoop, self).__init__(
-                id, keyword, sentence, path, line, parent,
-                tags, preconditions, background=background)
+            id,
+            keyword,
+            sentence,
+            path,
+            line,
+            parent,
+            tags,
+            preconditions,
+            background=background,
+        )
         self.iterations_keyword = iterations_keyword
         self.iterations = 0
         self.scenarios = []
@@ -34,17 +55,30 @@ class ScenarioLoop(Scenario):
             scenario_id = self.id + i + 1
             background = None
             scenario = IterationScenario(
-                    scenario_id, self.keyword,
-                    "{0} - iteration {1}".format(self.sentence, i), self.path, self.line, self, i)
+                scenario_id,
+                self.keyword,
+                "{0} - iteration {1}".format(self.sentence, i),
+                self.path,
+                self.line,
+                self,
+                i,
+            )
             if self.background:
-                background = self.background.create_instance(parent=scenario, steps_runable=True)
+                background = self.background.create_instance(
+                    parent=scenario, steps_runable=True
+                )
                 scenario.background = background
 
             for step_id, iteration_step in enumerate(self.steps):
                 step = Step(
-                        step_id + 1, iteration_step.sentence, iteration_step.path,
-                        iteration_step.line, scenario, True,
-                        context_class=iteration_step.context_class)
+                    step_id + 1,
+                    iteration_step.sentence,
+                    iteration_step.path,
+                    iteration_step.line,
+                    scenario,
+                    True,
+                    context_class=iteration_step.context_class,
+                )
                 step.table_header = copy.copy(iteration_step.table_header)
                 step.table_data = copy.copy(iteration_step.table_data)
                 step.table = copy.copy(iteration_step.table)

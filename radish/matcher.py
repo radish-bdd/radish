@@ -48,6 +48,7 @@ def merge_steps(features, steps):
     """
     # FIXME: fix cycle-import ... Matcher -> ScenarioOutline -> Step -> Matcher
     from .scenariooutline import ScenarioOutline
+
     for feature in features:
         for scenario in feature.all_scenarios:
             if scenario.background:

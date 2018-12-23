@@ -21,6 +21,7 @@ class JUnitXMLWriter(object):
     """
         JUnit XML Writer radish extension
     """
+
     OPTIONS = [("--junit-xml=<junitxml>", "write JUnit XML result file after run")]
     LOAD_IF = staticmethod(lambda config: config.junit_xml)
     LOAD_PRIORITY = 60
@@ -29,7 +30,9 @@ class JUnitXMLWriter(object):
         try:
             from lxml import etree
         except ImportError:
-            raise RadishError('if you want to use the JUnit xml writer you have to "pip install radish-bdd junit-xml lxml"')
+            raise RadishError(
+                'if you want to use the JUnit xml writer you have to "pip install radish-bdd junit-xml lxml"'
+            )
 
         after.all(self.generate_junit_xml)
 
@@ -42,7 +45,11 @@ class JUnitXMLWriter(object):
         # round duration to 3 decimal points, to avoid it being printed in
         # scientific notation (According to the junit people 3 is enough)
         # https://issues.jenkins-ci.org/browse/JENKINS-52152
-        duration = "%.3f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
+        duration = (
+            "%.3f" % model.duration.total_seconds()
+            if model.starttime and model.endtime
+            else ""
+        )
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -51,7 +58,7 @@ class JUnitXMLWriter(object):
             starttime=utils.datetime_to_str(model.starttime),
             endtime=utils.datetime_to_str(model.endtime),
             duration=duration,
-            testfile=model.path
+            testfile=model.path,
         )
 
     def _strip_ansi(self, text):
@@ -66,9 +73,9 @@ class JUnitXMLWriter(object):
             Generates the junit xml
         """
         from lxml import etree
+
         if not features:
             raise RadishError("No features given to generate JUnit xml file")
-
 
         duration = timedelta()
         for feature in features:
@@ -76,8 +83,7 @@ class JUnitXMLWriter(object):
                 duration += feature.duration
 
         testsuites_element = etree.Element(
-            "testsuites",
-            time="%.3f" % duration.total_seconds()
+            "testsuites", time="%.3f" % duration.total_seconds()
         )
 
         for feature in features:
@@ -85,17 +91,22 @@ class JUnitXMLWriter(object):
             if not feature.has_to_run(world.config.scenarios):
                 continue
 
-            testsuite_states = {"failures" : 0,
-                                "errors" : 0,
-                                "skipped" : 0,
-                                "tests" : 0}
+            testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
 
-            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+            for scenario in (
+                s
+                for s in feature.all_scenarios
+                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
+            ):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
                 testsuite_states["tests"] += 1
-                if scenario.state in [Step.State.UNTESTED, Step.State.PENDING, Step.State.SKIPPED]:
+                if scenario.state in [
+                    Step.State.UNTESTED,
+                    Step.State.PENDING,
+                    Step.State.SKIPPED,
+                ]:
                     testsuite_states["skipped"] += 1
                 if scenario.state is Step.State.FAILED:
                     testsuite_states["failures"] += 1
@@ -107,10 +118,14 @@ class JUnitXMLWriter(object):
                 errors=str(testsuite_states["errors"]),
                 skipped=str(testsuite_states["skipped"]),
                 tests=str(testsuite_states["tests"]),
-                time="%.3f" % feature.duration.total_seconds()
+                time="%.3f" % feature.duration.total_seconds(),
             )
 
-            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+            for scenario in (
+                s
+                for s in feature.all_scenarios
+                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
+            ):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
@@ -118,13 +133,15 @@ class JUnitXMLWriter(object):
                     "testcase",
                     classname=feature.sentence,
                     name=scenario.sentence,
-                    time="%.3f" % scenario.duration.total_seconds()
+                    time="%.3f" % scenario.duration.total_seconds(),
                 )
 
-                if scenario.state in [Step.State.UNTESTED, Step.State.PENDING, Step.State.SKIPPED]:
-                    skipped_element = etree.Element(
-                        "skipped"
-                    )
+                if scenario.state in [
+                    Step.State.UNTESTED,
+                    Step.State.PENDING,
+                    Step.State.SKIPPED,
+                ]:
+                    skipped_element = etree.Element("skipped")
                     testcase_element.append(skipped_element)
 
                 if scenario.state is Step.State.FAILED:
@@ -134,11 +151,15 @@ class JUnitXMLWriter(object):
                         steps_sentence.append(step.sentence)
                         if step.state is Step.State.FAILED:
                             failure_element = etree.Element(
-                                "failure",
-                                type=step.failure.name,
-                                message=step.sentence
+                                "failure", type=step.failure.name, message=step.sentence
                             )
-                            failure_element.text = etree.CDATA("%s\n\n%s" % ("\n".join(steps_sentence), self._strip_ansi(step.failure.traceback)))
+                            failure_element.text = etree.CDATA(
+                                "%s\n\n%s"
+                                % (
+                                    "\n".join(steps_sentence),
+                                    self._strip_ansi(step.failure.traceback),
+                                )
+                            )
                             testcase_element.append(failure_element)
 
                 testsuite_element.append(testcase_element)
@@ -146,7 +167,12 @@ class JUnitXMLWriter(object):
             testsuites_element.append(testsuite_element)
 
         with open(world.config.junit_xml, "w+") as f:
-            content = etree.tostring(testsuites_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
+            content = etree.tostring(
+                testsuites_element,
+                pretty_print=True,
+                xml_declaration=True,
+                encoding="utf-8",
+            )
             try:
                 if not isinstance(content, str):
                     content = content.decode("utf-8")

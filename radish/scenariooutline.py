@@ -27,10 +27,22 @@ class ScenarioOutline(Scenario):
             self.path = path
             self.line = line
 
-    def __init__(self, id, keyword, example_keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
+    def __init__(
+        self,
+        id,
+        keyword,
+        example_keyword,
+        sentence,
+        path,
+        line,
+        parent,
+        tags=None,
+        preconditions=None,
+        background=None,
+    ):
         super(ScenarioOutline, self).__init__(
-                id, keyword, sentence, path, line, parent,
-                tags, preconditions, background)
+            id, keyword, sentence, path, line, parent, tags, preconditions, background
+        )
         self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []
@@ -48,18 +60,33 @@ class ScenarioOutline(Scenario):
             scenario_id = self.id + row_id + 1
             background = None
             scenario = ExampleScenario(
-                    scenario_id, self.keyword,
-                    "{0} - row {1}".format(
-                        self.sentence, row_id), self.path, self.line, self, example)
+                scenario_id,
+                self.keyword,
+                "{0} - row {1}".format(self.sentence, row_id),
+                self.path,
+                self.line,
+                self,
+                example,
+            )
             if self.background:
-                background = self.background.create_instance(parent=scenario, steps_runable=True)
+                background = self.background.create_instance(
+                    parent=scenario, steps_runable=True
+                )
                 scenario.background = background
 
             for step_id, outlined_step in enumerate(self.steps):
-                sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
+                sentence = self._replace_examples_in_sentence(
+                    outlined_step.sentence, examples
+                )
                 step = Step(
-                        step_id + 1, sentence, outlined_step.path, example.line,
-                        scenario, True, context_class=outlined_step.context_class)
+                    step_id + 1,
+                    sentence,
+                    outlined_step.path,
+                    example.line,
+                    scenario,
+                    True,
+                    context_class=outlined_step.context_class,
+                )
                 # copy extended attributes
                 step.table_header = copy.copy(outlined_step.table_header)
                 step.table_data = copy.copy(outlined_step.table_data)
@@ -92,9 +119,16 @@ class ScenarioOutline(Scenario):
             :param int column_index: the column index to get the width from
         """
         try:
-            return max(max([len(x.data[column_index]) for x in self.examples]), len(self.examples_header[column_index]))
+            return max(
+                max([len(x.data[column_index]) for x in self.examples]),
+                len(self.examples_header[column_index]),
+            )
         except IndexError:
-            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{0}'".format(self.sentence))
+            raise RadishError(
+                "Invalid colum_index to get column width for ScenarioOutline '{0}'".format(
+                    self.sentence
+                )
+            )
 
     def after_parse(self):
         """

@@ -11,10 +11,12 @@ def have_number(step, input_variable):
         if input_variable in world.config.user_data:
             step.context.numbers.append(int(world.config.user_data[input_variable]))
         else:
-            msg = 'Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line.'
+            msg = "Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line."
             assert False, msg.format(input_variable)
     else:
-        assert False, 'There is no user data (-u/--user-data) specified on the command-line.'
+        assert (
+            False
+        ), "There is no user data (-u/--user-data) specified on the command-line."
 
 
 @when("I sum them")
@@ -28,7 +30,9 @@ def expect_result(step, result_variable):
         if result_variable in world.config.user_data:
             assert step.context.result == int(world.config.user_data[result_variable])
         else:
-            msg = 'Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line.'
+            msg = "Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line."
             assert False, msg.format(input_variable)
     else:
-        assert False, 'There is no user data (-u/--user-data) specified on the command-line.'
+        assert (
+            False
+        ), "There is no user data (-u/--user-data) specified on the command-line."

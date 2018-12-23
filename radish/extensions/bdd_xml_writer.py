@@ -25,6 +25,7 @@ class BDDXMLWriter(object):
     """
         BDD XML Writer radish extension
     """
+
     OPTIONS = [("--bdd-xml=<bddxml>", "write BDD XML result file after run")]
     LOAD_IF = staticmethod(lambda config: config.bdd_xml)
     LOAD_PRIORITY = 60
@@ -33,7 +34,9 @@ class BDDXMLWriter(object):
         try:
             from lxml import etree
         except ImportError:
-            raise RadishError('if you want to use the BDD xml writer you have to "pip install radish-bdd[bdd-xml]"')
+            raise RadishError(
+                'if you want to use the BDD xml writer you have to "pip install radish-bdd[bdd-xml]"'
+            )
 
         after.all(self.generate_bdd_xml)
 
@@ -45,7 +48,11 @@ class BDDXMLWriter(object):
 
         # round duration to 10 decimal points, to avoid it being printed in
         # scientific notation
-        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
+        duration = (
+            "%.10f" % model.duration.total_seconds()
+            if model.starttime and model.endtime
+            else ""
+        )
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -54,7 +61,7 @@ class BDDXMLWriter(object):
             starttime=utils.datetime_to_str(model.starttime),
             endtime=utils.datetime_to_str(model.endtime),
             duration=duration,
-            testfile=model.path
+            testfile=model.path,
         )
 
     def _strip_ansi(self, text):
@@ -69,6 +76,7 @@ class BDDXMLWriter(object):
             Generates the bdd xml
         """
         from lxml import etree
+
         if not features:
             raise RadishError("No features given to generate BDD xml file")
 
@@ -82,7 +90,7 @@ class BDDXMLWriter(object):
             starttime=utils.datetime_to_str(features[0].starttime),
             endtime=utils.datetime_to_str(features[-1].endtime),
             duration=str(duration.total_seconds()),
-            agent="{0}@{1}".format(getuser(), gethostname())
+            agent="{0}@{1}".format(getuser(), gethostname()),
         )
 
         for feature in features:
@@ -94,28 +102,32 @@ class BDDXMLWriter(object):
             description_element = etree.Element("description")
             description_element.text = etree.CDATA("\n".join(feature.description))
 
-            tags_element = etree.Element('tags')
+            tags_element = etree.Element("tags")
 
             for tag in feature.tags:
-                tag_element = etree.Element('tag')
+                tag_element = etree.Element("tag")
                 tag_element.text = tag.name
                 tags_element.append(tag_element)
 
             scenarios_element = etree.Element("scenarios")
 
-            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+            for scenario in (
+                s
+                for s in feature.all_scenarios
+                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
+            ):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_element = self._get_element_from_model("scenario", scenario)
 
-                scenario_tags_element = etree.Element('tags')
+                scenario_tags_element = etree.Element("tags")
                 scenario_element.append(scenario_tags_element)
 
                 for tag in scenario.tags:
-                    tag_element = etree.Element('tag')
+                    tag_element = etree.Element("tag")
                     tag_element.text = tag.name
                     if tag.arg:
-                        tag_element.text += '({0})'.format(tag.arg)
+                        tag_element.text += "({0})".format(tag.arg)
                     scenario_tags_element.append(tag_element)
 
                 for step in scenario.all_steps:
@@ -124,9 +136,11 @@ class BDDXMLWriter(object):
                         failure_element = etree.Element(
                             "failure",
                             type=step.failure.name,
-                            message=step.failure.reason
+                            message=step.failure.reason,
                         )
-                        failure_element.text = etree.CDATA(self._strip_ansi(step.failure.traceback))
+                        failure_element.text = etree.CDATA(
+                            self._strip_ansi(step.failure.traceback)
+                        )
                         step_element.append(failure_element)
                     scenario_element.append(step_element)
                 scenarios_element.append(scenario_element)
@@ -136,7 +150,12 @@ class BDDXMLWriter(object):
             testrun_element.append(feature_element)
 
         with open(world.config.bdd_xml, "w+") as f:
-            content = etree.tostring(testrun_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
+            content = etree.tostring(
+                testrun_element,
+                pretty_print=True,
+                xml_declaration=True,
+                encoding="utf-8",
+            )
             try:
                 if not isinstance(content, str):
                     content = content.decode("utf-8")

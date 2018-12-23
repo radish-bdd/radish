@@ -15,19 +15,23 @@ from radish.runner import Runner
 from radish.stepmodel import Step
 
 
-@pytest.mark.parametrize('run_state, expected_returncode', [
-    (Step.State.PASSED, 0),
-    (Step.State.UNTESTED, 0),
-    (Step.State.SKIPPED, 0),
-    (Step.State.PENDING, 0),
-    (Step.State.FAILED, 1),
-], ids=[
-    'Running Step returing PASSED',
-    'Running Step returing UNTESTED',
-    'Running Step returing SKIPPED',
-    'Running Step returing PENDING',
-    'Running Step returing FAILED',
-])
+@pytest.mark.parametrize(
+    "run_state, expected_returncode",
+    [
+        (Step.State.PASSED, 0),
+        (Step.State.UNTESTED, 0),
+        (Step.State.SKIPPED, 0),
+        (Step.State.PENDING, 0),
+        (Step.State.FAILED, 1),
+    ],
+    ids=[
+        "Running Step returing PASSED",
+        "Running Step returing UNTESTED",
+        "Running Step returing SKIPPED",
+        "Running Step returing PENDING",
+        "Running Step returing FAILED",
+    ],
+)
 def test_run_single_step(run_state, expected_returncode, hookregistry, mocker):
     """
     Test running a single Step
@@ -45,20 +49,26 @@ def test_run_single_step(run_state, expected_returncode, hookregistry, mocker):
     assert step.run.call_count == 1
 
 
-@pytest.mark.parametrize('debug_state, expected_returncode', [
-    (Step.State.PASSED, 0),
-    (Step.State.UNTESTED, 0),
-    (Step.State.SKIPPED, 0),
-    (Step.State.PENDING, 0),
-    (Step.State.FAILED, 1),
-], ids=[
-    'Debugging Step returing PASSED',
-    'Debugging Step returing UNTESTED',
-    'Debugging Step returing SKIPPED',
-    'Debugging Step returing PENDING',
-    'Debugging Step returing FAILED',
-])
-def test_debug_single_step(debug_state, expected_returncode, world_config, hookregistry, mocker):
+@pytest.mark.parametrize(
+    "debug_state, expected_returncode",
+    [
+        (Step.State.PASSED, 0),
+        (Step.State.UNTESTED, 0),
+        (Step.State.SKIPPED, 0),
+        (Step.State.PENDING, 0),
+        (Step.State.FAILED, 1),
+    ],
+    ids=[
+        "Debugging Step returing PASSED",
+        "Debugging Step returing UNTESTED",
+        "Debugging Step returing SKIPPED",
+        "Debugging Step returing PENDING",
+        "Debugging Step returing FAILED",
+    ],
+)
+def test_debug_single_step(
+    debug_state, expected_returncode, world_config, hookregistry, mocker
+):
     """
     Test debugging a single Step
     """
@@ -111,9 +121,7 @@ def test_skip_single_step(hookregistry, mocker):
     assert step.skip.call_count == 1
 
 
-@pytest.mark.parametrize('run_or_skip', [
-    'run_step', 'skip_step'
-])
+@pytest.mark.parametrize("run_or_skip", ["run_step", "skip_step"])
 def test_run_skip_step_hooks(run_or_skip, hookregistry, mocker):
     """
     Test that Hooks are executed when running or skipping a Step
@@ -122,8 +130,8 @@ def test_run_skip_step_hooks(run_or_skip, hookregistry, mocker):
     # register hooks in registry
     before_step_stub = mocker.stub()
     after_step_stub = mocker.stub()
-    hookregistry.register('before', 'each_step', before_step_stub)
-    hookregistry.register('after', 'each_step', after_step_stub)
+    hookregistry.register("before", "each_step", before_step_stub)
+    hookregistry.register("after", "each_step", after_step_stub)
     # create runner
     runner = Runner(hookregistry, show_only=True)
 

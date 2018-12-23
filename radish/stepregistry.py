@@ -17,6 +17,7 @@ class StepRegistry(object):
     """
         Represents the step registry
     """
+
     def __init__(self):
         self._steps = {}
 
@@ -44,7 +45,9 @@ class StepRegistry(object):
         """
         ignore = getattr(steps_object, "ignore", [])
         for attr in dir(steps_object):
-            if attr in ignore or not inspect.ismethod(getattr(steps_object, attr)):  # attribute should be ignored
+            if attr in ignore or not inspect.ismethod(
+                getattr(steps_object, attr)
+            ):  # attribute should be ignored
                 continue
 
             step_definition = getattr(steps_object, attr)
@@ -62,7 +65,11 @@ class StepRegistry(object):
         """
         docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:
-            raise RadishError("Step definition '{0}' from class must have step regex in docstring".format(func.__name__))
+            raise RadishError(
+                "Step definition '{0}' from class must have step regex in docstring".format(
+                    func.__name__
+                )
+            )
 
         regex = docstr.splitlines()[0]
         try:
@@ -95,12 +102,14 @@ def step(pattern):
         :returns: the decorated function
         :rtype: function
     """
+
     def _decorator(func):
         """
             Represents the actual decorator
         """
         StepRegistry().register(pattern, func)
         return func
+
     return _decorator
 
 
@@ -111,10 +120,10 @@ def steps(cls):
     old_cls_init = getattr(cls, "__init__")
 
     # ignore new_cls_init method
-    if not hasattr(cls, 'ignore'):
+    if not hasattr(cls, "ignore"):
         cls.ignore = []
 
-    cls.ignore.append('__init__')
+    cls.ignore.append("__init__")
 
     def new_cls_init(self, *args, **kwargs):
         """

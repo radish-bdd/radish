@@ -12,6 +12,7 @@ class ExtensionRegistry(object):
     """
         Registers all extensions
     """
+
     DEFAULT_LOAD_PRIORITY = 1000
 
     def __init__(self):
@@ -35,7 +36,10 @@ class ExtensionRegistry(object):
         """
             Loads all needed extensions
         """
-        for ext in sorted(self.extensions, key=lambda x: getattr(x, "LOAD_PRIORITY", self.DEFAULT_LOAD_PRIORITY)):
+        for ext in sorted(
+            self.extensions,
+            key=lambda x: getattr(x, "LOAD_PRIORITY", self.DEFAULT_LOAD_PRIORITY),
+        ):
             try:
                 if ext.LOAD_IF(config):
                     self.loaded_extensions.append(ext())
@@ -61,7 +65,9 @@ class ExtensionRegistry(object):
         options = []
         for ext in self.extensions:
             try:
-                options.extend("{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
+                options.extend(
+                    "{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS
+                )
             except AttributeError:
                 pass
         return "\n    ".join(options)

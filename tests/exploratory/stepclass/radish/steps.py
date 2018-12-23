@@ -2,6 +2,7 @@
 
 from radish import steps
 
+
 @steps
 class Calculator(object):
     def have_number(self, step, number):

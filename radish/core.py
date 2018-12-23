@@ -30,10 +30,12 @@ class Configuration(object):
 
     def __init__(self, arguments):
         for key, value in arguments.items():
-            config_key = key.replace("--", "")\
-                            .replace("-", "_")\
-                            .replace("<", "")\
-                            .replace(">", "")
+            config_key = (
+                key.replace("--", "")
+                .replace("-", "_")
+                .replace("<", "")
+                .replace(">", "")
+            )
             setattr(self, config_key, value)
 
 
@@ -42,6 +44,7 @@ class Core(object):
     """
         Provide some core functionalities like parsing and storing of the feature files
     """
+
     def __init__(self):
         self.features = []
         self._features_to_run = OrderedDict()
@@ -80,7 +83,9 @@ class Core(object):
             Parses the given feature files
         """
         for featurefile in feature_files:
-            feature = self.parse_feature(featurefile, tag_expr, featureid=self.next_feature_id)
+            feature = self.parse_feature(
+                featurefile, tag_expr, featureid=self.next_feature_id
+            )
 
             if feature is not None:
                 for scenario in feature.scenarios:
@@ -96,7 +101,9 @@ class Core(object):
             :returns: the parsed feature
             :rtype: Feature
         """
-        featureparser = FeatureParser(self, featurefile, featureid, tag_expr, inherited_tags=inherited_tags)
+        featureparser = FeatureParser(
+            self, featurefile, featureid, tag_expr, inherited_tags=inherited_tags
+        )
         feature = featureparser.parse()
 
         if feature is None:

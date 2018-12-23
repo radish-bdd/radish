@@ -13,19 +13,19 @@
 from radish import step
 
 
-@step('Gegeben sei etwas')
+@step("Gegeben sei etwas")
 def have_a_step(step):
     "Given I have a step"
     pass
 
 
-@step('Wenn ich etwas mache')
+@step("Wenn ich etwas mache")
 def do_something(step):
     "When I do something"
     pass
 
 
-@step('Dann erwarte ich etwas')
+@step("Dann erwarte ich etwas")
 def expect_something(step):
     "Then I expect something"
     pass

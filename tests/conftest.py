@@ -22,12 +22,12 @@ from radish.extensionregistry import ExtensionRegistry
 
 #: Holds the path to the Feature file resources
 __TEST_BASE_DIR__ = os.path.dirname(__file__)
-__FEATURE_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, 'features')
-__RADISH_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, 'radish')
-__OUTPUT_DIR__ = os.path.join(__TEST_BASE_DIR__, 'output')
+__FEATURE_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, "features")
+__RADISH_FILES_DIR__ = os.path.join(__TEST_BASE_DIR__, "radish")
+__OUTPUT_DIR__ = os.path.join(__TEST_BASE_DIR__, "output")
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def mock_world_config():
     """
     Fixture to mock the terrain.world.config object
@@ -35,48 +35,48 @@ def mock_world_config():
     """
     # default command line arguments
     arguments = {
-        '--basedir': ['$PWD/radish'],
-        '--bdd-xml': None,
-        '--cover-append': False,
-        '--cover-branches': False,
-        '--cover-config-file': '.coveragerc',
-        '--cover-erase': False,
-        '--cover-html': None,
-        '--cover-min-percentage': None,
-        '--cover-packages': None,
-        '--cover-xml': None,
-        '--cucumber-json': None,
-        '--debug-after-failure': False,
-        '--debug-steps': False,
-        '--dry-run': False,
-        '--early-exit': False,
-        '--expand': False,
-        '--help': False,
-        '--inspect-after-failure': False,
-        '--junit-xml' : None,
-        '--marker': 'time.time()',
-        '--no-ansi': False,
-        '--no-line-jump': False,
-        '--profile': None,
-        '--scenarios': None,
-        '--shuffle': False,
-        '--syslog': False,
-        '--tags': None,
-        '--user-data': [],
-        '--version': False,
-        '--with-coverage': False,
-        '--with-traceback': False,
-        '--write-ids': False,
-        '--write-steps-once': False,
-        '<features>': ['features/'],
-        'show': False
+        "--basedir": ["$PWD/radish"],
+        "--bdd-xml": None,
+        "--cover-append": False,
+        "--cover-branches": False,
+        "--cover-config-file": ".coveragerc",
+        "--cover-erase": False,
+        "--cover-html": None,
+        "--cover-min-percentage": None,
+        "--cover-packages": None,
+        "--cover-xml": None,
+        "--cucumber-json": None,
+        "--debug-after-failure": False,
+        "--debug-steps": False,
+        "--dry-run": False,
+        "--early-exit": False,
+        "--expand": False,
+        "--help": False,
+        "--inspect-after-failure": False,
+        "--junit-xml": None,
+        "--marker": "time.time()",
+        "--no-ansi": False,
+        "--no-line-jump": False,
+        "--profile": None,
+        "--scenarios": None,
+        "--shuffle": False,
+        "--syslog": False,
+        "--tags": None,
+        "--user-data": [],
+        "--version": False,
+        "--with-coverage": False,
+        "--with-traceback": False,
+        "--write-ids": False,
+        "--write-steps-once": False,
+        "<features>": ["features/"],
+        "show": False,
     }
     world.config = Configuration(arguments)
     yield world.config
-    delattr(world, 'config')
+    delattr(world, "config")
 
 
-@pytest.fixture(scope='function', autouse=True)
+@pytest.fixture(scope="function", autouse=True)
 def reset_registries():
     """
     Fixture to automatically reset singleton registries
@@ -99,14 +99,14 @@ def mock_utils_debugger(mocker):
     """
     Fixture to mock the pdf Python debugger
     """
+
     def call_orig_func(func, *args, **kwargs):
         """
         Helper to mock pdf.runcall interface
         """
         return func(*args, **kwargs)
 
-
-    debugger_mock = mocker.patch('radish.utils.get_debugger')
+    debugger_mock = mocker.patch("radish.utils.get_debugger")
     debugger_mock.return_value.runcall = mocker.MagicMock(side_effect=call_orig_func)
     return debugger_mock.return_value
 
@@ -125,7 +125,7 @@ def featurefile(request):
     Fixture to get the path to a Feature File
     """
     featurename = request.param[0]
-    return os.path.join(__FEATURE_FILES_DIR__, featurename + '.feature')
+    return os.path.join(__FEATURE_FILES_DIR__, featurename + ".feature")
 
 
 @pytest.fixture()
@@ -170,8 +170,13 @@ def parser(request, core):
         parser_kwargs = {}
 
     # create the Feature Parser instance
-    return FeatureParser(core, os.path.join(__FEATURE_FILES_DIR__, featurename + '.feature'),
-                         1, *parser_args, **parser_kwargs)
+    return FeatureParser(
+        core,
+        os.path.join(__FEATURE_FILES_DIR__, featurename + ".feature"),
+        1,
+        *parser_args,
+        **parser_kwargs,
+    )
 
 
 @pytest.fixture()

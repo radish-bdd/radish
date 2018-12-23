@@ -22,13 +22,13 @@ def test_creating_simple_feature():
     Test creating a simple Feature
     """
     # given & when
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
 
     # then
     assert feature.id == 1
-    assert feature.keyword == 'Feature'
-    assert feature.sentence == 'I am a feature'
-    assert feature.path == 'foo.feature'
+    assert feature.keyword == "Feature"
+    assert feature.sentence == "I am a feature"
+    assert feature.path == "foo.feature"
     assert feature.line == 1
     assert feature.tags == []
 
@@ -38,15 +38,15 @@ def test_feature_representation():
     Test Feature representation with str() and repr()
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
 
     # when
     str_repr = str(feature)
     repr_repr = repr(feature)
 
     # then
-    assert str_repr == 'Feature: I am a feature from foo.feature:1'
-    assert repr_repr == '<Feature: I am a feature from foo.feature:1>'
+    assert str_repr == "Feature: I am a feature from foo.feature:1"
+    assert repr_repr == "<Feature: I am a feature from foo.feature:1>"
 
 
 def test_feature_scenario_iterator(mocker):
@@ -54,11 +54,11 @@ def test_feature_scenario_iterator(mocker):
     Test iterating over Scenarios within a Feature
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add Scenarios to Feature
-    feature.scenarios.extend([
-        mocker.MagicMock(id=1), mocker.MagicMock(id=2), mocker.MagicMock(id=3)
-    ])
+    feature.scenarios.extend(
+        [mocker.MagicMock(id=1), mocker.MagicMock(id=2), mocker.MagicMock(id=3)]
+    )
 
     # when
     scenario_iterator = iter(feature)
@@ -77,7 +77,7 @@ def test_feature_scenario_iterator_empty():
     Test iterating over Scenarios within a Feature when no Scenarios
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
 
     # when
     scenario_iterator = iter(feature)
@@ -87,17 +87,18 @@ def test_feature_scenario_iterator_empty():
         next(scenario_iterator)
 
 
-@pytest.mark.parametrize('scenario_sentences, expected_scenario, found', [
-    (('foo', 'bar'), 'foo', True),
-    (('bar'), 'foo', False),
-    ([], 'foo', False)
-])
-def test_feature_contains_scenario(scenario_sentences, expected_scenario, found, mocker):
+@pytest.mark.parametrize(
+    "scenario_sentences, expected_scenario, found",
+    [(("foo", "bar"), "foo", True), (("bar"), "foo", False), ([], "foo", False)],
+)
+def test_feature_contains_scenario(
+    scenario_sentences, expected_scenario, found, mocker
+):
     """
     Test contains protocol for Feature to check if it contains a Scenario
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add Scenarios to Feature
     for sentence in scenario_sentences:
         feature.scenarios.append(mocker.MagicMock(sentence=sentence))
@@ -109,17 +110,18 @@ def test_feature_contains_scenario(scenario_sentences, expected_scenario, found,
     assert contains is found
 
 
-@pytest.mark.parametrize('scenario_sentences, needle_scenario, expected_scenario', [
-    (('foo', 'bar'), 'foo', 'foo'),
-    (('bar'), 'foo', None),
-    ([], 'foo', None)
-])
-def test_feature_get_scenario_as_item(scenario_sentences, needle_scenario, expected_scenario, mocker):
+@pytest.mark.parametrize(
+    "scenario_sentences, needle_scenario, expected_scenario",
+    [(("foo", "bar"), "foo", "foo"), (("bar"), "foo", None), ([], "foo", None)],
+)
+def test_feature_get_scenario_as_item(
+    scenario_sentences, needle_scenario, expected_scenario, mocker
+):
     """
     Test getitem protocol for Feature to get specific Scenario
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add Scenarios to Feature
     for sentence in scenario_sentences:
         feature.scenarios.append(mocker.MagicMock(sentence=sentence))
@@ -139,17 +141,25 @@ def test_feature_all_scenarios(mocker):
     Test getting expanded list of all Scenarios of a Feature
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add regular Scenarios to Feature
     feature.scenarios.extend([mocker.MagicMock(id=1), mocker.MagicMock(id=2)])
     # add Scenario Outline to Feature
     feature.scenarios.append(
-        mocker.MagicMock(spec=ScenarioOutline, id=3, scenarios=[
-            mocker.MagicMock(id=4), mocker.MagicMock(id=5)]))
+        mocker.MagicMock(
+            spec=ScenarioOutline,
+            id=3,
+            scenarios=[mocker.MagicMock(id=4), mocker.MagicMock(id=5)],
+        )
+    )
     # add Scenario Loop to Feature
     feature.scenarios.append(
-        mocker.MagicMock(spec=ScenarioLoop, id=6, scenarios=[
-            mocker.MagicMock(id=7), mocker.MagicMock(id=8)]))
+        mocker.MagicMock(
+            spec=ScenarioLoop,
+            id=6,
+            scenarios=[mocker.MagicMock(id=7), mocker.MagicMock(id=8)],
+        )
+    )
 
     # when
     all_scenarios = feature.all_scenarios
@@ -171,7 +181,7 @@ def test_feature_constants(mocker):
     Test getting all constants of this Feature
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add constants to Feature context -> this is directly done by the parser
     feature.context.constants = [mocker.MagicMock(value=1), mocker.MagicMock(value=2)]
 
@@ -189,21 +199,27 @@ def test_feature_state(mocker):
     Test the state of a Feature according to the Scenario states
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add regular Scenarios to Feature
     regular_scenario = mocker.MagicMock(state=Step.State.PASSED)
-    feature.scenarios.extend([regular_scenario, mocker.MagicMock(state=Step.State.PASSED)])
+    feature.scenarios.extend(
+        [regular_scenario, mocker.MagicMock(state=Step.State.PASSED)]
+    )
     # add Scenario Outline to Feature
     scenario_outline_example = mocker.MagicMock(state=Step.State.PASSED)
-    scenario_outline = mocker.MagicMock(spec=ScenarioOutline, state=Step.State.PASSED, scenarios=[
-        scenario_outline_example, mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario_outline = mocker.MagicMock(
+        spec=ScenarioOutline,
+        state=Step.State.PASSED,
+        scenarios=[scenario_outline_example, mocker.MagicMock(state=Step.State.PASSED)],
+    )
     feature.scenarios.append(scenario_outline)
     # add Scenario Loop to Feature
     scenario_loop_iteration = mocker.MagicMock(state=Step.State.PASSED)
-    scenario_loop = mocker.MagicMock(spec=ScenarioLoop, state=Step.State.PASSED, scenarios=[
-        scenario_loop_iteration, mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario_loop = mocker.MagicMock(
+        spec=ScenarioLoop,
+        state=Step.State.PASSED,
+        scenarios=[scenario_loop_iteration, mocker.MagicMock(state=Step.State.PASSED)],
+    )
     feature.scenarios.append(scenario_loop)
 
     # when all Scenarios pass then the Feature passes
@@ -248,19 +264,24 @@ def test_feature_state(mocker):
     assert feature.state == Step.State.PASSED
 
 
-@pytest.mark.parametrize('scenario_ids, scenario_choice, expected_has_to_run', [
-    ((1, 2, 3), [], True),
-    ((1, 2, 3), [1], True),
-    ((1, 2, 3), [1, 2, 5], True),
-    ((1, 2, 3), [4], False),
-    ((1, 2, 3), [4, 5], False),
-])
-def test_feature_scenario_has_to_run(scenario_ids, scenario_choice, expected_has_to_run, mocker):
+@pytest.mark.parametrize(
+    "scenario_ids, scenario_choice, expected_has_to_run",
+    [
+        ((1, 2, 3), [], True),
+        ((1, 2, 3), [1], True),
+        ((1, 2, 3), [1, 2, 5], True),
+        ((1, 2, 3), [4], False),
+        ((1, 2, 3), [4, 5], False),
+    ],
+)
+def test_feature_scenario_has_to_run(
+    scenario_ids, scenario_choice, expected_has_to_run, mocker
+):
     """
     Test logic to check whether a Scenario within a Feature has to run or not
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add Scenarios to Feature
     for scenario_id in scenario_ids:
         feature.scenarios.append(mocker.MagicMock(absolute_id=scenario_id))

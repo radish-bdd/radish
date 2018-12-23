@@ -18,12 +18,14 @@ class Step(Model):
     """
         Represents a step
     """
+
     class State(object):
         """
             Represents the step state
 
             FIXME: for the python3 version this should be an Enum
         """
+
         UNTESTED = "untested"
         SKIPPED = "skipped"
         PASSED = "passed"
@@ -73,7 +75,12 @@ class Step(Model):
         """
         sentence = self.expanded_sentence
         if self.context_class:
-            return utils.str_lreplace('and ', self.context_class.capitalize() + ' ', sentence, flags=re.IGNORECASE)
+            return utils.str_lreplace(
+                "and ",
+                self.context_class.capitalize() + " ",
+                sentence,
+                flags=re.IGNORECASE,
+            )
 
         return sentence
 
@@ -90,7 +97,9 @@ class Step(Model):
         """
 
         if not self.definition_func or not callable(self.definition_func):
-            raise RadishError("The step '{0}' does not have a step definition".format(self.sentence))
+            raise RadishError(
+                "The step '{0}' does not have a step definition".format(self.sentence)
+            )
 
     def run(self):
         """
@@ -176,10 +185,14 @@ class Step(Model):
 
         # re-raise exception if the failed
         if new_step.state is Step.State.FAILED:
-            new_step.failure.exception.args = ("Step '{0}' failed: '{1}'".format(sentence, new_step.failure.exception.message),)
+            new_step.failure.exception.args = (
+                "Step '{0}' failed: '{1}'".format(
+                    sentence, new_step.failure.exception.message
+                ),
+            )
             raise new_step.failure.exception
 
-    def embed(self, data, mime_type='text/plain', encode_data_to_base64=True):
+    def embed(self, data, mime_type="text/plain", encode_data_to_base64=True):
         """
             embed data into step
                 - step embedded data can be used for cucumber json reports
@@ -195,4 +208,4 @@ class Step(Model):
         """
         if encode_data_to_base64:
             data = base64.standard_b64encode(data.encode()).decode()
-        self.embeddings.append({'data': data, 'mime_type': mime_type})
+        self.embeddings.append({"data": data, "mime_type": mime_type})

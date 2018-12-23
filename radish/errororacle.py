@@ -11,7 +11,13 @@ from functools import wraps
 import colorful
 
 from .terrain import world
-from .exceptions import RadishError, FeatureFileSyntaxError, StepDefinitionNotFoundError, HookError, SameStepError
+from .exceptions import (
+    RadishError,
+    FeatureFileSyntaxError,
+    StepDefinitionNotFoundError,
+    HookError,
+    SameStepError,
+)
 from .utils import Failure, console_write
 
 
@@ -43,6 +49,7 @@ def error_oracle(func):
     """
         Decorator to diagnose thrown exceptions
     """
+
     @wraps(func)
     def _decorator(*args, **kwargs):
         """

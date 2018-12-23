@@ -17,6 +17,7 @@ class Tag(object):
     """
     Represents a tag for a model
     """
+
     def __init__(self, name, arg=None):
         self.name = name
         self.arg = arg
@@ -36,11 +37,13 @@ class Model(object):
     """
         Represents a base model
     """
+
     class Context(object):
         """
             Represents a Models context.
             For every feature/scenario a new Context object is created
         """
+
         def __init__(self):
             self.constants = []
 
@@ -71,6 +74,10 @@ class Model(object):
             Returns the duration of this model
         """
         if not self.starttime or not self.endtime:
-            raise RadishError("Cannot get duration of {0} '{1}' because either starttime or endtime is not set".format(self.keyword, self.sentence))
+            raise RadishError(
+                "Cannot get duration of {0} '{1}' because either starttime or endtime is not set".format(
+                    self.keyword, self.sentence
+                )
+            )
 
         return self.endtime - self.starttime

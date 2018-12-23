@@ -8,5 +8,4 @@ class Hero(object):
         self.heroname = hero
 
     def __repr__(self):
-        return 'Hero({0}, {1}, {2})'.format(
-            self.forename, self.surname, self.heroname)
+        return "Hero({0}, {1}, {2})".format(self.forename, self.surname, self.heroname)

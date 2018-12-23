@@ -6,10 +6,7 @@ from radish import custom_type
 
 from example.model import Hero
 
-world.heros = [
-    Hero('Peter', 'Parker', 'Spiderman'),
-    Hero('Bruce', 'Wayne', 'Batman')
-]
+world.heros = [Hero("Peter", "Parker", "Spiderman"), Hero("Bruce", "Wayne", "Batman")]
 
 
 @before.each_scenario

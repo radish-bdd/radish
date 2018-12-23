@@ -92,15 +92,16 @@ def test_loading_extension_which_raises_exceptions_init(extensionregistry, mocke
     @extension
     class SimpleExtension(object):
         LOAD_IF = staticmethod(lambda config: True)
+
         def __init__(self):
-            raise AssertionError('some error')
+            raise AssertionError("some error")
 
     # when
     with pytest.raises(AssertionError) as exc:
         extensionregistry.load(mocker.MagicMock())
 
     # then
-    assert str(exc.value) == 'some error'
+    assert str(exc.value) == "some error"
 
 
 def test_loading_simple_extension_if_wanted(extensionregistry, mocker):
@@ -162,13 +163,13 @@ def test_getting_extension_options(extensionregistry, mocker):
     # given
     @extension
     class FooExtension(object):
-        OPTIONS = [('--foo', 'enable foo power')]
+        OPTIONS = [("--foo", "enable foo power")]
 
     @extension
     class BarExtension(object):
         OPTIONS = [
-            ('--bar', 'enable bar power'),
-            ('--bar-pow', 'enable magnitude of bar power')
+            ("--bar", "enable bar power"),
+            ("--bar-pow", "enable magnitude of bar power"),
         ]
 
     @extension
@@ -180,10 +181,16 @@ def test_getting_extension_options(extensionregistry, mocker):
     option_description = extensionregistry.get_option_description()
 
     # then
-    assert options == """[--foo]
+    assert (
+        options
+        == """[--foo]
            [--bar]
            [--bar-pow]"""
+    )
 
-    assert option_description == """--foo                                       enable foo power
+    assert (
+        option_description
+        == """--foo                                       enable foo power
     --bar                                       enable bar power
     --bar-pow                                   enable magnitude of bar power"""
+    )

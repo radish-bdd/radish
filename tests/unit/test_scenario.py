@@ -22,14 +22,23 @@ def test_creating_simple_scenario():
     Test creating a simple Scenario
     """
     # given & when
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=None, background=None)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
 
     # then
     assert scenario.id == 1
-    assert scenario.keyword == 'Scenario'
-    assert scenario.sentence == 'I am a Scenario'
-    assert scenario.path == 'foo.feature'
+    assert scenario.keyword == "Scenario"
+    assert scenario.sentence == "I am a Scenario"
+    assert scenario.path == "foo.feature"
     assert scenario.line == 1
     assert scenario.parent is None
     assert scenario.tags == []
@@ -42,14 +51,25 @@ def test_scenario_state(mocker):
     Test getting the Scenario state according to it's Steps states
     """
     # given
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=None, background=None)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
     # add Steps to this Scenario
-    scenario.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario.steps.extend(
+        [
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+        ]
+    )
     # get the step to modify
     step = scenario.steps[1]
 
@@ -79,18 +99,27 @@ def test_scenario_state_with_background(mocker):
     """
     # given
     background = mocker.MagicMock(steps=[])
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=None, background=background)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=None,
+        background=background,
+    )
     # add Steps to this Scenario
-    scenario.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
     # add Steps to the background
-    background.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    background.steps.extend(
+        [
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+        ]
+    )
     # get the step to modify
     step = background.steps[1]
 
@@ -109,25 +138,36 @@ def test_scenario_all_steps(mocker):
     # given
     background = mocker.MagicMock(all_steps=[])
     precondition_scenario = mocker.MagicMock(all_steps=[])
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=[precondition_scenario], background=background)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=[precondition_scenario],
+        background=background,
+    )
 
     # when
     # add Steps to this Scenario
-    scenario.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
     # add Steps to the Background
-    background.all_steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    background.all_steps.extend(
+        [
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+        ]
+    )
     # add Steps to the precondition Scenario
-    precondition_scenario.all_steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    precondition_scenario.all_steps.extend(
+        [
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+        ]
+    )
 
     # then
     assert len(scenario.all_steps) == 6
@@ -138,22 +178,31 @@ def test_get_scenario_constants():
     Test getting all constants from a Scenario
     """
     # given
-    feature = Feature(1, 'Feature', 'I am a feature', 'foo.feature', 1, tags=None)
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 2, parent=feature,
-                        tags=None, preconditions=None, background=None)
+    feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        2,
+        parent=feature,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
     # add Feature constants
-    feature.context.constants = [('foo', '1'), ('bar', '42')]
+    feature.context.constants = [("foo", "1"), ("bar", "42")]
     # add Scenario constants
-    scenario.context.constants = [('some_foo', '${foo}3'), ('answer', '${bar}')]
+    scenario.context.constants = [("some_foo", "${foo}3"), ("answer", "${bar}")]
 
     # when
     constants = scenario.constants
 
     assert len(constants) == 4
-    assert constants[0] == ('some_foo', '13')
-    assert constants[1] == ('answer', '42')
-    assert constants[2] == ('foo', '1')
-    assert constants[3] == ('bar', '42')
+    assert constants[0] == ("some_foo", "13")
+    assert constants[1] == ("answer", "42")
+    assert constants[2] == ("foo", "1")
+    assert constants[3] == ("bar", "42")
 
 
 def test_scenario_failed_step(mocker):
@@ -162,20 +211,29 @@ def test_scenario_failed_step(mocker):
     """
     # given
     background = mocker.MagicMock(steps=[])
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=None, background=background)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=None,
+        background=background,
+    )
 
     # when
     # add Steps to this Scenario
-    scenario.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
     # add Steps to the Background
-    background.steps.extend([
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED),
-        mocker.MagicMock(state=Step.State.PASSED)
-    ])
+    background.steps.extend(
+        [
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=Step.State.PASSED),
+        ]
+    )
 
     # when no Step failed
     assert scenario.failed_step is None
@@ -197,20 +255,32 @@ def test_scenario_failed_step(mocker):
     assert scenario.failed_step == background.steps[0]
 
 
-@pytest.mark.parametrize('scenario_id, scenario_choice, expected_has_to_run', [
-    (1, [], True),
-    (1, [1], True),
-    (2, [1, 2, 5], True),
-    (1, [4], False),
-    (1, [4, 5], False),
-])
+@pytest.mark.parametrize(
+    "scenario_id, scenario_choice, expected_has_to_run",
+    [
+        (1, [], True),
+        (1, [1], True),
+        (2, [1, 2, 5], True),
+        (1, [4], False),
+        (1, [4, 5], False),
+    ],
+)
 def test_scenario_has_to_run(scenario_id, scenario_choice, expected_has_to_run):
     """
     Test logic to check whether a Scenario has to run or not
     """
     # given
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=None, background=None)
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
     scenario.absolute_id = scenario_id
 
     # when
@@ -225,31 +295,46 @@ def test_scenario_after_parse_logic(mocker):
     Test logic which is used to complete the parsing of Scenario
     """
     # given
-    background = Background(1, 'Background', 'I am a Background', 'foo.feature', 1)
-    precondition_scenario = Scenario(2, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None)
-    scenario = Scenario(1, 'Scenario', 'I am a Scenario', 'foo.feature', 1, parent=None,
-                        tags=None, preconditions=[precondition_scenario], background=background)
+    background = Background(1, "Background", "I am a Background", "foo.feature", 1)
+    precondition_scenario = Scenario(
+        2, "Scenario", "I am a Scenario", "foo.feature", 1, parent=None
+    )
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=None,
+        tags=None,
+        preconditions=[precondition_scenario],
+        background=background,
+    )
     # add Steps to this Scenario
-    scenario.steps.extend([
-        mocker.MagicMock(id=99, as_background=False, as_precondition=False),
-    ])
+    scenario.steps.extend(
+        [mocker.MagicMock(id=99, as_background=False, as_precondition=False)]
+    )
     # set Scenario Step parents
     for step in scenario.steps:
         step.parent = scenario
     # add Steps to the Background
-    background.steps.extend([
-        mocker.MagicMock(id=5, as_background=False, as_precondition=False),
-        mocker.MagicMock(id=6, as_background=False, as_precondition=False),
-        mocker.MagicMock(id=66, as_background=False, as_precondition=False)
-    ])
+    background.steps.extend(
+        [
+            mocker.MagicMock(id=5, as_background=False, as_precondition=False),
+            mocker.MagicMock(id=6, as_background=False, as_precondition=False),
+            mocker.MagicMock(id=66, as_background=False, as_precondition=False),
+        ]
+    )
     # set Background Step parents
     for background_step in background.steps:
         background_step.parent = background
     # add Steps to the precondition Scenario
-    precondition_scenario.steps.extend([
-        mocker.MagicMock(id=5, as_background=False, as_precondition=False),
-        mocker.MagicMock(id=77, as_background=False, as_precondition=False)
-    ])
+    precondition_scenario.steps.extend(
+        [
+            mocker.MagicMock(id=5, as_background=False, as_precondition=False),
+            mocker.MagicMock(id=77, as_background=False, as_precondition=False),
+        ]
+    )
     # set Precondition Scenario Step parents
     for step in precondition_scenario.steps:
         step.parent = precondition_scenario

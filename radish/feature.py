@@ -77,7 +77,9 @@ class Feature(Model):
             Returns the state of the scenario
         """
         for scenario in self.all_scenarios:
-            if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):  # skip scenario outlines
+            if isinstance(
+                scenario, (ScenarioOutline, ScenarioLoop)
+            ):  # skip scenario outlines
                 continue
 
             if not scenario.has_to_run(world.config.scenarios):
@@ -96,6 +98,8 @@ class Feature(Model):
 
         in_choice = False
         if scenario_choice:
-            in_choice = any(s for s in self.scenarios if s.absolute_id in scenario_choice)
+            in_choice = any(
+                s for s in self.scenarios if s.absolute_id in scenario_choice
+            )
 
         return in_choice

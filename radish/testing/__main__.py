@@ -47,12 +47,17 @@ Options:
 (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
     """
 
-    arguments = docopt("radish-test {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__)
+    arguments = docopt(
+        "radish-test {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__
+    )
 
-
-    if arguments['matches']:
-        return test_step_matches_configs(arguments['<match-configs>'],
-             utils.flattened_basedirs(arguments['--basedir']), arguments['--cover-min-percentage'], arguments['--cover-show-missing'])
+    if arguments["matches"]:
+        return test_step_matches_configs(
+            arguments["<match-configs>"],
+            utils.flattened_basedirs(arguments["--basedir"]),
+            arguments["--cover-min-percentage"],
+            arguments["--cover-show-missing"],
+        )
 
 
 if __name__ == "__main__":

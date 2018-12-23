@@ -19,7 +19,9 @@ class SyslogWriter(object):
         systems (Linux), but will not work on Windows.
     """
 
-    OPTIONS = [("--syslog", "log all of your features, scenarios, and steps to the syslog")]
+    OPTIONS = [
+        ("--syslog", "log all of your features, scenarios, and steps to the syslog")
+    ]
     LOAD_IF = staticmethod(lambda config: config.syslog)
     LOAD_PRIORITY = 40
 
@@ -62,62 +64,99 @@ class SyslogWriter(object):
         finally:
             syslog.syslog(syslog.LOG_INFO, message)
 
-    def syslog_writer_before_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_before_all(
+        self, features, marker
+    ):  # pylint: disable=unused-argument
         """
             Opens the syslog
         """
         import syslog
 
         syslog.openlog("radish")
-        self.log(u"begin run {0}".format(marker))
+        self.log("begin run {0}".format(marker))
 
-    def syslog_writer_after_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_after_all(
+        self, features, marker
+    ):  # pylint: disable=unused-argument
         """
             Closes the syslog
         """
         import syslog
 
-        self.log(u"end run {0}".format(marker))
+        self.log("end run {0}".format(marker))
         syslog.closelog()
 
     def syslog_writer_before_each_feature(self, feature):
         """
             Writes the feature to the syslog
         """
-        self.log(u"begin feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
+        self.log(
+            "begin feature {0}:{1} {2}".format(
+                world.config.marker, feature.id, feature.sentence
+            )
+        )
 
     def syslog_writer_after_each_feature(self, feature):
         """
             Writes the feature to the syslog
         """
-        self.log(u"end feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
+        self.log(
+            "end feature {0}:{1} {2}".format(
+                world.config.marker, feature.id, feature.sentence
+            )
+        )
 
     def syslog_writer_before_each_scenario(self, scenario):
         """
             Writes the scenario to the syslog
         """
-        self.log(u"begin scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id,
-                                                          scenario.id, scenario.sentence))
+        self.log(
+            "begin scenario {0}:{1}.{2} {3}".format(
+                world.config.marker,
+                self.get_scenario_feature(scenario).id,
+                scenario.id,
+                scenario.sentence,
+            )
+        )
 
     def syslog_writer_after_each_scenario(self, scenario):
         """
             Writes the scenario to the syslog
         """
-        self.log(u"end scenario {0}:{1}.{2} {3}".format(world.config.marker, self.get_scenario_feature(scenario).id,
-                                                        scenario.id, scenario.sentence))
+        self.log(
+            "end scenario {0}:{1}.{2} {3}".format(
+                world.config.marker,
+                self.get_scenario_feature(scenario).id,
+                scenario.id,
+                scenario.sentence,
+            )
+        )
 
     def syslog_writer_before_each_step(self, step):
         """
             Writes the step to the syslog
         """
         self.log(
-            u"begin step {0}:{1}.{2}.{3} {4}".format(world.config.marker, self.get_scenario_feature(step.parent).id,
-                                                     step.parent.id, step.id, step.sentence))
+            "begin step {0}:{1}.{2}.{3} {4}".format(
+                world.config.marker,
+                self.get_scenario_feature(step.parent).id,
+                step.parent.id,
+                step.id,
+                step.sentence,
+            )
+        )
 
     def syslog_writer_after_each_step(self, step):
         """
             Writes the step to the syslog
         """
-        self.log(u"{0} step {1}:{2}.{3}.{4} {5}".format(step.state, world.config.marker,
-                                                        self.get_scenario_feature(step.parent).id, step.parent.id,
-                                                        step.id, step.sentence))
+        self.log(
+            "{0} step {1}:{2}.{3}.{4} {5}".format(
+                step.state,
+                world.config.marker,
+                self.get_scenario_feature(step.parent).id,
+                step.parent.id,
+                step.id,
+                step.sentence,
+            )
+        )

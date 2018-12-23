@@ -12,7 +12,19 @@ class Scenario(Model):
     """
         Represents a Scenario
     """
-    def __init__(self, id, keyword, sentence, path, line, parent, tags=None, preconditions=None, background=None):
+
+    def __init__(
+        self,
+        id,
+        keyword,
+        sentence,
+        path,
+        line,
+        parent,
+        tags=None,
+        preconditions=None,
+        background=None,
+    ):
         super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = None
         self.preconditions = preconditions or []

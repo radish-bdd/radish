@@ -15,6 +15,7 @@ class FailureInspector(object):
     """
         Failure inspector radish extension
     """
+
     OPTIONS = [("--inspect-after-failure", "start python shell after failure")]
     LOAD_IF = staticmethod(lambda config: config.inspect_after_failure)
     LOAD_PRIORITY = 10
@@ -32,6 +33,8 @@ class FailureInspector(object):
         try:
             from IPython import embed
         except ImportError as e:
-            raise RadishError('if you want to use the failure inspector extension you have to "pip install radish-bdd[ipython-debugger]"')
+            raise RadishError(
+                'if you want to use the failure inspector extension you have to "pip install radish-bdd[ipython-debugger]"'
+            )
 
         embed()

@@ -16,6 +16,7 @@ class FailureDebugger(object):
     """
         Failure debugger radish extension
     """
+
     OPTIONS = [("--debug-after-failure", "start python debugger after failure")]
     LOAD_IF = staticmethod(lambda config: config.debug_after_failure)
     LOAD_PRIORITY = 20

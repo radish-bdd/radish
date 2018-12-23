@@ -140,7 +140,7 @@ Options:
 (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
     """
 
-    warnings.simplefilter('always', DeprecationWarning)
+    warnings.simplefilter("always", DeprecationWarning)
 
     # load extensions
     load_modules(os.path.join(os.path.dirname(__file__), "extensions"))
@@ -152,7 +152,9 @@ Options:
     sys.excepthook = catch_unhandled_exception
 
     # add version to the usage
-    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__)
+    arguments = docopt(
+        "radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__
+    )
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
@@ -169,8 +171,10 @@ Options:
     core = Core()
 
     if world.config.profile:
-        msg = ('Command line argument -p/--profile will be removed in a future version.  Please '
-               'use -u/--user-data instead.')
+        msg = (
+            "Command line argument -p/--profile will be removed in a future version.  Please "
+            "use -u/--user-data instead."
+        )
         warnings.warn(msg, DeprecationWarning, stacklevel=1)
 
     feature_files = []
@@ -192,14 +196,21 @@ Options:
     core.parse_features(feature_files, tag_expression)
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
-        print(colorful.bold_red('Error: ') + colorful.red('please specify at least one feature to run'))
+        print(
+            colorful.bold_red("Error: ")
+            + colorful.red("please specify at least one feature to run")
+        )
         if tag_expression:
-            print(colorful.red('You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run.'))
+            print(
+                colorful.red(
+                    "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run."
+                )
+            )
         return 1
 
     argument_dispatcher = [
         ((lambda: world.config.show), show_features),
-        ((lambda: True), run_features)
+        ((lambda: True), run_features),
     ]
 
     # radish command dispatching

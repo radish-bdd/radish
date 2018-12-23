@@ -27,6 +27,7 @@ class EndreportWriter(object):
     """
         Endreport writer radish extension
     """
+
     LOAD_IF = staticmethod(lambda config: not config.show)
     LOAD_PRIORITY = 50
 
@@ -40,9 +41,30 @@ class EndreportWriter(object):
             :param list features: all features
         """
         stats = {
-            "features": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
-            "scenarios": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
-            "steps": {"amount": 0, "passed": 0, "failed": 0, "skipped": 0, "untested": 0, "pending": 0},
+            "features": {
+                "amount": 0,
+                "passed": 0,
+                "failed": 0,
+                "skipped": 0,
+                "untested": 0,
+                "pending": 0,
+            },
+            "scenarios": {
+                "amount": 0,
+                "passed": 0,
+                "failed": 0,
+                "skipped": 0,
+                "untested": 0,
+                "pending": 0,
+            },
+            "steps": {
+                "amount": 0,
+                "passed": 0,
+                "failed": 0,
+                "skipped": 0,
+                "untested": 0,
+                "pending": 0,
+            },
         }
         pending_steps = []
         duration = timedelta()
@@ -80,7 +102,9 @@ class EndreportWriter(object):
         skipped_word = colorful.cyan("{0} skipped")
         pending_word = colorful.bold_yellow("{0} pending")
 
-        output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
+        output = colorful.bold_white(
+            "{0} features (".format(stats["features"]["amount"])
+        )
         output += passed_word.format(stats["features"]["passed"])
         if stats["features"]["failed"]:
             output += colored_comma + failed_word.format(stats["features"]["failed"])
@@ -91,7 +115,9 @@ class EndreportWriter(object):
         output += colored_closing_paren
 
         output += "\n"
-        output += colorful.bold_white("{} scenarios (".format(stats["scenarios"]["amount"]))
+        output += colorful.bold_white(
+            "{} scenarios (".format(stats["scenarios"]["amount"])
+        )
         output += passed_word.format(stats["scenarios"]["passed"])
         if stats["scenarios"]["failed"]:
             output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
@@ -114,33 +140,60 @@ class EndreportWriter(object):
 
         if pending_steps:
             sr = StepRegistry()
-            pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
-            output += colorful.white("\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
-                len(pending_step_implementations),
-                "s" if len(pending_step_implementations) is not 1 else "",
-                len(pending_steps),
-                "s" if len(pending_steps) is not 1 else "",
-                "\n  ".join(["-  '{0}' @ {1}".format(sr.get_pattern(s.definition_func), get_func_code(s.definition_func).co_filename) for s in pending_step_implementations])
-            ))
+            pending_step_implementations = make_unique_obj_list(
+                pending_steps, lambda x: x.definition_func
+            )
+            output += colorful.white(
+                "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
+                    len(pending_step_implementations),
+                    "s" if len(pending_step_implementations) is not 1 else "",
+                    len(pending_steps),
+                    "s" if len(pending_steps) is not 1 else "",
+                    "\n  ".join(
+                        [
+                            "-  '{0}' @ {1}".format(
+                                sr.get_pattern(s.definition_func),
+                                get_func_code(s.definition_func).co_filename,
+                            )
+                            for s in pending_step_implementations
+                        ]
+                    ),
+                )
+            )
 
         output += "\n"
 
         if world.config.wip:
             if stats["scenarios"]["passed"] > 0:
-                output += colorful.red("\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n")
+                output += colorful.red(
+                    "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n"
+                )
 
                 has_passed_scenarios = False
                 for feature in features:
-                    passed_scenarios = list(filter(lambda s: s.state == Step.State.PASSED, feature.all_scenarios))
+                    passed_scenarios = list(
+                        filter(
+                            lambda s: s.state == Step.State.PASSED,
+                            feature.all_scenarios,
+                        )
+                    )
                     for scenario in passed_scenarios:
-                        output += colorful.red("\n - {}: {}".format(feature.path, scenario.sentence))
+                        output += colorful.red(
+                            "\n - {}: {}".format(feature.path, scenario.sentence)
+                        )
                         has_passed_scenarios = True
 
                 if has_passed_scenarios:
                     output += "\n"
             else:
-                output += colorful.green("\nThe --wip switch was used, so the failures were expected. All is good.\n")
+                output += colorful.green(
+                    "\nThe --wip switch was used, so the failures were expected. All is good.\n"
+                )
 
-        output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
+        output += colorful.cyan(
+            "Run {0} finished within {1}".format(
+                marker, humanize.naturaldelta(duration)
+            )
+        )
 
         write(output)

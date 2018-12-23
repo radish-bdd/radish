@@ -11,11 +11,13 @@ from radish.extensionregistry import extension
 
 __REQUIRED__ = True
 
+
 @extension
 class TimeRecorder(object):
     """
         Time Recorder radish plugin
     """
+
     LOAD_IF = staticmethod(lambda config: not config.show)
     LOAD_PRIORITY = 1
 
@@ -38,7 +40,6 @@ class TimeRecorder(object):
             Sets the starttime of the scenario
         """
         scenario.starttime = datetime.now()
-
 
     def time_recorder_before_each_step(self, step):
         """

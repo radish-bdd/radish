@@ -17,6 +17,7 @@ class HookRegistry(object):
     """
         Represents an object with all registered hooks
     """
+
     def __init__(self):
         self._hooks = {}
         self.reset()
@@ -37,6 +38,7 @@ class HookRegistry(object):
             * @before.all
             * @before.each_feature
         """
+
         def __init__(self, when):
             self._when = when
 
@@ -45,6 +47,7 @@ class HookRegistry(object):
             """
                 Builds the hook decorator
             """
+
             def _decorator(self, *args, **kwargs):
                 """
                     Actual hook decorator
@@ -52,10 +55,12 @@ class HookRegistry(object):
                 if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
                     func = args[0]
                     # hook was called without argument -> legacy!
-                    HookRegistry().register(self._when, what, func)  # pylint: disable=protected-access
+                    HookRegistry().register(
+                        self._when, what, func
+                    )  # pylint: disable=protected-access
                 else:
                     # hook was called with argument
-                    on_tags = kwargs.get('on_tags')
+                    on_tags = kwargs.get("on_tags")
 
                     if on_tags:
                         expr = tagexpressions.parse(on_tags)
@@ -66,6 +71,7 @@ class HookRegistry(object):
                         return f
 
                 return func
+
             _decorator.__name__ = _decorator.fn_name = what
             setattr(cls, what, _decorator)
 
@@ -106,7 +112,6 @@ class HookRegistry(object):
 
         return on_tags([t.name for t in model.all_tags])
 
-
     def call(self, when, what, model, *args, **kwargs):
         """
             Calls a registered hook
@@ -122,6 +127,7 @@ class HookRegistry(object):
             except Exception as e:
                 raise HookError(func, utils.Failure(e))
         return None
+
 
 HookRegistry()
 before = HookRegistry.Hook("before")  # pylint: disable=invalid-name

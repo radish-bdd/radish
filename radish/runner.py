@@ -21,6 +21,7 @@ class Runner(object):
         """
             Handles an runner exit
         """
+
         def _decorator(self, *args, **kwargs):
             """
                 Actual decorator
@@ -29,26 +30,35 @@ class Runner(object):
                 return 1
 
             return func(self, *args, **kwargs)  # pylint: disable=not-callable
+
         return _decorator
 
     def call_hooks(model):  # pylint: disable=no-self-argument
         """
             Call hooks for a specific model
         """
+
         def _decorator(func):
             """
                 The actual decorator
             """
+
             def _wrapper(self, model_instance, *args, **kwargs):
                 """
                     Decorator wrapper
                 """
-                self._hooks.call("before", model, model_instance, *args, **kwargs)  # pylint: disable=protected-access
+                self._hooks.call(
+                    "before", model, model_instance, *args, **kwargs
+                )  # pylint: disable=protected-access
                 try:
                     return func(self, model_instance, *args, **kwargs)
                 finally:
-                    self._hooks.call("after", model, model_instance, *args, **kwargs)  # pylint: disable=protected-access
+                    self._hooks.call(
+                        "after", model, model_instance, *args, **kwargs
+                    )  # pylint: disable=protected-access
+
             return _wrapper
+
         return _decorator
 
     def __init__(self, hooks, early_exit=False, show_only=False):

@@ -4,6 +4,8 @@
     This module provides an extension to write all features, scenarios and steps to the syslog.
 """
 
+from __future__ import unicode_literals
+
 from radish.terrain import world
 from radish.feature import Feature
 from radish.hookregistry import before, after
@@ -72,7 +74,7 @@ class SyslogWriter(object):
         """
         import syslog
 
-        syslog.openlog("radish")
+        syslog.openlog(b"radish")
         self.log("begin run {0}".format(marker))
 
     def syslog_writer_after_all(

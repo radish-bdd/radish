@@ -1,0 +1,24 @@
+- sentence: Given I have the number 5
+  should_match: have_number
+  with_arguments:
+      - number:
+            type: float
+            value: '5.0'
+            cast: yes
+
+- sentence: When I sum them 🎉
+  should_match: sum_numbers
+
+- sentence: When I sum them 🎉
+  should_not_match: have_number
+
+- sentence: When I divide them
+  should_not_match:
+
+- sentence: When I divide them
+  should_not_match: sum_numbers
+
+- sentence: Then I expect the result to be 8
+  should_match: expect_result
+  with_arguments:
+      - result: 8.0

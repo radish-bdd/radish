@@ -6,6 +6,8 @@ if some sentences are matched with the expected
 step implementations.
 """
 
+from __future__ import unicode_literals
+
 import sys
 import codecs
 

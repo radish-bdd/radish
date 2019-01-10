@@ -14,7 +14,7 @@ def have_number(step, number):
     step.context.numbers.append(int(number))
 
 
-@when("I sum them 🎉")
+@when("I sum them µŴ")
 def sum_numbers(step):
     step.context.result = sum(step.context.numbers)
 

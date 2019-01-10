@@ -6,12 +6,12 @@ Feature: Test summing numbers
   Scenario: Sum two numbers
     Given I have the number 5
       And I have the number 3
-    When I sum them 🎉
+    When I sum them µŴ
     Then I expect the result to be 8
 
   Scenario: Sum three numbers
     Given I have the number 5
       And I have the number 3
       And I have the number 2
-    When I sum them 🎉
+    When I sum them µŴ
     Then I expect the result to be 10

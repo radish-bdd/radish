@@ -1,4 +1,4 @@
-- sentence: Given I have the number 5
+- sentence: Given I have the number 5 µŴ
   should_match: have_number
   with_arguments:
       - number:
@@ -6,10 +6,10 @@
             value: '5.0'
             cast: yes
 
-- sentence: When I sum them 🎉
+- sentence: When I sum them µŴ
   should_match: sum_numbers
 
-- sentence: When I sum them 🎉
+- sentence: When I sum them µŴ
   should_not_match: have_number
 
 - sentence: When I divide them

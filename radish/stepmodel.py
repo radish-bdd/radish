@@ -122,7 +122,7 @@ class Step(Model):
             self.failure = utils.Failure(e)
         else:
             if self.state is Step.State.SKIPPED:
-                self.state = Step.State.SKIPPED
+                self.skip()
             elif self.state is not Step.State.PENDING:
                 self.state = Step.State.PASSED
         return self.state
@@ -147,7 +147,7 @@ class Step(Model):
             self.failure = utils.Failure(e)
         else:
             if self.state is Step.State.SKIPPED:
-                self.state = Step.State.SKIPPED
+                self.skip()
             elif self.state is not Step.State.PENDING:
                 self.state = Step.State.PASSED
         return self.state

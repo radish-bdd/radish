@@ -572,6 +572,58 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
       assert len(step.context.database.quotes) == number
 
 
+Step States
+-----------
+
+In some situations it might be required to set the step state manually within a step.
+For e.g. ;
+
+.. code:: cucumber
+
+    ...
+    Scenario: Test quote system
+      Given I have the following quote in target DB
+          """
+          To be or not to be
+          """
+      When I add it to the database
+      Then I expect 1 quotes in the database
+
+To skip the tests if `To be or not to be` quote could not be found:
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   from radish import given, when, then
+
+   @given("I have the following quote in target DB")
+   def have_quote_in_target_db(step):
+
+       ... code that would check the query in the DB
+
+       if query is None:
+            step.skip()
+            return
+
+       step.context.quote = step.text
+
+
+   @when("I add it to the database")
+   def add_quote_to_db(step):
+        if not hasattr(step.context, "quote"):
+            step.skip()
+
+        step.context.database.quotes.append(step.context.quote)
+
+
+   @then("I expect {number:g} quote in the database")
+   def expect_amount_of_quotes(step, number):
+       if not hasattr(step.context, "quote"):
+           step.skip()
+
+       assert len(step.context.database.quotes) == number
+
 .. _tutorial#tags:
 
 Tags

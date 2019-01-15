@@ -586,8 +586,8 @@ For e.g. ;
           """
           To be or not to be
           """
-      When I add it to the database
-      Then I expect 1 quotes in the database
+      When I found 2 quotes in the DB
+      Then I delete one of them
 
 To skip the tests if `To be or not to be` quote could not be found:
 
@@ -606,23 +606,26 @@ To skip the tests if `To be or not to be` quote could not be found:
             step.skip()
             return
 
-       step.context.quote = step.text
+       # Assuming this query includes data that we fetched from DB.
+       # which might be a list of dictionaries.
+       step.context.result = query
 
 
-   @when("I add it to the database")
-   def add_quote_to_db(step):
-        if not hasattr(step.context, "quote"):
+   @when("I found {number:g} quotes in the DB")
+   def found_n_quotes_in_the_db(step, number):
+        if not hasattr(step.context, "result"):
             step.skip()
 
-        step.context.database.quotes.append(step.context.quote)
+        assert len(step.context.result) == number
 
+        step.context.database.delete_id = step.context.result[0]['id']
 
    @then("I expect {number:g} quote in the database")
    def expect_amount_of_quotes(step, number):
-       if not hasattr(step.context, "quote"):
+       if not hasattr(step.context, "result"):
            step.skip()
 
-       assert len(step.context.database.quotes) == number
+       assert an_internal_function_to_delete_db_row(step.context.database.delete_id) is True
 
 .. _tutorial#tags:
 

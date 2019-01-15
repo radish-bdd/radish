@@ -572,8 +572,8 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
       assert len(step.context.database.quotes) == number
 
 
-Step States
------------
+Skipping a Step
+---------------
 
 In some situations it might be required to set the step state manually within a step.
 For e.g. ;

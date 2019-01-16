@@ -572,6 +572,61 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
       assert len(step.context.database.quotes) == number
 
 
+Skipping a Step
+---------------
+
+In some situations it might be required to skip a step under certain conditions.
+For e.g. ;
+
+.. code:: cucumber
+
+    ...
+    Scenario: Test quote system
+      Given I have the following quote in target DB
+          """
+          To be or not to be
+          """
+      When I found 2 quotes in the DB
+      Then I delete one of them
+
+To skip the step if `To be or not to be` quote could not be found:
+
+.. code:: python
+
+   # -*- coding: utf-8 -*-
+
+   from radish import given, when, then
+
+   @given("I have the following quote in target DB")
+   def have_quote_in_target_db(step):
+
+       # code that would check the query in the DB
+
+       if query is None:
+            step.skip()
+            return
+
+       # Assuming this query includes data that we fetched from DB.
+       # which might be a list of dictionaries.
+       step.context.result = query
+
+
+   @when("I found {number:g} quotes in the DB")
+   def found_n_quotes_in_the_db(step, number):
+        if not hasattr(step.context, "result"):
+            step.skip()
+
+        assert len(step.context.result) == number
+
+        step.context.database.delete_id = step.context.result[0]['id']
+
+   @then("I expect {number:g} quote in the database")
+   def expect_amount_of_quotes(step, number):
+       if not hasattr(step.context, "result"):
+           step.skip()
+
+       assert an_internal_function_to_delete_db_row(step.context.database.delete_id) is True
+
 .. _tutorial#tags:
 
 Tags

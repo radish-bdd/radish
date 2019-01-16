@@ -235,6 +235,12 @@ class StepHelper(object):
         """
         raise AssertionError("failing step")
 
+    @staticmethod
+    def step_skip_func(step):
+        """
+        Helper Step Definition Function which skips the step
+        """
+        step.skip()
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
 def test_run_debug_step_function_with_kwargs(debug_or_run, mocker, mock_utils_debugger):
@@ -327,6 +333,35 @@ def test_run_debug_step_function_mark_pending(
 
     # then
     assert state == Step.State.PENDING == step.state
+
+
+@pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
+def test_run_debug_step_function_mark_skipped(
+    debug_or_run, mocker, mock_utils_debugger
+):
+    """
+    Test running/debugging a Step which marks itself as skipped
+    """
+    # given
+    step = Step(
+        1,
+        "I am a Step",
+        "foo.feature",
+        1,
+        parent=None,
+        runable=True,
+        context_class=None,
+    )
+    step.definition_func = StepHelper.step_skip_func
+    step.argument_match = mocker.MagicMock()
+    step.argument_match.evaluate.return_value = (tuple(), {})
+
+    # when
+    method = getattr(step, debug_or_run)
+    state = method()
+
+    # then
+    assert state == Step.State.SKIPPED == step.state
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])

@@ -600,7 +600,7 @@ To skip the tests if `To be or not to be` quote could not be found:
    @given("I have the following quote in target DB")
    def have_quote_in_target_db(step):
 
-       ... code that would check the query in the DB
+       # code that would check the query in the DB
 
        if query is None:
             step.skip()

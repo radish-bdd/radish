@@ -575,7 +575,7 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
 Skipping a Step
 ---------------
 
-In some situations it might be required to set the step state manually within a step.
+In some situations it might be required to skip a step under certain conditions.
 For e.g. ;
 
 .. code:: cucumber

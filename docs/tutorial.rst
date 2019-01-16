@@ -589,7 +589,7 @@ For e.g. ;
       When I found 2 quotes in the DB
       Then I delete one of them
 
-To skip the tests if `To be or not to be` quote could not be found:
+To skip the step if `To be or not to be` quote could not be found:
 
 .. code:: python
 

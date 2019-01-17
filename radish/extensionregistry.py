@@ -4,6 +4,8 @@
     Provide plugin interface for radish extensions
 """
 
+from __future__ import unicode_literals
+
 from singleton import singleton
 
 

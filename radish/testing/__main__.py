@@ -5,6 +5,8 @@ This module provides a script to test the
 radish step implementations
 """
 
+from __future__ import unicode_literals
+
 import sys
 
 import colorful

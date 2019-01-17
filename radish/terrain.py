@@ -4,6 +4,8 @@
     Terrain module providing step overlapping data containers
 """
 
+from __future__ import unicode_literals
+
 import threading
 
 world = threading.local()  # pylint: disable=invalid-name

@@ -4,6 +4,8 @@
     This module provides a class to match the feature file steps with the registered steps from the registry
 """
 
+from __future__ import unicode_literals
+
 import re
 from collections import namedtuple
 

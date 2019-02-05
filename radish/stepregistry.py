@@ -4,6 +4,8 @@
     This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
 
+from __future__ import unicode_literals
+
 import re
 import inspect
 from singleton import singleton

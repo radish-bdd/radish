@@ -4,6 +4,8 @@
     This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
 """
 
+from __future__ import unicode_literals
+
 from datetime import datetime
 
 from radish.hookregistry import after, before

@@ -1,0 +1,68 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mFeature with unicode all over 🐢 and 🐧[22m[39m[26m  # [1m[30mfeatures/unicode.feature[22m[39m[26m
+    [37mRadish shall support unicode[39m[26m
+
+    [1m[37mBackground[22m[39m[26m: [1m[37mA simple Background with 🐢 and 🐧[22m[39m[26m
+        [36mGiven I have the number 5[39m[26m
+        [36mAnd I have the number 3[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mScenario with multiple Steps with 🐢 and 🐧[22m[39m[26m
+[3m[37m      From Background: A simple Background with 🐢 and 🐧
+[23m[39m        [1m[33mGiven I have the number 5[22m[39m[26m
+[A[K        [1m[32mGiven I have the number 5[22m[39m[26m
+        [1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [1m[32mAnd I have the number 3[22m[39m[26m
+[3m[37m      From Scenario
+[23m[39m        [1m[33mGiven I have a Step with 🐢 and 🐧[22m[39m[26m
+[A[K        [1m[32mGiven I have a Step with 🐢 and 🐧[22m[39m[26m
+        [1m[33mWhen I do something[22m[39m[26m
+[A[K        [1m[32mWhen I do something[22m[39m[26m
+        [1m[33mThen I expect something[22m[39m[26m
+[A[K        [1m[32mThen I expect something[22m[39m[26m
+
+    [1m[37mScenario Outline[22m[39m[26m: [1m[37mA Scenario Outline 🐢 and 🐧[22m[39m[26m
+[3m[37m      From Background: A simple Background with 🐢 and 🐧
+[23m[39m        [1m[33mGiven I have the number 5[22m[39m[26m
+[A[K        [36mGiven I have the number 5[39m
+        [1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [36mAnd I have the number 3[39m
+[3m[37m      From Scenario
+[23m[39m        [1m[33mGiven I have the number <x> 🐢 and 🐧[22m[39m[26m
+[A[K        [36mGiven I have the number [39m[37m<x>[39m[36m 🐢 and 🐧[39m
+        [1m[33mAnd I have the number <y>[22m[39m[26m
+[A[K        [36mAnd I have the number [39m[37m<y>[39m[36m[39m
+        [1m[33mWhen I add them up[22m[39m[26m
+[A[K        [36mWhen I add them up[39m
+        [1m[33mThen I expect the sum to be <z>[22m[39m[26m
+[A[K        [36mThen I expect the sum to be [39m[37m<z>[39m[36m[39m
+
+    [1m[37mExamples[22m[39m[26m:
+[1m[37m        | x | y | z  |[22m[39m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m [1m[33m2[22m[39m [1m[37m|[22m[39m[26m [1m[33m11[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[32m1[22m[39m [1m[37m|[22m[39m[26m [1m[32m2[22m[39m [1m[37m|[22m[39m[26m [1m[32m11[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m4[22m[39m [1m[37m|[22m[39m[26m [1m[33m5[22m[39m [1m[37m|[22m[39m[26m [1m[33m17[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[32m4[22m[39m [1m[37m|[22m[39m[26m [1m[32m5[22m[39m [1m[37m|[22m[39m[26m [1m[32m17[22m[39m [1m[37m|[22m[39m[26m
+
+    [1m[37mScenario Loop[22m[39m[26m: [1m[37mThis is a looped Scenario 🐢 and 🐧[22m[39m[26m
+[3m[37m      From Background: A simple Background with 🐢 and 🐧
+[23m[39m        [1m[33mGiven I have the number 5[22m[39m[26m
+[A[K        [36mGiven I have the number 5[39m[26m
+        [1m[33mAnd I have the number 3[22m[39m[26m
+[A[K        [36mAnd I have the number 3[39m[26m
+[3m[37m      From Scenario
+[23m[39m        [1m[33mGiven I have an instable function 🐢 and 🐧[22m[39m[26m
+[A[K        [36mGiven I have an instable function 🐢 and 🐧[39m[26m
+        [1m[33mWhen I execute it[22m[39m[26m
+[A[K        [36mWhen I execute it[39m[26m
+        [1m[33mThen I expect it to pass[22m[39m[26m
+[A[K        [36mThen I expect it to pass[39m[26m
+
+    [1m[37mIterations[22m[39m[26m: [36m2[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m0[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[32m0[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[32m1[22m[39m [1m[37m|[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m5 scenarios ([22m[39m[1m[32m5 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m17 steps ([22m[39m[1m[32m17 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

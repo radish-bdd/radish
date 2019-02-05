@@ -10,6 +10,8 @@
         * Step
 """
 
+from __future__ import unicode_literals
+
 from .exceptions import RadishError
 
 

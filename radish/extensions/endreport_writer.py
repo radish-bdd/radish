@@ -4,6 +4,8 @@
     This radish extension module provide the functionality to write the end report
 """
 
+from __future__ import unicode_literals
+
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
 

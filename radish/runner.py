@@ -4,6 +4,8 @@
     Providing radish core functionality like the feature file Runner.
 """
 
+from __future__ import unicode_literals
+
 from random import shuffle
 
 from .terrain import world

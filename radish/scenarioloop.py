@@ -4,6 +4,8 @@
     This module provides a Scenario type which represents a Scenario loop
 """
 
+from __future__ import unicode_literals
+
 import copy
 
 from .scenario import Scenario

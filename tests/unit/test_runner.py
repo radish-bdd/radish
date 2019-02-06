@@ -144,3 +144,44 @@ def test_run_skip_step_hooks(run_or_skip, hookregistry, mocker):
     # then
     assert before_step_stub.call_count == 1
     assert after_step_stub.call_count == 1
+
+
+def test_should_call_hooks_in_correct_order(hookregistry, mocker):
+    """
+    Test that hooks are called in correct order.
+
+    Correct order meaning:
+        * before hooks: ascending order
+        * after hooks: descending order
+    """
+    # given
+    runner = Runner(hookregistry)
+
+    # register hooks
+    data = []
+
+    def first_before_stub(*args):
+        data.append(1)
+
+    def first_after_stub(*args):
+        data.append(1)
+
+    def second_before_stub(*args):
+        data.append(2)
+
+    def second_after_stub(*args):
+        data.append(2)
+
+    hookregistry.register("before", "each_step", second_before_stub, order=2)
+    hookregistry.register("after", "each_step", second_after_stub, order=2)
+    hookregistry.register("before", "each_step", first_before_stub, order=1)
+    hookregistry.register("after", "each_step", first_after_stub, order=1)
+
+    # setup dummy step
+    step = mocker.MagicMock()
+
+    # when
+    runner.run_step(step)
+
+    # then
+    assert data == [1, 2, 2, 1]

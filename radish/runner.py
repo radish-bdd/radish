@@ -50,13 +50,13 @@ class Runner(object):
                     Decorator wrapper
                 """
                 self._hooks.call(
-                    "before", model, model_instance, *args, **kwargs
+                    "before", model, True, model_instance, *args, **kwargs
                 )  # pylint: disable=protected-access
                 try:
                     return func(self, model_instance, *args, **kwargs)
                 finally:
                     self._hooks.call(
-                        "after", model, model_instance, *args, **kwargs
+                        "after", model, False, model_instance, *args, **kwargs
                     )  # pylint: disable=protected-access
 
             return _wrapper
@@ -165,9 +165,9 @@ class Runner(object):
 
             :param Step step: the step to skip
         """
-        self._hooks.call("before", "each_step", step)
+        self._hooks.call("before", "each_step", True, step)
         step.skip()
-        self._hooks.call("after", "each_step", step)
+        self._hooks.call("after", "each_step", False, step)
 
     def exit(self):
         """

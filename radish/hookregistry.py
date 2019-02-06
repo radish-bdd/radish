@@ -17,6 +17,7 @@ class HookRegistry(object):
     """
         Represents an object with all registered hooks
     """
+    DEFAULT_HOOK_ORDER = 100
 
     def __init__(self):
         self._hooks = {}
@@ -61,13 +62,15 @@ class HookRegistry(object):
                 else:
                     # hook was called with argument
                     on_tags = kwargs.get("on_tags")
+                    order = kwargs.get("order")
 
                     if on_tags:
                         expr = tagexpressions.parse(on_tags)
                         on_tags = lambda tags: expr.evaluate(tags)
 
                     def func(f):
-                        HookRegistry().register(self._when, what, f, on_tags)
+                        HookRegistry().register(
+                            self._when, what, f, order, on_tags)
                         return f
 
                 return func
@@ -82,14 +85,17 @@ class HookRegistry(object):
         for hook in self._hooks.keys():
             self.Hook.build_decorator(hook)
 
-    def register(self, when, what, func, on_tags=None):
+    def register(self, when, what, func, order=None, on_tags=None):
         """
             Registers a function as a hook
         """
+        if order is None:
+            order = self.DEFAULT_HOOK_ORDER
+
         if on_tags is None:
             on_tags = lambda _: True  # if no tags are specified we always return True
 
-        self._hooks[what][when].append((on_tags, func))
+        self._hooks[what][when].append((order, on_tags, func))
 
     def reset(self):
         """
@@ -112,11 +118,11 @@ class HookRegistry(object):
 
         return on_tags([t.name for t in model.all_tags])
 
-    def call(self, when, what, model, *args, **kwargs):
+    def call(self, when, what, ascending, model, *args, **kwargs):
         """
             Calls a registered hook
         """
-        for on_tags, func in self._hooks[what][when]:
+        for _, on_tags, func in sorted(self._hooks[what][when], key=lambda h: h[0], reverse=not ascending):
             if not self.__has_to_run(model, on_tags):
                 # # this hook does not have to run because
                 # # it was excluded due to the tags for this model

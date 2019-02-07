@@ -9,8 +9,10 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-import pytest
 from datetime import datetime
+
+import pytest
+from freezegun import freeze_time
 
 import radish.utils as utils
 
@@ -38,16 +40,19 @@ def test_flattened_basedirs(basedirs, expected_basedirs):
     assert actual_basedirs == expected_basedirs
 
 
-@pytest.mark.parametrize(
-    "datetime, expected_datetime_string",
-    [(datetime(2015, 10, 21, 4, 29), "2015-10-21T04:29:00"), (None, "")],
+@pytest.mark.xfail(
+        reason="freezegun doesn't support calendar.timegm(). "
+               "See https://github.com/spulec/freezegun/issues/287"
 )
-def test_date_time_formater(datetime, expected_datetime_string):
+@freeze_time("2015-10-21 04:29:00", tz_offset=+1)
+def test_date_time_formatter():
     """
     Test datetime to string format
     """
-    # given & when
-    actual_datetime_string = utils.datetime_to_str(datetime)
+    # given
+    utc_dt = datetime.utcnow()
+    expected_datetime_string = "2015-10-21T05:29:00"
+    actual_datetime_string = utils.format_utc_to_local_tz(utc_dt)
 
     # then
     assert actual_datetime_string == expected_datetime_string

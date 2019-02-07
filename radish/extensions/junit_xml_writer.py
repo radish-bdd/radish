@@ -58,8 +58,8 @@ class JUnitXMLWriter(object):
             sentence=model.sentence,
             id=str(model.id),
             result=model.state,
-            starttime=utils.datetime_to_str(model.starttime),
-            endtime=utils.datetime_to_str(model.endtime),
+            starttime=utils.format_utc_to_local_tz(model.starttime),
+            endtime=utils.format_utc_to_local_tz(model.endtime),
             duration=duration,
             testfile=model.path,
         )

@@ -15,6 +15,8 @@ import traceback
 import warnings
 import pydoc
 import itertools
+import calendar
+from datetime import datetime, timedelta
 
 from .compat import PY2, u
 
@@ -101,16 +103,26 @@ def get_debugger():
     return pdb
 
 
-def datetime_to_str(datetime):
+def format_utc_to_local_tz(utc_dt, fmt="%Y-%m-%dT%H:%M:%S"):
     """
-        Returns the datetime object in a defined human readable format.
+    Formats the given UTC datetime as a string converted to the local timezone.
 
-        :param Datetime datetime: the datetime object
+    If the datetime is ``None``, it will return an empty string.
+
+    Args:
+        datetime (Datetime): the UTC based datetime object
+        fmt (str): optional format for the string
     """
-    if not datetime:
+    if not utc_dt:
         return ""
 
-    return datetime.strftime("%Y-%m-%dT%H:%M:%S")
+    def utc_to_local(utc_dt):
+        timestamp = calendar.timegm(utc_dt.timetuple())
+        local_dt = datetime.fromtimestamp(timestamp)
+        assert utc_dt.resolution >= timedelta(microseconds=1)
+        return local_dt.replace(microsecond=utc_dt.microsecond)
+
+    return utc_to_local(utc_dt).strftime(fmt)
 
 
 def make_unique_obj_list(somelist, attr):

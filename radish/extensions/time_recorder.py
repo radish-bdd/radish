@@ -35,34 +35,34 @@ class TimeRecorder(object):
         """
             Sets the starttime of the feature
         """
-        feature.starttime = datetime.now()
+        feature.starttime = datetime.utcnow()
 
     def time_recorder_before_each_scenario(self, scenario):
         """
             Sets the starttime of the scenario
         """
-        scenario.starttime = datetime.now()
+        scenario.starttime = datetime.utcnow()
 
     def time_recorder_before_each_step(self, step):
         """
             Sets the starttime of the step
         """
-        step.starttime = datetime.now()
+        step.starttime = datetime.utcnow()
 
     def time_recorder_after_each_feature(self, feature):
         """
             Sets the endtime of the feature
         """
-        feature.endtime = datetime.now()
+        feature.endtime = datetime.utcnow()
 
     def time_recorder_after_each_scenario(self, scenario):
         """
             Sets the endtime of the scenario
         """
-        scenario.endtime = datetime.now()
+        scenario.endtime = datetime.utcnow()
 
     def time_recorder_after_each_step(self, step):
         """
             Sets the endtime of the step
         """
-        step.endtime = datetime.now()
+        step.endtime = datetime.utcnow()

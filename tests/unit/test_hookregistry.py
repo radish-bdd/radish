@@ -67,10 +67,10 @@ def test_call_hook(hookregistry, mocker):
     hook_call_stub = mocker.stub()
 
     # when & then
-    hookregistry.call("before", "all", mocker.MagicMock(), hook_call_stub)
+    hookregistry.call("before", "all", True, mocker.MagicMock(), hook_call_stub)
     assert hook_call_stub.call_count == 1
 
-    hookregistry.call("before", "each_step", mocker.MagicMock(), hook_call_stub)
+    hookregistry.call("before", "each_step", True, mocker.MagicMock(), hook_call_stub)
     assert hook_call_stub.call_count == 2
 
 
@@ -85,7 +85,7 @@ def test_call_hook_exception(hookregistry, mocker):
 
     # when
     with pytest.raises(errors.HookError) as exc:
-        hookregistry.call("before", "all", mocker.MagicMock())
+        hookregistry.call("before", "all", True, mocker.MagicMock())
 
     # then
     assert exc.match(r".*AssertionError: some error")
@@ -118,19 +118,63 @@ def test_call_hooks_filtered_by_tags(hookregistry, mocker):
 
     # when & then
     # all tags
-    hookregistry.call("after", "all", model, hook_call_stub)
+    hookregistry.call("after", "all", True, model, hook_call_stub)
     assert hook_call_stub.call_count == 1
 
     # only generic & good case
     model.all_tags = [Tag(name="good_case")]
-    hookregistry.call("after", "all", model, hook_call_stub)
+    hookregistry.call("after", "all", True, model, hook_call_stub)
     assert hook_call_stub.call_count == 3
 
     # only generic & bad case
     model.all_tags = [Tag(name="bad_case")]
-    hookregistry.call("after", "all", model, hook_call_stub)
+    hookregistry.call("after", "all", True, model, hook_call_stub)
     assert hook_call_stub.call_count == 5
 
     # good case & bad case because of model list
-    hookregistry.call("after", "all", models, hook_call_stub)
+    hookregistry.call("after", "all", True, models, hook_call_stub)
     assert hook_call_stub.call_count == 8
+
+
+def test_call_before_hooks_in_correct_order(hookregistry, mocker):
+    """
+    Test calling registered hooks in the correct order
+    """
+    # given
+    data = []  # used to capture ordering
+
+    @before.all(order=2)
+    def second_hook(features):
+        data.append(2)
+
+    @before.all(order=1)
+    def first_hook(step):
+        data.append(1)
+
+    # when
+    hookregistry.call("before", "all", True, mocker.MagicMock())
+
+    # then
+    assert data == [1, 2]
+
+
+def test_call_after_hooks_in_correct_order(hookregistry, mocker):
+    """
+    Test calling registered hooks in the correct order
+    """
+    # given
+    data = []  # used to capture ordering
+
+    @after.all(order=2)
+    def second_hook(features):
+        data.append(2)
+
+    @after.all(order=1)
+    def first_hook(step):
+        data.append(1)
+
+    # when
+    hookregistry.call("after", "all", False, mocker.MagicMock())
+
+    # then
+    assert data == [2, 1]

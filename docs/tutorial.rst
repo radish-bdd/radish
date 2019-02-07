@@ -222,8 +222,6 @@ A basic *steps.py* file with some step implementations could look like the follo
 
 .. code:: python
 
-  # -*- coding: utf-8 -*-
-
   from radish import given, when, then
 
   @given("I have the number {number:g}")
@@ -246,8 +244,6 @@ Another way to implement step functions is using an enitre class:
 
 .. code:: python
 
-  # -*- coding: utf-8 -*-
-
   from radish import steps
 
   @steps
@@ -268,8 +264,6 @@ With the ``@steps`` decorator all methods of the given class are registered as s
 If a method inside the call is not a step implementation you can add the method name to the ``ignore`` attribute of this class:
 
 .. code:: python
-
-  # -*- coding: utf-8 -*-
 
   from radish import steps
 
@@ -511,8 +505,6 @@ The *Step Table* can be accessed in the *Step Implementation function* through t
 
 .. code:: python
 
-  # -*- coding: utf-8 -*-
-
   from radish import given, when, then
 
   @given("I have the following users")
@@ -553,8 +545,6 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
 
 .. code:: python
 
-  # -*- coding: utf-8 -*-
-
   from radish import given, when, then
 
   @given("I have the following quote")
@@ -592,8 +582,6 @@ For e.g. ;
 To skip the step if `To be or not to be` quote could not be found:
 
 .. code:: python
-
-   # -*- coding: utf-8 -*-
 
    from radish import given, when, then
 
@@ -699,26 +687,24 @@ A sample use-case I've seen is specifying a base temperature:
 Terrain and Hooks
 -----------------
 
-In addition to the Step implementation radish provides the possibility to implement hooks.
-These hooks are usually placed in a file called *terrain.py* inside the *base directory*.
-Hooks can be used to setup and tear down the Features or Scenarios.
-There are two different hook objects:
+In addition to the Step implementation radish provides the possibility to implement Hooks.
+These Hooks are usually placed in a file called *terrain.py* inside the *base directory*.
+Hooks can be used to setup and tear down the Features, Scenarios or Steps.
+There are two different Hook types:
 
-* before
-* after
+* ``before``
+* ``after``
 
-These can be combined with the following hook subjects:
+These can be combined with the following Hook subjects:
 
-* all
-* each_feature
-* each_scenario
-* each_step
+* ``all``
+* ``each_feature``
+* ``each_scenario``
+* ``each_step``
 
-Hooks are simply registered by adding these hook objects and subjects as decorators to python functions:
+Hooks can be registered by adding these Hook types and subjects as decorators to Python functions:
 
 .. code:: python
-
-   # -*- coding: utf-8 -*-
 
    from radish import before
 
@@ -729,12 +715,10 @@ Hooks are simply registered by adding these hook objects and subjects as decorat
       scenario.context.database = Database(name="foobar")
       scenario.context.database.connect()
 
-The python functions must accept the respective object and in the case of ``all``
+The Python functions must accept the respective model object and in the case of ``all``
 a second argument which is the radish run marker (a unique run id):
 
 .. code:: python
-
-   # -*- coding: utf-8 -*-
 
    from radish import after
 
@@ -742,9 +726,57 @@ a second argument which is the radish run marker (a unique run id):
    def cleanup(features, marker):
       os.remove('foo')
 
-The hooks are called in the order of registration.
+Ordered Hooks
+~~~~~~~~~~~~~
 
-If you are using :ref:`tutorial#tags` you can specify that a certain hook is only
+Sometimes it can be useful to explicitly order your Hooks instead of relying on the registration order.
+Each Hook accepts an optional ``order: int`` keyword argument.
+The Hooks are called in ascending order for all ``before`` Hooks and in descending order for all ``after`` Hooks.
+So for example the following hooks:
+
+
+.. code:: python
+
+   from radish import before, after
+
+   @before.each_step(order=2)
+   def before_second(step):
+      """Will be called as second before hook for each step"""
+      print("BEFORE: 2nd")
+
+   @after.each_step(order=2)
+   def after_second(step):
+      """Will be called as second after hook for each step"""
+      print("AFTER: 2nd")
+
+   @before.each_step(order=1)
+   def before_first(step):
+      """Will be called as first before hook for each step"""
+      print("BEFORE: 1st")
+
+   @after.each_step(order=1)
+   def after_first(step):
+      """Will be called as first after hook for each step"""
+      print("AFTER: 1st")
+
+
+would yield the following output:
+
+.. code::
+
+   BEFORE: 1st
+   BEFORE: 2nd
+   AFTER: 2nd
+   AFTER: 1st
+
+The default order is ``100`` for every Hook and so the order
+depends on the registration order of the Hook
+which corresponds to the import and source code order.
+
+Tagged Hooks
+~~~~~~~~~~~~
+
+If you are using :ref:`tutorial#tags` you can specify that a certain Hook is only
 called for Features, Scenarios or Steps with the according tags.
 
 .. code:: python
@@ -807,8 +839,6 @@ For example ``--bdd-xml`` argument can be accessed using
 
 .. code:: python
 
-   # -*- coding: utf-8 -*-
-
    from radish import world
 
    # print basedir
@@ -824,8 +854,6 @@ object:
 
 .. code:: python
 
-   # -*- coding: utf-8 -*-
-
    from radish import world, pick
    import random
 
@@ -840,8 +868,6 @@ You can use this function later in a step implementation or another hook:
 
 
 .. code:: python
-
-   # -*- coding: utf-8 -*-
 
    from radish import before, world
 

@@ -60,8 +60,8 @@ class BDDXMLWriter(object):
             sentence=model.sentence,
             id=str(model.id),
             result=model.state,
-            starttime=utils.datetime_to_str(model.starttime),
-            endtime=utils.datetime_to_str(model.endtime),
+            starttime=utils.format_utc_to_local_tz(model.starttime),
+            endtime=utils.format_utc_to_local_tz(model.endtime),
             duration=duration,
             testfile=model.path,
         )
@@ -89,8 +89,8 @@ class BDDXMLWriter(object):
 
         testrun_element = etree.Element(
             "testrun",
-            starttime=utils.datetime_to_str(features[0].starttime),
-            endtime=utils.datetime_to_str(features[-1].endtime),
+            starttime=utils.format_utc_to_local_tz(features[0].starttime),
+            endtime=utils.format_utc_to_local_tz(features[-1].endtime),
             duration=str(duration.total_seconds()),
             agent="{0}@{1}".format(getuser(), gethostname()),
         )

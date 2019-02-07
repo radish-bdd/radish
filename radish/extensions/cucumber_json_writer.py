@@ -6,12 +6,8 @@
 
 from __future__ import unicode_literals
 
-from getpass import getuser
-from socket import gethostname
 from datetime import timedelta, datetime
-import re
 import json
-import logging
 
 from radish.terrain import world
 from radish.hookregistry import after
@@ -20,7 +16,6 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-import radish.utils as utils
 
 
 @extension
@@ -53,7 +48,7 @@ class CucumberJSONWriter(object):
                 if feature.starttime is not None:
                     # feature file run not finished
                     if feature.endtime is None:
-                        duration += feature.starttime - datetime.now()
+                        duration += feature.starttime - datetime.utcnow()
                     # feature file run finished
                     else:
                         duration += feature.duration

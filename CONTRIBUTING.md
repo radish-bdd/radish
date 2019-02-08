@@ -40,7 +40,7 @@ virtualenv env
 source env/bin/activate
 pip install -r requirements-dev.txt
 pip install .
-nosetests --rednose -v tests/unit --with-cover --cover-package=radish/
+coverage run -a --source radish -m pytest tests/ -s --failed-first
 ```
 
 ## AUTHORS file

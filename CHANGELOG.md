@@ -7,6 +7,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 *Stay tuned...*
 
 ## [v0.11.0]
+### Fixed
+
+- Markdown project description on pypi.org.
+
+## [v0.11.0]
 ### Added
 
 - Support for Hook ordering. See https://radish.readthedocs.io/en/latest/tutorial.html#ordered-hooks
@@ -194,7 +199,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.11.1...HEAD
+[v0.11.1]: https://github.com/radish-bdd/radish/compare/v0.11.0...v0.11.1
 [v0.11.0]: https://github.com/radish-bdd/radish/compare/v0.10.0...v0.11.0
 [v0.10.0]: https://github.com/radish-bdd/radish/compare/v0.9.2...v0.10.0
 [v0.9.2]: https://github.com/radish-bdd/radish/compare/v0.9.1...v0.9.2

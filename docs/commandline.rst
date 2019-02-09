@@ -40,7 +40,10 @@ containing steps and terrain functions from multiple locations:
 
 Since version v0.7.0 you can use multiple basedirs within one ``-b`` flag split
 by a colon (:). Similar to the possibilities you've got with ``$PATH``.
-This feature is not supported on Windows, because the colon (:) is used in almost any absolute path, e.g. ``C:\foo\bar``.
+On Windows it is not possbile to use a colon (:) because it is used
+in almost any absolute path, e.g. ``C:\foo\bar``.
+Since version v0.11.2 you can use a semicolon (;) on Windows for
+multiple basedirs.
 
 
 Run - Early exit

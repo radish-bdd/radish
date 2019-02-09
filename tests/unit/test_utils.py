@@ -29,6 +29,7 @@ import radish.utils as utils
         ),
         (["foo:", ":bar"], ["foo", "bar"], "posix"),
         (["C:\\windows\\radish"], ["C:\\windows\\radish"], "nt"),
+        (["C:\\windows;radish"], ["C:\\windows", "radish"], "nt"),
     ],
 )
 def test_flattened_basedirs(mocker, basedirs, expected_basedirs, os_name):

@@ -325,14 +325,14 @@ def test_main_cli_calls(
     ]
     cli_args = featurefiles + given_cli_args
 
-    expected_output_file = os.path.join(outputdir, expected_output + ".txt")
+    expected_output_file = os.path.join(outputdir, "unix", expected_output + ".txt")
     if os.name == 'nt':
-        expected_output_file_win = os.path.join(outputdir, expected_output + "-win.txt")
+        expected_output_file_win = os.path.join(outputdir, "windows", expected_output + ".txt")
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
 
-    with open(expected_output_file, "r", encoding="utf8") as output_file:
-        expected_output_string = output_file.read()
+    with open(expected_output_file, "r") as output_file:
+        expected_output_string = output_file.read().decode("UTF-8")
 
     # when
     original_stdout = sys.stdout

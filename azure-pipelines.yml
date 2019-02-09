@@ -8,7 +8,7 @@ trigger:
 
 jobs:
 
-- job: 'Test on Linux'
+- job: 'Test_on_Linux'
   pool:
     vmImage: 'Ubuntu-16.04'
   strategy:
@@ -52,7 +52,7 @@ jobs:
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
 
-- job: 'Test on Windows'
+- job: 'Test_on_Windows'
   pool:
     vmImage: 'vs2017-win2016'
   strategy:

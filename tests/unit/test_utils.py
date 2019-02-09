@@ -18,22 +18,26 @@ import radish.utils as utils
 
 
 @pytest.mark.parametrize(
-    "basedirs, expected_basedirs",
+    "basedirs, expected_basedirs, os_name",
     [
-        (["foo", "bar"], ["foo", "bar"]),
-        (["foo:bar", "foobar"], ["foo", "bar", "foobar"]),
+        (["foo", "bar"], ["foo", "bar"], "posix"),
+        (["foo:bar", "foobar"], ["foo", "bar", "foobar"], "posix"),
         (
             ["foo:bar", "foobar", "one:two:three"],
             ["foo", "bar", "foobar", "one", "two", "three"],
+            "posix"
         ),
-        (["foo:", ":bar"], ["foo", "bar"]),
+        (["foo:", ":bar"], ["foo", "bar"], "posix"),
+        (["C:\\windows\\radish"], ["C:\\windows\\radish"], "nt"),
+        (["C:\\windows;radish"], ["C:\\windows", "radish"], "nt"),
     ],
 )
-def test_flattened_basedirs(basedirs, expected_basedirs):
+def test_flattened_basedirs(mocker, basedirs, expected_basedirs, os_name):
     """
     Test flatten basedirs
     """
     # given & when
+    mocker.patch("os.name", os_name)
     actual_basedirs = utils.flattened_basedirs(basedirs)
 
     # then

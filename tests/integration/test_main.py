@@ -10,6 +10,7 @@
 """
 
 import os
+import io
 import sys
 import tempfile
 
@@ -331,8 +332,10 @@ def test_main_cli_calls(
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
 
-    with open(expected_output_file, "r") as output_file:
-        expected_output_string = output_file.read().decode("UTF-8")
+
+    with io.open(expected_output_file, "r", encoding="utf8") as output_file:
+            expected_output_string = output_file.read()
+
 
     # when
     original_stdout = sys.stdout

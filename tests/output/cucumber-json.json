@@ -1,0 +1,101 @@
+[
+    {
+        "description": "",
+        "elements": [
+            {
+                "description": "",
+                "id": "1",
+                "keyword": "Scenario",
+                "line": 5,
+                "name": "Middle step failure - skipped step on the end",
+                "steps": [
+                    {
+                        "keyword": "Given",
+                        "line": 6,
+                        "name": "Given I have the number 1",
+                        "result": {
+                            "duration": 343000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "And",
+                        "line": 7,
+                        "name": "And I have the number 2",
+                        "result": {
+                            "duration": 156000.0,
+                            "status": "passed"
+                        }
+                    },
+                    {
+                        "keyword": "When",
+                        "line": 8,
+                        "name": "When I add them up with failure",
+                        "result": {
+                            "duration": 850000.0,
+                            "error_message": "Unable to add numbers: [1, 2]",
+                            "status": "failed"
+                        }
+                    },
+                    {
+                        "keyword": "Then",
+                        "line": 9,
+                        "name": "Then I expect the sum to be 42",
+                        "result": {
+                            "duration": 73000.0,
+                            "status": "skipped"
+                        }
+                    }
+                ],
+                "tags": [
+                    {
+                        "line": 4,
+                        "name": "@scenario_tag"
+                    }
+                ],
+                "type": "scenario"
+            },
+            {
+                "description": "",
+                "id": "2",
+                "keyword": "Scenario",
+                "line": 11,
+                "name": "Generate cucumber json report in middle of scenario execution",
+                "steps": [
+                    {
+                        "keyword": "When",
+                        "line": 12,
+                        "name": "When generate cucumber report",
+                        "result": {
+                            "duration": 0.0,
+                            "status": "skipped"
+                        }
+                    },
+                    {
+                        "keyword": "Then",
+                        "line": 13,
+                        "name": "Then genreated cucumber json equals to \"cucumber-json.json\"",
+                        "result": {
+                            "duration": 0.0,
+                            "status": "pending"
+                        }
+                    }
+                ],
+                "tags": [],
+                "type": "scenario"
+            }
+        ],
+        "id": "1",
+        "keyword": "Feature",
+        "line": 2,
+        "name": "Cucumber json report generation",
+        "tags": [
+            {
+                "line": 1,
+                "name": "@feature_tag"
+            }
+        ],
+        "type": "feature",
+        "uri": "/github/radish/tests/features/cucumber-json.feature"
+    }
+]

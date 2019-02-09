@@ -1,0 +1,19 @@
+Feature[26m: Support Scenario Outlines[26m  # features\scenario-outline.feature[26m
+    Radish shall support parsing
+    of Scenario Outlines with valid Examples[26m
+
+    Scenario Outline[26m: A Scenario Outline[26m
+        Given I have the number <x>
+        And I have the number <y>
+        When I add them up
+        Then I expect the sum to be <z>
+
+    Examples[26m:
+        | x | y | z |
+        |[26m 1 |[26m 2 |[26m 3 |[26m
+        |[26m 4 |[26m 5 |[26m 9 |[26m
+
+1 features (1 passed)
+2 scenarios (2 passed)
+8 steps (8 passed)
+Run test-marker finished within a moment

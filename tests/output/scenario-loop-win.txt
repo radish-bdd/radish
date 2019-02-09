@@ -1,0 +1,29 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mSupport Scenario Loop[22m[39m[26m  # [1m[30mfeatures\scenario-loop.feature[22m[39m[26m
+    [37mRadish shall support Scenario Loops.[39m[26m
+
+    [1m[37mScenario Loop[22m[39m[26m: [1m[37mThis is a looped Scenario[22m[39m[26m
+
+        [1m[33mGiven I have an instable function[22m[39m[26m
+
+[A[K        [36mGiven I have an instable function[39m[26m
+
+        [1m[33mWhen I execute it[22m[39m[26m
+
+[A[K        [36mWhen I execute it[39m[26m
+
+        [1m[33mThen I expect it to pass[22m[39m[26m
+
+[A[K        [36mThen I expect it to pass[39m[26m
+
+    [1m[37mIterations[22m[39m[26m: [36m2[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m0[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32m0[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32m1[22m[39m [1m[37m|[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m6 steps ([22m[39m[1m[32m6 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

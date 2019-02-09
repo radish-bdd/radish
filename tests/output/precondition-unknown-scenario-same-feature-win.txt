@@ -1,0 +1,7 @@
+[1m[31mError[22m[39m[26m: [31mCannot import precondition scenario 'Unknown Scenario' from feature 'features\precondition-unknown-scenario-same-feature.feature': No such scenario
+
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[39m[26m

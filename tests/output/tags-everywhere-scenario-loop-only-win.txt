@@ -1,0 +1,32 @@
+[36m@foo
+[39m[36m@bar
+[39m[1m[37mFeature[22m[39m[26m: [1m[37mSupport Tags everywhere[22m[39m[26m  # [1m[30mfeatures\tags-everywhere.feature[22m[39m[26m
+    [37mRadish shall support tags everywhere![39m[26m
+
+[36m    @scenario_loop
+[39m    [1m[37mScenario Loop[22m[39m[26m: [1m[37mScenario Loop with Tags[22m[39m[26m
+
+        [1m[33mGiven I have a Step[22m[39m[26m
+
+[A[K        [36mGiven I have a Step[39m[26m
+
+        [1m[33mWhen I do something[22m[39m[26m
+
+[A[K        [36mWhen I do something[39m[26m
+
+        [1m[33mThen I expect something[22m[39m[26m
+
+[A[K        [36mThen I expect something[39m[26m
+
+    [1m[37mIterations[22m[39m[26m: [36m2[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m0[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32m0[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32m1[22m[39m [1m[37m|[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m6 steps ([22m[39m[1m[32m6 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

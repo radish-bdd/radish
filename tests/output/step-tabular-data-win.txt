@@ -1,0 +1,40 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mStep Tabular Data[22m[39m[26m  # [1m[30mfeatures\step-tabular-data.feature[22m[39m[26m
+    [37mRadish shall support tubular data
+    for a specific step[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mTabular Data for a Step[22m[39m[26m
+
+        [1m[33mGiven I have the following heros[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mfirstname[39m [1m[37m|[22m[39m[26m [37msurname[39m [1m[37m|[22m[39m[26m [37mheroname [39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[33mBruce    [22m[39m [1m[37m|[22m[39m[26m [1m[33mWayne  [22m[39m [1m[37m|[22m[39m[26m [1m[33mBatman   [22m[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[33mPeter    [22m[39m [1m[37m|[22m[39m[26m [1m[33mParker [22m[39m [1m[37m|[22m[39m[26m [1m[33mSpiderman[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K
+[A[K
+[A[K
+[A[K        [1m[32mGiven I have the following heros[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mfirstname[39m [1m[37m|[22m[39m[26m [37msurname[39m [1m[37m|[22m[39m[26m [37mheroname [39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[32mBruce    [22m[39m [1m[37m|[22m[39m[26m [1m[32mWayne  [22m[39m [1m[37m|[22m[39m[26m [1m[32mBatman   [22m[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[32mPeter    [22m[39m [1m[37m|[22m[39m[26m [1m[32mParker [22m[39m [1m[37m|[22m[39m[26m [1m[32mSpiderman[22m[39m [1m[37m|[22m[39m[26m
+
+        [1m[33mWhen I capitalize their first name[22m[39m[26m
+
+[A[K        [1m[32mWhen I capitalize their first name[22m[39m[26m
+
+        [1m[33mThen I have the following names[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mcap_heroname[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[33mBRUCE       [22m[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[33mPETER       [22m[39m [1m[37m|[22m[39m[26m
+
+[A[K
+[A[K
+[A[K
+[A[K        [1m[32mThen I have the following names[22m[39m[26m
+          [1m[37m|[22m[39m[26m [37mcap_heroname[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[32mBRUCE       [22m[39m [1m[37m|[22m[39m[26m
+          [1m[37m|[22m[39m[26m [1m[32mPETER       [22m[39m [1m[37m|[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

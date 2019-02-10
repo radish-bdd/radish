@@ -1,0 +1,7 @@
+[1m[31mError[22m[39m[26m: [31mScenario with name 'A great name for a Scenario' defined twice in feature 'features\scenario-sentence-duplicate.feature'
+
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[39m[26m

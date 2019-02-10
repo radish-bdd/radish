@@ -1,0 +1,20 @@
+[1m[30mfeatures\everything_with_failures.feature[22m[39m: ..FFF..
+
+[1m[31mFailures:[22m[39m
+features\everything_with_failures.feature: Subtract numbers wrongly
+    [31mThen I expect the difference to be 3[39m[26m
+      [1m[31mAttributeError[22m[39m[26m: [31m'int' object has no attribute 'step'[39m[26m
+
+features\everything_with_failures.feature: A Scenario Outline - row 0
+    [31mThen I expect the sum to be 3[39m[26m
+      [1m[31mAssertionError[22m[39m[26m: [31mThe expected sum 3 does not match actual sum 11[39m[26m
+
+features\everything_with_failures.feature: A Scenario Outline - row 1
+    [31mThen I expect the sum to be 9[39m[26m
+      [1m[31mAssertionError[22m[39m[26m: [31mThe expected sum 9 does not match actual sum 17[39m[26m
+
+
+[1m[37m1 features ([22m[39m[1m[32m0 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m7 scenarios ([22m[39m[1m[32m4 passed[22m[39m[1m[37m, [22m[39m[1m[31m3 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m20 steps ([22m[39m[1m[32m17 passed[22m[39m[1m[37m, [22m[39m[1m[31m3 failed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

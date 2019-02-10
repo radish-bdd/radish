@@ -1,0 +1,30 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mStep Text Data[22m[39m[26m  # [1m[30mfeatures\step-text-data.feature[22m[39m[26m
+    [37mRadish shall support Step Text Data[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mA Step with Text[22m[39m[26m
+
+        [1m[33mGiven I have the following quote[22m[39m[26m[1m[37m
+            """[22m[39m[36m
+                To be or not to be[39m[1m[37m
+            """[22m[39m
+
+[A[K
+[A[K
+[A[K
+[A[K        [1m[32mGiven I have the following quote[22m[39m[26m[1m[37m
+            """[22m[39m[36m
+                To be or not to be[39m[1m[37m
+            """[22m[39m
+
+        [1m[33mWhen I look for it's author[22m[39m[26m
+
+[A[K        [1m[32mWhen I look for it's author[22m[39m[26m
+
+        [1m[33mThen I will find Shakespeare[22m[39m[26m
+
+[A[K        [1m[32mThen I will find Shakespeare[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

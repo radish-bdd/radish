@@ -1,0 +1,45 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mBackground for Scenario Outline[22m[39m[26m  # [1m[30mfeatures\background-scenariooutline.feature[22m[39m[26m
+    [37mRadish shall support Backgrounds for
+    Scenario Outlines.
+    The Background shall be assigned to
+    each Example Scenario.[39m[26m
+
+    [1m[37mBackground[22m[39m[26m: [1m[37mA simple Background[22m[39m[26m
+
+        [36mGiven I have the number 5[39m[26m
+
+        [36mAnd I have the number 3[39m[26m
+
+    [1m[37mScenario Outline[22m[39m[26m: [1m[37mAdd numbers[22m[39m[26m
+[3m[37m      From Background: A simple Background
+[23m[39m
+        [1m[33mGiven I have the number 5[22m[39m[26m
+
+[A[K        [36mGiven I have the number 5[39m
+
+        [1m[33mAnd I have the number 3[22m[39m[26m
+
+[A[K        [36mAnd I have the number 3[39m
+[3m[37m      From Scenario
+[23m[39m
+        [1m[33mWhen I <operator> them up[22m[39m[26m
+
+[A[K        [36mWhen I [39m[37m<operator>[39m[36m them up[39m
+
+        [1m[33mThen I expect the <result_name> to be <result>[22m[39m[26m
+
+[A[K        [36mThen I expect the [39m[37m<result_name>[39m[36m to be [39m[37m<result>[39m[36m[39m
+
+    [1m[37mExamples[22m[39m[26m:
+[1m[37m        | operator | result_name | result |[22m[39m
+        [1m[37m|[22m[39m[26m [1m[33madd     [22m[39m [1m[37m|[22m[39m[26m [1m[33msum        [22m[39m [1m[37m|[22m[39m[26m [1m[33m8     [22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32madd     [22m[39m [1m[37m|[22m[39m[26m [1m[32msum        [22m[39m [1m[37m|[22m[39m[26m [1m[32m8     [22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33msubtract[22m[39m [1m[37m|[22m[39m[26m [1m[33mdifference [22m[39m [1m[37m|[22m[39m[26m [1m[33m2     [22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32msubtract[22m[39m [1m[37m|[22m[39m[26m [1m[32mdifference [22m[39m [1m[37m|[22m[39m[26m [1m[32m2     [22m[39m [1m[37m|[22m[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
+[1m[37m4 steps ([22m[39m[1m[32m4 passed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

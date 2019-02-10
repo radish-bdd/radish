@@ -1,0 +1,34 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mAdd some numbers[22m[39m[26m  # [1m[30mfeatures\failing-scenario-outline.feature[22m[39m[26m[37m[39m[26m
+
+    [1m[37mScenario Outline[22m[39m[26m: [1m[37mAdd some numbers[22m[39m[26m
+
+        [1m[33mGiven I have the number <x>[22m[39m[26m
+
+[A[K        [36mGiven I have the number [39m[37m<x>[39m[36m[39m
+
+        [1m[33mAnd I have the number <y>[22m[39m[26m
+
+[A[K        [36mAnd I have the number [39m[37m<y>[39m[36m[39m
+
+        [1m[33mWhen I add them up[22m[39m[26m
+
+[A[K        [36mWhen I add them up[39m
+
+        [1m[33mThen I expect the sum to be <z>[22m[39m[26m
+
+[A[K        [36mThen I expect the sum to be [39m[37m<z>[39m[36m[39m
+
+    [1m[37mExamples[22m[39m[26m:
+[1m[37m        | x | y | z  |[22m[39m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m [1m[33m2[22m[39m [1m[37m|[22m[39m[26m [1m[33m3 [22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[32m1[22m[39m [1m[37m|[22m[39m[26m [1m[32m2[22m[39m [1m[37m|[22m[39m[26m [1m[32m3 [22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m4[22m[39m [1m[37m|[22m[39m[26m [1m[33m5[22m[39m [1m[37m|[22m[39m[26m [1m[33m42[22m[39m [1m[37m|[22m[39m[26m
+
+[A[K        [1m[37m|[22m[39m[26m [1m[31m4[22m[39m [1m[37m|[22m[39m[26m [1m[31m5[22m[39m [1m[37m|[22m[39m[26m [1m[31m42[22m[39m [1m[37m|[22m[39m[26m
+          [1m[31mAssertionError[22m[39m[26m: [31mThe expected sum 42 does not match actual sum 9[39m[26m
+
+[1m[37m1 features ([22m[39m[1m[32m0 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m2 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[1m[37m8 steps ([22m[39m[1m[32m7 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m
+[36mRun test-marker finished within a moment[39m

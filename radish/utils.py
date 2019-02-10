@@ -50,6 +50,10 @@ def console_write(text):
     if PY2 and isinstance(text, unicode):
         text = text.encode("utf-8")
 
+    #FIXME: unicode on Windows is not cool 
+    if os.name == 'nt':
+        text = text.encode('cp1252', errors='replace').decode('cp1252')
+
     print(text)
 
 

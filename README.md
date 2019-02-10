@@ -9,10 +9,8 @@
 [![Gitter](https://badges.gitter.im/radish-bdd/radish.svg)](https://gitter.im/radish-bdd/radish?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <br>
 [![Build Status](https://dev.azure.com/radish-bdd/radish/_apis/build/status/radish-bdd.radish?branchName=master)](https://dev.azure.com/radish-bdd/radish/_build/latest?definitionId=1&branchName=master)
-[![codecov.io](https://codecov.io/github/radish-bdd/radish/coverage.svg?branch=master)](https://codecov.io/github/radish-bdd/radish?branch=master)
 [![Code Health](https://landscape.io/github/radish-bdd/radish/master/landscape.svg?style=flat)](https://landscape.io/github/radish-bdd/radish/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
-[![Updates](https://pyup.io/repos/github/radish-bdd/radish/shield.svg)](https://pyup.io/repos/github/radish-bdd/radish/)
 <br>
 [![PyPI version](https://badge.fury.io/py/radish-bdd.svg)](https://badge.fury.io/py/radish-bdd)
 [![Python 3](https://pyup.io/repos/github/radish-bdd/radish/python-3-shield.svg)](https://pyup.io/repos/github/radish-bdd/radish/)

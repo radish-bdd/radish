@@ -18,7 +18,7 @@ import itertools
 import calendar
 from datetime import datetime, timedelta
 
-from .compat import PY2, u
+from .compat import u
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -45,16 +45,9 @@ def console_write(text):
     """
         Writes the given text to the console
 
-        If the --no-colors flag is given all colors are removed from the text
+        :param str text: the text which is printed to the console
     """
-    if PY2 and isinstance(text, unicode):
-        text = text.encode("utf-8")
-
-    #FIXME: unicode on Windows is not cool 
-    if os.name == 'nt':
-        text = text.encode('cp1252', errors='replace').decode('cp1252')
-
-    print(text)
+    print(u(text))
 
 
 def expandpath(path):

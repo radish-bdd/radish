@@ -6,7 +6,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
-## [v0.11.0]
+## [v0.12.0]
+### Added
+
+- Support multiple base paths on Windows.
+
+## [v0.11.1]
 ### Fixed
 
 - Markdown project description on pypi.org.
@@ -199,7 +204,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.11.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.12.0...HEAD
+[v0.12.0]: https://github.com/radish-bdd/radish/compare/v0.11.1...v0.12.0
 [v0.11.1]: https://github.com/radish-bdd/radish/compare/v0.11.0...v0.11.1
 [v0.11.0]: https://github.com/radish-bdd/radish/compare/v0.10.0...v0.11.0
 [v0.10.0]: https://github.com/radish-bdd/radish/compare/v0.9.2...v0.10.0

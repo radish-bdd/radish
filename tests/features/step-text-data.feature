@@ -8,3 +8,21 @@ Feature: Step Text Data
             """
         When I look for it's author
         Then I will find Shakespeare
+
+    Scenario: YAML definition in Step with Text
+        When YAML specification is set to
+          """
+          version: '3'
+          services:
+            webapp:
+              build: ./dir
+          """
+        Then YAML specification contains proper data
+
+    Scenario: A step with text on endigs
+         When YAML specification is set to
+            """version: '3'
+            services:
+              webapp:
+                build: ./dir"""
+          Then YAML specification contains proper data

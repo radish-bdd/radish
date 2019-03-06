@@ -182,3 +182,16 @@ def proper_cucumber_json_is_generated(step, expected_json_file):
             f_expected_cucumber_json, object_hook=remove_changing
         )
     assert cucumber_json == expected_cucumber_json
+
+
+@when("YAML specification is set to")
+def yaml_specification_is_set_to(step):
+    step.context.doc_text = step.text
+
+@then("YAML specification contains proper data")
+def yaml_specification_contains_correct_data(step):
+    expected_data = """version: '3'
+services:
+  webapp:
+    build: ./dir"""
+    assert step.context.doc_text == expected_data, '"{}" != "{}"'.format(step.context.doc_text, expected_data)

@@ -13,6 +13,7 @@ import re
 import json
 import filecmp
 import copy
+import string
 
 from .compat import RecursionError
 from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
@@ -106,7 +107,9 @@ class FeatureParser(object):
         #  it's context class is 'Given'. This is used to correctly
         #  match the 'And' sentences
         self._current_context_class = None
-        self._in_step_text = False
+        # used to save text indention 
+        # - negative number indicates that there is now step text parsing 
+        self._in_step_text_index = -1
         self.feature = None
 
         self._load_language(language)
@@ -145,11 +148,11 @@ class FeatureParser(object):
         with io.open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
-                line = line.strip()
-                if not line:  # line is empty
+                line_strip = line.strip()
+                if not line_strip:  # line is empty
                     continue
 
-                if line.startswith("#"):
+                if line_strip.startswith("#"):
                     # try to detect feature file language
                     language = self._detect_language(line)
                     if language:
@@ -158,12 +161,12 @@ class FeatureParser(object):
                     continue
 
                 if self.feature:
-                    if self._detect_feature(line):
+                    if self._detect_feature(line_strip):
                         raise FeatureFileSyntaxError(
                             "radish supports only one Feature per feature file"
                         )
 
-                    if self._detect_background(line):
+                    if self._detect_background(line_strip):
                         if self.feature.background:
                             raise FeatureFileSyntaxError(
                                 "The Background block may only appear once in a Feature"
@@ -219,6 +222,7 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line = line.strip()
         detected_feature = self._detect_feature(line)
         if not detected_feature:
             tag = self._detect_tag(line)
@@ -251,6 +255,7 @@ class FeatureParser(object):
 
         :param str line: the line to parse the background
         """
+        line = line.strip()
         detected_background = self._detect_background(line)
         if detected_background is None:
             # try to find a scenario
@@ -278,6 +283,7 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line = line.strip()
         detected_scenario = self._detect_scenario(line)
         scenario_type = Scenario
         keywords = (self.keywords.scenario,)
@@ -376,6 +382,7 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line = line.strip()
         if not isinstance(self._current_scenario, ScenarioOutline):
             raise FeatureFileSyntaxError(
                 "Scenario does not support Examples. Use 'Scenario Outline'"
@@ -393,6 +400,7 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line = line.strip()
         # detect next keyword
         if self._detect_scenario_type(line):
             self._current_scenario.after_parse()
@@ -412,25 +420,26 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line_strip = line.strip()
         # detect next keyword
-        if self._detect_scenario_type(line):
+        if self._detect_scenario_type(line_strip):
             self._current_scenario.after_parse()
-            return self._parse_scenario(line)
+            return self._parse_scenario(line_strip)
 
-        if self._detect_step_text(line):
+        if self._detect_step_text(line_strip):
             self._current_state = self.State.STEP_TEXT
             return self._parse_step_text(line)
 
-        if self._detect_table(line):
-            self._parse_table(line)
+        if self._detect_table(line_strip):
+            self._parse_table(line_strip)
             return True
 
-        if self._detect_examples(line):
+        if self._detect_examples(line_strip):
             self._current_state = FeatureParser.State.EXAMPLES
             return True
 
         # get context class
-        step_context_class = line.split()[0].lower()
+        step_context_class = line_strip.split()[0].lower()
         if step_context_class in FeatureParser.CONTEXT_CLASSES:
             self._current_context_class = step_context_class
 
@@ -440,7 +449,7 @@ class FeatureParser(object):
         )
         step = Step(
             step_id,
-            line,
+            line_strip,
             self._featurefile,
             self._current_line,
             self._current_scenario,
@@ -456,6 +465,7 @@ class FeatureParser(object):
 
             :param string line: the line to parse from
         """
+        line = line.strip()
         if not self._current_scenario.steps:
             raise FeatureFileSyntaxError(
                 "Found step table without previous step definition on line {0}".format(
@@ -481,17 +491,32 @@ class FeatureParser(object):
 
             :param str line: the line to parse
         """
-        if line.startswith('"""') and not self._in_step_text:
-            self._in_step_text = True
-            line = line[3:]
 
-        if line.endswith('"""') and self._in_step_text:
+        def dedent(_str):
+            ret_line = ''
+            for char_index in range(len(_str)):
+                if not ret_line and char_index < self._in_step_text_index and _str[char_index] in string.whitespace:
+                    continue
+                else:
+                    ret_line += _str[char_index]
+            return ret_line.rstrip()
+
+        line_strip = line.strip()
+        if line_strip.startswith('"""') and self._in_step_text_index == -1:
+            self._in_step_text_index = line.index('"')
+            line_strip = line_strip[3:]
+            if line_strip:
+                self._current_scenario.steps[-1].raw_text.append(line_strip.rstrip())
+        elif line_strip.endswith('"""') and self._in_step_text_index >= 0:
             self._current_state = self.State.STEP
-            self._in_step_text = False
-            line = line[:-3]
-
-        if line:
-            self._current_scenario.steps[-1].raw_text.append(line.strip())
+            line = line.rstrip()[:-3]
+            line_dedent = dedent(line)
+            self._in_step_text_index = -1
+            if line_dedent:
+                self._current_scenario.steps[-1].raw_text.append(line_dedent)
+        else:
+            line_dedent = dedent(line)
+            self._current_scenario.steps[-1].raw_text.append(line_dedent)
         return True
 
     def _parse_precondition(self, arguments):
@@ -577,6 +602,7 @@ class FeatureParser(object):
         """
         Parses the next lines until the next scenario is reached
         """
+        line = line.strip()
         if self._detect_scenario_type(line):
             return self._parse_scenario(line)
 

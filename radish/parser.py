@@ -11,7 +11,6 @@ import filecmp
 import copy
 import string
 
-from .compat import RecursionError
 from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
 from .feature import Feature
 from .scenario import Scenario

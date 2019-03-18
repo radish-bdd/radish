@@ -4,9 +4,6 @@
     This radish extension provides the functionality to write the feature file run to the console.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import sys
 import colorful as cf
 

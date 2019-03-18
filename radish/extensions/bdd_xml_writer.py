@@ -4,8 +4,6 @@
     This module provides a hook which generates a BDD XML result file at the end of the run.
 """
 
-from __future__ import unicode_literals
-
 from getpass import getuser
 from socket import gethostname
 from datetime import timedelta

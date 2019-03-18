@@ -5,8 +5,6 @@
     One Feature file parser instance is able to parse one feature file.
 """
 
-from __future__ import unicode_literals
-
 import os
 import io
 import re

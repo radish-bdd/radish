@@ -14,7 +14,6 @@ from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location, locate
-from radish.compat import u
 
 
 def test_step_matches_configs(
@@ -206,7 +205,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
             output_failure(result.func, argument_errors)
             return False
 
-    print(u(colorful.bold_green("✔")))
+    print(str(colorful.bold_green("✔")))
     return True
 
 
@@ -238,7 +237,7 @@ def test_step_not_match(sentence, expected_not_matching_step, steps):
             )
             return False
 
-    print(u(colorful.bold_green("✔")))
+    print(colorful.bold_green("✔"))
     return True
 
 
@@ -270,16 +269,16 @@ def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    sys.stdout.write(u(colorful.bold_red("✘")))
+    sys.stdout.write(str(colorful.bold_red("✘")))
     if step_func is not None:
         sys.stdout.write(
-            u(colorful.red(" (at {0})".format(get_func_location(step_func))))
+            str(colorful.red(" (at {0})".format(get_func_location(step_func))))
         )
 
     sys.stdout.write("\n")
 
     for error in errors:
-        print(u(colorful.red("  - {0}".format(error))))
+        print(colorful.red("  - {0}".format(error)))
 
 
 def check_step_arguments(expected_arguments, arguments):

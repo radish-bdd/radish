@@ -11,7 +11,6 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.compat import u
 
 
 @extension
@@ -47,7 +46,7 @@ class DotOutputFormatter:
             :param Feature feature: the feature to write to the console
         """
         output = cf.bold_black(feature.path) + ": "
-        sys.stdout.write(u(output))
+        sys.stdout.write(str(output))
 
     def dot_formatter_after_each_scenario(self, scenario):
         """
@@ -58,7 +57,7 @@ class DotOutputFormatter:
         if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
             return
 
-        sys.stdout.write(u(self.STATE_SYMBOLS[scenario.state]))
+        sys.stdout.write(str(self.STATE_SYMBOLS[scenario.state]))
 
     def dot_formatter_after_each_step(self, step):
         if step.state == Step.State.FAILED:
@@ -88,4 +87,4 @@ class DotOutputFormatter:
                 cf.bold_red(step.failure.name), cf.red(step.failure.reason)
             )
 
-        sys.stdout.write(u(output + "\n"))
+        sys.stdout.write(str(output + "\n"))

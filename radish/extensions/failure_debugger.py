@@ -9,7 +9,7 @@ import radish.utils as utils
 
 
 @extension
-class FailureDebugger(object):
+class FailureDebugger:
     """
         Failure debugger radish extension
     """

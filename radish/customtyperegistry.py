@@ -10,7 +10,7 @@ from parse_type import TypeBuilder
 
 
 @singleton()
-class CustomTypeRegistry(object):
+class CustomTypeRegistry:
     """
         Registry for all custom argument expressions
     """

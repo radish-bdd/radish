@@ -6,7 +6,7 @@ from singleton import singleton
 
 
 @singleton()
-class ExtensionRegistry(object):
+class ExtensionRegistry:
     """
         Registers all extensions
     """

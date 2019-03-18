@@ -10,7 +10,7 @@ from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
 
 
-class Runner(object):
+class Runner:
     """
         Represents a class which is able to run features.
     """

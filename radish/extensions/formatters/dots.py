@@ -15,7 +15,7 @@ from radish.compat import u
 
 
 @extension
-class DotOutputFormatter(object):
+class DotOutputFormatter:
     """
     Output formatter in the dot style.
     """

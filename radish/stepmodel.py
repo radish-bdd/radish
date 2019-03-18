@@ -18,7 +18,7 @@ class Step(Model):
         Represents a step
     """
 
-    class State(object):
+    class State:
         """
             Represents the step state
 

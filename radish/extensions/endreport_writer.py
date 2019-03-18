@@ -21,7 +21,7 @@ from radish.stepregistry import StepRegistry
 
 
 @extension
-class EndreportWriter(object):
+class EndreportWriter:
     """
         Endreport writer radish extension
     """

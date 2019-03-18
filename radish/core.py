@@ -4,8 +4,6 @@
     Providing radish core functionality.
 """
 
-from __future__ import unicode_literals
-
 from threading import Lock
 from collections import OrderedDict
 

@@ -5,8 +5,6 @@
     This module provides an extension which starts a debugger when a step fails
 """
 
-from __future__ import unicode_literals
-
 from radish.hookregistry import after
 from radish.stepmodel import Step
 from radish.extensionregistry import extension

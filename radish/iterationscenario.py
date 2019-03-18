@@ -4,8 +4,6 @@
     This module provides a Scenario which represents one iteration in a ScenarioLoop
 """
 
-from __future__ import unicode_literals
-
 from .scenario import Scenario
 
 

@@ -4,8 +4,6 @@
     This module provides a class to represent a Scenario Outline
 """
 
-from __future__ import unicode_literals
-
 import copy
 
 from .scenario import Scenario

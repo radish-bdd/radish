@@ -6,8 +6,6 @@
     as per Enhancement #124.
 """
 
-from __future__ import unicode_literals
-
 import re
 
 from radish.terrain import world

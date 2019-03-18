@@ -4,8 +4,6 @@
     This module provides a class to represent a Feature from a parsed feature file.
 """
 
-from __future__ import unicode_literals
-
 from .model import Model
 from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop

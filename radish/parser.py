@@ -5,8 +5,6 @@
     One Feature file parser instance is able to parse one feature file.
 """
 
-from __future__ import unicode_literals
-
 import os
 import io
 import re
@@ -107,8 +105,8 @@ class FeatureParser(object):
         #  it's context class is 'Given'. This is used to correctly
         #  match the 'And' sentences
         self._current_context_class = None
-        # used to save text indention 
-        # - negative number indicates that there is now step text parsing 
+        # used to save text indention
+        # - negative number indicates that there is now step text parsing
         self._in_step_text_index = -1
         self.feature = None
 

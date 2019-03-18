@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides some functionality to diagnose thrown exceptions
 """

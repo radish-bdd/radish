@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from radish import given, when, then
 from radish import world
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides an extension to write all features, scenarios and steps to the syslog.
 """

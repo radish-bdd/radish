@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to match the feature file steps with the registered steps from the registry
 """

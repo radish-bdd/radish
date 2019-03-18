@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a hook which processes user specified data on the command-line
     and provides this data as a dictionary attached to the world.config object

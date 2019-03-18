@@ -17,11 +17,6 @@ from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
 from radish.utils import console_write as write
-from radish.compat import PY2
-
-
-if PY2:
-    str = unicode
 
 
 @extension

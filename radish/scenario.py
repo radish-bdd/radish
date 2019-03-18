@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to represent a Scenario
 """

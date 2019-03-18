@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """

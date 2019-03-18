@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides an extension which starts a python shell after a step failed
 """

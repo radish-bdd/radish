@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a Scenario which represents one iteration in a ScenarioLoop
 """

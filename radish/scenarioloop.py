@@ -1,3 +1,6 @@
+"""
+    This module provides a Scenario type which represents a Scenario loop
+"""
 
 import copy
 

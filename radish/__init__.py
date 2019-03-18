@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 __DESCRIPTION__ = "Behaviour-Driven-Development tool for python"
 __LICENSE__ = "MIT"
 __VERSION__ = "0.13.0"

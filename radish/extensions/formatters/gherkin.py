@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This radish extension provides the functionality to write the feature file run to the console.
 """

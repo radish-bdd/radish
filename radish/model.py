@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This model provides a base class for all models:
 

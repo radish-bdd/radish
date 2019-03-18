@@ -11,7 +11,7 @@ from .compat import re_pattern
 
 
 @singleton()
-class StepRegistry(object):
+class StepRegistry:
     """
         Represents the step registry
     """

@@ -9,7 +9,7 @@ from radish.extensionregistry import extension
 
 
 @extension
-class FailureInspector(object):
+class FailureInspector:
     """
         Failure inspector radish extension
     """

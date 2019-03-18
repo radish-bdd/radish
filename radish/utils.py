@@ -16,7 +16,7 @@ from datetime import datetime, timedelta
 from .compat import u
 
 
-class Failure(object):  # pylint: disable=too-few-public-methods
+class Failure:  # pylint: disable=too-few-public-methods
     """
         Represents the fail reason for a step
     """

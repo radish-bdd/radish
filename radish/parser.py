@@ -23,7 +23,7 @@ from .model import Tag
 from . import utils
 
 
-class Keywords(object):
+class Keywords:
     """
         Represent config object for gherkin keywords.
     """
@@ -47,7 +47,7 @@ class Keywords(object):
         self.iterations = iterations
 
 
-class FeatureParser(object):
+class FeatureParser:
     """
         Class to parse a feature file.
         A feature file contains just one feature.
@@ -57,7 +57,7 @@ class FeatureParser(object):
     DEFAULT_LANGUAGE = "en"
     CONTEXT_CLASSES = ["given", "when", "then", "but"]
 
-    class State(object):
+    class State:
         """
             Represents the parser state
         """

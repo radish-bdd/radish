@@ -9,7 +9,7 @@ from radish.extensionregistry import extension
 
 
 @extension
-class SyslogWriter(object):
+class SyslogWriter:
     """
         Syslog Writer radish extension. This extension is only supported on
         systems where the Python standard library supports the system logger

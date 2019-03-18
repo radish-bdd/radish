@@ -16,7 +16,7 @@ import radish.utils as utils
 
 
 @extension
-class JUnitXMLWriter(object):
+class JUnitXMLWriter:
     """
         JUnit XML Writer radish extension
     """

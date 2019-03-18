@@ -208,7 +208,7 @@ def test_run_step_with_invalid_defintion_func():
     assert str(exc.value) == "The step 'I am a Step' does not have a step definition"
 
 
-class StepHelper(object):
+class StepHelper:
     """Helper class only used for mocking"""
 
     @staticmethod

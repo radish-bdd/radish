@@ -11,7 +11,7 @@ import tagexpressions
 
 
 @singleton()
-class HookRegistry(object):
+class HookRegistry:
     """
         Represents an object with all registered hooks
     """
@@ -29,7 +29,7 @@ class HookRegistry(object):
         """
         return self._hooks
 
-    class Hook(object):
+    class Hook:
         """
             Represents a hook object
 

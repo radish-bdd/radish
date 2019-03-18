@@ -15,7 +15,7 @@ class ScenarioOutline(Scenario):
         Represents a Scenario
     """
 
-    class Example(object):
+    class Example:
         """
             Represents the ScenarioOutline examples
         """

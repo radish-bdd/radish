@@ -25,7 +25,7 @@ if PY2:
 
 
 @extension
-class ConsoleWriter(object):
+class ConsoleWriter:
     """
         Console writer radish extension
     """

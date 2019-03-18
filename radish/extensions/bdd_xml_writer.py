@@ -19,7 +19,7 @@ import radish.utils as utils
 
 
 @extension
-class BDDXMLWriter(object):
+class BDDXMLWriter:
     """
         BDD XML Writer radish extension
     """

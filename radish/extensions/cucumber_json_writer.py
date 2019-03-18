@@ -15,7 +15,7 @@ from radish.extensionregistry import extension
 
 
 @extension
-class CucumberJSONWriter(object):
+class CucumberJSONWriter:
     """
         cucumber json Writer radish extension
     """

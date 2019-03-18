@@ -5,11 +5,11 @@ coverage measurements.
 
 import sys
 import re
+import io
 
 from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.terrain import world
-from radish.compat import StringIO
 from radish.exceptions import RadishError
 
 
@@ -111,7 +111,7 @@ class CodeCoverage:
             self.coverage.xml_report(outfile=world.config.cover_xml)
 
         if world.config.cover_min_percentage:
-            report = StringIO()
+            report = io.StringIO()
             self.coverage.report(file=report)
             match = re.search(r"^TOTAL\s+(.*)$", report.getvalue(), re.MULTILINE)
             if not match:

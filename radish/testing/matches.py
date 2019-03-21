@@ -5,7 +5,6 @@ step implementations.
 """
 
 import sys
-import codecs
 
 import yaml
 import colorful
@@ -59,7 +58,7 @@ def test_step_matches_configs(
 
     for match_config_file in match_config_files:
         # load the given match config file
-        with codecs.open(match_config_file, "r", "utf-8") as f:
+        with open(match_config_file, "r", encoding="utf-8") as f:
             match_config = yaml.safe_load(f)
 
         if not match_config:

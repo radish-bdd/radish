@@ -8,7 +8,6 @@
 """
 
 import os
-import io
 import sys
 import tempfile
 
@@ -330,15 +329,14 @@ def test_main_cli_calls(
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
 
-
-    with io.open(expected_output_file, "r", encoding="utf-8") as output_file:
+    with open(expected_output_file, "r", encoding="utf-8") as output_file:
         expected_output_string = output_file.read()
 
     # when
     original_stdout = sys.stdout
 
     with tempfile.TemporaryFile() as tmp:
-        tmp_stdout = io.open(tmp.fileno(), mode='w+', encoding='utf-8', closefd=False)
+        tmp_stdout = open(tmp.fileno(), mode='w+', encoding='utf-8', closefd=False)
         # patch sys.stdout
         sys.stdout = tmp_stdout
 

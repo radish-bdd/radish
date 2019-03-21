@@ -16,7 +16,6 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import console_write as write
 
 
 @extension
@@ -142,7 +141,7 @@ class ConsoleWriter:
             for step in feature.background.all_steps:
                 output += "\n" + self._get_step_before_output(step, colorful.cyan)
 
-        write(output)
+        print(output)
 
     def console_writer_before_each_scenario(self, scenario):
         """
@@ -208,7 +207,7 @@ class ConsoleWriter:
                 colorful.bold_white(scenario.keyword),
                 colorful.bold_white(scenario.sentence),
             )
-        write(output)
+        print(output)
 
     def console_writer_before_each_step(self, step):
         """
@@ -263,7 +262,7 @@ class ConsoleWriter:
         self.last_background = step.as_background
         output += self._get_step_before_output(step)
 
-        write(output)
+        print(output)
 
     def _get_step_before_output(self, step, color_func=None):
         if color_func is None:
@@ -410,7 +409,7 @@ class ConsoleWriter:
                 colorful.red(step.failure.reason),
             )
 
-        write(output)
+        print(output)
 
     def console_writer_after_each_scenario(self, scenario):
         """
@@ -506,7 +505,7 @@ class ConsoleWriter:
                 )
 
         if output:
-            write(output)
+            print(output)
 
     def console_writer_after_each_feature(
         self, feature
@@ -516,4 +515,4 @@ class ConsoleWriter:
 
             :param Feature feature: the feature which was ran.
         """
-        write("")
+        print("")

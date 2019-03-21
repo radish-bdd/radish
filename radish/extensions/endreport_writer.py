@@ -12,7 +12,7 @@ import humanize
 
 from radish.hookregistry import after
 from radish.stepmodel import Step
-from radish.utils import console_write as write, make_unique_obj_list, get_func_code
+from radish.utils import make_unique_obj_list, get_func_code
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.extensionregistry import extension
@@ -194,4 +194,4 @@ class EndreportWriter:
             )
         )
 
-        write(output)
+        print(output)

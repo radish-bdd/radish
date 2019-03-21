@@ -194,11 +194,13 @@ Options:
     core.parse_features(feature_files, tag_expression)
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
-        utils.console_write(colorful.bold_red("Error: ")
+        print(
+            colorful.bold_red("Error: ")
             + colorful.red("No feature or no scenario specified in at least one of the given feature files")
         )
         if tag_expression:
-            utils.console_write(colorful.red(
+            print(
+                colorful.red(
                     "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run."
                 )
             )

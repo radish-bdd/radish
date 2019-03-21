@@ -34,15 +34,6 @@ class Failure:  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 
-def console_write(text):
-    """
-        Writes the given text to the console
-
-        :param str text: the text which is printed to the console
-    """
-    print(str(text))
-
-
 def expandpath(path):
     """
         Expands a path

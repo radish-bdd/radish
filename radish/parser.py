@@ -4,7 +4,6 @@
 """
 
 import os
-import io
 import re
 import json
 import filecmp
@@ -127,7 +126,7 @@ class FeatureParser:
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
         try:
-            with io.open(language_path, "r", encoding="utf-8") as f:
+            with open(language_path, "r", encoding="utf-8") as f:
                 language_pkg = json.load(f)
         except IOError:
             raise LanguageNotSupportedError(language)
@@ -141,7 +140,7 @@ class FeatureParser:
             :returns: if the parsing was successful or not
             :rtype: bool
         """
-        with io.open(self._featurefile, "r", encoding="utf-8") as f:
+        with open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line_strip = line.strip()

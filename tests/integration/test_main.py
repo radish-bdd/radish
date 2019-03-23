@@ -214,7 +214,7 @@ from radish.main import main
     ],
     ids=[
         "Empty Feature File",
-        "Empty Featre",
+        "Empty Feature",
         "Feature with description only",
         "Feature with one Scenario and Steps",
         "Feature with multiple Scenarios",

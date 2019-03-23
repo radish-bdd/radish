@@ -107,9 +107,9 @@ class CucumberJSONWriter:
                         step_json["result"]["error_message"] = step.failure.reason
                     if step.state is Step.State.UNTESTED:
                         if step.starttime is None:
-                            step_json["result"]["status"] = "pending"
+                            step_json["result"]["status"] = Step.State.PENDING
                         else:
-                            step_json["result"]["status"] = "skipped"
+                            step_json["result"]["status"] = Step.State.SKIPPED
                     if step.embeddings:
                         step_json["embeddings"] = step.embeddings
                     scenario_json["steps"].append(step_json)

@@ -2,20 +2,19 @@
     This module provides a hook which generates a BDD XML result file at the end of the run.
 """
 
+import re
+from datetime import timedelta
 from getpass import getuser
 from socket import gethostname
-from datetime import timedelta
-import re
 
-from radish.terrain import world
-from radish.hookregistry import after
-from radish.exceptions import RadishError
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
-from radish.extensionregistry import extension
-from radish.exceptions import RadishError
 import radish.utils as utils
+from radish.exceptions import RadishError
+from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.terrain import world
 
 
 @extension
@@ -80,7 +79,7 @@ class BDDXMLWriter:
 
         duration = timedelta()
         for feature in features:
-            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+            if feature.state in [State.PASSED, State.FAILED]:
                 duration += feature.duration
 
         testrun_element = etree.Element(
@@ -130,7 +129,7 @@ class BDDXMLWriter:
 
                 for step in scenario.all_steps:
                     step_element = self._get_element_from_model("step", step)
-                    if step.state is Step.State.FAILED:
+                    if step.state is State.FAILED:
                         failure_element = etree.Element(
                             "failure",
                             type=step.failure.name,

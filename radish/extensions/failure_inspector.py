@@ -3,7 +3,7 @@
 """
 
 from radish.hookregistry import after
-from radish.stepmodel import Step
+from radish.state import State
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
 
@@ -25,7 +25,7 @@ class FailureInspector:
         """
             Starts a python shell after a step failed
         """
-        if step.state is not Step.State.FAILED:
+        if step.state is not State.FAILED:
             return
 
         try:

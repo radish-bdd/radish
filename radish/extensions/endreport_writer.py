@@ -41,27 +41,27 @@ class EndreportWriter:
         stats = {
             "features": {
                 "amount": 0,
-                "passed": 0,
-                "failed": 0,
-                "skipped": 0,
-                "untested": 0,
-                "pending": 0,
+                Step.State.PASSED: 0,
+                Step.State.FAILED: 0,
+                Step.State.SKIPPED: 0,
+                Step.State.UNTESTED: 0,
+                Step.State.PENDING: 0,
             },
             "scenarios": {
                 "amount": 0,
-                "passed": 0,
-                "failed": 0,
-                "skipped": 0,
-                "untested": 0,
-                "pending": 0,
+                Step.State.PASSED: 0,
+                Step.State.FAILED: 0,
+                Step.State.SKIPPED: 0,
+                Step.State.UNTESTED: 0,
+                Step.State.PENDING: 0,
             },
             "steps": {
                 "amount": 0,
-                "passed": 0,
-                "failed": 0,
-                "skipped": 0,
-                "untested": 0,
-                "pending": 0,
+                Step.State.PASSED: 0,
+                Step.State.FAILED: 0,
+                Step.State.SKIPPED: 0,
+                Step.State.UNTESTED: 0,
+                Step.State.PENDING: 0,
             },
         }
         pending_steps = []
@@ -103,37 +103,37 @@ class EndreportWriter:
         output = colorful.bold_white(
             "{0} features (".format(stats["features"]["amount"])
         )
-        output += passed_word.format(stats["features"]["passed"])
-        if stats["features"]["failed"]:
-            output += colored_comma + failed_word.format(stats["features"]["failed"])
-        if stats["features"]["skipped"]:
-            output += colored_comma + skipped_word.format(stats["features"]["skipped"])
-        if stats["features"]["pending"]:
-            output += colored_comma + pending_word.format(stats["features"]["pending"])
+        output += passed_word.format(stats["features"][Step.State.PASSED])
+        if stats["features"][Step.State.FAILED]:
+            output += colored_comma + failed_word.format(stats["features"][Step.State.FAILED])
+        if stats["features"][Step.State.SKIPPED]:
+            output += colored_comma + skipped_word.format(stats["features"][Step.State.SKIPPED])
+        if stats["features"][Step.State.PENDING]:
+            output += colored_comma + pending_word.format(stats["features"][Step.State.PENDING])
         output += colored_closing_paren
 
         output += "\n"
         output += colorful.bold_white(
             "{} scenarios (".format(stats["scenarios"]["amount"])
         )
-        output += passed_word.format(stats["scenarios"]["passed"])
-        if stats["scenarios"]["failed"]:
-            output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
-        if stats["scenarios"]["skipped"]:
-            output += colored_comma + skipped_word.format(stats["scenarios"]["skipped"])
-        if stats["scenarios"]["pending"]:
-            output += colored_comma + pending_word.format(stats["scenarios"]["pending"])
+        output += passed_word.format(stats["scenarios"][Step.State.PASSED])
+        if stats["scenarios"][Step.State.FAILED]:
+            output += colored_comma + failed_word.format(stats["scenarios"][Step.State.FAILED])
+        if stats["scenarios"][Step.State.SKIPPED]:
+            output += colored_comma + skipped_word.format(stats["scenarios"][Step.State.SKIPPED])
+        if stats["scenarios"][Step.State.PENDING]:
+            output += colored_comma + pending_word.format(stats["scenarios"][Step.State.PENDING])
         output += colored_closing_paren
 
         output += "\n"
         output += colorful.bold_white("{} steps (".format(stats["steps"]["amount"]))
-        output += passed_word.format(stats["steps"]["passed"])
-        if stats["steps"]["failed"]:
-            output += colored_comma + failed_word.format(stats["steps"]["failed"])
-        if stats["steps"]["skipped"]:
-            output += colored_comma + skipped_word.format(stats["steps"]["skipped"])
-        if stats["steps"]["pending"]:
-            output += colored_comma + pending_word.format(stats["steps"]["pending"])
+        output += passed_word.format(stats["steps"][Step.State.PASSED])
+        if stats["steps"][Step.State.FAILED]:
+            output += colored_comma + failed_word.format(stats["steps"][Step.State.FAILED])
+        if stats["steps"][Step.State.SKIPPED]:
+            output += colored_comma + skipped_word.format(stats["steps"][Step.State.SKIPPED])
+        if stats["steps"][Step.State.PENDING]:
+            output += colored_comma + pending_word.format(stats["steps"][Step.State.PENDING])
         output += colored_closing_paren
 
         if pending_steps:
@@ -162,7 +162,7 @@ class EndreportWriter:
         output += "\n"
 
         if world.config.wip:
-            if stats["scenarios"]["passed"] > 0:
+            if stats["scenarios"][Step.State.PASSED] > 0:
                 output += colorful.red(
                     "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n"
                 )

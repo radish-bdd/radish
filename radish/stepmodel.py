@@ -4,13 +4,14 @@
 
 import base64
 import re
+from enum import Enum
 
-from .model import Model
-from .exceptions import RadishError
-from .terrain import world
-from .stepregistry import StepRegistry
-from .matcher import merge_step
 from . import utils
+from .exceptions import RadishError
+from .matcher import merge_step
+from .model import Model
+from .stepregistry import StepRegistry
+from .terrain import world
 
 
 class Step(Model):
@@ -18,13 +19,10 @@ class Step(Model):
         Represents a step
     """
 
-    class State:
+    class State(str, Enum):
         """
             Represents the step state
-
-            FIXME: for the python3 version this should be an Enum
         """
-
         UNTESTED = "untested"
         SKIPPED = "skipped"
         PASSED = "passed"

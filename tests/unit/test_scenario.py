@@ -12,7 +12,7 @@ import pytest
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.background import Background
-from radish.stepmodel import Step
+from radish.state import State
 
 
 def test_creating_simple_scenario():
@@ -63,32 +63,32 @@ def test_scenario_state(mocker):
     # add Steps to this Scenario
     scenario.steps.extend(
         [
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
         ]
     )
     # get the step to modify
     step = scenario.steps[1]
 
     # when all Steps are passed the Scenario is passed
-    assert scenario.state == Step.State.PASSED
+    assert scenario.state == State.PASSED
 
     # when one Step is failed the Scenario is failed
-    step.state = Step.State.FAILED
-    assert scenario.state == Step.State.FAILED
+    step.state = State.FAILED
+    assert scenario.state == State.FAILED
 
     # when one Step is pending the Scenario is pending
-    step.state = Step.State.PENDING
-    assert scenario.state == Step.State.PENDING
+    step.state = State.PENDING
+    assert scenario.state == State.PENDING
 
     # when one Step is skipped the Scenario is skipped
-    step.state = Step.State.SKIPPED
-    assert scenario.state == Step.State.SKIPPED
+    step.state = State.SKIPPED
+    assert scenario.state == State.SKIPPED
 
     # when one Step is untested the Scenario is untested
-    step.state = Step.State.UNTESTED
-    assert scenario.state == Step.State.UNTESTED
+    step.state = State.UNTESTED
+    assert scenario.state == State.UNTESTED
 
 
 def test_scenario_state_with_background(mocker):
@@ -109,24 +109,24 @@ def test_scenario_state_with_background(mocker):
         background=background,
     )
     # add Steps to this Scenario
-    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
+    scenario.steps.extend([mocker.MagicMock(state=State.PASSED)])
     # add Steps to the background
     background.steps.extend(
         [
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
         ]
     )
     # get the step to modify
     step = background.steps[1]
 
     # when all Steps are passed the Scenario is passed
-    assert scenario.state == Step.State.PASSED
+    assert scenario.state == State.PASSED
 
     # when a Background Step is failed the Scenario is failed
-    step.state = Step.State.FAILED
-    assert scenario.state == Step.State.FAILED
+    step.state = State.FAILED
+    assert scenario.state == State.FAILED
 
 
 def test_scenario_all_steps(mocker):
@@ -150,20 +150,20 @@ def test_scenario_all_steps(mocker):
 
     # when
     # add Steps to this Scenario
-    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
+    scenario.steps.extend([mocker.MagicMock(state=State.PASSED)])
     # add Steps to the Background
     background.all_steps.extend(
         [
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
         ]
     )
     # add Steps to the precondition Scenario
     precondition_scenario.all_steps.extend(
         [
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
         ]
     )
 
@@ -223,13 +223,13 @@ def test_scenario_failed_step(mocker):
 
     # when
     # add Steps to this Scenario
-    scenario.steps.extend([mocker.MagicMock(state=Step.State.PASSED)])
+    scenario.steps.extend([mocker.MagicMock(state=State.PASSED)])
     # add Steps to the Background
     background.steps.extend(
         [
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
-            mocker.MagicMock(state=Step.State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
+            mocker.MagicMock(state=State.PASSED),
         ]
     )
 
@@ -237,19 +237,19 @@ def test_scenario_failed_step(mocker):
     assert scenario.failed_step is None
 
     # when a Scenario Step fails it should be returned
-    scenario.steps[0].state = Step.State.FAILED
+    scenario.steps[0].state = State.FAILED
     assert scenario.failed_step == scenario.steps[0]
-    scenario.steps[0].state = Step.State.PASSED
+    scenario.steps[0].state = State.PASSED
 
     # when a Background Step fails it should be returned
-    background.steps[0].state = Step.State.FAILED
+    background.steps[0].state = State.FAILED
     assert scenario.failed_step == background.steps[0]
-    background.steps[0].state = Step.State.PASSED
+    background.steps[0].state = State.PASSED
 
     # when a Background and a Scenario Step fails the
     # Background Step should be returned
-    background.steps[0].state = Step.State.FAILED
-    scenario.steps[0].state = Step.State.FAILED
+    background.steps[0].state = State.FAILED
+    scenario.steps[0].state = State.FAILED
     assert scenario.failed_step == background.steps[0]
 
 

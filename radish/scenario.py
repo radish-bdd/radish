@@ -3,7 +3,7 @@
 """
 
 from .model import Model
-from .stepmodel import Step
+from .state import State
 
 
 class Scenario(Model):
@@ -42,9 +42,9 @@ class Scenario(Model):
 
         steps.extend(self.steps)
         for step in steps:
-            if step.state is not Step.State.PASSED:
+            if step.state is not State.PASSED:
                 return step.state
-        return Step.State.PASSED
+        return State.PASSED
 
     @property
     def constants(self):
@@ -87,7 +87,7 @@ class Scenario(Model):
         # FIXME(TF): what about Scenario Precondition Steps?
 
         for step in steps:
-            if step.state == Step.State.FAILED:
+            if step.state == State.FAILED:
                 return step
         return None
 

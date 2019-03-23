@@ -9,13 +9,13 @@ import os
 import re
 import colorful
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.feature import Feature
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.terrain import world
 
 
 @extension
@@ -56,11 +56,11 @@ class ConsoleWriter:
         """
             Returns the color func to use
         """
-        if state == Step.State.PASSED:
+        if state == State.PASSED:
             return colorful.bold_green
-        elif state == Step.State.FAILED:
+        elif state == State.FAILED:
             return colorful.bold_red
-        elif state == Step.State.PENDING:
+        elif state == State.PENDING:
             return colorful.bold_yellow
         elif state:
             return colorful.cyan
@@ -392,7 +392,7 @@ class ConsoleWriter:
                     ),
                 )
 
-        if step.state == step.State.FAILED:
+        if step.state == State.FAILED:
             if world.config.with_traceback:
                 output += "\n          {0}{1}".format(
                     self.get_id_padding(len(step.parent.steps) - 2),
@@ -457,7 +457,7 @@ class ConsoleWriter:
                 ),
             )
 
-            if scenario.state == Step.State.FAILED:
+            if scenario.state == State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
                     output += "\n          {0}{1}".format(
@@ -486,7 +486,7 @@ class ConsoleWriter:
                 str(color_func(scenario.iteration)),
             )
 
-            if scenario.state == Step.State.FAILED:
+            if scenario.state == State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
                     output += "\n          {0}{1}".format(

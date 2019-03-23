@@ -5,12 +5,12 @@
 import sys
 import colorful as cf
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.terrain import world
 
 
 @extension
@@ -23,11 +23,11 @@ class DotOutputFormatter:
     LOAD_PRIORITY = 30
 
     STATE_SYMBOLS = {
-        Step.State.PASSED: ".",
-        Step.State.PENDING: "P",
-        Step.State.UNTESTED: "U",
-        Step.State.SKIPPED: "S",
-        Step.State.FAILED: "F",
+        State.PASSED: ".",
+        State.PENDING: "P",
+        State.UNTESTED: "U",
+        State.SKIPPED: "S",
+        State.FAILED: "F",
     }
 
     def __init__(self):
@@ -60,7 +60,7 @@ class DotOutputFormatter:
         sys.stdout.write(str(self.STATE_SYMBOLS[scenario.state]))
 
     def dot_formatter_after_each_step(self, step):
-        if step.state == Step.State.FAILED:
+        if step.state == State.FAILED:
             self._failed_steps.append(step)
 
     def dot_formatter_failure_summary(self, features, marker):

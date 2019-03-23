@@ -204,7 +204,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
             output_failure(result.func, argument_errors)
             return False
 
-    print(str(colorful.bold_green("✔")))
+    print(colorful.bold_green("✔"))
     return True
 
 

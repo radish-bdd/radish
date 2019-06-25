@@ -50,7 +50,7 @@ class ScenarioLoop(Scenario):
         """
             Builds the scenarios for every iteration
 
-            Note: This must be done before mering the steps
+            Note: This must be done before merging the steps
                   from the feature file with the step definitions
         """
         for i in range(self.iterations):

@@ -1,24 +1,20 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides a radish extension to make
 coverage measurements.
 """
 
-from __future__ import unicode_literals
-
 import sys
 import re
+import io
 
 from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.terrain import world
-from radish.compat import StringIO
 from radish.exceptions import RadishError
 
 
 @extension
-class CodeCoverage(object):
+class CodeCoverage:
     """
         Code Coverage radish extension
     """
@@ -115,7 +111,7 @@ class CodeCoverage(object):
             self.coverage.xml_report(outfile=world.config.cover_xml)
 
         if world.config.cover_min_percentage:
-            report = StringIO()
+            report = io.StringIO()
             self.coverage.report(file=report)
             match = re.search(r"^TOTAL\s+(.*)$", report.getvalue(), re.MULTILINE)
             if not match:

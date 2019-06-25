@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -14,7 +12,7 @@ import pytest
 from radish.feature import Feature
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
+from radish.state import State
 
 
 def test_creating_simple_feature():
@@ -201,67 +199,67 @@ def test_feature_state(mocker):
     # given
     feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add regular Scenarios to Feature
-    regular_scenario = mocker.MagicMock(state=Step.State.PASSED)
+    regular_scenario = mocker.MagicMock(state=State.PASSED)
     feature.scenarios.extend(
-        [regular_scenario, mocker.MagicMock(state=Step.State.PASSED)]
+        [regular_scenario, mocker.MagicMock(state=State.PASSED)]
     )
     # add Scenario Outline to Feature
-    scenario_outline_example = mocker.MagicMock(state=Step.State.PASSED)
+    scenario_outline_example = mocker.MagicMock(state=State.PASSED)
     scenario_outline = mocker.MagicMock(
         spec=ScenarioOutline,
-        state=Step.State.PASSED,
-        scenarios=[scenario_outline_example, mocker.MagicMock(state=Step.State.PASSED)],
+        state=State.PASSED,
+        scenarios=[scenario_outline_example, mocker.MagicMock(state=State.PASSED)],
     )
     feature.scenarios.append(scenario_outline)
     # add Scenario Loop to Feature
-    scenario_loop_iteration = mocker.MagicMock(state=Step.State.PASSED)
+    scenario_loop_iteration = mocker.MagicMock(state=State.PASSED)
     scenario_loop = mocker.MagicMock(
         spec=ScenarioLoop,
-        state=Step.State.PASSED,
-        scenarios=[scenario_loop_iteration, mocker.MagicMock(state=Step.State.PASSED)],
+        state=State.PASSED,
+        scenarios=[scenario_loop_iteration, mocker.MagicMock(state=State.PASSED)],
     )
     feature.scenarios.append(scenario_loop)
 
     # when all Scenarios pass then the Feature passes
-    assert feature.state == Step.State.PASSED
+    assert feature.state == State.PASSED
 
     # when one Scenario is pending then the Feature is pending
-    regular_scenario.state = Step.State.PENDING
-    assert feature.state == Step.State.PENDING
+    regular_scenario.state = State.PENDING
+    assert feature.state == State.PENDING
 
     # when one Scenario is skipped then the Feature is skipped
-    regular_scenario.state = Step.State.SKIPPED
-    assert feature.state == Step.State.SKIPPED
+    regular_scenario.state = State.SKIPPED
+    assert feature.state == State.SKIPPED
 
     # when one Scenario is failed then the Feature is failed
-    regular_scenario.state = Step.State.FAILED
-    assert feature.state == Step.State.FAILED
+    regular_scenario.state = State.FAILED
+    assert feature.state == State.FAILED
 
     # when one Scenario is failed then the Feature is failed
-    regular_scenario.state = Step.State.UNTESTED
-    assert feature.state == Step.State.UNTESTED
-    regular_scenario.state = Step.State.PASSED
+    regular_scenario.state = State.UNTESTED
+    assert feature.state == State.UNTESTED
+    regular_scenario.state = State.PASSED
 
     # Scenario Outline and Scenario Loop states are ignored
-    scenario_outline.state = Step.State.FAILED
-    assert feature.state == Step.State.PASSED
-    scenario_loop.state = Step.State.FAILED
-    assert feature.state == Step.State.PASSED
+    scenario_outline.state = State.FAILED
+    assert feature.state == State.PASSED
+    scenario_loop.state = State.FAILED
+    assert feature.state == State.PASSED
 
     # when a Scenario Outline Example is not passed the Feature is not passed
-    scenario_outline_example.state = Step.State.FAILED
-    assert feature.state == Step.State.FAILED
-    scenario_outline_example.state = Step.State.PASSED
+    scenario_outline_example.state = State.FAILED
+    assert feature.state == State.FAILED
+    scenario_outline_example.state = State.PASSED
 
     # when a Scenario Loop Iteration is not passed the Feature is not passed
-    scenario_loop_iteration.state = Step.State.FAILED
-    assert feature.state == Step.State.FAILED
-    scenario_loop_iteration.state = Step.State.PASSED
+    scenario_loop_iteration.state = State.FAILED
+    assert feature.state == State.FAILED
+    scenario_loop_iteration.state = State.PASSED
 
     # when a Scenario is untested which does not have to be run then the Feature is passed
-    regular_scenario.state = Step.State.UNTESTED
+    regular_scenario.state = State.UNTESTED
     regular_scenario.has_to_run.return_value = False
-    assert feature.state == Step.State.PASSED
+    assert feature.state == State.PASSED
 
 
 @pytest.mark.parametrize(

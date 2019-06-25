@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -12,17 +10,17 @@
 import pytest
 
 from radish.runner import Runner
-from radish.stepmodel import Step
+from radish.state import State
 
 
 @pytest.mark.parametrize(
     "run_state, expected_returncode",
     [
-        (Step.State.PASSED, 0),
-        (Step.State.UNTESTED, 0),
-        (Step.State.SKIPPED, 0),
-        (Step.State.PENDING, 0),
-        (Step.State.FAILED, 1),
+        (State.PASSED, 0),
+        (State.UNTESTED, 0),
+        (State.SKIPPED, 0),
+        (State.PENDING, 0),
+        (State.FAILED, 1),
     ],
     ids=[
         "Running Step returing PASSED",
@@ -52,11 +50,11 @@ def test_run_single_step(run_state, expected_returncode, hookregistry, mocker):
 @pytest.mark.parametrize(
     "debug_state, expected_returncode",
     [
-        (Step.State.PASSED, 0),
-        (Step.State.UNTESTED, 0),
-        (Step.State.SKIPPED, 0),
-        (Step.State.PENDING, 0),
-        (Step.State.FAILED, 1),
+        (State.PASSED, 0),
+        (State.UNTESTED, 0),
+        (State.SKIPPED, 0),
+        (State.PENDING, 0),
+        (State.FAILED, 1),
     ],
     ids=[
         "Debugging Step returing PASSED",
@@ -95,7 +93,7 @@ def test_run_single_step_show_only(hookregistry, mocker):
     # given
     runner = Runner(hookregistry, show_only=True)
     step = mocker.MagicMock()
-    step.run.return_value = Step.State.FAILED
+    step.run.return_value = State.FAILED
 
     # when
     returncode = runner.run_step(step)

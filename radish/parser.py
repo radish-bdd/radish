@@ -1,21 +1,15 @@
-# -*- coding: utf-8 -*-
-
 """
     Feature file parser.
     One Feature file parser instance is able to parse one feature file.
 """
 
-from __future__ import unicode_literals
-
 import os
-import io
 import re
 import json
 import filecmp
 import copy
 import string
 
-from .compat import RecursionError
 from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
 from .feature import Feature
 from .scenario import Scenario
@@ -26,7 +20,7 @@ from .background import Background
 from .model import Tag
 
 
-class Keywords(object):
+class Keywords:
     """
         Represent config object for gherkin keywords.
     """
@@ -50,7 +44,7 @@ class Keywords(object):
         self.iterations = iterations
 
 
-class FeatureParser(object):
+class FeatureParser:
     """
         Class to parse a feature file.
         A feature file contains just one feature.
@@ -60,7 +54,7 @@ class FeatureParser(object):
     DEFAULT_LANGUAGE = "en"
     CONTEXT_CLASSES = ["given", "when", "then", "but"]
 
-    class State(object):
+    class State:
         """
             Represents the parser state
         """
@@ -107,8 +101,8 @@ class FeatureParser(object):
         #  it's context class is 'Given'. This is used to correctly
         #  match the 'And' sentences
         self._current_context_class = None
-        # used to save text indention 
-        # - negative number indicates that there is now step text parsing 
+        # used to save text indention
+        # - negative number indicates that there is now step text parsing
         self._in_step_text_index = -1
         self.feature = None
 
@@ -131,7 +125,7 @@ class FeatureParser(object):
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
         try:
-            with io.open(language_path, "r", encoding="utf-8") as f:
+            with open(language_path, "r", encoding="utf-8") as f:
                 language_pkg = json.load(f)
         except IOError:
             raise LanguageNotSupportedError(language)
@@ -145,7 +139,7 @@ class FeatureParser(object):
             :returns: if the parsing was successful or not
             :rtype: bool
         """
-        with io.open(self._featurefile, "r", encoding="utf-8") as f:
+        with open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line_strip = line.strip()

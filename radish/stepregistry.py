@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
-
-from __future__ import unicode_literals
 
 import re
 import inspect
@@ -15,7 +11,7 @@ from .compat import re_pattern
 
 
 @singleton()
-class StepRegistry(object):
+class StepRegistry:
     """
         Represents the step registry
     """

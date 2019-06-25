@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a hook which generates a JUnit XML result file at the end of the run.
 """
-
-from __future__ import unicode_literals
 
 from datetime import timedelta
 import re
@@ -14,13 +10,13 @@ from radish.hookregistry import after
 from radish.exceptions import RadishError
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
+from radish.state import State
 from radish.extensionregistry import extension
 import radish.utils as utils
 
 
 @extension
-class JUnitXMLWriter(object):
+class JUnitXMLWriter:
     """
         JUnit XML Writer radish extension
     """
@@ -82,7 +78,7 @@ class JUnitXMLWriter(object):
 
         duration = timedelta()
         for feature in features:
-            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+            if feature.state in [State.PASSED, State.FAILED]:
                 duration += feature.duration
 
         testsuites_element = etree.Element(
@@ -106,12 +102,12 @@ class JUnitXMLWriter(object):
 
                 testsuite_states["tests"] += 1
                 if scenario.state in [
-                    Step.State.UNTESTED,
-                    Step.State.PENDING,
-                    Step.State.SKIPPED,
+                    State.UNTESTED,
+                    State.PENDING,
+                    State.SKIPPED,
                 ]:
                     testsuite_states["skipped"] += 1
-                if scenario.state is Step.State.FAILED:
+                if scenario.state is State.FAILED:
                     testsuite_states["failures"] += 1
 
             testsuite_element = etree.Element(
@@ -140,19 +136,19 @@ class JUnitXMLWriter(object):
                 )
 
                 if scenario.state in [
-                    Step.State.UNTESTED,
-                    Step.State.PENDING,
-                    Step.State.SKIPPED,
+                    State.UNTESTED,
+                    State.PENDING,
+                    State.SKIPPED,
                 ]:
                     skipped_element = etree.Element("skipped")
                     testcase_element.append(skipped_element)
 
-                if scenario.state is Step.State.FAILED:
+                if scenario.state is State.FAILED:
                     steps_sentence = []
                     for step in scenario.all_steps:
                         step_element = self._get_element_from_model("step", step)
                         steps_sentence.append(step.sentence)
-                        if step.state is Step.State.FAILED:
+                        if step.state is State.FAILED:
                             failure_element = etree.Element(
                                 "failure", type=step.failure.name, message=step.sentence
                             )

@@ -1,15 +1,11 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to represent a Feature from a parsed feature file.
 """
 
-from __future__ import unicode_literals
-
 from .model import Model
-from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
-from .stepmodel import Step
+from .scenariooutline import ScenarioOutline
+from .state import State
 from .terrain import world
 
 
@@ -87,9 +83,9 @@ class Feature(Model):
             if not scenario.has_to_run(world.config.scenarios):
                 continue
 
-            if scenario.state is not Step.State.PASSED:
+            if scenario.state is not State.PASSED:
                 return scenario.state
-        return Step.State.PASSED
+        return State.PASSED
 
     def has_to_run(self, scenario_choice):
         """

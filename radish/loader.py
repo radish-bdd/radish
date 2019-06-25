@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module contains a class to load the step and terrain files
 """
-
-from __future__ import unicode_literals
 
 import os
 import sys

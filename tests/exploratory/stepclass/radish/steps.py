@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 from radish import steps
 
 
 @steps
-class Calculator(object):
+class Calculator:
     def have_number(self, step, number):
         """I have the number {number:g}"""
         step.context.numbers.append(number)

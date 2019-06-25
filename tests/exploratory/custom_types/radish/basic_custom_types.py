@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from radish import custom_type
 
 

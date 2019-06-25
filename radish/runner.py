@@ -1,20 +1,16 @@
-# -*- coding: utf-8 -*-
-
 """
     Providing radish core functionality like the feature file Runner.
 """
 
-from __future__ import unicode_literals
-
 from random import shuffle
 
-from .terrain import world
-from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
-from .stepmodel import Step
+from .scenariooutline import ScenarioOutline
+from .state import State
+from .terrain import world
 
 
-class Runner(object):
+class Runner:
     """
         Represents a class which is able to run features.
     """
@@ -130,13 +126,13 @@ class Runner(object):
         returncode = 0
         steps = scenario.all_steps if world.config.expand else scenario.steps
         for step in steps:
-            if scenario.state == Step.State.FAILED:
+            if scenario.state == State.FAILED:
                 self.skip_step(step)
                 continue
 
             returncode |= self.run_step(step)
 
-            if step.state == step.State.FAILED and self._early_exit:
+            if step.state == State.FAILED and self._early_exit:
                 self.exit()
                 return 1
         return returncode
@@ -157,7 +153,7 @@ class Runner(object):
         else:
             state = step.run()
 
-        return 1 if state == Step.State.FAILED else 0
+        return 1 if state == State.FAILED else 0
 
     def skip_step(self, step):
         """

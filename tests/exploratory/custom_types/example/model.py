@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-
-
-class Hero(object):
+class Hero:
     def __init__(self, forename, surname, hero):
         self.forename = forename
         self.surname = surname

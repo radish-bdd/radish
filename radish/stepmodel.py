@@ -1,39 +1,23 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to represent a Step
 """
 
-from __future__ import unicode_literals
-
 import base64
 import re
 
-from .model import Model
-from .exceptions import RadishError
-from .terrain import world
-from .stepregistry import StepRegistry
-from .matcher import merge_step
 from . import utils
+from .exceptions import RadishError
+from .matcher import merge_step
+from .model import Model
+from .state import State
+from .stepregistry import StepRegistry
+from .terrain import world
 
 
 class Step(Model):
     """
         Represents a step
     """
-
-    class State(object):
-        """
-            Represents the step state
-
-            FIXME: for the python3 version this should be an Enum
-        """
-
-        UNTESTED = "untested"
-        SKIPPED = "skipped"
-        PASSED = "passed"
-        FAILED = "failed"
-        PENDING = "pending"
 
     def __init__(self, id, sentence, path, line, parent, runable, context_class=None):
         super(Step, self).__init__(id, None, sentence, path, line, parent)
@@ -44,7 +28,7 @@ class Step(Model):
         self.raw_text = []
         self.definition_func = None
         self.argument_match = None
-        self.state = Step.State.UNTESTED
+        self.state = State.UNTESTED
         self.failure = None
         self.runable = runable
         self.as_precondition = None
@@ -109,7 +93,7 @@ class Step(Model):
             Runs the step.
         """
         if not self.runable:
-            self.state = Step.State.UNTESTED
+            self.state = State.UNTESTED
             return self.state
 
         self._validate()
@@ -121,13 +105,13 @@ class Step(Model):
             else:
                 self.definition_func(self, *args)  # pylint: disable=not-callable
         except Exception as e:  # pylint: disable=broad-except
-            self.state = Step.State.FAILED
+            self.state = State.FAILED
             self.failure = utils.Failure(e)
         else:
-            if self.state is Step.State.SKIPPED:
+            if self.state is State.SKIPPED:
                 self.skip()
-            elif self.state is not Step.State.PENDING:
-                self.state = Step.State.PASSED
+            elif self.state is not State.PENDING:
+                self.state = State.PASSED
         return self.state
 
     def debug(self):
@@ -135,7 +119,7 @@ class Step(Model):
             Debugs the step
         """
         if not self.runable:
-            self.state = Step.State.UNTESTED
+            self.state = State.UNTESTED
             return self.state
 
         self._validate()
@@ -146,20 +130,20 @@ class Step(Model):
         try:
             pdb.runcall(self.definition_func, self, *args, **kwargs)
         except Exception as e:  # pylint: disable=broad-except
-            self.state = Step.State.FAILED
+            self.state = State.FAILED
             self.failure = utils.Failure(e)
         else:
-            if self.state is Step.State.SKIPPED:
+            if self.state is State.SKIPPED:
                 self.skip()
-            elif self.state is not Step.State.PENDING:
-                self.state = Step.State.PASSED
+            elif self.state is not State.PENDING:
+                self.state = State.PASSED
         return self.state
 
     def skip(self):
         """
             Skips the step
         """
-        self.state = Step.State.SKIPPED
+        self.state = State.SKIPPED
 
     def pending(self):
         """
@@ -168,7 +152,7 @@ class Step(Model):
             The end report will remind
             about all pending steps.
         """
-        self.state = Step.State.PENDING
+        self.state = State.PENDING
 
     def behave_like(self, sentence):
         """
@@ -177,7 +161,7 @@ class Step(Model):
             :param string sentence: the sentence of the step to behave like
         """
         # check if this step has already failed from a previous behave_like call
-        if self.state is Step.State.FAILED:
+        if self.state is State.FAILED:
             return
 
         # create step according to given sentence
@@ -191,7 +175,7 @@ class Step(Model):
             new_step.run()
 
         # re-raise exception if the failed
-        if new_step.state is Step.State.FAILED:
+        if new_step.state is State.FAILED:
             new_step.failure.exception.args = (
                 "Step '{0}' failed: '{1}'".format(
                     sentence, new_step.failure.exception.message

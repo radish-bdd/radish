@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -9,15 +7,12 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-from __future__ import unicode_literals
-
 import re
 
 import pytest
 
 from radish.stepregistry import step, steps
 from radish.stepregistry import given, when, then
-from radish.compat import PY2, re_pattern
 import radish.exceptions as errors
 
 
@@ -70,7 +65,7 @@ def test_registering_steps_via_object(stepregistry):
     Test registering Steps via object
     """
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """When I call some step"""
 
@@ -96,7 +91,7 @@ def test_ignore_methods_registering_object(stepregistry):
     Test ignoring methods when registering an object
     """
     # given
-    class MySteps(object):
+    class MySteps:
         ignore = ["some_method"]
 
         def some_step(self):
@@ -119,7 +114,7 @@ def test_error_if_no_step_regex_given_for_object(stepregistry):
     Test error if a step method in object has no regex
     """
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             pass
 
@@ -141,7 +136,7 @@ def test_invalid_regex_step_pattern_in_method_docstring(stepregistry):
     Test invalid regex Step pattern in method docstring
     """
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """
             So (( invalid )(
@@ -175,8 +170,7 @@ def test_registering_step_function_via_step_decorator(pattern, stepregistry):
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
-        assert stepregistry.steps[pattern] == step_a
+    assert stepregistry.steps[pattern] == step_a
 
 
 @pytest.mark.parametrize(
@@ -200,8 +194,7 @@ def test_registering_step_function_via_given_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
-        assert stepregistry.steps[expected_pattern] == step_a
+    assert stepregistry.steps[expected_pattern] == step_a
 
 
 @pytest.mark.parametrize(
@@ -225,8 +218,7 @@ def test_registering_step_function_via_when_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
-        assert stepregistry.steps[expected_pattern] == step_a
+    assert stepregistry.steps[expected_pattern] == step_a
 
 
 @pytest.mark.parametrize(
@@ -250,8 +242,7 @@ def test_registering_step_function_via_then_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
-        assert stepregistry.steps[expected_pattern] == step_a
+    assert stepregistry.steps[expected_pattern] == step_a
 
 
 def test_registering_steps_from_object_via_steps_decorator(stepregistry):
@@ -260,7 +251,7 @@ def test_registering_steps_from_object_via_steps_decorator(stepregistry):
     """
     # given & when
     @steps
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """When I call some step"""
 

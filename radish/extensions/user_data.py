@@ -1,12 +1,8 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a hook which processes user specified data on the command-line
     and provides this data as a dictionary attached to the world.config object
     as per Enhancement #124.
 """
-
-from __future__ import unicode_literals
 
 import re
 
@@ -16,7 +12,7 @@ from radish.extensionregistry import extension
 
 
 @extension
-class UserData(object):
+class UserData:
     """
         User Data radish extension
     """

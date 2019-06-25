@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     Terrain module providing step overlapping data containers
 """
-
-from __future__ import unicode_literals
 
 import threading
 

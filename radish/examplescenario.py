@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to represent one Scenario Outline Example
 """
-
-from __future__ import unicode_literals
 
 from .scenario import Scenario
 

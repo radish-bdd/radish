@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
 """
-
-from __future__ import unicode_literals
 
 from datetime import datetime
 
@@ -15,7 +11,7 @@ __REQUIRED__ = True
 
 
 @extension
-class TimeRecorder(object):
+class TimeRecorder:
     """
         Time Recorder radish plugin
     """

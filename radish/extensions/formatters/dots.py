@@ -1,26 +1,20 @@
-# -*- coding: utf-8 -*-
-
 """
     This radish extension provides the functionality to write the feature file run to the console.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import sys
 import colorful as cf
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.compat import u
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.terrain import world
 
 
 @extension
-class DotOutputFormatter(object):
+class DotOutputFormatter:
     """
     Output formatter in the dot style.
     """
@@ -29,11 +23,11 @@ class DotOutputFormatter(object):
     LOAD_PRIORITY = 30
 
     STATE_SYMBOLS = {
-        Step.State.PASSED: ".",
-        Step.State.PENDING: "P",
-        Step.State.UNTESTED: "U",
-        Step.State.SKIPPED: "S",
-        Step.State.FAILED: "F",
+        State.PASSED: ".",
+        State.PENDING: "P",
+        State.UNTESTED: "U",
+        State.SKIPPED: "S",
+        State.FAILED: "F",
     }
 
     def __init__(self):
@@ -52,7 +46,7 @@ class DotOutputFormatter(object):
             :param Feature feature: the feature to write to the console
         """
         output = cf.bold_black(feature.path) + ": "
-        sys.stdout.write(u(output))
+        sys.stdout.write(str(output))
 
     def dot_formatter_after_each_scenario(self, scenario):
         """
@@ -63,10 +57,10 @@ class DotOutputFormatter(object):
         if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
             return
 
-        sys.stdout.write(u(self.STATE_SYMBOLS[scenario.state]))
+        sys.stdout.write(str(self.STATE_SYMBOLS[scenario.state]))
 
     def dot_formatter_after_each_step(self, step):
-        if step.state == Step.State.FAILED:
+        if step.state == State.FAILED:
             self._failed_steps.append(step)
 
     def dot_formatter_failure_summary(self, features, marker):
@@ -93,4 +87,4 @@ class DotOutputFormatter(object):
                 cf.bold_red(step.failure.name), cf.red(step.failure.reason)
             )
 
-        sys.stdout.write(u(output + "\n"))
+        sys.stdout.write(str(output + "\n"))

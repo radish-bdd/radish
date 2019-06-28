@@ -1,6 +1,18 @@
 import os
 import re
+import sys
 from setuptools import setup, find_packages
+
+
+# Explicitely disallow to install radish in unsupported environments
+EXPL_NOT_SUPPORTED_VERSIONS = ((3, 0), (3, 1), (3, 2), (3, 3))
+
+if sys.version_info < (3, 5):
+    raise SystemExit(
+        "radish does explicitly not support Python versions < 3.5. "
+        "Use radish-bdd==0.13.1 instead for your environment with Python {}".format(
+            sys.version_info)
+    )
 
 
 def read_metafile(path):

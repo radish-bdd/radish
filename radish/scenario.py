@@ -32,6 +32,11 @@ class Scenario(Model):
         self.complete = False
 
     @property
+    def feature(self):
+        """Get the Feature for this Scenario"""
+        return self.parent
+
+    @property
     def state(self):
         """
             Returns the state of the scenario

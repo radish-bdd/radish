@@ -171,3 +171,51 @@ def test_scenarioloop_afterparse_logic(mocker):
     # then - expect 2 built Scenarios
     assert len(scenario_loop.scenarios) == 2
     assert scenario_loop.complete is True
+
+
+def test_accessing_feature_from_step_within_scenario_loop(mocker):
+    """
+    Test accessing the Feature from a Step within a Scenario Loop
+    """
+    # given
+    feature_mock = mocker.MagicMock()
+    scenario_loop = ScenarioLoop(
+        1,
+        "Scenario Loop",
+        "Iterations",
+        "I am a Scenario Loop",
+        "foo.feature",
+        1,
+        parent=feature_mock,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
+    # add steps
+    scenario_loop.steps.extend(
+        [
+            Step(
+                1,
+                "Given I do something",
+                "foo.feature",
+                1,
+                parent=scenario_loop,
+                runable=True,
+                context_class=None,
+            )
+        ]
+    )
+
+    # set iterations
+    scenario_loop.iterations = 2
+
+    # when
+    scenario_loop.after_parse()
+
+    # when
+    actual_feature_from_scenario_loop = scenario_loop.steps[0].feature
+    actual_feature_from_step = scenario_loop.scenarios[0].steps[0].feature
+
+    # then
+    assert actual_feature_from_scenario_loop == feature_mock
+    assert actual_feature_from_step == feature_mock

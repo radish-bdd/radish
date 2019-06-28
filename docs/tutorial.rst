@@ -283,6 +283,7 @@ If a method inside the call is not a step implementation you can add the method 
           self.validate_number(number)
           step.context.numbers.append(number)
 
+
 Step Pattern
 ------------
 

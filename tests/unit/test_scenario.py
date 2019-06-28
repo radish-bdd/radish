@@ -12,6 +12,7 @@ import pytest
 from radish.feature import Feature
 from radish.scenario import Scenario
 from radish.background import Background
+from radish.stepmodel import Step
 from radish.state import State
 
 
@@ -359,3 +360,43 @@ def test_scenario_after_parse_logic(mocker):
     assert all(step.as_background for step in background.steps)
     # then - check as_precondition flags
     assert all(step.as_precondition for step in precondition_scenario.steps)
+
+
+def test_accessing_feature_from_step_within_scenario(mocker):
+    """
+    Test accessing the Feature from a Step within a regular Scenario
+    """
+    # given
+    feature_mock = mocker.MagicMock()
+    scenario = Scenario(
+        1,
+        "Scenario",
+        "I am a Scenario",
+        "foo.feature",
+        1,
+        parent=feature_mock,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
+
+    # add Steps to this Scenario
+    scenario.steps.extend(
+        [
+            Step(
+                1,
+                "I am a Step",
+                "foo.feature",
+                1,
+                parent=scenario,
+                runable=True,
+                context_class=None,
+            )
+        ]
+    )
+
+    # when
+    actual_feature = scenario.steps[0].feature
+
+    # then
+    assert actual_feature == feature_mock

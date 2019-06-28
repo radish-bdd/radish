@@ -266,3 +266,54 @@ def test_scenariooutline_afterparse_logic(mocker):
     # then - expect 2 built Scenarios
     assert len(scenario_outline.scenarios) == 2
     assert scenario_outline.complete is True
+
+
+def test_accessing_feature_from_step_within_scenario_outline(mocker):
+    """
+    Test accessing the Feature from a Step within a Scenario Outline
+    """
+    # given
+    feature_mock = mocker.MagicMock()
+    scenario_outline = ScenarioOutline(
+        1,
+        "Scenario Outline",
+        "Examples",
+        "I am a Scenario Outline",
+        "foo.feature",
+        1,
+        parent=feature_mock,
+        tags=None,
+        preconditions=None,
+        background=None,
+    )
+    # add steps
+    scenario_outline.steps.extend(
+        [
+            Step(
+                1,
+                "Given <foo>",
+                "foo.feature",
+                1,
+                parent=scenario_outline,
+                runable=True,
+                context_class=None,
+            )
+        ]
+    )
+    # add examples
+    scenario_outline.examples_header = ["foo", "bar"]
+    scenario_outline.examples = [
+        # row 0
+        ScenarioOutline.Example(["1", "2"], "foo.feature", 1),
+        # row 3
+        ScenarioOutline.Example(["3", "4"], "foo.feature", 2),
+    ]
+    scenario_outline.after_parse()
+
+    # when
+    actual_feature_from_scenario_outline = scenario_outline.steps[0].feature
+    actual_feature_from_step = scenario_outline.scenarios[0].steps[0].feature
+
+    # then
+    assert actual_feature_from_scenario_outline == feature_mock
+    assert actual_feature_from_step == feature_mock

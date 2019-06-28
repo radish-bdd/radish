@@ -78,6 +78,11 @@ class Step(Model):
         """
         return "\n".join(self.raw_text)
 
+    @property
+    def feature(self):
+        """Get the Feature for this Step"""
+        return self.parent.feature
+
     def _validate(self):
         """
             Checks if the step is valid to run or not

@@ -18,6 +18,10 @@ class ExampleScenario(Scenario):
         )
         self.example = example
 
+    @property
+    def feature(self):
+        return self.parent.feature
+
     def has_to_run(self, scenario_choice):
         """
             Returns wheiter the scenario has to run or not

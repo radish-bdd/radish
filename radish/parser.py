@@ -24,6 +24,7 @@ from .scenarioloop import ScenarioLoop
 from .stepmodel import Step
 from .background import Background
 from .model import Tag
+from . import utils
 
 
 class Keywords(object):
@@ -107,8 +108,8 @@ class FeatureParser(object):
         #  it's context class is 'Given'. This is used to correctly
         #  match the 'And' sentences
         self._current_context_class = None
-        # used to save text indention 
-        # - negative number indicates that there is now step text parsing 
+        # used to save text indention
+        # - negative number indicates that there is now step text parsing
         self._in_step_text_index = -1
         self.feature = None
 
@@ -407,7 +408,7 @@ class FeatureParser(object):
             return self._parse_scenario(line)
 
         example = ScenarioOutline.Example(
-            [x.strip() for x in line.split("|")[1:-1]],
+            [x.strip() for x in utils.split_unescape(line, "|")[1:-1]],
             self._featurefile,
             self._current_line,
         )
@@ -474,7 +475,7 @@ class FeatureParser(object):
             )
 
         current_step = self._current_scenario.steps[-1]
-        table_columns = [x.strip() for x in line.split("|")[1:-1]]
+        table_columns = [x.strip() for x in utils.split_unescape(line, "|")[1:-1]]
         if not current_step.table_header:  # it's the table heading
             current_step.table_header = table_columns
         else:  # it's a table data row

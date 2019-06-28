@@ -90,6 +90,8 @@ A Scenario Outline is a more advanced version of a standard Scenario. It allows 
            | 6       | 3       | 2      |
            | 24      | 8       | 3      |
 
+Note: a PIPE (|) character within a *Examples* cell can be escaped with a backslash (\).
+
 Scenario Loop
 -------------
 

@@ -303,6 +303,28 @@ def test_parse_scenario_outline_with_step_text(parser):
 
 
 @pytest.mark.parametrize(
+    "parser", [("escaping-scenario-examples",)], indirect=["parser"]
+)
+def test_pipes_in_scenario_example_rows_can_be_escaped(parser):
+    """
+    Test that a PIPE (|) can be used in a Scenario Example row value
+    when it's escaped with a backslash
+    """
+    # when
+    feature = parser.parse()
+
+    # then
+    assert len(feature.scenarios) == 1
+    assert isinstance(feature.scenarios[0], ScenarioOutline)
+
+    step = feature.scenarios[0].scenarios[0].steps[0]
+    assert step.sentence == "I do some stuff 1 hei|ho 2"
+
+    step = feature.scenarios[0].scenarios[1].steps[0]
+    assert step.sentence == "I do some stuff 1 hei\\ho 2"
+
+
+@pytest.mark.parametrize(
     "parser", [("regular-scenario-examples",)], indirect=["parser"]
 )
 def test_parse_feature_with_scenario_and_examples(parser):

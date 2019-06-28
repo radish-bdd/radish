@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides the Argument-Expression Registry
 """
-
-from __future__ import unicode_literals
 
 from singleton import singleton
 
@@ -14,7 +10,7 @@ from parse_type import TypeBuilder
 
 
 @singleton()
-class CustomTypeRegistry(object):
+class CustomTypeRegistry:
     """
         Registry for all custom argument expressions
     """

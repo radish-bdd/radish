@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -20,7 +18,7 @@ def test_register_simple_extension_class(extensionregistry):
     Test registering simple Extension class
     """
     # given
-    class SimpleExtension(object):
+    class SimpleExtension:
         pass
 
     # when
@@ -38,7 +36,7 @@ def test_register_simple_extension_class_using_decorator(extensionregistry):
     """
     # given & when
     @extension
-    class SimpleExtension(object):
+    class SimpleExtension:
         pass
 
     # then
@@ -53,7 +51,7 @@ def test_loading_simple_extension(extensionregistry, mocker):
     """
     # given
     @extension
-    class SimpleExtension(object):
+    class SimpleExtension:
         LOAD_IF = staticmethod(lambda config: True)
 
     # when
@@ -73,7 +71,7 @@ def test_loading_invalid_extension(extensionregistry, mocker):
     """
     # given
     @extension
-    class SimpleExtension(object):
+    class SimpleExtension:
         pass
 
     # when
@@ -90,7 +88,7 @@ def test_loading_extension_which_raises_exceptions_init(extensionregistry, mocke
     """
     # given
     @extension
-    class SimpleExtension(object):
+    class SimpleExtension:
         LOAD_IF = staticmethod(lambda config: True)
 
         def __init__(self):
@@ -110,11 +108,11 @@ def test_loading_simple_extension_if_wanted(extensionregistry, mocker):
     """
     # given
     @extension
-    class WantedExtension(object):
+    class WantedExtension:
         LOAD_IF = staticmethod(lambda config: True)
 
     @extension
-    class UnwantedExtension(object):
+    class UnwantedExtension:
         LOAD_IF = staticmethod(lambda config: False)
 
     # when
@@ -132,17 +130,17 @@ def test_extension_loading_order(extensionregistry, mocker):
     """
     # given
     @extension
-    class SecondExtension(object):
+    class SecondExtension:
         LOAD_IF = staticmethod(lambda config: True)
         # default prio = 1000
 
     @extension
-    class FirstExtension(object):
+    class FirstExtension:
         LOAD_IF = staticmethod(lambda config: True)
         LOAD_PRIORITY = 1
 
     @extension
-    class ThirdExtension(object):
+    class ThirdExtension:
         LOAD_IF = staticmethod(lambda config: True)
         LOAD_PRIORITY = 10000
 
@@ -162,18 +160,18 @@ def test_getting_extension_options(extensionregistry, mocker):
     """
     # given
     @extension
-    class FooExtension(object):
+    class FooExtension:
         OPTIONS = [("--foo", "enable foo power")]
 
     @extension
-    class BarExtension(object):
+    class BarExtension:
         OPTIONS = [
             ("--bar", "enable bar power"),
             ("--bar-pow", "enable magnitude of bar power"),
         ]
 
     @extension
-    class BlaExtension(object):
+    class BlaExtension:
         pass
 
     # when

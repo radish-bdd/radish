@@ -1,25 +1,22 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a hook which generates a cucumber json result file at the end of the run.
 """
 
-from __future__ import unicode_literals
-
-from datetime import timedelta, datetime
 import json
+from datetime import datetime, timedelta
 
-from radish.terrain import world
-from radish.hookregistry import after
 from radish.exceptions import RadishError
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension
-class CucumberJSONWriter(object):
+class CucumberJSONWriter:
     """
         cucumber json Writer radish extension
     """
@@ -43,7 +40,7 @@ class CucumberJSONWriter(object):
 
         duration = timedelta()
         for feature in features:
-            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+            if feature.state in [State.PASSED, State.FAILED]:
                 # feature file run started
                 if feature.starttime is not None:
                     # feature file run not finished
@@ -107,13 +104,13 @@ class CucumberJSONWriter(object):
                         "line": step.line,
                         "result": {"status": step.state, "duration": duration},
                     }
-                    if step.state is Step.State.FAILED:
+                    if step.state is State.FAILED:
                         step_json["result"]["error_message"] = step.failure.reason
-                    if step.state is Step.State.UNTESTED:
+                    if step.state is State.UNTESTED:
                         if step.starttime is None:
-                            step_json["result"]["status"] = "pending"
+                            step_json["result"]["status"] = State.PENDING
                         else:
-                            step_json["result"]["status"] = "skipped"
+                            step_json["result"]["status"] = State.SKIPPED
                     if step.embeddings:
                         step_json["embeddings"] = step.embeddings
                     scenario_json["steps"].append(step_json)

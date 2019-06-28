@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides a class to match the feature file steps with the registered steps from the registry
 """
-
-from __future__ import unicode_literals
 
 import re
 from collections import namedtuple
@@ -18,7 +14,7 @@ from .compat import re_pattern
 StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
 
-class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
+class RegexStepArguments:  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a regex step pattern"""
 
     def __init__(self, match):
@@ -29,7 +25,7 @@ class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
         return self.match.groups(), self.match.groupdict()
 
 
-class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
+class ParseStepArguments:  # pylint: disable=too-few-public-methods
     """Class to represent the argument groups matched by a parse step pattern"""
 
     def __init__(self, match):

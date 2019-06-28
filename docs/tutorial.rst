@@ -249,7 +249,7 @@ Another way to implement step functions is using an enitre class:
   from radish import steps
 
   @steps
-  class Calculator(object):
+  class Calculator:
       def have_number(self, step, number):
           """I have the number {number:g}"""
           step.context.numbers.append(number)
@@ -270,7 +270,7 @@ If a method inside the call is not a step implementation you can add the method 
   from radish import steps
 
   @steps
-  class Calculator(object):
+  class Calculator:
 
       ignore = ["validate_number"]
 

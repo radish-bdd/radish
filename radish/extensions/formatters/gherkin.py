@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This radish extension provides the functionality to write the feature file run to the console.
 """
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
@@ -14,23 +9,17 @@ import os
 import re
 import colorful
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.feature import Feature
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import console_write as write
-from radish.compat import PY2
-
-
-if PY2:
-    str = unicode
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.state import State
+from radish.terrain import world
 
 
 @extension
-class ConsoleWriter(object):
+class ConsoleWriter:
     """
         Console writer radish extension
     """
@@ -67,11 +56,11 @@ class ConsoleWriter(object):
         """
             Returns the color func to use
         """
-        if state == Step.State.PASSED:
+        if state == State.PASSED:
             return colorful.bold_green
-        elif state == Step.State.FAILED:
+        elif state == State.FAILED:
             return colorful.bold_red
-        elif state == Step.State.PENDING:
+        elif state == State.PENDING:
             return colorful.bold_yellow
         elif state:
             return colorful.cyan
@@ -152,7 +141,7 @@ class ConsoleWriter(object):
             for step in feature.background.all_steps:
                 output += "\n" + self._get_step_before_output(step, colorful.cyan)
 
-        write(output)
+        print(output)
 
     def console_writer_before_each_scenario(self, scenario):
         """
@@ -218,7 +207,7 @@ class ConsoleWriter(object):
                 colorful.bold_white(scenario.keyword),
                 colorful.bold_white(scenario.sentence),
             )
-        write(output)
+        print(output)
 
     def console_writer_before_each_step(self, step):
         """
@@ -273,7 +262,7 @@ class ConsoleWriter(object):
         self.last_background = step.as_background
         output += self._get_step_before_output(step)
 
-        write(output)
+        print(output)
 
     def _get_step_before_output(self, step, color_func=None):
         if color_func is None:
@@ -403,7 +392,7 @@ class ConsoleWriter(object):
                     ),
                 )
 
-        if step.state == step.State.FAILED:
+        if step.state == State.FAILED:
             if world.config.with_traceback:
                 output += "\n          {0}{1}".format(
                     self.get_id_padding(len(step.parent.steps) - 2),
@@ -420,7 +409,7 @@ class ConsoleWriter(object):
                 colorful.red(step.failure.reason),
             )
 
-        write(output)
+        print(output)
 
     def console_writer_after_each_scenario(self, scenario):
         """
@@ -468,7 +457,7 @@ class ConsoleWriter(object):
                 ),
             )
 
-            if scenario.state == Step.State.FAILED:
+            if scenario.state == State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
                     output += "\n          {0}{1}".format(
@@ -497,7 +486,7 @@ class ConsoleWriter(object):
                 str(color_func(scenario.iteration)),
             )
 
-            if scenario.state == Step.State.FAILED:
+            if scenario.state == State.FAILED:
                 failed_step = scenario.failed_step
                 if world.config.with_traceback:
                     output += "\n          {0}{1}".format(
@@ -516,7 +505,7 @@ class ConsoleWriter(object):
                 )
 
         if output:
-            write(output)
+            print(output)
 
     def console_writer_after_each_feature(
         self, feature
@@ -526,4 +515,4 @@ class ConsoleWriter(object):
 
             :param Feature feature: the feature which was ran.
         """
-        write("")
+        print("")

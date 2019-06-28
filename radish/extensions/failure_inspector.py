@@ -1,19 +1,15 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides an extension which starts a python shell after a step failed
 """
 
-from __future__ import unicode_literals
-
 from radish.hookregistry import after
-from radish.stepmodel import Step
+from radish.state import State
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
 
 
 @extension
-class FailureInspector(object):
+class FailureInspector:
     """
         Failure inspector radish extension
     """
@@ -29,7 +25,7 @@ class FailureInspector(object):
         """
             Starts a python shell after a step failed
         """
-        if step.state is not Step.State.FAILED:
+        if step.state is not State.FAILED:
             return
 
         try:

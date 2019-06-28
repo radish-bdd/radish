@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides a representation of a Feature Background.
 """
-
-from __future__ import unicode_literals
 
 from .scenario import Scenario
 from .stepmodel import Step

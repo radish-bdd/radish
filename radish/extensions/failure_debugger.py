@@ -1,20 +1,15 @@
-# -*- coding: utf-8 -*-
-
-
 """
     This module provides an extension which starts a debugger when a step fails
 """
 
-from __future__ import unicode_literals
-
-from radish.hookregistry import after
-from radish.stepmodel import Step
-from radish.extensionregistry import extension
 import radish.utils as utils
+from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.state import State
 
 
 @extension
-class FailureDebugger(object):
+class FailureDebugger:
     """
         Failure debugger radish extension
     """
@@ -30,7 +25,7 @@ class FailureDebugger(object):
         """
             Starts a python debugger if the step failed
         """
-        if step.state is not Step.State.FAILED:
+        if step.state is not State.FAILED:
             return
 
         pdb = utils.get_debugger()

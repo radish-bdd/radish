@@ -1,16 +1,12 @@
-# -*- coding: utf-8 -*-
-
 """
     Provide plugin interface for radish extensions
 """
-
-from __future__ import unicode_literals
 
 from singleton import singleton
 
 
 @singleton()
-class ExtensionRegistry(object):
+class ExtensionRegistry:
     """
         Registers all extensions
     """

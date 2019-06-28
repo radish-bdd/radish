@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     Providing radish core functionality.
 """
-
-from __future__ import unicode_literals
 
 from threading import Lock
 from collections import OrderedDict
@@ -12,7 +8,7 @@ from collections import OrderedDict
 from .parser import FeatureParser
 
 
-class Configuration(object):
+class Configuration:
     """
         Manage configuration. Attributes of the class are created from the
         names of the command line options and are set to the command line
@@ -42,7 +38,7 @@ class Configuration(object):
 
 
 # FIXME: rename
-class Core(object):
+class Core:
     """
         Provide some core functionalities like parsing and storing of the feature files
     """

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -8,8 +6,6 @@
 
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
-
-from __future__ import unicode_literals
 
 import pytest
 

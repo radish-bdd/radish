@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-
 """
     This module provides an extension to write all features, scenarios and steps to the syslog.
 """
-
-from __future__ import unicode_literals
 
 from radish.terrain import world
 from radish.feature import Feature
@@ -13,7 +9,7 @@ from radish.extensionregistry import extension
 
 
 @extension
-class SyslogWriter(object):
+class SyslogWriter:
     """
         Syslog Writer radish extension. This extension is only supported on
         systems where the Python standard library supports the system logger

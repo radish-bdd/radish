@@ -1,9 +1,5 @@
-# -*- coding: utf-8 -*-
-# pylint: disable=missing-docstring
-
 import os
 import re
-import codecs
 from setuptools import setup, find_packages
 
 
@@ -11,7 +7,7 @@ def read_metafile(path):
     """
     Read contents from given metafile
     """
-    with codecs.open(path, "rb", "utf-8") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return f.read()
 
 
@@ -33,7 +29,7 @@ def get_meta(name):
 
 __META_FILE__ = os.path.join("radish", "__init__.py")
 __META_DATA__ = read_metafile(__META_FILE__)
-__README_CONTENTS__ = open("README.md").read()
+__README_CONTENTS__ = open("README.md", encoding="utf-8").read()
 
 
 # mandatory requirements for the radish base features
@@ -98,9 +94,7 @@ setup(
         "Operating System :: POSIX",
         "Operating System :: POSIX :: Linux",
         "Programming Language :: Python",
-        "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",

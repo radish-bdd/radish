@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     This model provides a base class for all models:
 
@@ -10,12 +8,10 @@
         * Step
 """
 
-from __future__ import unicode_literals
-
 from .exceptions import RadishError
 
 
-class Tag(object):
+class Tag:
     """
     Represents a tag for a model
     """
@@ -35,12 +31,12 @@ class Tag(object):
 
 
 # FIXME: make ABC
-class Model(object):
+class Model:
     """
         Represents a base model
     """
 
-    class Context(object):
+    class Context:
         """
             Represents a Models context.
             For every feature/scenario a new Context object is created

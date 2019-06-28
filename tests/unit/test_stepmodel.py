@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
     radish
     ~~~~~~
@@ -11,8 +9,9 @@
 
 import pytest
 
-from radish.stepmodel import Step
 from radish.exceptions import RadishError
+from radish.state import State
+from radish.stepmodel import Step
 
 
 def test_creating_simple_step():
@@ -178,7 +177,7 @@ def test_run_not_runable_step(debug_or_run, mock_utils_debugger):
     state = method()
 
     # then
-    assert state == Step.State.UNTESTED
+    assert state == State.UNTESTED
 
 
 def test_run_step_with_invalid_defintion_func():
@@ -210,7 +209,7 @@ def test_run_step_with_invalid_defintion_func():
     assert str(exc.value) == "The step 'I am a Step' does not have a step definition"
 
 
-class StepHelper(object):
+class StepHelper:
     """Helper class only used for mocking"""
 
     @staticmethod
@@ -269,7 +268,7 @@ def test_run_debug_step_function_with_kwargs(debug_or_run, mocker, mock_utils_de
     state = method()
 
     # then
-    assert state == Step.State.PASSED
+    assert state == State.PASSED
     StepHelper.step_func.assert_called_once_with(step, foo="1", bar="2")
 
 
@@ -302,7 +301,7 @@ def test_run_debug_step_function_with_posargs(
     state = method()
 
     # then
-    assert state == Step.State.PASSED
+    assert state == State.PASSED
     StepHelper.step_func.assert_called_once_with(step, 1, 2)
 
 
@@ -332,7 +331,7 @@ def test_run_debug_step_function_mark_pending(
     state = method()
 
     # then
-    assert state == Step.State.PENDING == step.state
+    assert state == State.PENDING == step.state
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
@@ -361,7 +360,7 @@ def test_run_debug_step_function_mark_skipped(
     state = method()
 
     # then
-    assert state == Step.State.SKIPPED == step.state
+    assert state == State.SKIPPED == step.state
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
@@ -390,7 +389,7 @@ def test_run_debug_step_function_with_exception(
     state = method()
 
     # then
-    assert state == step.state == Step.State.FAILED
+    assert state == step.state == State.FAILED
     assert step.failure is not None
     assert step.failure.reason == "failing step"
     assert step.failure.name == "AssertionError"
@@ -415,4 +414,4 @@ def test_skip_a_step():
     step.skip()
 
     # then
-    assert step.state == Step.State.SKIPPED
+    assert step.state == State.SKIPPED

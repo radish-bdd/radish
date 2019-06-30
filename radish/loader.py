@@ -15,6 +15,9 @@ def load_modules(location):
     """
     Loads all modules in the `location` folder
     """
+    if os.name == "nt":
+        location = location.replace("$PWD", os.getcwd())
+
     location = os.path.expanduser(os.path.expandvars(location))
     if not os.path.exists(location):
         raise OSError("Location '{0}' to load modules does not exist".format(location))

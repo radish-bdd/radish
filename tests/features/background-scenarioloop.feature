@@ -8,6 +8,8 @@ Feature: Background for Scenario Loop
         Given I have the number 5
         And I have the number 3
 
-    Scenario Loop 2: Add numbers
+    Scenario Loop: Add numbers
         When I add them up
         Then I expect the sum to be 8
+
+    Iterations: 2

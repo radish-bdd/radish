@@ -5,7 +5,7 @@
 from threading import Lock
 from collections import OrderedDict
 
-from .parser import FeatureParser
+from .legacy_parser import FeatureParser
 
 
 class Configuration:

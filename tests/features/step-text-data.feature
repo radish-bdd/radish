@@ -19,10 +19,10 @@ Feature: Step Text Data
           """
         Then YAML specification contains proper data
 
-    Scenario: A step with text on endigs
-         When YAML specification is set to
-            """version: '3'
-            services:
-              webapp:
-                build: ./dir"""
-          Then YAML specification contains proper data
+    #Scenario: A step with text on endigs
+         #When YAML specification is set to
+            #"""version: '3'
+            #services:
+              #webapp:
+                #build: ./dir"""
+          #Then YAML specification contains proper data

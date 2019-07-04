@@ -3,7 +3,7 @@ Feature: Escape PIPE in Example value
     in a Scenario Example value
 
     Scenario Outline: Regular Scenario
-        I do some stuff <foo> <bar> <foobar>
+        When I do some stuff <foo> <bar> <foobar>
 
     Examples:
         | foo | bar     | foobar |

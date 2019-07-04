@@ -4,7 +4,7 @@ Feature: Detect Example usage error
     regular Scenario.
 
     Scenario: Regular Scenario
-        I do some stuff
+        When I do some stuff
 
     Examples:
             | foo |

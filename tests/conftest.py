@@ -13,7 +13,7 @@ import pytest
 
 from radish.terrain import world
 from radish.core import Core, Configuration
-from radish.parser import FeatureParser
+from radish.legacy_parser import FeatureParser
 from radish.stepregistry import StepRegistry
 from radish.hookregistry import HookRegistry
 from radish.extensionregistry import ExtensionRegistry
@@ -151,7 +151,7 @@ def outputdir():
 
 
 @pytest.fixture()
-def parser(request, core):
+def legacy_parser(request, core):
     """
     Fixture to create a Feature Parser ready to parse the given Feature File
     """

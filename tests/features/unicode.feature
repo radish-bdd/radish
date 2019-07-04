@@ -22,7 +22,9 @@ Feature: Feature with unicode all over 🐢 and 🐧
         | 1 | 2 | 11 |
         | 4 | 5 | 17 |
 
-    Scenario Loop 2: This is a looped Scenario 🐢 and 🐧
+    Scenario Loop: This is a looped Scenario 🐢 and 🐧
         Given I have an instable function 🐢 and 🐧
         When I execute it
         Then I expect it to pass
+
+    Iterations: 2

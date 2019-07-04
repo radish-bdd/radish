@@ -23,7 +23,9 @@ Feature: Support Tags everywhere
         | 4 | 5 | 9 |
 
     @scenario_loop
-    Scenario Loop 2: Scenario Loop with Tags
+    Scenario Loop: Scenario Loop with Tags
         Given I have a Step
         When I do something
         Then I expect something
+
+    Iterations: 2

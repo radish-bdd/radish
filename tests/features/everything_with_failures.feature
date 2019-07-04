@@ -31,7 +31,9 @@ Feature: Everything in one Feature
         | 1 | 2 | 3 |
         | 4 | 5 | 9 |
 
-    Scenario Loop 2: This is a looped Scenario
+    Scenario Loop: This is a looped Scenario
         Given I have an instable function
         When I execute it
         Then I expect it to pass
+
+    Iterations: 2

@@ -1,7 +1,7 @@
 pysingleton==0.2.1
 colorful==0.4.4
 docopt==0.6.2
-ipython==7.6.0
+ipython==7.6.1
 tag-expressions>=1.0.0
 lxml==4.3.4
 parse_type==0.4.2

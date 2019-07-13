@@ -160,4 +160,3 @@ one of the Step run state values described above.
 If any Scenario in the Feature is did not "pass" then return the run result of
 the **first** Step that did not pass. As such Feature run state result is
 always one of the Step run state values described above.
-

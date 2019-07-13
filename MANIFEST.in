@@ -1,10 +1,27 @@
-include radish/languages/*
-include *.md
-include LICENSE
-include tox.ini
-recursive-include doc *.png
-recursive-include doc *.py
-recursive-include doc *.rst
-recursive-include doc Makefile
-recursive-include tests *.feature
+# Grammers
+include src/radish/parser/grammer.g
+
+# Metadata
+include LICENSE *.rst *.toml *.yml *.yaml
+graft .github
+
+# Stubs
+include src/radish/py.typed
+recursive-include src *.pyi
+
+# Tests
+include tox.ini .coveragerc conftest.py
 recursive-include tests *.py
+
+# Documentation
+include docs/Makefile docs/docutils.conf
+recursive-include docs *.png
+recursive-include docs *.svg
+recursive-include docs *.py
+recursive-include docs *.rst
+prune docs/_build
+
+# Just to keep check-manifest happy; on releases those files are gone.
+# Last rule wins!
+exclude changelog.d/*.rst
+include changelog.d/towncrier_template.rst

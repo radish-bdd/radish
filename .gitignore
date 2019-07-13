@@ -4,8 +4,8 @@
 # python bytecode files
 *.pyc
 
-# nosetools coverage file
-.coverage
+# coverage file
+.coverage*
 
 # python virtualenv
 env*

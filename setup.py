@@ -66,7 +66,7 @@ def read(metafile):
     """
     Return the contents of the given meta data file assuming UTF-8 encoding.
     """
-    with open(metafile, encoding="utf-8") as f:
+    with open(str(metafile), encoding="utf-8") as f:
         return f.read()
 
 

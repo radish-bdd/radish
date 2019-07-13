@@ -40,7 +40,7 @@ class FeatureFileParser:
 
     def parse_file(self, featurefile: Path):
         """Parse the given Feature File using the parser"""
-        with open(featurefile, "r", encoding="utf-8") as featurefile_f:
+        with open(str(featurefile), "r", encoding="utf-8") as featurefile_f:
             contents = featurefile_f.read()
             return self.parse_contents(featurefile, contents)
 

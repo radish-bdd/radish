@@ -2,7 +2,7 @@
 include src/radish/parser/grammer.g
 
 # Metadata
-include LICENSE *.rst *.toml *.yml *.yaml
+include LICENSE *.md *.rst *.toml *.yml *.yaml
 graft .github
 
 # Stubs

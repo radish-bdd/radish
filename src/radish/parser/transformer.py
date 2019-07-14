@@ -1,6 +1,11 @@
 """
-This module contains a Tree Transformer to transform the
-radish grammer into a radish Abstract Syntax Tree.
+radish
+~~~~~~
+
+the root from red to green.  BDD tooling for Python.
+
+:copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
+:license: MIT, see LICENSE for more details.
 """
 
 import itertools

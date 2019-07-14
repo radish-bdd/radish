@@ -1,3 +1,13 @@
+"""
+radish
+~~~~~~
+
+the root from red to green.  BDD tooling for Python.
+
+:copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
+:license: MIT, see LICENSE for more details.
+"""
+
 __description__ = "Behaviour-Driven-Development tool for python"
 __license__ = "MIT"
 __version__ = "0.13.1"

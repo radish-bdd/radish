@@ -16,6 +16,9 @@ jobs:
       Linting:
         python.version: '3.7'
         tox.env: lint
+      Manifest:
+        python.version: '3.7'
+        tox.env: manifest
       Python35:
         python.version: '3.5'
         tox.env: py35

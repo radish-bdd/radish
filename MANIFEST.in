@@ -1,9 +1,15 @@
-# Grammers
-include src/radish/parser/grammer.g
+# Additional package data
+recursive-include src/radish *.json
+recursive-include src/radish *.g
 
 # Metadata
 include LICENSE *.md *.rst *.toml *.yml *.yaml
 graft .github
+# Artwork
+recursive-include artwork *.ico
+recursive-include artwork *.md
+recursive-include artwork *.png
+recursive-include artwork *.xcf
 
 # Stubs
 include src/radish/py.typed
@@ -12,6 +18,7 @@ recursive-include src *.pyi
 # Tests
 include tox.ini .coveragerc conftest.py
 recursive-include tests *.py
+recursive-include tests *.feature
 
 # Documentation
 include docs/Makefile docs/docutils.conf
@@ -19,9 +26,17 @@ recursive-include docs *.png
 recursive-include docs *.svg
 recursive-include docs *.py
 recursive-include docs *.rst
+recursive-include docs *.ico
 prune docs/_build
 
 # Just to keep check-manifest happy; on releases those files are gone.
 # Last rule wins!
 exclude changelog.d/*.rst
 include changelog.d/towncrier_template.rst
+
+# Prune azure pipelines configuration
+prune .azure
+
+# Prune legacy
+prune legacy_radish
+prune legacy_tests

@@ -30,6 +30,9 @@ class Step:
         self.path = path
         self.line = line
 
+        self.step_impl = None
+        self.step_impl_match = None
+
     def __repr__(self) -> str:
         return "<Step: {id} '{keyword} {text}' @ {path}:{line}>".format(
             id=self.id,
@@ -38,3 +41,8 @@ class Step:
             path=self.path,
             line=self.line,
         )
+
+    def assign_implementation(self, step_impl, match):
+        """Assign a matched Step Implementation to this Step"""
+        self.step_impl = step_impl
+        self.step_impl_match = match

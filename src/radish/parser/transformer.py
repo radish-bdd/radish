@@ -28,10 +28,14 @@ from radish.models import (
 from radish.parser.errors import (
     RadishScenarioOutlineExamplesInconsistentCellCount,
     RadishStepDataTableInconsistentCellCount,
+    RadishFirstStepMustUseFirstLevelKeyword,
 )
 
 
 class RadishGherkinTransformer(Transformer):
+    FIRST_LEVEL_STEP_KEYWORDS = {"Given", "When", "Then"}
+    SECOND_LEVEL_STEP_KEYWORDS = {"And", "But"}
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -39,6 +43,7 @@ class RadishGherkinTransformer(Transformer):
         self.feature_id = None
         self.__step_id = None
         self.__scenario_id = None
+        self.__step_keyword_ctx = None
 
     def prepare(
         self, featurefile_path: Path, featurefile_contents: str, feature_id: int
@@ -109,14 +114,26 @@ class RadishGherkinTransformer(Transformer):
         """Transform the ``step``-subtree for the radish AST"""
         keyword, text, (doc_string, data_table) = subtree
 
+        keyword_line = keyword.line
+        keyword = keyword.strip()
+        if self.__step_keyword_ctx is None:
+            if keyword not in self.FIRST_LEVEL_STEP_KEYWORDS:
+                raise RadishFirstStepMustUseFirstLevelKeyword()
+
+            self.__step_keyword_ctx = keyword
+        else:
+            if keyword in self.FIRST_LEVEL_STEP_KEYWORDS:
+                if keyword != self.__step_keyword_ctx:
+                    self.__step_keyword_ctx = keyword
+
         step = Step(
             self.__step_id,
-            keyword.strip(),
+            self.__step_keyword_ctx,
             text,
             doc_string,
             data_table,
             self.featurefile_path,
-            keyword.line,
+            keyword_line,
         )
 
         # increment step id for the next step
@@ -140,6 +157,7 @@ class RadishGherkinTransformer(Transformer):
         # increment scenario id and reset step id for the next scenario
         self.__scenario_id += 1
         self.__step_id = 1
+        self.__step_keyword_ctx = None
         return scenario
 
     #: Transform the ``example_cell``-subtree for the radish AST

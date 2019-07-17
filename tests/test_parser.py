@@ -24,6 +24,7 @@ from radish.parser.errors import (
     RadishStepDataTableMissingClosingVBar,
     RadishStepDocStringNotClosed,
     RadishStepDoesNotStartWithKeyword,
+    RadishFirstStepMustUseFirstLevelKeyword,
 )
 
 FEATURE_FILES_DIR = Path(__file__).parent / "features"
@@ -732,7 +733,7 @@ def test_parse_fail_misplaced_background(parser):
         parser.parse_contents(None, feature_file)
 
 
-@pytest.mark.parametrize("keyword", ["Given", "When", "Then", "But", "And"])
+@pytest.mark.parametrize("keyword", ["Given", "When", "Then"])
 def test_parse_single_scenario_with_single_step(parser, keyword):
     """The parser should parse a single Scenario with a single Step"""
     # given
@@ -768,6 +769,114 @@ def test_parse_fail_step_with_invalid_keyword(parser):
     with pytest.raises(RadishStepDoesNotStartWithKeyword):
         # when
         parser.parse_contents(None, feature_file)
+
+
+@pytest.mark.parametrize(
+    "feature_file",
+    [
+        """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                And there is a Step
+    """,
+        """
+        Feature: My Feature
+
+            Scenario: My first Scenario
+                Given there is a Step
+
+            Scenario: My second Scenario
+                And there is a Step
+    """,
+        """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                But there is a Step
+    """,
+        """
+        Feature: My Feature
+
+            Scenario: My first Scenario
+                Given there is a Step
+
+            Scenario: My second Scenario
+                But there is a Step
+    """,
+    ],
+    ids=[
+        "'And' in first Scenario",
+        "'And' in second Scenario",
+        "'But' in first Scenario",
+        "'But' in second Scenario",
+    ],
+)
+def test_parse_fail_first_step_no_first_level_keyword(parser, feature_file):
+    """The parser should fail to parse if the first Step has no first level keyword"""
+    # then
+    with pytest.raises(RadishFirstStepMustUseFirstLevelKeyword):
+        # when
+        parser.parse_contents(None, feature_file)
+
+
+def test_parse_second_level_keyword_assigned_correct_first_level_keyword(parser):
+    """
+    The parser should assign the correct first level keyword to a Step with a second level keyword
+    """
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                Given there is a Step
+                And there is a Step
+                When there is a Step
+                And there is a Step
+                Then there is a Step
+                And there is a Step
+                But there is a Step
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    steps = ast.rules[0].scenarios[0].steps
+    assert steps[0].keyword == "Given"
+    assert steps[1].keyword == "Given"
+    assert steps[2].keyword == "When"
+    assert steps[3].keyword == "When"
+    assert steps[4].keyword == "Then"
+    assert steps[5].keyword == "Then"
+    assert steps[6].keyword == "Then"
+
+
+def test_parse_keyword_context_reset_after_scenario(parser):
+    """The parser should reset the frist level keyword context for each new Scenario"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario: My first Scenario
+                Given there is a Step
+                And there is a Step
+
+            Scenario: My second Scenario
+                When there is a Step
+                And there is a Step
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    first_scenario_steps = ast.rules[0].scenarios[0].steps
+    second_scenario_steps = ast.rules[0].scenarios[1].steps
+    assert first_scenario_steps[0].keyword == "Given"
+    assert first_scenario_steps[1].keyword == "Given"
+    assert second_scenario_steps[0].keyword == "When"
+    assert second_scenario_steps[1].keyword == "When"
 
 
 def test_parse_single_scenario_with_multiple_steps(parser):

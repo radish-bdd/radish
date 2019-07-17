@@ -13,7 +13,10 @@ import re
 from parse_type.cfparse import Parser
 
 from radish.models.step import Step
-from radish.errors import StepImplementationNotFoundError, StepImplementationPatternNotSupported
+from radish.errors import (
+    StepImplementationNotFoundError,
+    StepImplementationPatternNotSupported,
+)
 
 try:
     re_pattern_type = re.Pattern  # >= Python 3.7

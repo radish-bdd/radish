@@ -15,7 +15,10 @@ import pytest
 from radish.stepregistry import StepImpl
 from radish.matcher import match_step, RegexStepImplMatcher, ParseTypeStepImplMatcher
 from radish.models import Step
-from radish.errors import StepImplementationNotFoundError, StepImplementationPatternNotSupported
+from radish.errors import (
+    StepImplementationNotFoundError,
+    StepImplementationPatternNotSupported,
+)
 
 
 def test_matcher_should_raise_error_when_no_step_impl_found(mocker):
@@ -23,9 +26,7 @@ def test_matcher_should_raise_error_when_no_step_impl_found(mocker):
     # given
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = []
-    step = Step(
-        1, "Given", "pattern", None, None, None, None
-    )
+    step = Step(1, "Given", "pattern", None, None, None, None)
 
     # then
     with pytest.raises(StepImplementationNotFoundError) as excinfo:
@@ -46,12 +47,8 @@ def test_matcher_should_raise_error_when_no_matcher_for_pattern_type(mocker):
 
     step_impl = StepImpl("Given", NotSupportedPatternType(), None)
     registry_mock = mocker.MagicMock()
-    registry_mock.step_implementations.return_value = [
-        step_impl
-    ]
-    step = Step(
-        1, "Given", "pattern", None, None, None, None
-    )
+    registry_mock.step_implementations.return_value = [step_impl]
+    step = Step(1, "Given", "pattern", None, None, None, None)
 
     # then
     with pytest.raises(StepImplementationPatternNotSupported) as excinfo:
@@ -67,12 +64,8 @@ def test_matcher_should_match_step_impl_with_parse_type_pattern(mocker):
     # given
     step_impl = StepImpl("Given", "pattern", None)
     registry_mock = mocker.MagicMock()
-    registry_mock.step_implementations.return_value = [
-        step_impl
-    ]
-    step = Step(
-        1, "Given", "pattern", None, None, None, None
-    )
+    registry_mock.step_implementations.return_value = [step_impl]
+    step = Step(1, "Given", "pattern", None, None, None, None)
 
     # when
     match_step(step, registry_mock)
@@ -87,12 +80,8 @@ def test_matcher_should_match_step_impl_with_regex_pattern(mocker):
     # given
     step_impl = StepImpl("Given", re.compile(r"pattern"), None)
     registry_mock = mocker.MagicMock()
-    registry_mock.step_implementations.return_value = [
-        step_impl
-    ]
-    step = Step(
-        1, "Given", "pattern", None, None, None, None
-    )
+    registry_mock.step_implementations.return_value = [step_impl]
+    step = Step(1, "Given", "pattern", None, None, None, None)
 
     # when
     match_step(step, registry_mock)
@@ -112,11 +101,12 @@ def test_matcher_should_match_best_step_impl_candidate(mocker):
 
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = [
-        step_impl_candidate_1, step_impl_candidate_2, step_impl_candidate_3, step_impl_no_candidate
+        step_impl_candidate_1,
+        step_impl_candidate_2,
+        step_impl_candidate_3,
+        step_impl_no_candidate,
     ]
-    step = Step(
-        1, "Given", "foo", None, None, None, None
-    )
+    step = Step(1, "Given", "foo", None, None, None, None)
 
     # when
     match_step(step, registry_mock)

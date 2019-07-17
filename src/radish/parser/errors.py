@@ -378,3 +378,11 @@ class RadishScenarioOutlineExamplesMissingOpeningVBar(RadishSyntaxError):
 class RadishScenarioOutlineExamplesInconsistentCellCount(RadishSyntaxError):
     label = "Scenario Outline Examples rows must all have the same amount of cells"
     examples = []
+
+
+class RadishFirstStepMustUseFirstLevelKeyword(RadishSyntaxError):
+    label = (
+        "The first Step in a Scenario must use one of the first level Step keywords: "
+        "Given, When or Then"
+    )
+    examples = []

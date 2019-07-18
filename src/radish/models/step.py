@@ -2,14 +2,16 @@
 radish
 ~~~~~~
 
-the root from red to green.  BDD tooling for Python.
+The root from red to green. BDD tooling for Python.
 
 :copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
 :license: MIT, see LICENSE for more details.
 """
 
+from radish.models.timed import Timed
 
-class Step:
+
+class Step(Timed):
     """Respresents a single instance of a Gherkin Step"""
 
     def __init__(
@@ -30,10 +32,12 @@ class Step:
         self.path = path
         self.line = line
 
+        #: Holds information about the AST hierarchy where this Step appeared.
         self.feature = None
         self.rule = None
         self.scenario = None
 
+        #: Holds information about the Step Implementation this Step was matched with.
         self.step_impl = None
         self.step_impl_match = None
 

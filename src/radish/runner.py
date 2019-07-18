@@ -8,14 +8,7 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-from radish.models import (
-    Feature,
-    Rule,
-    Scenario,
-    ScenarioLoop,
-    ScenarioOutline,
-    Step
-)
+from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
 
 
 class Runner:
@@ -25,20 +18,20 @@ class Runner:
     The Steps in the AST will be matched just before
     they are run.
     """
+
     def with_hooks(what):
         """Call hooks for a specific model"""
+
         def __decorator(func):
             def __wrapper(self, model, *args, **kwargs):
-                self.hook_registry.call(
-                    what, "before", model, *args, **kwargs
-                )
+                self.hook_registry.call(what, "before", model, *args, **kwargs)
                 try:
                     return func(self, model, *args, **kwargs)
                 finally:
-                    self.hook_registry.call(
-                        what, "after", model, *args, **kwargs
-                    )
+                    self.hook_registry.call(what, "after", model, *args, **kwargs)
+
             return __wrapper
+
         return __decorator
 
     def __init__(self, hook_registry):

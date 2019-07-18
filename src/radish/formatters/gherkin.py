@@ -8,6 +8,8 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from datetime import timedelta
+
 import colorful as cf
 
 from radish.hookregistry import before, after
@@ -37,23 +39,29 @@ def write_feature_header(feature):
         description line 1
         description line 2
     """
-    feature_heading = "{feature_keyword} {short_description}".format(
-        feature_keyword=cf.bold_white("Feature:"),
-        short_description=cf.white(feature.short_description))
-
-    feature_description = "\n".join(INDENT_STEP + l for l in feature.description)
-
+    # write Tags
     for tag in feature.tags:
         write_tagline(tag)
 
+    # write Feature heading
+    feature_heading = "{feature_keyword} {short_description}".format(
+        feature_keyword=cf.bold_white("Feature:"),
+        short_description=cf.white(feature.short_description),
+    )
     print(feature_heading, flush=True)
-    print(feature_description + "\n", flush=True)
 
-    # write background if there is one
+    # write Feature description if available
+    if feature.description:
+        feature_description = "\n".join(INDENT_STEP + l for l in feature.description)
+        print(feature_description + "\n", flush=True)
+
+    # write Background if available
     if feature.background:
         background = "{background_keyword} {short_description}".format(
             background_keyword=cf.bold_white("Background:"),
-            short_description=cf.white(feature.background.short_description) if feature.background.short_description else ""
+            short_description=cf.white(feature.background.short_description)
+            if feature.background.short_description
+            else "",
         )
 
         # TODO: write background steps
@@ -72,7 +80,7 @@ def write_rule_header(rule):
 
     rule_heading = "{rule_keyword} {short_description}".format(
         rule_keyword=cf.bold_white("Rule:"),
-        short_description=cf.white(rule.short_description)
+        short_description=cf.white(rule.short_description),
     )
 
     print(INDENT_STEP + rule_heading + "\n", flush=True)
@@ -86,7 +94,7 @@ def write_scenario_header(scenario):
 
     scenario_heading = "{scenario_keyword} {short_description}".format(
         scenario_keyword=cf.bold_white("Scenario:"),
-        short_description=cf.white(scenario.short_description)
+        short_description=cf.white(scenario.short_description),
     )
 
     for tag in scenario.tags:
@@ -107,8 +115,7 @@ def write_step_running(step):
     indentation = INDENT_STEP * indentation_level
 
     scenario_heading = "{step_keyword} {text}".format(
-        step_keyword=cf.orange(step.keyword),
-        text=cf.orange(step.text)
+        step_keyword=cf.orange(step.keyword), text=cf.orange(step.text)
     )
 
     print(indentation + scenario_heading, flush=True)
@@ -121,9 +128,21 @@ def write_step_result(step):
     indentation = INDENT_STEP * indentation_level
 
     scenario_heading = "{step_keyword} {text}".format(
-        step_keyword=cf.forestGreen(step.keyword),
-        text=cf.forestGreen(step.text)
+        step_keyword=cf.forestGreen(step.keyword), text=cf.forestGreen(step.text)
     )
 
     print(LINE_UP_JUMP, end="", flush=True)
     print(indentation + scenario_heading, flush=True)
+
+
+@after.all()
+def write_endreport(features):
+    """Write the end report after all Feature Files are ran"""
+    total_duration = sum((f.duration() for f in features), timedelta())
+    timing_information = cf.deepSkyBlue3(
+        "Run finished within {duration} seconds".format(
+            duration=cf.bold_deepSkyBlue3(total_duration.total_seconds())
+        )
+    )
+
+    print(timing_information, flush=True)

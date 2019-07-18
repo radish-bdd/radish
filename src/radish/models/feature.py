@@ -8,8 +8,10 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from radish.models.timed import Timed
 
-class Feature:
+
+class Feature(Timed):
     """"Represents a single instance of a Gherkin Feature"""
 
     def __init__(

@@ -18,12 +18,12 @@ from radish.runner import Runner
 from radish.hookregistry import registry as hook_registry
 
 # TODO: dynamically import
-import radish.formatters.gherkin
+import radish.formatters.gherkin  # noqa
+import radish.extensions.timer  # noqa
 
 logger = logging.getLogger("radish")
 logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
+    level=logging.DEBUG, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
 )
 
 
@@ -38,19 +38,28 @@ def enable_radish_debug_mode(ctx, param, enabled):
 
 @click.command()
 @click.option(
-    "--basedir", "-b", "basedirs",
-    multiple=True, default=("radish",), type=click.Path(exists=True),
-    help="Specify the location of the Step Implementations"
+    "--basedir",
+    "-b",
+    "basedirs",
+    multiple=True,
+    default=("radish",),
+    type=click.Path(exists=True),
+    help="Specify the location of the Step Implementations",
 )
 @click.option(
-    "--debug", "-d", "enable_debug_mode", is_flag=True,
+    "--debug",
+    "-d",
+    "enable_debug_mode",
+    is_flag=True,
     help="Enable debug mode for radish itself",
-    callback=enable_radish_debug_mode
+    callback=enable_radish_debug_mode,
 )
 @click.argument(
-    "files", nargs=-1,
+    "files",
+    nargs=-1,
     type=click.Path(exists=True),
-    callback=lambda _, __, x: [Path(p) for p in x])
+    callback=lambda _, __, x: [Path(p) for p in x],
+)
 def cli(files, basedirs, enable_debug_mode):
     """radish - The root from red to green. BDD tooling for Python.
 
@@ -67,7 +76,8 @@ def cli(files, basedirs, enable_debug_mode):
     for feature_file in files:
         logger.debug("Parsing Feature File %s", feature_file)
         feature_ast = parser.parse_file(feature_file)
-        features.append(feature_ast)
+        if feature_ast:
+            features.append(feature_ast)
 
     # TODO: load basedir modules
 

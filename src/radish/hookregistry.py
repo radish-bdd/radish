@@ -13,9 +13,8 @@ import bisect
 
 class HookImpl:
     """Represent a single Hook Implementation"""
-    __slots__ = [
-        "what", "when", "func", "on_tags", "order"
-    ]
+
+    __slots__ = ["what", "when", "func", "on_tags", "order"]
 
     def __init__(self, what, when, func, on_tags, order):
         self.what = what
@@ -60,6 +59,7 @@ class HookImpl:
 class HookRegistry:
     """The ``HookRegistry`` keeps track of all declared ``HookImpl``s.
     """
+
     DEFAULT_HOOK_ORDER = 100
 
     def __init__(self):
@@ -70,14 +70,14 @@ class HookRegistry:
                 "each_feature": [],
                 "each_rule": [],
                 "each_scenario": [],
-                "each_step": []
+                "each_step": [],
             },
             "after": {
                 "all": [],
                 "each_feature": [],
                 "each_rule": [],
                 "each_scenario": [],
-                "each_step": []
+                "each_step": [],
             },
         }
 
@@ -113,6 +113,7 @@ class HookRegistry:
 
         created_decorator_names = []
         for when, whats in self._hooks.items():
+
             class HookProvider:
                 def __init__(self, when):
                     self.when = when
@@ -120,12 +121,15 @@ class HookRegistry:
             when_object = HookProvider(when)
 
             for what in whats.keys():
+
                 def __create_decorator(what, when):
                     def __decorator(on_tags=None, order=self.DEFAULT_HOOK_ORDER):
                         def __wrapper(func):
                             self.register(what, when, func, on_tags, order)
                             return func
+
                         return __wrapper
+
                     return __decorator
 
                 setattr(when_object, what, __create_decorator(what, when))

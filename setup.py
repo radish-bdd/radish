@@ -31,7 +31,7 @@ CLASSIFIERS = [
 #: Holds the runtime requirements for the end user
 INSTALL_REQUIRES = [
     "lark-parser",
-    "docopt",
+    "click",
     "pysingleton",
     "colorful>=0.3.11",
     "tag-expressions>=1.0.0",
@@ -106,10 +106,10 @@ setup(
     install_requires=INSTALL_REQUIRES,
     extras_require=EXTRAS_REQUIRES,
     entry_points={
-        # "console_scripts": [
-        # "radish = radish.main:main",
-        # "radish-test = radish.testing.__main__:main [testing]",
-        # ]
+        "console_scripts": [
+            "radish = radish.__main__:cli",
+            # "radish-test = radish.testing.__main__:main [testing]",
+        ]
     },
     keywords=KEYWORDS,
     classifiers=CLASSIFIERS,

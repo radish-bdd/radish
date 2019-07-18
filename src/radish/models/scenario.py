@@ -27,7 +27,13 @@ class Scenario:
         self.path = path
         self.line = line
         self.steps = steps
+
+        for step in self.steps:
+            step.set_scenario(self)
+
+        self.feature = None
         self.background = None
+        self.rule = None
 
     def __repr__(self) -> str:
         return "<Scenario: {id} '{short_description} with {steps} Steps @ {path}:{line}>".format(
@@ -38,6 +44,18 @@ class Scenario:
             line=self.line,
         )
 
+    def set_feature(self, feature):
+        """Set the Feature for this Scenario"""
+        self.feature = feature
+        for step in self.steps:
+            step.set_feature(feature)
+
     def set_background(self, background):
         """Set the Background for this Scenario"""
         self.background = background
+
+    def set_rule(self, rule):
+        """Set the Rule for this Scenario"""
+        self.rule = rule
+        for step in self.steps:
+            step.set_rule(rule)

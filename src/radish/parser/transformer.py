@@ -257,6 +257,11 @@ class RadishGherkinTransformer(Transformer):
         rule = Rule(
             short_description, self.featurefile_path, short_description.line, scenarios
         )
+
+        # let the Scenarios know to which Rule they belong
+        for scenario in scenarios:
+            scenario.set_rule(rule)
+
         return rule
 
     def description(self, description_lines):
@@ -279,6 +284,11 @@ class RadishGherkinTransformer(Transformer):
                 scenarios_for_default_rule[0].line,
                 scenarios_for_default_rule,
             )
+
+            # let the Scenarios in the DefaultRule know to which Rule they belong
+            for scenario in scenarios_for_default_rule:
+                scenario.set_rule(default_rule)
+
             rules = [default_rule] + rules
 
         # add Background to all Rules
@@ -309,6 +319,11 @@ class RadishGherkinTransformer(Transformer):
             background,
             rules,
         )
+
+        # let the Rules know to which Feature they belong
+        for rule in rules:
+            rule.set_feature(feature)
+
         return feature
 
     def tag(self, subtree):

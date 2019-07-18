@@ -30,6 +30,10 @@ class Step:
         self.path = path
         self.line = line
 
+        self.feature = None
+        self.rule = None
+        self.scenario = None
+
         self.step_impl = None
         self.step_impl_match = None
 
@@ -41,6 +45,18 @@ class Step:
             path=self.path,
             line=self.line,
         )
+
+    def set_feature(self, feature):
+        """Set the Feature for this Step"""
+        self.feature = feature
+
+    def set_rule(self, rule):
+        """Set the Rule for this Step"""
+        self.rule = rule
+
+    def set_scenario(self, scenario):
+        """Set the Scenario for this Step"""
+        self.scenario = scenario
 
     def assign_implementation(self, step_impl, match):
         """Assign a matched Step Implementation to this Step"""

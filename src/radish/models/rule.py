@@ -18,10 +18,7 @@ class Rule:
         self.line = line
         self.scenarios = scenarios
 
-    def set_background(self, background):
-        """Set the Background for all Scenarios in this Rule"""
-        for scenario in self.scenarios:
-            scenario.set_background(background)
+        self.feature = None
 
     def __repr__(self) -> str:
         return "<Rule: '{short_description}' with {scenarios} Scenarios @ {path}:{line}>".format(
@@ -30,6 +27,17 @@ class Rule:
             path=self.path,
             line=self.line,
         )
+
+    def set_feature(self, feature):
+        """Set the Feature for this Rule"""
+        self.feature = feature
+        for scenario in self.scenarios:
+            scenario.set_feature(feature)
+
+    def set_background(self, background):
+        """Set the Background for all Scenarios in this Rule"""
+        for scenario in self.scenarios:
+            scenario.set_background(background)
 
 
 class DefaultRule(Rule):

@@ -41,10 +41,22 @@ class ScenarioOutline(Scenario):
             )
         )
 
+    def set_feature(self, feature):
+        """Set the Feature for this Scenario"""
+        super().set_feature(feature)
+        for example in self.examples:
+            example.set_feature(feature)
+
     def set_background(self, background):
         super().set_background(background)
         for example in self.examples:
             example.set_background(self.background)
+
+    def set_rule(self, rule):
+        """Set the Rule for this Scenario"""
+        super().set_rule(rule)
+        for example in self.examples:
+            example.set_rule(rule)
 
     def _build_examples(self, examples_table):
         """Build the examples from the Examples Table"""

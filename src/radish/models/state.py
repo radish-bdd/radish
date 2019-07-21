@@ -15,7 +15,8 @@ class State(Enum):
     """Represents the State of other models"""
 
     UNTESTED = 0
-    SKIPPED = 1
-    PENDING = 2
-    PASSED = 3
-    FAILED = 4
+    RUNNING = 1
+    SKIPPED = 2
+    PENDING = 3
+    PASSED = 4
+    FAILED = 5

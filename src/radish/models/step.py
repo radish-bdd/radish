@@ -8,7 +8,10 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from radish.errors import RadishError
+from radish.models.state import State
 from radish.models.timed import Timed
+from radish.models.stepfailurereport import StepFailureReport
 
 
 class Step(Timed):
@@ -41,6 +44,10 @@ class Step(Timed):
         self.step_impl = None
         self.step_impl_match = None
 
+        #: Holds information about the State of this Step
+        self.state = State.UNTESTED
+        self.failure_report = None
+
     def __repr__(self) -> str:
         return "<Step: {id} '{keyword} {text}' @ {path}:{line}>".format(
             id=self.id,
@@ -66,3 +73,30 @@ class Step(Timed):
         """Assign a matched Step Implementation to this Step"""
         self.step_impl = step_impl
         self.step_impl_match = match
+
+    def run(self):
+        """Run this Step
+
+        The Step will only run if a ``StepImpl`` was assigned using ``assign_implementation``.
+        """
+        if not self.step_impl or not self.step_impl_match:
+            raise RadishError(
+                "Unable to run Step '{} {}' because it has "
+                "no Step Implementation assigned to it".format(self.keyword, self.text)
+            )
+
+        args, kwargs = self.step_impl_match.evaluate()
+
+        self.state = State.RUNNING
+        try:
+            if kwargs:
+                self.step_impl.func(self, **kwargs)
+            else:
+                self.step_impl.func(self, *args)
+        except Exception as exc:
+            self.state = State.FAILED
+            self.failure_report = StepFailureReport(exc)
+        else:
+            if self.state is State.RUNNING:
+                self.state = State.PASSED
+        return self.state

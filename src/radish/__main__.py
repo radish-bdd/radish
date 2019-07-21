@@ -9,21 +9,24 @@ The root from red to green. BDD tooling for Python.
 """
 
 import logging
+import os
 from pathlib import Path
 
 import click
 
-from radish.parser import FeatureFileParser
-from radish.runner import Runner
-from radish.hookregistry import registry as hook_registry
+import radish.extensions.timer  # noqa
 
 # TODO: dynamically import
 import radish.formatters.gherkin  # noqa
-import radish.extensions.timer  # noqa
+from radish.hookregistry import registry as hook_registry
+from radish.stepregistry import registry as step_registry
+from radish.parser import FeatureFileParser
+import radish.loader as loader
+from radish.runner import Runner
 
 logger = logging.getLogger("radish")
 logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
+    level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
 )
 
 
@@ -36,6 +39,29 @@ def enable_radish_debug_mode(ctx, param, enabled):
         logger.setLevel(logging.ERROR)
 
 
+def expand_basedirs(ctx, param, basedirs):
+    """Expand the given basedirs setting
+
+    A single basedirs can contain multiple basedir locations.
+    The location must be split by a colon (:) on UNIX and
+    with a semicolon (;) on Windows.
+    """
+    expanded_basedirs = []
+    for unexpanded_basedirs in basedirs:
+        separator = ";" if os.name == "nt" else ":"
+
+        basedir_gen = (
+            Path(os.path.expandvars(b)).expanduser()
+            for b in unexpanded_basedirs.split(separator)
+        )
+        for basedir in basedir_gen:
+            if not basedir.exists():
+                raise OSError("The basedir '{}' does not exist.".format(basedir))
+
+            expanded_basedirs.append(basedir)
+    return expanded_basedirs
+
+
 @click.command()
 @click.option(
     "--basedir",
@@ -43,8 +69,12 @@ def enable_radish_debug_mode(ctx, param, enabled):
     "basedirs",
     multiple=True,
     default=("radish",),
-    type=click.Path(exists=True),
-    help="Specify the location of the Step Implementations",
+    type=str,
+    callback=expand_basedirs,
+    help=(
+        "Specify the location of the Step Implementations. "
+        "One '-b' can contain multiple locations, split by a ;"
+    ),
 )
 @click.option(
     "--debug",
@@ -79,11 +109,18 @@ def cli(files, basedirs, enable_debug_mode):
         if feature_ast:
             features.append(feature_ast)
 
-    # TODO: load basedir modules
+    logger.debug("Loading all modules from the basedirs")
+    loaded_modules = loader.load_modules(basedirs)
+    logger.debug(
+        "Loaded %d modules from the basedirs: %s",
+        len(loaded_modules),
+        ", ".join(str(m) for m in loaded_modules),
+    )
 
-    runner = Runner(hook_registry=hook_registry)
+    runner = Runner(step_registry=step_registry, hook_registry=hook_registry)
     logger.debug("Starting Runner")
     runner.start(features)
+    logger.debug("Finished Runner")
 
 
 if __name__ == "__main__":

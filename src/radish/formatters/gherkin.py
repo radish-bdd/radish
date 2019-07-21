@@ -8,12 +8,14 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import textwrap
 from datetime import timedelta
 
 import colorful as cf
 
 from radish.hookregistry import before, after
 from radish.models import DefaultRule
+from radish.models.state import State
 
 #: Holds the amount of spaces to indent per block
 INDENT_STEP = " " * 4
@@ -125,11 +127,24 @@ def write_step_running(step):
     indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
     indentation = INDENT_STEP * indentation_level
 
-    scenario_heading = "{step_keyword} {text}".format(
+    step_text = "{step_keyword} {text}".format(
         step_keyword=cf.orange(step.keyword), text=cf.orange(step.text)
     )
 
-    print(indentation + scenario_heading, flush=True)
+    print(indentation + step_text, flush=True)
+
+    if step.doc_string is not None:
+        doc_string_indentation = indentation + INDENT_STEP
+        print(doc_string_indentation + cf.orange('"""'), flush=True)
+        print(
+            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
+            flush=True,
+        )
+        print(cf.orange(doc_string_indentation + '"""'), flush=True)
+
+    if step.data_table is not None:
+        data_table_indentation = indentation + INDENT_STEP
+        print(data_table_indentation + cf.orange(step.data_table), flush=True)
 
 
 @after.each_step()
@@ -138,12 +153,46 @@ def write_step_result(step):
     indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
     indentation = INDENT_STEP * indentation_level
 
-    scenario_heading = "{step_keyword} {text}".format(
-        step_keyword=cf.forestGreen(step.keyword), text=cf.forestGreen(step.text)
+    step_color_func = None
+    if step.state == State.PASSED:
+        step_color_func = cf.forestGreen
+    elif step.state == State.FAILED:
+        step_color_func = cf.firebrick
+    elif step.state == State.PENDING:
+        step_color_func = cf.orange
+    else:
+        step_color_func = cf.deepSkyBlue3
+
+    step_text = "{step_keyword} {text}".format(
+        step_keyword=step_color_func(step.keyword), text=step_color_func(step.text)
     )
 
     print(LINE_UP_JUMP, end="", flush=True)
-    print(indentation + scenario_heading, flush=True)
+    print(indentation + step_text, flush=True)
+
+    if step.doc_string is not None:
+        doc_string_indentation = indentation + INDENT_STEP
+        print(doc_string_indentation + cf.orange('"""'), flush=True)
+        print(
+            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
+            flush=True,
+        )
+        print(cf.orange(doc_string_indentation + '"""'), flush=True)
+
+    if step.data_table is not None:
+        data_table_indentation = indentation + INDENT_STEP
+        print(data_table_indentation + cf.orange(step.data_table), flush=True)
+
+    if step.failure_report:
+        failure_report_indentation = indentation + INDENT_STEP
+        report = step.failure_report
+        print(
+            step_color_func(
+                textwrap.indent(report.traceback, failure_report_indentation)
+            ),
+            end="",
+            flush=True,
+        )
 
 
 @after.all()

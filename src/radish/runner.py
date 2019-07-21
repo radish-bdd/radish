@@ -8,6 +8,7 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import radish.matcher as matcher
 from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
 
 
@@ -34,7 +35,8 @@ class Runner:
 
         return __decorator
 
-    def __init__(self, hook_registry):
+    def __init__(self, step_registry, hook_registry):
+        self.step_registry = step_registry
         self.hook_registry = hook_registry
 
     @with_hooks("all")
@@ -74,4 +76,7 @@ class Runner:
 
     @with_hooks("each_step")
     def run_step(self, step: Step):
-        pass
+        # match the Step with a Step Implementation
+        matcher.match_step(step, self.step_registry)
+
+        step.run()

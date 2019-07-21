@@ -92,7 +92,6 @@ def match_step(step: Step, registry):
             raise StepImplementationPatternNotSupported(step_impl)
 
         match, match_length = matcher(step.text, step_impl)
-
         if match:
             if len(step.text) == match_length:
                 # if perfect match can be made we return it no

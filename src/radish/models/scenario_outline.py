@@ -64,6 +64,16 @@ class ScenarioOutline(Scenario):
         for example_id, example_decl in enumerate(examples_table, start=1):
             # patch Steps from Scenario Outline for Examples
             steps = copy.deepcopy(self.steps)
+
+            # Example description
+            example_short_description_data = [
+                "{}: {}".format(k, v)
+                for k, v
+                in example_decl.items()
+            ]
+            short_description = "{} [{}]".format(
+                self.short_description, ", ".join(example_short_description_data))
+
             for step in steps:
                 for example_key, example_value in example_decl.items():
                     step.text = step.text.replace(
@@ -72,8 +82,7 @@ class ScenarioOutline(Scenario):
 
             example = Scenario(
                 self.id + example_id,
-                # FIXME(TF): add example data to description [foo=bar, bla=df]
-                self.short_description,
+                short_description,
                 self.tags,
                 self.path,
                 self.line,  # FIXME(TF): use correct line number

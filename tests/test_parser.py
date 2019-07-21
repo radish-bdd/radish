@@ -1587,6 +1587,26 @@ def test_parser_build_examples_for_scenario_loop(parser):
     assert len(ast.rules[0].scenarios[0].examples) == 2
 
 
+def test_parser_add_iteration_id_to_scenario_loop_example(parser):
+    """
+    The parser should build Examples for every Iteration of a
+    Scenario Loop and add the Iteration Id to it's short description"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario Loop: My Scenario
+            Iterations: 2
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert ast.rules[0].scenarios[0].examples[0].short_description == "My Scenario [Iteration: 1]"
+    assert ast.rules[0].scenarios[0].examples[1].short_description == "My Scenario [Iteration: 2]"
+
+
 def test_parser_built_examples_for_scenario_loop_have_copied_steps(parser):
     """The parser should copy the Steps for the built Examples of a Scenario Loop"""
     # given
@@ -2063,6 +2083,35 @@ def test_parser_build_examples_for_scenario_outline(parser):
 
     # then
     assert len(ast.rules[0].scenarios[0].examples) == 2
+
+
+def test_parser_add_example_data_to_short_description_for_scenario_outline_examples(parser):
+    """
+    The parser should build Examples for every Iteration of a Scenario Outline
+    and add the Example Data to it's short description
+    """
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario Outline: My Scenario Outline
+                Given there is a <hdr> Step
+                When there is a <hdr> Step
+                Then there is a <hdr> Step
+
+            Examples:
+                | hdr1 | hdr2 |
+                | foo  | meh  |
+                | bar  | bla  |
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    examples = ast.rules[0].scenarios[0].examples
+    assert examples[0].short_description == "My Scenario Outline [hdr1: foo, hdr2: meh]"
+    assert examples[1].short_description == "My Scenario Outline [hdr1: bar, hdr2: bla]"
 
 
 def test_parser_built_examples_for_scenario_outline_have_copied_steps(parser):

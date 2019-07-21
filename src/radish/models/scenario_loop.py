@@ -62,12 +62,13 @@ class ScenarioLoop(Scenario):
         """Build the examples from the number of Iterations"""
         examples = []
         for example_id in range(1, iterations + 1):
+            # Example description
+            short_description = "{} [Iteration: {}]".format(self.short_description, example_id)
             # copy Steps from Scenario Loop for Examples
             steps = copy.deepcopy(self.steps)
             example = Scenario(
                 self.id + example_id,
-                # FIXME(TF): add example data to description [foo=bar, bla=df]
-                self.short_description,
+                short_description,
                 self.tags,
                 self.path,
                 self.line,  # FIXME(TF): use correct line number

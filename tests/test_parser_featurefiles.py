@@ -373,9 +373,9 @@ def test_parse_feature_with_scenario_loop(parser):
     assert scenario_loop.steps[0].keyword == "Given"
     assert scenario_loop.steps[0].text == "the webservice is started"
     assert scenario_loop.steps[1].keyword == "When"
-    assert scenario_loop.steps[1].text == "the <route> route is queried"
+    assert scenario_loop.steps[1].text == "the /foo/bar route is queried"
     assert scenario_loop.steps[2].keyword == "Then"
-    assert scenario_loop.steps[2].text == "the status code is <status-code>"
+    assert scenario_loop.steps[2].text == "the status code is 200"
 
     examples = scenario_loop.examples
     assert len(examples) == 2

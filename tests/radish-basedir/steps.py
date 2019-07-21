@@ -27,5 +27,4 @@ def query_route(step, route):
 # @then("the status code is {:int}")
 @then("the status code is {:g}")
 def assert_status_code(step, status_code):
-    pass
     assert False, "This is a failure"

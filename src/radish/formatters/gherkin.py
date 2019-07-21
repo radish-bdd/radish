@@ -66,7 +66,18 @@ def write_feature_header(feature):
 
         # TODO: write background steps
 
-        print(background + "\n", flush=True)
+        print(INDENT_STEP + background + "\n", flush=True)
+
+
+@after.each_feature()
+def write_feature_footer(feature):
+    """Write the Feature Footer
+
+    The Feature Footer is a blank line in case the Feature
+    was empty.
+    """
+    if not feature.description and not feature.rules:
+        print("", flush=True)
 
 
 @before.each_rule()

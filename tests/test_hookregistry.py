@@ -13,38 +13,41 @@ import pytest
 from radish.hookregistry import HookRegistry, HookImpl
 
 
-@pytest.mark.parametrize("hook_1, hook_2, expect_equal", [
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("what", "when", None, [], 1),
-        True
-    ),
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("", "when", None, [], 1),
-        False
-    ),
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("what", "", None, [], 1),
-        False
-    ),
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("what", "when", lambda x: x, [], 1),
-        False
-    ),
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("what", "when", None, [1], 1),
-        False
-    ),
-    (
-        HookImpl("what", "when", None, [], 1),
-        HookImpl("what", "when", None, [], 2),
-        False
-    ),
-])
+@pytest.mark.parametrize(
+    "hook_1, hook_2, expect_equal",
+    [
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("what", "when", None, [], 1),
+            True,
+        ),
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("", "when", None, [], 1),
+            False,
+        ),
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("what", "", None, [], 1),
+            False,
+        ),
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("what", "when", lambda x: x, [], 1),
+            False,
+        ),
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("what", "when", None, [1], 1),
+            False,
+        ),
+        (
+            HookImpl("what", "when", None, [], 1),
+            HookImpl("what", "when", None, [], 2),
+            False,
+        ),
+    ],
+)
 def test_hookimpls_can_be_compared_by_equality(hook_1, hook_2, expect_equal):
     """The ``HookImpl``s can be compared for their equality"""
     # when

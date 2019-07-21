@@ -15,5 +15,6 @@ class Context:
     A ``Context`` object can be used by other models to
     store arbirtrary data during it's lifetime.
     """
+
     def __init__(self):
         self.constants = []

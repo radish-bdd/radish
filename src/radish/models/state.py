@@ -13,6 +13,7 @@ from enum import Enum
 
 class State(Enum):
     """Represents the State of other models"""
+
     UNTESTED = 0
     SKIPPED = 1
     PENDING = 2

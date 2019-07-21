@@ -81,15 +81,6 @@ class HookRegistry:
             },
         }
 
-    def step_implementations(self, keyword=None):
-        """Return a dict of all registered Step Implementations"""
-        if keyword is not None:
-            return (
-                self._step_implementations[keyword] + self._step_implementations["Step"]
-            )
-
-        return self._step_implementations
-
     def register(self, what, when, func, on_tags, order):
         """Register the given Hook for later execution"""
         hook_impl = HookImpl(what, when, func, on_tags, order)
@@ -138,7 +129,7 @@ class HookRegistry:
             created_decorator_names.append(when)
         return created_decorator_names
 
-    def call(self, what, when, model, *args, **kwargs):
+    def call(self, what, when, tagged_model, *args, **kwargs):
         """Calls a registered Hook"""
         if when == "before":
             hooks = self._hooks[when][what]
@@ -149,7 +140,7 @@ class HookRegistry:
             # TODO: check if Hook has to run according to tags
 
             # TODO: proper error handling
-            hook_impl.func(model, *args, **kwargs)
+            hook_impl.func(tagged_model, *args, **kwargs)
 
 
 #: Holds a global instance of the HookRegistry which shall be used

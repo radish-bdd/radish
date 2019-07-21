@@ -9,6 +9,8 @@ the root from red to green.  BDD tooling for Python.
 """
 
 from radish.models.timed import Timed
+from radish.models.context import Context
+from radish.models.state import State
 
 
 class Feature(Timed):
@@ -34,6 +36,9 @@ class Feature(Timed):
         self.background = background
         self.rules = rules
 
+        #: Holds the ``Context`` object.
+        self.context = Context()
+
     def __repr__(self) -> str:
         return "<Feature: {id} '{short_description}' with {rules} Rules @ {path}:{line}>".format(
             id=self.id,
@@ -42,3 +47,13 @@ class Feature(Timed):
             path=self.path,
             line=self.line,
         )
+
+    @property
+    def state(self):
+        """Read-only property to get the State for this Feature"""
+        for rule_state in (r.state for r in self.rules):
+            # TODO(TF): has feature to run?!
+            if rule_state is not State.PASSED:
+                return rule_state
+
+        return State.PASSED

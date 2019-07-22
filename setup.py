@@ -32,7 +32,6 @@ CLASSIFIERS = [
 INSTALL_REQUIRES = [
     "lark-parser",
     "click",
-    "pysingleton",
     "colorful>=0.3.11",
     "tag-expressions>=1.0.0",
     "parse_type>0.4.0",

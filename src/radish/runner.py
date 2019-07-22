@@ -8,6 +8,8 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import random
+
 import radish.matcher as matcher
 from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
 from radish.models.state import State
@@ -70,15 +72,18 @@ class Runner:
 
     @with_hooks("each_rule")
     def run_rule(self, rule: Rule):
-        for scenario in rule.scenarios:
+        if self.config.shuffle_scenarios:
+            scenarios = random.sample(rule.scenarios, len(rule.scenarios))
+        else:
+            scenarios = rule.scenarios
+
+        for scenario in scenarios:
             # check if this Scenario has to be run
             if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
                 continue
 
-            if isinstance(scenario, ScenarioOutline):
-                state = self.run_scenario_outline(scenario)
-            elif isinstance(scenario, ScenarioLoop):
-                state = self.run_scenario_loop(scenario)
+            if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
+                state = self.run_scenario_container(scenario)
             else:
                 state = self.run_scenario(scenario)
 
@@ -87,20 +92,13 @@ class Runner:
 
         return State.PASSED
 
-    def run_scenario_outline(self, scenario_outline: ScenarioOutline):
-        for scenario in scenario_outline.examples:
-            # check if this Scenario has to be run
-            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
-                continue
+    def run_scenario_container(self, scenario_container):
+        if self.config.shuffle_scenarios:
+            scenarios = random.sample(scenario_container.examples, len(scenario_container.examples))
+        else:
+            scenarios = scenario_container.examples
 
-            state = self.run_scenario(scenario)
-            if state is not State.PASSED and self.config.early_exit:
-                return state
-
-        return State.PASSED
-
-    def run_scenario_loop(self, scenario_loop: ScenarioLoop):
-        for scenario in scenario_loop.examples:
+        for scenario in scenarios:
             # check if this Scenario has to be run
             if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
                 continue

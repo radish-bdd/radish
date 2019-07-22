@@ -120,6 +120,12 @@ class CommandWithExtensionOptions(click.Command):
     callback=lambda _, __, ids: [int(x.strip()) for x in ids.split(",") if x.strip()],
     help="Filter for Scenarios with it's Id in this comma-separated list"
 )
+@click.option(
+    "--shuffle",
+    "shuffle_scenarios",
+    is_flag=True,
+    help="Shuffle the running order for the Scenarios within a Feature"
+)
 @click.argument(
     "feature_files",
     nargs=-1,

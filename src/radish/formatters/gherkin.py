@@ -11,12 +11,14 @@ The root from red to green. BDD tooling for Python.
 import textwrap
 from datetime import timedelta
 
+import click
 import colorful as cf
 
 from radish.extensionregistry import extension
-from radish.hookregistry import before, after
+from radish.hookregistry import after, before
 from radish.models import DefaultRule
 from radish.models.state import State
+from radish.terrain import world
 
 #: Holds the amount of spaces to indent per block
 INDENT_STEP = " " * 4
@@ -27,11 +29,28 @@ LINE_UP_JUMP = "\r\033[A\033[K"
 
 @extension
 class GherkinFormatter:
+    OPTIONS = [
+        click.Option(
+            param_decls=("--no-ansi", "no_ansi"),
+            is_flag=True,
+            help="Turn off all ANSI sequences (colors, line rewrites"
+        ),
+        click.Option(
+            param_decls=("--no-step-rewrites", "no_step_rewrites"),
+            is_flag=True,
+            help="Turn off all Step rewrites"
+        )
+    ]
+
     @classmethod
     def load(cls, config):
         return cls()
 
     def __init__(self):
+        # turn of ANSI colors if requested
+        if world.config.no_ansi:
+            cf.disable()
+
         before.each_feature()(write_feature_header)
         after.each_feature()(write_feature_footer)
 
@@ -159,7 +178,8 @@ def write_step_result(step):
     else:
         step_color_func = cf.deepSkyBlue3
 
-    print(LINE_UP_JUMP, end="", flush=True)
+    if not world.config.no_ansi and not world.config.no_step_rewrites:
+        print(LINE_UP_JUMP, end="", flush=True)
 
     write_step(step, step_color_func)
 

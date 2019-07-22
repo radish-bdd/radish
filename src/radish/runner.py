@@ -71,6 +71,11 @@ class Runner:
 
     @with_hooks("each_scenario")
     def run_scenario(self, scenario: Scenario):
+        # run background steps
+        if scenario.background:
+            for step in scenario.background.steps:
+                self.run_step(step)
+
         for step in scenario.steps:
             self.run_step(step)
 

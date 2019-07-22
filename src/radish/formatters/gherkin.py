@@ -66,9 +66,13 @@ def write_feature_header(feature):
             else "",
         )
 
-        # TODO: write background steps
+        print(INDENT_STEP + background, flush=True)
 
-        print(INDENT_STEP + background + "\n", flush=True)
+        # TODO: write background steps
+        for step in feature.background.steps:
+            write_step(step, cf.deepSkyBlue3, indentation=INDENT_STEP + INDENT_STEP)
+
+        print("", flush=True)
 
 
 @after.each_feature()
@@ -124,35 +128,12 @@ def write_scenario_footer(scenario):
 @before.each_step()
 def write_step_running(step):
     """Write the Step before it's running"""
-    indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
-    indentation = INDENT_STEP * indentation_level
-
-    step_text = "{step_keyword} {text}".format(
-        step_keyword=cf.orange(step.keyword), text=cf.orange(step.text)
-    )
-
-    print(indentation + step_text, flush=True)
-
-    if step.doc_string is not None:
-        doc_string_indentation = indentation + INDENT_STEP
-        print(doc_string_indentation + cf.orange('"""'), flush=True)
-        print(
-            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
-            flush=True,
-        )
-        print(cf.orange(doc_string_indentation + '"""'), flush=True)
-
-    if step.data_table is not None:
-        data_table_indentation = indentation + INDENT_STEP
-        print(data_table_indentation + cf.orange(step.data_table), flush=True)
+    write_step(step, cf.orange)
 
 
 @after.each_step()
 def write_step_result(step):
     """Write the Step after it's ran"""
-    indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
-    indentation = INDENT_STEP * indentation_level
-
     step_color_func = None
     if step.state == State.PASSED:
         step_color_func = cf.forestGreen
@@ -163,27 +144,13 @@ def write_step_result(step):
     else:
         step_color_func = cf.deepSkyBlue3
 
-    step_text = "{step_keyword} {text}".format(
-        step_keyword=step_color_func(step.keyword), text=step_color_func(step.text)
-    )
-
     print(LINE_UP_JUMP, end="", flush=True)
-    print(indentation + step_text, flush=True)
 
-    if step.doc_string is not None:
-        doc_string_indentation = indentation + INDENT_STEP
-        print(doc_string_indentation + cf.orange('"""'), flush=True)
-        print(
-            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
-            flush=True,
-        )
-        print(cf.orange(doc_string_indentation + '"""'), flush=True)
-
-    if step.data_table is not None:
-        data_table_indentation = indentation + INDENT_STEP
-        print(data_table_indentation + cf.orange(step.data_table), flush=True)
+    write_step(step, step_color_func)
 
     if step.failure_report:
+        indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
+        indentation = INDENT_STEP * indentation_level
         failure_report_indentation = indentation + INDENT_STEP
         report = step.failure_report
         print(
@@ -206,3 +173,29 @@ def write_endreport(features):
     )
 
     print(timing_information, flush=True)
+
+
+def write_step(step, step_color_func, indentation=None):
+    """Write a Step with the given color function"""
+    if indentation is None:
+        indentation_level = 2 if isinstance(step.rule, DefaultRule) else 3
+        indentation = INDENT_STEP * indentation_level
+
+    step_text = "{step_keyword} {text}".format(
+        step_keyword=step_color_func(step.keyword), text=step_color_func(step.text)
+    )
+
+    print(indentation + step_text, flush=True)
+
+    if step.doc_string is not None:
+        doc_string_indentation = indentation + INDENT_STEP
+        print(doc_string_indentation + step_color_func('"""'), flush=True)
+        print(
+            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
+            flush=True,
+        )
+        print(step_color_func(doc_string_indentation + '"""'), flush=True)
+
+    if step.data_table is not None:
+        data_table_indentation = indentation + INDENT_STEP
+        print(data_table_indentation + step_color_func(step.data_table), flush=True)

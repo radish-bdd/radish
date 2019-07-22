@@ -36,7 +36,8 @@ class Runner:
 
         return __decorator
 
-    def __init__(self, step_registry, hook_registry):
+    def __init__(self, config, step_registry, hook_registry):
+        self.config = config
         self.step_registry = step_registry
         self.hook_registry = hook_registry
 
@@ -44,31 +45,52 @@ class Runner:
     def start(self, features):
         """Start the Runner"""
         for feature in features:
-            self.run_feature(feature)
+            state = self.run_feature(feature)
+            if state is not State.PASSED and self.config.early_exit:
+                return state
+
+        return State.PASSED
 
     @with_hooks("each_feature")
     def run_feature(self, feature: Feature):
         """Run the given Feature"""
         for rule in feature.rules:
-            self.run_rule(rule)
+            state = self.run_rule(rule)
+            if state is not State.PASSED and self.config.early_exit:
+                return state
+
+        return State.PASSED
 
     @with_hooks("each_rule")
     def run_rule(self, rule: Rule):
         for scenario in rule.scenarios:
             if isinstance(scenario, ScenarioOutline):
-                self.run_scenario_outline(scenario)
+                state = self.run_scenario_outline(scenario)
             elif isinstance(scenario, ScenarioLoop):
-                self.run_scenario_loop(scenario)
+                state = self.run_scenario_loop(scenario)
             else:
-                self.run_scenario(scenario)
+                state = self.run_scenario(scenario)
+
+            if state is not State.PASSED and self.config.early_exit:
+                return state
+
+        return State.PASSED
 
     def run_scenario_outline(self, scenario_outline: ScenarioOutline):
         for scenario in scenario_outline.examples:
-            self.run_scenario(scenario)
+            state = self.run_scenario(scenario)
+            if state is not State.PASSED and self.config.early_exit:
+                return state
+
+        return State.PASSED
 
     def run_scenario_loop(self, scenario_loop: ScenarioLoop):
         for scenario in scenario_loop.examples:
-            self.run_scenario(scenario)
+            state = self.run_scenario(scenario)
+            if state is not State.PASSED and self.config.early_exit:
+                return state
+
+        return State.PASSED
 
     @with_hooks("each_scenario")
     def run_scenario(self, scenario: Scenario):

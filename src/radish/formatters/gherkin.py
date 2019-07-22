@@ -40,6 +40,11 @@ class GherkinFormatter:
             is_flag=True,
             help="Turn off all Step rewrites",
         ),
+        click.Option(
+            param_decls=("--with-traceback", "-t", "with_traceback"),
+            is_flag=True,
+            help="Show the Traceback for failed Steps"
+        )
     ]
 
     @classmethod
@@ -194,9 +199,15 @@ def write_step_result(step):
         indentation = INDENT_STEP * indentation_level
         failure_report_indentation = indentation + INDENT_STEP
         report = step.failure_report
+
+        if world.config.with_traceback:
+            failure_information = report.traceback
+        else:
+            failure_information = "{}: {}\n".format(report.name, report.reason)
+
         print(
             step_color_func(
-                textwrap.indent(report.traceback, failure_report_indentation)
+                textwrap.indent(failure_information, failure_report_indentation)
             ),
             end="",
             flush=True,

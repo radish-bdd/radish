@@ -79,6 +79,14 @@ class CommandWithExtensionOptions(click.Command):
 
 @click.command(cls=CommandWithExtensionOptions)
 @click.option(
+    "--debug",
+    "-d",
+    "enable_debug_mode",
+    is_flag=True,
+    help="Enable debug mode for radish itself",
+    callback=enable_radish_debug_mode,
+)
+@click.option(
     "--basedir",
     "-b",
     "basedirs",
@@ -92,12 +100,11 @@ class CommandWithExtensionOptions(click.Command):
     ),
 )
 @click.option(
-    "--debug",
-    "-d",
-    "enable_debug_mode",
+    "--early-exit",
+    "-e",
+    "early_exit",
     is_flag=True,
-    help="Enable debug mode for radish itself",
-    callback=enable_radish_debug_mode,
+    help="Aborts the Runner immediately when the first Scenario failed"
 )
 @click.argument(
     "feature_files",
@@ -149,7 +156,7 @@ def cli(**kwargs):
     )
 
     try:
-        runner = Runner(step_registry=step_registry, hook_registry=hook_registry)
+        runner = Runner(config, step_registry=step_registry, hook_registry=hook_registry)
         logger.debug("Starting Runner")
         runner.start(features)
         logger.debug("Finished Runner")

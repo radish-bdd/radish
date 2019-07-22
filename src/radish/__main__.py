@@ -95,6 +95,8 @@ class CommandWithExtensionOptions(click.Command):
 
 
 @click.command(cls=CommandWithExtensionOptions)
+@click.version_option()
+@click.help_option("--help", "-h")
 @click.option(
     "--debug",
     "-d",

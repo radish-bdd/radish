@@ -644,7 +644,7 @@ def test_parser_assign_background_to_single_scenario_outside_rule(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert ast.rules[0].scenarios[0].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
 
 
 def test_parser_assign_background_to_multiple_scenarios_outside_rule(parser):
@@ -663,8 +663,10 @@ def test_parser_assign_background_to_multiple_scenarios_outside_rule(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert ast.rules[0].scenarios[0].background == ast.background
-    assert ast.rules[0].scenarios[1].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
+    assert ast.rules[0].scenarios[1].background is not None
+
+    assert ast.rules[0].scenarios[0].background != ast.rules[0].scenarios[1].background
 
 
 def test_parser_assign_background_to_single_scenario_inside_rule(parser):
@@ -683,7 +685,7 @@ def test_parser_assign_background_to_single_scenario_inside_rule(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert ast.rules[0].scenarios[0].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
 
 
 def test_parser_assign_background_to_every_scenario_inside_rules(parser):
@@ -707,10 +709,14 @@ def test_parser_assign_background_to_every_scenario_inside_rules(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert ast.rules[0].scenarios[0].background == ast.background
-    assert ast.rules[0].scenarios[1].background == ast.background
-    assert ast.rules[1].scenarios[0].background == ast.background
-    assert ast.rules[1].scenarios[1].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
+    assert ast.rules[0].scenarios[1].background is not None
+    assert ast.rules[1].scenarios[0].background is not None
+    assert ast.rules[1].scenarios[1].background is not None
+
+    assert ast.rules[0].scenarios[0].background != ast.rules[0].scenarios[1].background
+    assert ast.rules[0].scenarios[1].background != ast.rules[1].scenarios[0].background
+    assert ast.rules[1].scenarios[0].background != ast.rules[1].scenarios[1].background
 
 
 @pytest.mark.xfail(
@@ -1659,7 +1665,10 @@ def test_parser_assign_background_to_scenario_loop(parser):
 
     # then
     assert ast.background is not None
-    assert ast.rules[0].scenarios[0].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
+    assert ast.rules[0].scenarios[0].examples[0].background is not None
+    assert ast.rules[0].scenarios[0].examples[1].background is not None
+    assert ast.rules[0].scenarios[0].examples[0].background != ast.rules[0].scenarios[0].examples[1].background
 
 
 @pytest.mark.parametrize(
@@ -2180,7 +2189,10 @@ def test_parser_assign_background_to_scenario_outline(parser):
 
     # then
     assert ast.background is not None
-    assert ast.rules[0].scenarios[0].background == ast.background
+    assert ast.rules[0].scenarios[0].background is not None
+    assert ast.rules[0].scenarios[0].examples[0].background is not None
+    assert ast.rules[0].scenarios[0].examples[1].background is not None
+    assert ast.rules[0].scenarios[0].examples[0].background != ast.rules[0].scenarios[0].examples[1].background
 
 
 def test_parser_replace_examples_parameter_in_scenario_outline_examples(parser):

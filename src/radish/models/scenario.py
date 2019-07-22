@@ -8,6 +8,8 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import copy
+
 from radish.models.timed import Timed
 from radish.models.state import State
 
@@ -56,7 +58,7 @@ class Scenario(Timed):
 
     def set_background(self, background):
         """Set the Background for this Scenario"""
-        self.background = background
+        self.background = copy.deepcopy(background)
 
     def set_rule(self, rule):
         """Set the Rule for this Scenario"""

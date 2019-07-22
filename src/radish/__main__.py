@@ -207,8 +207,9 @@ def cli(**kwargs):
 
         exit_status = 0 if success else 1
     except RadishError as exc:
+        print("", flush=True)
         print("An error occured while running the Feature Files:", flush=True)
-        print(exc)
+        print(exc, flush=True)
         exit_status = 1
 
     sys.exit(exit_status)

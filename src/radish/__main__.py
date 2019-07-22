@@ -69,6 +69,21 @@ def expand_basedirs(ctx, param, basedirs):
     return expanded_basedirs
 
 
+def evaluate_user_data(ctx, param, userdata):
+    """Evaluate the given user-defined data
+
+    The user data can be in a ``key=value`` or just
+    ``key`` format.
+    """
+    userdata_dict = {}
+    for raw_data in userdata:
+        key, *value = raw_data.split("=")
+        userdata_dict[key] = "=".join(value) if value else True
+    if userdata_dict:
+        logger.debug("Evaluated user-defined data: %s", userdata_dict)
+    return userdata_dict
+
+
 class CommandWithExtensionOptions(click.Command):
     """Click Command to extend the given Options with the radish extension options"""
 
@@ -147,6 +162,16 @@ class CommandWithExtensionOptions(click.Command):
         "Only formatter Hooks are called"
     ),
 )
+@click.option(
+    "--user-data",
+    "-u",
+    multiple=True,
+    callback=evaluate_user_data,
+    help=(
+        "Add arbitrary user-defined data to the 'radish.world' object. "
+        "The data can be in a 'key=value' form or just a key"
+    )
+)
 @click.argument(
     "feature_files",
     nargs=-1,
@@ -201,7 +226,10 @@ def cli(**kwargs):
         runner = Runner(
             config, step_registry=step_registry, hook_registry=hook_registry
         )
-        logger.debug("Starting Runner")
+        logger.debug(
+            "Starting Runner WIP mode: %r, Dry-Run mode: %r",
+            config.wip_mode, config.dry_run_mode
+        )
         success = runner.start(features)
         logger.debug("Finished Runner with status %s", success)
 

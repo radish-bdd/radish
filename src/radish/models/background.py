@@ -29,8 +29,8 @@ class Background(Scenario):
     @property
     def state(self):
         """Get the State of this Scenario"""
-        for step in self.steps:
-            if step.state is not State.PASSED:
-                return step.state
+        for step_state in (s.state for s in self.steps):
+            if step_state is not State.PASSED:
+                return step_state
 
         return State.PASSED

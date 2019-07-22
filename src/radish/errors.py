@@ -34,13 +34,13 @@ class StepImplementationNotFoundError(RadishError):
             This Step is defined in the Feature File {path} on Line {line}.
             You can register a Step Implementation by using the
             "{keyword_lower}" decorator and placing the code below in one of these modules:
-            "{basedirs}:
+            {basedirs}
 
             from radish import {keyword_lower}
 
             @{keyword_lower}("{text}")
             def my_awesome_step(step):
-                raise NotImplementedError("Oups, no implemented for this Step, yet")
+                raise NotImplementedError("Oups, no implementation for this Step, yet")
         """.format(
                 keyword=self.step.keyword,
                 keyword_lower=self.step.keyword.lower(),

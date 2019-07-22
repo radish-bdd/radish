@@ -52,7 +52,6 @@ class Feature(Timed):
     def state(self):
         """Read-only property to get the State for this Feature"""
         for rule_state in (r.state for r in self.rules):
-            # TODO(TF): has feature to run?!
             if rule_state is not State.PASSED:
                 return rule_state
 

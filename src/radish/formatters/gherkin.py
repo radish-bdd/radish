@@ -8,7 +8,9 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import itertools
 import textwrap
+from collections import Counter
 from datetime import timedelta
 
 import click
@@ -33,18 +35,21 @@ class GherkinFormatter:
         click.Option(
             param_decls=("--no-ansi", "no_ansi"),
             is_flag=True,
-            help="Turn off all ANSI sequences (colors, line rewrites",
+            help="Turn off all ANSI sequences (colors, line rewrites)",
         ),
         click.Option(
             param_decls=("--no-step-rewrites", "no_step_rewrites"),
             is_flag=True,
-            help="Turn off all Step rewrites",
+            help=(
+                "Turn off all Step rewrites. "
+                "Steps are rewritten once they finished running."
+            ),
         ),
         click.Option(
             param_decls=("--with-traceback", "-t", "with_traceback"),
             is_flag=True,
-            help="Show the Traceback for failed Steps"
-        )
+            help="Show the Traceback for failed Steps",
+        ),
     ]
 
     @classmethod
@@ -216,6 +221,46 @@ def write_step_result(step):
 
 def write_endreport(features):
     """Write the end report after all Feature Files are ran"""
+    feature_states = [f.state for f in features]
+    features_line = "{} Feature{} ({})".format(
+        len(feature_states),
+        "s" if len(feature_states) != 1 else "",
+        ", ".join(
+            "{} {}".format(v, k.name.lower())
+            for k, v in Counter(feature_states).items()
+        ),
+    )
+
+    scenarios = []
+    rules_scenarios = (rule.scenarios for feature in features for rule in feature.rules)
+    for scenario in itertools.chain(*rules_scenarios):
+        if hasattr(scenario, "examples"):
+            scenarios.extend(scenario.examples)
+        else:
+            scenarios.append(scenario)
+
+    scenarios_line = "{} Scenario{} ({})".format(
+        len(scenarios),
+        "s" if len(scenarios) != 1 else "",
+        ", ".join(
+            "{} {}".format(v, k.name.lower())
+            for k, v in Counter(s.state for s in scenarios).items()
+        ),
+    )
+
+    step_states = [s.state for s in scenarios for s in s.steps]
+    steps_line = "{} Step{} ({})".format(
+        len(step_states),
+        "s" if len(step_states) != 1 else "",
+        ", ".join(
+            "{} {}".format(v, k.name.lower()) for k, v in Counter(step_states).items()
+        ),
+    )
+
+    print(features_line, flush=True)
+    print(scenarios_line, flush=True)
+    print(steps_line, flush=True)
+
     total_duration = sum((f.duration() for f in features), timedelta())
     timing_information = cf.deepSkyBlue3(
         "Run finished within {duration} seconds".format(

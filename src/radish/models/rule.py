@@ -8,6 +8,8 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from radish.models.state import State
+
 
 class Rule:
     """Represents a single instance of a Gherkin Rule"""
@@ -38,6 +40,15 @@ class Rule:
         """Set the Background for all Scenarios in this Rule"""
         for scenario in self.scenarios:
             scenario.set_background(background)
+
+    @property
+    def state(self):
+        """Read-only property to get the State for this Feature"""
+        for scenario_state in (s.state for s in self.scenarios):
+            if scenario_state is not State.PASSED:
+                return scenario_state
+
+        return State.PASSED
 
 
 class DefaultRule(Rule):

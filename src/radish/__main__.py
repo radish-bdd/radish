@@ -96,7 +96,8 @@ class CommandWithExtensionOptions(click.Command):
     callback=expand_basedirs,
     help=(
         "Specify the location of the Step Implementations. "
-        "One '-b' can contain multiple locations, split by a ;"
+        "One '-b' can contain multiple locations, split by a colon (:) [UNIX] "
+        "or semicolon (;) [Windows]"
     ),
 )
 @click.option(
@@ -104,7 +105,7 @@ class CommandWithExtensionOptions(click.Command):
     "-e",
     "early_exit",
     is_flag=True,
-    help="Aborts the Runner immediately when the first Scenario failed"
+    help="Aborts the Runner immediately when the first Scenario failed",
 )
 @click.argument(
     "feature_files",
@@ -156,7 +157,9 @@ def cli(**kwargs):
     )
 
     try:
-        runner = Runner(config, step_registry=step_registry, hook_registry=hook_registry)
+        runner = Runner(
+            config, step_registry=step_registry, hook_registry=hook_registry
+        )
         logger.debug("Starting Runner")
         runner.start(features)
         logger.debug("Finished Runner")

@@ -33,13 +33,13 @@ class GherkinFormatter:
         click.Option(
             param_decls=("--no-ansi", "no_ansi"),
             is_flag=True,
-            help="Turn off all ANSI sequences (colors, line rewrites"
+            help="Turn off all ANSI sequences (colors, line rewrites",
         ),
         click.Option(
             param_decls=("--no-step-rewrites", "no_step_rewrites"),
             is_flag=True,
-            help="Turn off all Step rewrites"
-        )
+            help="Turn off all Step rewrites",
+        ),
     ]
 
     @classmethod
@@ -180,7 +180,9 @@ def write_step_result(step):
 
     if not world.config.no_ansi and not world.config.no_step_rewrites:
         # calculate how many line-ups are needed to rewrite the entire Step
-        step_doc_string_lines = step.doc_string.count("\n") + 3 if step.doc_string else 0
+        step_doc_string_lines = (
+            step.doc_string.count("\n") + 3 if step.doc_string else 0
+        )
         step_data_table_lines = len(step.data_table) if step.data_table else 0
         line_jumps = 1 + step_doc_string_lines + step_data_table_lines
         print(LINE_UP_JUMP * line_jumps, end="", flush=True)
@@ -237,18 +239,14 @@ def write_step(step, step_color_func, indentation=None):
     if step.data_table is not None:
         data_table_indentation = indentation + INDENT_STEP
         pretty_table = pretty_print_table(
-            step.data_table,
-            step_color_func,
-            step_color_func
+            step.data_table, step_color_func, step_color_func
         )
         print(textwrap.indent(pretty_table, data_table_indentation), flush=True)
 
 
 def pretty_print_table(table, bar_color_func, value_color_func):
     """Pretty-print the given Table"""
-    column_widths = [
-        max(len(str(col)) for col in row) for row in zip(*table)
-    ]
+    column_widths = [max(len(str(col)) for col in row) for row in zip(*table)]
 
     colored_bar = bar_color_func("|")
     pretty_table = []
@@ -257,9 +255,8 @@ def pretty_print_table(table, bar_color_func, value_color_func):
             colored_bar,
             bar_color_func(" | ").join(
                 value_color_func("{1: <{0}}").format(column_widths[col_idx], col_value)
-                for col_idx, col_value
-                in enumerate(row)
-            )
+                for col_idx, col_value in enumerate(row)
+            ),
         )
         pretty_table.append(pretty_row)
 

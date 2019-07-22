@@ -8,6 +8,10 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import textwrap
+
+from radish.terrain import world
+
 
 class RadishError(Exception):
     """Base-Exception for all radish based errors."""
@@ -20,6 +24,32 @@ class StepImplementationNotFoundError(RadishError):
 
     def __init__(self, step):
         self.step = step
+
+    def __str__(self) -> str:
+        return textwrap.dedent(
+            """
+            Radish is unable to find a matching Step Implementation for the Step:
+                "{keyword} {text}"
+
+            This Step is defined in the Feature File {path} on Line {line}.
+            You can register a Step Implementation by using the
+            "{keyword_lower}" decorator and placing the code below in one of these modules:
+            "{basedirs}:
+
+            from radish import {keyword_lower}
+
+            @{keyword_lower}("{text}")
+            def my_awesome_step(step):
+                raise NotImplementedError("Oups, no implemented for this Step, yet")
+        """.format(
+                keyword=self.step.keyword,
+                keyword_lower=self.step.keyword.lower(),
+                text=self.step.text,
+                path=self.step.path,
+                line=self.step.line,
+                basedirs="\n".join(str(b) for b in world.config.basedirs),
+            )
+        )
 
 
 class StepImplementationPatternNotSupported(RadishError):

@@ -10,6 +10,7 @@ The root from red to green. BDD tooling for Python.
 
 import radish.matcher as matcher
 from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
+from radish.models.state import State
 
 
 class Runner:
@@ -74,14 +75,26 @@ class Runner:
         # run background steps
         if scenario.background:
             for step in scenario.background.steps:
-                self.run_step(step)
+                state = self.run_step(step)
+                if state is not State.PASSED:
+                    break
 
-        for step in scenario.steps:
-            self.run_step(step)
+        if not scenario.background or scenario.background.state is State.PASSED:
+            for step in scenario.steps:
+                state = self.run_step(step)
+                if state is not State.PASSED:
+                    break
+
+        return scenario.state
 
     @with_hooks("each_step")
     def run_step(self, step: Step):
-        # match the Step with a Step Implementation
-        matcher.match_step(step, self.step_registry)
+        try:
+            # match the Step with a Step Implementation
+            matcher.match_step(step, self.step_registry)
+        except Exception as exc:
+            step.fail(exc)
+        else:
+            step.run()
 
-        step.run()
+        return step.state

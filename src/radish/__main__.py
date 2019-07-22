@@ -22,6 +22,7 @@ from radish.parser import FeatureFileParser
 from radish.runner import Runner
 from radish.stepregistry import registry as step_registry
 from radish.terrain import world
+from radish.errors import RadishError
 
 # configure the radish command line logger which is used for debugging
 logger = logging.getLogger("radish")
@@ -147,10 +148,14 @@ def cli(**kwargs):
         ", ".join(str(m) for m in loaded_modules),
     )
 
-    runner = Runner(step_registry=step_registry, hook_registry=hook_registry)
-    logger.debug("Starting Runner")
-    runner.start(features)
-    logger.debug("Finished Runner")
+    try:
+        runner = Runner(step_registry=step_registry, hook_registry=hook_registry)
+        logger.debug("Starting Runner")
+        runner.start(features)
+        logger.debug("Finished Runner")
+    except RadishError as exc:
+        print("An error occured while running the Feature Files:", flush=True)
+        print(exc)
 
 
 if __name__ == "__main__":

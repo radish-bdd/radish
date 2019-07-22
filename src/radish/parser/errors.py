@@ -8,8 +8,10 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from radish.errors import RadishError
 
-class RadishSyntaxError(SyntaxError):
+
+class RadishSyntaxError(RadishError, SyntaxError):
     def __str__(self):
         context, line, column = self.args
         return "{} at line {}, column {}.\n\n{}".format(

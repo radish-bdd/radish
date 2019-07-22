@@ -15,6 +15,7 @@ class ExtensionRegistry:
     Extensions are used to inject behavior into a radish run.
     Most common it's used for generic hooks and formatters.
     """
+
     def __init__(self):
         self.extensions = []
 

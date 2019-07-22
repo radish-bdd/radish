@@ -101,9 +101,13 @@ class Step(Timed):
             else:
                 self.step_impl.func(self, *args)
         except Exception as exc:
-            self.state = State.FAILED
-            self.failure_report = StepFailureReport(exc)
+            self.fail(exc)
         else:
             if self.state is State.RUNNING:
                 self.state = State.PASSED
         return self.state
+
+    def fail(self, exception):
+        """Let this Step fail with the given exception"""
+        self.state = State.FAILED
+        self.failure_report = StepFailureReport(exception)

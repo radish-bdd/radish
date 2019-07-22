@@ -9,6 +9,7 @@ the root from red to green.  BDD tooling for Python.
 """
 
 from radish.models.timed import Timed
+from radish.models.state import State
 
 
 class Scenario(Timed):
@@ -61,6 +62,20 @@ class Scenario(Timed):
         self.rule = rule
         for step in self.steps:
             step.set_rule(rule)
+
+    @property
+    def state(self):
+        """Get the State of this Scenario"""
+        if self.background:
+            state = self.background.state
+            if state is not State.PASSED:
+                return state
+
+        for step in self.steps:
+            if step.state is not State.PASSED:
+                return step.state
+
+        return State.PASSED
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Scenario has to run or not

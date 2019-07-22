@@ -21,6 +21,7 @@ from radish.hookregistry import registry as hook_registry
 from radish.parser import FeatureFileParser
 from radish.runner import Runner
 from radish.stepregistry import registry as step_registry
+from radish.terrain import world
 
 # configure the radish command line logger which is used for debugging
 logger = logging.getLogger("radish")
@@ -111,6 +112,8 @@ def cli(**kwargs):
     Provide the Feature files to run in FEATURE_FILES.
     """
     config = Config(kwargs)
+    world.config = config
+
     logger.debug(
         "Loaded %d built-in extension modules: %s",
         len(loaded_built_in_extensions),

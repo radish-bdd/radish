@@ -183,6 +183,14 @@ class CommandWithExtensionOptions(click.Command):
         "The Marker can be used in reports and logs"
     )
 )
+@click.option(
+    "--formatter",
+    "-f",
+    "formatter",
+    default="Gherkin",
+    type=click.Choice(["Gherkin", "Dots"]),
+    help="The formatter to use for this Run. "
+)
 @click.argument(
     "feature_files",
     nargs=-1,

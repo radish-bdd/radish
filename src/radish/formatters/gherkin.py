@@ -54,7 +54,10 @@ class GherkinFormatter:
 
     @classmethod
     def load(cls, config):
-        return cls()
+        if config.formatter == "Gherkin":
+            return cls()
+        else:
+            return None
 
     def __init__(self):
         # turn of ANSI colors if requested

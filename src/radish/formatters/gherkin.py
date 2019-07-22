@@ -263,7 +263,8 @@ def write_endreport(features):
 
     total_duration = sum((f.duration() for f in features), timedelta())
     timing_information = cf.deepSkyBlue3(
-        "Run finished within {duration} seconds".format(
+        "Run {marker} finished within {duration} seconds".format(
+            marker=cf.bold_deepSkyBlue3(world.config.marker),
             duration=cf.bold_deepSkyBlue3(total_duration.total_seconds())
         )
     )

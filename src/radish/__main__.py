@@ -11,6 +11,7 @@ The root from red to green. BDD tooling for Python.
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 
 import click
@@ -170,6 +171,16 @@ class CommandWithExtensionOptions(click.Command):
     help=(
         "Add arbitrary user-defined data to the 'radish.world' object. "
         "The data can be in a 'key=value' form or just a key"
+    )
+)
+@click.option(
+    "--marker",
+    "-m",
+    "marker",
+    default=str(int(time.time())),
+    help=(
+        "Unique Marker for this Run. "
+        "The Marker can be used in reports and logs"
     )
 )
 @click.argument(

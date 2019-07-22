@@ -107,6 +107,19 @@ class CommandWithExtensionOptions(click.Command):
     is_flag=True,
     help="Aborts the Runner immediately when the first Scenario failed",
 )
+@click.option(
+    "--tags",
+    "tags",
+    help="Filter for Features and Scenarios matching this Tag Expression"
+)
+@click.option(
+    "--scenarios",
+    "-s",
+    "scenario_ids",
+    default="",
+    callback=lambda _, __, ids: [int(x.strip()) for x in ids.split(",") if x.strip()],
+    help="Filter for Scenarios with it's Id in this comma-separated list"
+)
 @click.argument(
     "feature_files",
     nargs=-1,

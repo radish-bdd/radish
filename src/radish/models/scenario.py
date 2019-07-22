@@ -24,6 +24,7 @@ class Scenario(Timed):
         line: int,
         steps,
     ) -> None:
+        super().__init__()
         self.id = scenario_id
         self.short_description = short_description
         self.tags = tags

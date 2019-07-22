@@ -45,6 +45,9 @@ class Runner:
     def start(self, features):
         """Start the Runner"""
         for feature in features:
+            if not feature.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+                continue
+
             state = self.run_feature(feature)
             if state is not State.PASSED and self.config.early_exit:
                 return state
@@ -55,6 +58,10 @@ class Runner:
     def run_feature(self, feature: Feature):
         """Run the given Feature"""
         for rule in feature.rules:
+            # check if this Rule has to be run
+            if not rule.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+                continue
+
             state = self.run_rule(rule)
             if state is not State.PASSED and self.config.early_exit:
                 return state
@@ -64,6 +71,10 @@ class Runner:
     @with_hooks("each_rule")
     def run_rule(self, rule: Rule):
         for scenario in rule.scenarios:
+            # check if this Scenario has to be run
+            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+                continue
+
             if isinstance(scenario, ScenarioOutline):
                 state = self.run_scenario_outline(scenario)
             elif isinstance(scenario, ScenarioLoop):
@@ -78,6 +89,10 @@ class Runner:
 
     def run_scenario_outline(self, scenario_outline: ScenarioOutline):
         for scenario in scenario_outline.examples:
+            # check if this Scenario has to be run
+            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+                continue
+
             state = self.run_scenario(scenario)
             if state is not State.PASSED and self.config.early_exit:
                 return state
@@ -86,6 +101,10 @@ class Runner:
 
     def run_scenario_loop(self, scenario_loop: ScenarioLoop):
         for scenario in scenario_loop.examples:
+            # check if this Scenario has to be run
+            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+                continue
+
             state = self.run_scenario(scenario)
             if state is not State.PASSED and self.config.early_exit:
                 return state

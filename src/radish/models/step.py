@@ -27,6 +27,7 @@ class Step(Timed):
         path: str,
         line: int,
     ) -> None:
+        super().__init__()
         self.id = step_id
         self.keyword = keyword
         self.text = text

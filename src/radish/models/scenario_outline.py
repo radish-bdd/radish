@@ -90,3 +90,32 @@ class ScenarioOutline(Scenario):
             examples.append(example)
 
         return examples
+
+    def has_to_run(self, tag_expression, scenario_ids):
+        """Evaluate if this Scenario has to run or not
+
+        The Scenario needs to be run if any of the following conditions is True:
+        * No ``tag_expression`` is given
+        * The ``tag_expression`` evaluates to True on the Scenario Tags
+        * The ``tag_expression`` evaluates to True on the Feature Tags
+        * No ``scenario_ids`` is given
+        * The ``scenario_ids`` is given and contains this Scenarios Id
+        """
+        has_to_run_tag_expression = True
+        has_to_run_scenario_ids = True
+
+        if tag_expression:
+            tag_names = [t.name for t in self.tags + self.feature.tags]
+            has_to_run_tag_expression = tag_expression.evaluate(tag_names)
+
+        if scenario_ids:
+            has_to_run_scenario_ids = bool({e.id for e in self.examples} & set(scenario_ids))
+
+        if tag_expression and scenario_ids:
+            return has_to_run_tag_expression and has_to_run_scenario_ids
+        elif tag_expression:
+            return has_to_run_tag_expression
+        elif scenario_ids:
+            return has_to_run_scenario_ids
+        else:
+            return True

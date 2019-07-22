@@ -32,7 +32,7 @@ class Timed:
         is until the current time.
         """
         if self.starttime is None:
-            raise ValueError("Unable to get duration. Start the recording first")
+            return timedelta(0)
 
         if self.endtime is None:
             return timedelta(seconds=time.time() - self.starttime)

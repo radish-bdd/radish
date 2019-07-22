@@ -50,6 +50,13 @@ class Rule:
 
         return State.PASSED
 
+    def has_to_run(self, tag_expression, scenario_ids):
+        """Evaluate if this Rule has to run or not
+
+        A Rule has to run of any of it's Scenarios has to be run.
+        """
+        return any(s.has_to_run(tag_expression, scenario_ids) for s in self.scenarios)
+
 
 class DefaultRule(Rule):
     """Represents the default Rule which is used if no rule is specified"""

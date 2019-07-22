@@ -10,19 +10,21 @@ The root from red to green. BDD tooling for Python.
 
 import logging
 import os
+import sys
 from pathlib import Path
 
 import click
 
 import radish.loader as loader
 from radish.config import Config
+from radish.errors import RadishError
 from radish.extensionregistry import registry as extension_registry
 from radish.hookregistry import registry as hook_registry
+from radish.models.state import State
 from radish.parser import FeatureFileParser
 from radish.runner import Runner
 from radish.stepregistry import registry as step_registry
 from radish.terrain import world
-from radish.errors import RadishError
 
 # configure the radish command line logger which is used for debugging
 logger = logging.getLogger("radish")
@@ -126,6 +128,16 @@ class CommandWithExtensionOptions(click.Command):
     is_flag=True,
     help="Shuffle the running order for the Scenarios within a Feature"
 )
+@click.option(
+    "--wip",
+    "wip_mode",
+    is_flag=True,
+    help=(
+        "Run in WIP mode. In the WIP mode every Scenario has to fail."
+        "It's best combined by marked WIP Scenarios with a '@wip'-Tag "
+        "and use '--tags wip' in combination with the '--wip' flag"
+    )
+)
 @click.argument(
     "feature_files",
     nargs=-1,
@@ -175,16 +187,22 @@ def cli(**kwargs):
         ", ".join(str(m) for m in loaded_modules),
     )
 
+    exit_status = 0
     try:
         runner = Runner(
             config, step_registry=step_registry, hook_registry=hook_registry
         )
         logger.debug("Starting Runner")
-        runner.start(features)
-        logger.debug("Finished Runner")
+        success = runner.start(features)
+        logger.debug("Finished Runner with status %s", success)
+
+        exit_status = 0 if success else 1
     except RadishError as exc:
         print("An error occured while running the Feature Files:", flush=True)
         print(exc)
+        exit_status = 1
+
+    sys.exit(exit_status)
 
 
 if __name__ == "__main__":

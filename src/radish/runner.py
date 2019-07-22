@@ -46,15 +46,19 @@ class Runner:
     @with_hooks("all")
     def start(self, features):
         """Start the Runner"""
+        success_state = State.PASSED if not self.config.wip_mode else State.FAILED
+        feature_states = []
         for feature in features:
             if not feature.has_to_run(self.config.tag_expression, self.config.scenario_ids):
                 continue
 
             state = self.run_feature(feature)
-            if state is not State.PASSED and self.config.early_exit:
+            if state is not success_state and self.config.early_exit:
                 return state
 
-        return State.PASSED
+            feature_states.append(feature.state)
+
+        return not any(state is not success_state for state in feature_states)
 
     @with_hooks("each_feature")
     def run_feature(self, feature: Feature):

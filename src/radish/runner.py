@@ -28,11 +28,17 @@ class Runner:
 
         def __decorator(func):
             def __wrapper(self, model, *args, **kwargs):
-                self.hook_registry.call(what, "before", model, *args, **kwargs)
+                only_formatters = self.config.dry_run_mode
+
+                self.hook_registry.call(
+                    what, "before", only_formatters, model, *args, **kwargs
+                )
                 try:
                     return func(self, model, *args, **kwargs)
                 finally:
-                    self.hook_registry.call(what, "after", model, *args, **kwargs)
+                    self.hook_registry.call(
+                        what, "after", only_formatters, model, *args, **kwargs
+                    )
 
             return __wrapper
 
@@ -49,7 +55,9 @@ class Runner:
         success_state = State.PASSED if not self.config.wip_mode else State.FAILED
         feature_states = []
         for feature in features:
-            if not feature.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+            if not feature.has_to_run(
+                self.config.tag_expression, self.config.scenario_ids
+            ):
                 continue
 
             state = self.run_feature(feature)
@@ -65,7 +73,9 @@ class Runner:
         """Run the given Feature"""
         for rule in feature.rules:
             # check if this Rule has to be run
-            if not rule.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+            if not rule.has_to_run(
+                self.config.tag_expression, self.config.scenario_ids
+            ):
                 continue
 
             state = self.run_rule(rule)
@@ -83,7 +93,9 @@ class Runner:
 
         for scenario in scenarios:
             # check if this Scenario has to be run
-            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+            if not scenario.has_to_run(
+                self.config.tag_expression, self.config.scenario_ids
+            ):
                 continue
 
             if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
@@ -98,13 +110,17 @@ class Runner:
 
     def run_scenario_container(self, scenario_container):
         if self.config.shuffle_scenarios:
-            scenarios = random.sample(scenario_container.examples, len(scenario_container.examples))
+            scenarios = random.sample(
+                scenario_container.examples, len(scenario_container.examples)
+            )
         else:
             scenarios = scenario_container.examples
 
         for scenario in scenarios:
             # check if this Scenario has to be run
-            if not scenario.has_to_run(self.config.tag_expression, self.config.scenario_ids):
+            if not scenario.has_to_run(
+                self.config.tag_expression, self.config.scenario_ids
+            ):
                 continue
 
             state = self.run_scenario(scenario)
@@ -119,13 +135,13 @@ class Runner:
         if scenario.background:
             for step in scenario.background.steps:
                 state = self.run_step(step)
-                if state is not State.PASSED:
+                if state is not State.PASSED and not self.config.dry_run_mode:
                     break
 
         if not scenario.background or scenario.background.state is State.PASSED:
             for step in scenario.steps:
                 state = self.run_step(step)
-                if state is not State.PASSED:
+                if state is not State.PASSED and not self.config.dry_run_mode:
                     break
 
         return scenario.state
@@ -138,6 +154,7 @@ class Runner:
         except Exception as exc:
             step.fail(exc)
         else:
-            step.run()
+            if not self.config.dry_run_mode:
+                step.run()
 
         return step.state

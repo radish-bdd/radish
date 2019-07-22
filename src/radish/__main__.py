@@ -20,7 +20,6 @@ from radish.config import Config
 from radish.errors import RadishError
 from radish.extensionregistry import registry as extension_registry
 from radish.hookregistry import registry as hook_registry
-from radish.models.state import State
 from radish.parser import FeatureFileParser
 from radish.runner import Runner
 from radish.stepregistry import registry as step_registry
@@ -112,7 +111,7 @@ class CommandWithExtensionOptions(click.Command):
 @click.option(
     "--tags",
     "tags",
-    help="Filter for Features and Scenarios matching this Tag Expression"
+    help="Filter for Features and Scenarios matching this Tag Expression",
 )
 @click.option(
     "--scenarios",
@@ -120,13 +119,13 @@ class CommandWithExtensionOptions(click.Command):
     "scenario_ids",
     default="",
     callback=lambda _, __, ids: [int(x.strip()) for x in ids.split(",") if x.strip()],
-    help="Filter for Scenarios with it's Id in this comma-separated list"
+    help="Filter for Scenarios with it's Id in this comma-separated list",
 )
 @click.option(
     "--shuffle",
     "shuffle_scenarios",
     is_flag=True,
-    help="Shuffle the running order for the Scenarios within a Feature"
+    help="Shuffle the running order for the Scenarios within a Feature",
 )
 @click.option(
     "--wip",
@@ -136,7 +135,17 @@ class CommandWithExtensionOptions(click.Command):
         "Run in WIP mode. In the WIP mode every Scenario has to fail."
         "It's best combined by marked WIP Scenarios with a '@wip'-Tag "
         "and use '--tags wip' in combination with the '--wip' flag"
-    )
+    ),
+)
+@click.option(
+    "--dry-run",
+    "dry_run_mode",
+    is_flag=True,
+    help=(
+        "Run in Dry Run mode. In the Dry Run Mode Steps are matched with "
+        "their implementation, but not run. "
+        "Only formatter Hooks are called"
+    ),
 )
 @click.argument(
     "feature_files",

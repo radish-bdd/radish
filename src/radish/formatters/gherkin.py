@@ -61,18 +61,18 @@ class GherkinFormatter:
         if world.config.no_ansi:
             cf.disable()
 
-        before.each_feature()(write_feature_header)
-        after.each_feature()(write_feature_footer)
+        before.each_feature(is_formatter=True)(write_feature_header)
+        after.each_feature(is_formatter=True)(write_feature_footer)
 
-        before.each_rule()(write_rule_header)
+        before.each_rule(is_formatter=True)(write_rule_header)
 
-        before.each_scenario()(write_scenario_header)
-        after.each_scenario()(write_scenario_footer)
+        before.each_scenario(is_formatter=True)(write_scenario_header)
+        after.each_scenario(is_formatter=True)(write_scenario_footer)
 
-        before.each_step()(write_step_running)
-        after.each_step()(write_step_result)
+        before.each_step(is_formatter=True)(write_step_running)
+        after.each_step(is_formatter=True)(write_step_result)
 
-        after.all()(write_endreport)
+        after.all(is_formatter=True)(write_endreport)
 
 
 def write_tagline(tag, indentation=""):

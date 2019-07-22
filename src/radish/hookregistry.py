@@ -14,14 +14,18 @@ import bisect
 class HookImpl:
     """Represent a single Hook Implementation"""
 
-    __slots__ = ["what", "when", "func", "on_tags", "order"]
+    __slots__ = ["what", "when", "func", "on_tags", "order", "is_formatter", "always"]
 
-    def __init__(self, what, when, func, on_tags, order):
+    def __init__(
+        self, what, when, func, on_tags, order, is_formatter=False, always=False
+    ):
         self.what = what
         self.when = when
         self.func = func
         self.on_tags = on_tags
         self.order = order
+        self.is_formatter = is_formatter
+        self.always = always
 
     def __repr__(self) -> str:
         return "<HookImpl @{}.{} for tags {} with order {}>".format(
@@ -29,7 +33,17 @@ class HookImpl:
         )
 
     def __hash__(self):
-        return hash((self.what, self.when, self.func, self.on_tags, self.order))
+        return hash(
+            (
+                self.what,
+                self.when,
+                self.func,
+                self.on_tags,
+                self.order,
+                self.is_formatter,
+                self.always,
+            )
+        )
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -41,6 +55,8 @@ class HookImpl:
             and self.func == other.func  # noqa
             and self.on_tags == other.on_tags  # noqa
             and self.order == other.order  # noqa
+            and self.is_formatter == other.is_formatter  # noqa
+            and self.always == other.always  # noqa
         )
 
     def __lt__(self, other):
@@ -81,9 +97,11 @@ class HookRegistry:
             },
         }
 
-    def register(self, what, when, func, on_tags, order):
+    def register(
+        self, what, when, func, on_tags, order, is_formatter=False, always=False
+    ):
         """Register the given Hook for later execution"""
-        hook_impl = HookImpl(what, when, func, on_tags, order)
+        hook_impl = HookImpl(what, when, func, on_tags, order, is_formatter, always)
         if hook_impl in self._hooks[when][what]:
             # NOTE: allow a Hook Implementation to be registered multiple times.
             #       This can happend when one hook module imports another in the same
@@ -114,9 +132,16 @@ class HookRegistry:
             for what in whats.keys():
 
                 def __create_decorator(what, when):
-                    def __decorator(on_tags=None, order=self.DEFAULT_HOOK_ORDER):
+                    def __decorator(
+                        on_tags=None,
+                        order=self.DEFAULT_HOOK_ORDER,
+                        is_formatter=False,
+                        always=False,
+                    ):
                         def __wrapper(func):
-                            self.register(what, when, func, on_tags, order)
+                            self.register(
+                                what, when, func, on_tags, order, is_formatter, always
+                            )
                             return func
 
                         return __wrapper
@@ -129,7 +154,7 @@ class HookRegistry:
             created_decorator_names.append(when)
         return created_decorator_names
 
-    def call(self, what, when, tagged_model, *args, **kwargs):
+    def call(self, what, when, only_formatters, tagged_model, *args, **kwargs):
         """Calls a registered Hook"""
         if when == "before":
             hooks = self._hooks[when][what]
@@ -137,6 +162,10 @@ class HookRegistry:
             hooks = reversed(self._hooks[when][what])
 
         for hook_impl in hooks:
+            if not hook_impl.always:
+                if only_formatters and not hook_impl.is_formatter:
+                    continue
+
             # TODO: check if Hook has to run according to tags
 
             # TODO: proper error handling

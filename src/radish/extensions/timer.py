@@ -22,9 +22,9 @@ def record_endtime(timed_model: Timed):
     timed_model.record_endtime()
 
 
-before.each_feature()(lambda f: record_starttime(f))
-before.each_scenario()(lambda f: record_starttime(f))
-before.each_step()(lambda f: record_starttime(f))
-after.each_feature()(lambda f: record_endtime(f))
-after.each_scenario()(lambda f: record_endtime(f))
-after.each_step()(lambda f: record_endtime(f))
+before.each_feature(always=True)(lambda f: record_starttime(f))
+before.each_scenario(always=True)(lambda f: record_starttime(f))
+before.each_step(always=True)(lambda f: record_starttime(f))
+after.each_feature(always=True)(lambda f: record_endtime(f))
+after.each_scenario(always=True)(lambda f: record_endtime(f))
+after.each_step(always=True)(lambda f: record_endtime(f))

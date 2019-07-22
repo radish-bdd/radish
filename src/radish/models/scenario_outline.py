@@ -109,7 +109,9 @@ class ScenarioOutline(Scenario):
             has_to_run_tag_expression = tag_expression.evaluate(tag_names)
 
         if scenario_ids:
-            has_to_run_scenario_ids = bool({e.id for e in self.examples} & set(scenario_ids))
+            has_to_run_scenario_ids = bool(
+                {e.id for e in self.examples} & set(scenario_ids)
+            )
 
         if tag_expression and scenario_ids:
             return has_to_run_tag_expression and has_to_run_scenario_ids

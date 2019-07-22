@@ -28,7 +28,9 @@ class Config:
                 raise RadishError(
                     "The given Tag Expression '{}' has Syntax Errors. "
                     "Please consult https://github.com/timofurrer/tag-expressions "
-                    "for detailed information about the Tag Expression Syntax".format(self.tags)
+                    "for detailed information about the Tag Expression Syntax".format(
+                        self.tags
+                    )
                 ) from exc
         else:
             self.tag_expression = None

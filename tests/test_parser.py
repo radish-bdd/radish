@@ -1603,8 +1603,14 @@ def test_parser_add_iteration_id_to_scenario_loop_example(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert ast.rules[0].scenarios[0].examples[0].short_description == "My Scenario [Iteration: 1]"
-    assert ast.rules[0].scenarios[0].examples[1].short_description == "My Scenario [Iteration: 2]"
+    assert (
+        ast.rules[0].scenarios[0].examples[0].short_description
+        == "My Scenario [Iteration: 1]"  # noqa
+    )
+    assert (
+        ast.rules[0].scenarios[0].examples[1].short_description
+        == "My Scenario [Iteration: 2]"  # noqa
+    )
 
 
 def test_parser_built_examples_for_scenario_loop_have_copied_steps(parser):
@@ -2085,7 +2091,9 @@ def test_parser_build_examples_for_scenario_outline(parser):
     assert len(ast.rules[0].scenarios[0].examples) == 2
 
 
-def test_parser_add_example_data_to_short_description_for_scenario_outline_examples(parser):
+def test_parser_add_example_data_to_short_description_for_scenario_outline_examples(
+    parser
+):
     """
     The parser should build Examples for every Iteration of a Scenario Outline
     and add the Example Data to it's short description

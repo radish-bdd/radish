@@ -13,6 +13,7 @@ from datetime import timedelta
 
 import colorful as cf
 
+from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.models import DefaultRule
 from radish.models.state import State
@@ -24,12 +25,32 @@ INDENT_STEP = " " * 4
 LINE_UP_JUMP = "\r\033[A\033[K"
 
 
+@extension
+class GherkinFormatter:
+    @classmethod
+    def load(cls, config):
+        return cls()
+
+    def __init__(self):
+        before.each_feature()(write_feature_header)
+        after.each_feature()(write_feature_footer)
+
+        before.each_rule()(write_rule_header)
+
+        before.each_scenario()(write_scenario_header)
+        after.each_scenario()(write_scenario_footer)
+
+        before.each_step()(write_step_running)
+        after.each_step()(write_step_result)
+
+        after.all()(write_endreport)
+
+
 def write_tagline(tag, indentation=""):
     tagline = cf.deepSkyBlue3("@{name}".format(name=tag.name))
     print(indentation + tagline, flush=True)
 
 
-@before.each_feature()
 def write_feature_header(feature):
     """Write the Feature Header to stdout
 
@@ -75,7 +96,6 @@ def write_feature_header(feature):
         print("", flush=True)
 
 
-@after.each_feature()
 def write_feature_footer(feature):
     """Write the Feature Footer
 
@@ -86,7 +106,6 @@ def write_feature_footer(feature):
         print("", flush=True)
 
 
-@before.each_rule()
 def write_rule_header(rule):
     """Write the Rule header
 
@@ -103,7 +122,6 @@ def write_rule_header(rule):
     print(INDENT_STEP + rule_heading + "\n", flush=True)
 
 
-@before.each_scenario()
 def write_scenario_header(scenario):
     """Write the Scenario header"""
     indentation_level = 1 if isinstance(scenario.rule, DefaultRule) else 2
@@ -119,19 +137,16 @@ def write_scenario_header(scenario):
     print(indentation + scenario_heading, flush=True)
 
 
-@after.each_scenario()
 def write_scenario_footer(scenario):
     """Write the Scenario footer"""
     print(flush=True)
 
 
-@before.each_step()
 def write_step_running(step):
     """Write the Step before it's running"""
     write_step(step, cf.orange)
 
 
-@after.each_step()
 def write_step_result(step):
     """Write the Step after it's ran"""
     step_color_func = None
@@ -162,7 +177,6 @@ def write_step_result(step):
         )
 
 
-@after.all()
 def write_endreport(features):
     """Write the end report after all Feature Files are ran"""
     total_duration = sum((f.duration() for f in features), timedelta())

@@ -45,8 +45,7 @@ class StepImpl:
 
 
 class StepRegistry:
-    """
-    The ``StepRegistry`` keeps track of all declared ``StepImpl``s.
+    """The ``StepRegistry`` keeps track of all declared ``StepImpl``s.
 
     The registered ``StepImpl``s will be used by the ``Matcher`` to
     assign to ``Step`` for execution.

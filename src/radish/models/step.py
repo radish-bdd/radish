@@ -88,7 +88,9 @@ class Step(Timed):
         if self.state is not State.UNTESTED:
             raise RadishError(
                 "Unable to run Step '{} {}' again. A Step can only be run exactly once.".format(
-                    self.keyword, self.text))
+                    self.keyword, self.text
+                )
+            )
 
         args, kwargs = self.step_impl_match.evaluate()
 

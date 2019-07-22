@@ -63,7 +63,9 @@ class ScenarioLoop(Scenario):
         examples = []
         for example_id in range(1, iterations + 1):
             # Example description
-            short_description = "{} [Iteration: {}]".format(self.short_description, example_id)
+            short_description = "{} [Iteration: {}]".format(
+                self.short_description, example_id
+            )
             # copy Steps from Scenario Loop for Examples
             steps = copy.deepcopy(self.steps)
             example = Scenario(

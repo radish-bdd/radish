@@ -14,20 +14,24 @@ from pathlib import Path
 
 import click
 
-import radish.extensions.timer  # noqa
-
-# TODO: dynamically import
-import radish.formatters.gherkin  # noqa
-from radish.hookregistry import registry as hook_registry
-from radish.stepregistry import registry as step_registry
-from radish.parser import FeatureFileParser
 import radish.loader as loader
+from radish.config import Config
+from radish.extensionregistry import registry as extension_registry
+from radish.hookregistry import registry as hook_registry
+from radish.parser import FeatureFileParser
 from radish.runner import Runner
+from radish.stepregistry import registry as step_registry
 
+# configure the radish command line logger which is used for debugging
 logger = logging.getLogger("radish")
 logging.basicConfig(
     level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
 )
+
+# load radish built-in extensions
+__SOURCE_DIR__ = Path(__file__).absolute().parent
+__BUILT_IN_EXTENSIONS__ = [__SOURCE_DIR__ / "extensions", __SOURCE_DIR__ / "formatters"]
+loaded_built_in_extensions = loader.load_modules(__BUILT_IN_EXTENSIONS__)
 
 
 def enable_radish_debug_mode(ctx, param, enabled):
@@ -62,7 +66,16 @@ def expand_basedirs(ctx, param, basedirs):
     return expanded_basedirs
 
 
-@click.command()
+class CommandWithExtensionOptions(click.Command):
+    """Click Command to extend the given Options with the radish extension options"""
+
+    def __init__(self, *args, **kwargs):
+        radish_params = kwargs.pop("params", [])
+        extension_options = extension_registry.get_extension_options()
+        super().__init__(*args, params=radish_params + extension_options, **kwargs)
+
+
+@click.command(cls=CommandWithExtensionOptions)
 @click.option(
     "--basedir",
     "-b",
@@ -85,32 +98,46 @@ def expand_basedirs(ctx, param, basedirs):
     callback=enable_radish_debug_mode,
 )
 @click.argument(
-    "files",
+    "feature_files",
     nargs=-1,
     type=click.Path(exists=True),
     callback=lambda _, __, x: [Path(p) for p in x],
 )
-def cli(files, basedirs, enable_debug_mode):
+def cli(**kwargs):
     """radish - The root from red to green. BDD tooling for Python.
 
     Use radish to run your Feature File.
 
-    Provide the Feature files to run in FILES.
+    Provide the Feature files to run in FEATURE_FILES.
     """
-    logger.debug("Feature Files: %s", ", ".join(str(p) for p in files))
-    logger.debug("Basedirs: %s", ", ".join(str(d) for d in basedirs))
+    config = Config(kwargs)
+    logger.debug(
+        "Loaded %d built-in extension modules: %s",
+        len(loaded_built_in_extensions),
+        ", ".join(str(e) for e in loaded_built_in_extensions),
+    )
+    logger.debug("Feature Files: %s", ", ".join(str(p) for p in config.feature_files))
+    logger.debug("Basedirs: %s", ", ".join(str(d) for d in config.basedirs))
+
+    logger.debug("Loading extensions")
+    loaded_extensions = extension_registry.load_extensions(config)
+    logger.debug(
+        "Loaded %d extensions: %s",
+        len(loaded_extensions),
+        ", ".join(type(e).__name__ for e in loaded_extensions),
+    )
 
     parser = FeatureFileParser()
 
     features = []
-    for feature_file in files:
+    for feature_file in config.feature_files:
         logger.debug("Parsing Feature File %s", feature_file)
         feature_ast = parser.parse_file(feature_file)
         if feature_ast:
             features.append(feature_ast)
 
     logger.debug("Loading all modules from the basedirs")
-    loaded_modules = loader.load_modules(basedirs)
+    loaded_modules = loader.load_modules(config.basedirs)
     logger.debug(
         "Loaded %d modules from the basedirs: %s",
         len(loaded_modules),

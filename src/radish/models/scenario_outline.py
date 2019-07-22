@@ -67,12 +67,11 @@ class ScenarioOutline(Scenario):
 
             # Example description
             example_short_description_data = [
-                "{}: {}".format(k, v)
-                for k, v
-                in example_decl.items()
+                "{}: {}".format(k, v) for k, v in example_decl.items()
             ]
             short_description = "{} [{}]".format(
-                self.short_description, ", ".join(example_short_description_data))
+                self.short_description, ", ".join(example_short_description_data)
+            )
 
             for step in steps:
                 for example_key, example_value in example_decl.items():

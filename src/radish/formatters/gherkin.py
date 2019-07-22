@@ -179,7 +179,11 @@ def write_step_result(step):
         step_color_func = cf.deepSkyBlue3
 
     if not world.config.no_ansi and not world.config.no_step_rewrites:
-        print(LINE_UP_JUMP, end="", flush=True)
+        # calculate how many line-ups are needed to rewrite the entire Step
+        step_doc_string_lines = step.doc_string.count("\n") + 3 if step.doc_string else 0
+        step_data_table_lines = len(step.data_table) if step.data_table else 0
+        line_jumps = 1 + step_doc_string_lines + step_data_table_lines
+        print(LINE_UP_JUMP * line_jumps, end="", flush=True)
 
     write_step(step, step_color_func)
 
@@ -225,11 +229,38 @@ def write_step(step, step_color_func, indentation=None):
         doc_string_indentation = indentation + INDENT_STEP
         print(doc_string_indentation + step_color_func('"""'), flush=True)
         print(
-            cf.orange(textwrap.indent(step.doc_string, doc_string_indentation)),
+            step_color_func(textwrap.indent(step.doc_string, doc_string_indentation)),
             flush=True,
         )
         print(step_color_func(doc_string_indentation + '"""'), flush=True)
 
     if step.data_table is not None:
         data_table_indentation = indentation + INDENT_STEP
-        print(data_table_indentation + step_color_func(step.data_table), flush=True)
+        pretty_table = pretty_print_table(
+            step.data_table,
+            step_color_func,
+            step_color_func
+        )
+        print(textwrap.indent(pretty_table, data_table_indentation), flush=True)
+
+
+def pretty_print_table(table, bar_color_func, value_color_func):
+    """Pretty-print the given Table"""
+    column_widths = [
+        max(len(str(col)) for col in row) for row in zip(*table)
+    ]
+
+    colored_bar = bar_color_func("|")
+    pretty_table = []
+    for row in table:
+        pretty_row = "{0} {1} {0}".format(
+            colored_bar,
+            bar_color_func(" | ").join(
+                value_color_func("{1: <{0}}").format(column_widths[col_idx], col_value)
+                for col_idx, col_value
+                in enumerate(row)
+            )
+        )
+        pretty_table.append(pretty_row)
+
+    return "\n".join(pretty_table)

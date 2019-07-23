@@ -10,6 +10,7 @@ the root from red to green.  BDD tooling for Python.
 
 import copy
 
+from radish.models.context import Context
 from radish.models.timed import Timed
 from radish.models.state import State
 
@@ -41,6 +42,9 @@ class Scenario(Timed):
         self.background = None
         self.rule = None
 
+        #: Holds the ``Context`` object.
+        self.context = Context()
+
     def __repr__(self) -> str:
         return "<Scenario: {id} '{short_description} with {steps} Steps @ {path}:{line}>".format(
             id=self.id,
@@ -58,7 +62,10 @@ class Scenario(Timed):
 
     def set_background(self, background):
         """Set the Background for this Scenario"""
-        self.background = copy.deepcopy(background)
+        if background:
+            self.background = copy.deepcopy(background)
+            self.background.set_scenario(self)
+            self.background.set_rule(self.rule)
 
     def set_rule(self, rule):
         """Set the Rule for this Scenario"""

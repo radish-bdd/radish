@@ -76,6 +76,11 @@ class Step(Timed):
         """Set the Scenario for this Step"""
         self.scenario = scenario
 
+    @property
+    def context(self):
+        """Return the Context object where this Step is running in"""
+        return self.scenario.context
+
     def assign_implementation(self, step_impl, match):
         """Assign a matched Step Implementation to this Step"""
         self.step_impl = step_impl

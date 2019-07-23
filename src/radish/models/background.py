@@ -18,6 +18,9 @@ class Background(Scenario):
     def __init__(self, short_description: str, path: str, line: int, steps) -> None:
         super().__init__(0, short_description, None, path, line, steps)
 
+        #: Holds the Scenario for which this Background is supposed to run.
+        self.scenario = None
+
     def __repr__(self) -> str:
         return "<Background: '{short_description} with {steps} Steps @ {path}:{line}>".format(
             short_description=self.short_description,
@@ -25,6 +28,15 @@ class Background(Scenario):
             path=self.path,
             line=self.line,
         )
+
+    def set_scenario(self, scenario):
+        """Set the Scenario instance for this Background
+
+        Eventually each Background is run as part of a Scenario.
+        The given Scenario will be used to access the execution hierarchy
+        and other context sensitive functionalities.
+        """
+        self.scenario = scenario
 
     @property
     def state(self):

@@ -8,6 +8,8 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import base64
+
 import radish.utils as utils
 from radish.errors import RadishError
 from radish.models.state import State
@@ -49,6 +51,9 @@ class Step(Timed):
         #: Holds information about the State of this Step
         self.state = State.UNTESTED
         self.failure_report = None
+
+        #: Holds user-defined embeddings for this Step
+        self.embeddings = []
 
     def __repr__(self) -> str:
         return "<Step: {id} '{keyword} {text}' @ {path}:{line}>".format(
@@ -136,3 +141,22 @@ class Step(Timed):
         """Let this Step fail with the given exception"""
         self.state = State.FAILED
         self.failure_report = StepFailureReport(exception)
+
+    def embed(self, data, mime_type="text/plain", encode_data_to_base64=True):
+        """Embed data into Step
+            - step embedded data can be used for cucumber json reports
+            - allow to attach text, html or images
+
+        This method is supposed to be called from Step Implementations.
+
+        :param data: data attached to report
+            data needs to be encoded in base64 for proper handling by tests reporting tools
+            if not encoded in base64 encoded_data_to_base64 needs to be True (default value)
+        :param mime_type: image/png, image/bmp, text/plain, text/html
+            - mime types with special support by Cucumber reporting
+            - other mime types will be handled with default handling
+        :param encode_data_to_base64: encode data to base64 if True
+        """
+        if encode_data_to_base64:
+            data = base64.standard_b64encode(data.encode()).decode()
+        self.embeddings.append({"data": data, "mime_type": mime_type})

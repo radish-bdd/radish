@@ -1,9 +1,12 @@
+[run]
+branch = True
+source =
+    radish
+
 [paths]
 source =
-    radish/
-    .tox/py*/lib/python*/site-packages/radish/
+   src
+   .tox/*/site-packages
 
-[run]
-omit =
-    radish/vendor/*
-    tests/*
+[report]
+show_missing = True

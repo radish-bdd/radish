@@ -13,6 +13,50 @@ import pytest
 from radish.stepregistry import StepImpl, StepRegistry
 
 
+@pytest.mark.parametrize("step_impl_1, step_impl_2, expected_equal", [
+    (
+        StepImpl("Given", "pattern", None),
+        StepImpl("Given", "pattern", None),
+        True
+    ),
+    (
+        StepImpl("Given", "pattern", None),
+        StepImpl("", "pattern", None),
+        False
+    ),
+    (
+        StepImpl("Given", "pattern", None),
+        StepImpl("Given", "", None),
+        False
+    ),
+    (
+        StepImpl("Given", "pattern", None),
+        StepImpl("Given", "pattern", lambda x: x),
+        False
+    ),
+    (
+        StepImpl("Given", "pattern", None),
+        None,
+        False
+    ),
+], ids=[
+    "are equal",
+    "keyword is not equal",
+    "pattern is not equal",
+    "func is not equal",
+    "right hand side object is no StepImpl object"
+])
+def test_step_impl_should_implement_the_equals_protocol(step_impl_1, step_impl_2, expected_equal):
+    """Test that StepImpls correctly implement the equals protocol"""
+    # when
+    are_equal = step_impl_1 == step_impl_2
+    hash_equal = hash(step_impl_1) == hash(step_impl_2)
+
+    # then
+    assert are_equal == expected_equal
+    assert hash_equal == expected_equal
+
+
 def test_stepregistry_is_initialized_with_no_step_impls():
     """The StepRegistry should be initialized with no registered Step Implementations"""
     # given & when

@@ -28,7 +28,7 @@ class StepImpl:
     def __repr__(self) -> str:
         return "<StepImpl for '{}' with keyword '{}'>".format(
             self.pattern, self.keyword
-        )
+        )  # pragma: no cover
 
     def __hash__(self):
         return hash((self.keyword, self.pattern, self.func))
@@ -38,7 +38,7 @@ class StepImpl:
             return False
 
         return (
-            self.keyword == self.keyword
+            self.keyword == other.keyword
             and self.pattern == other.pattern  # noqa
             and self.func == other.func  # noqa
         )

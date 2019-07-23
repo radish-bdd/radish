@@ -1,0 +1,514 @@
+"""
+radish
+~~~~~~
+
+The root from red to green. BDD tooling for Python.
+
+:copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
+:license: MIT, see LICENSE for more details.
+"""
+
+from unittest.mock import call
+
+import pytest
+
+from radish.config import Config
+from radish.hookregistry import HookRegistry
+from radish.models import ScenarioLoop, ScenarioOutline
+from radish.models.state import State
+from radish.runner import Runner
+
+
+@pytest.fixture(name="hook_registry", scope="function")
+def setup_fake_hookregistry(mocker):
+    """Setup a fake HookRegistry
+
+    This fake HookRegistry can be used to assert called hooks.
+    """
+    fake_hookregistry = mocker.MagicMock(spec=HookRegistry)
+
+    return fake_hookregistry
+
+
+@pytest.fixture(name="default_config", scope="function")
+def setup_default_config():
+    """Setup a default radish config
+
+    This config can be used by a Runner under test for most Test Cases.
+    """
+    return Config(
+        {
+            "wip_mode": False,
+            "dry_run_mode": False,
+            "debug_steps_mode": False,
+            "tags": None,
+            "tag_expression": None,
+            "scenario_ids": [],
+            "early_exit": False,
+            "shuffle_scenarios": False,
+        }
+    )
+
+
+def test_start_run_without_features(hook_registry, default_config):
+    """When starting the Runner without any Features it should pass and call the ``all`` hooks"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+
+    # when
+    status = runner.start([])
+
+    # then
+    assert status
+    hook_registry.call.assert_has_calls(
+        [call("all", "before", False, []), call("all", "after", False, [])]
+    )
+
+
+def test_start_run_should_iterate_all_given_features(
+    hook_registry, default_config, mocker
+):
+    """All Features given to run should be iterated"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+
+    first_feature = mocker.MagicMock(name="First Feature")
+    second_feature = mocker.MagicMock(name="Second Feature")
+
+    # when
+    runner.start([first_feature, second_feature])
+
+    # given
+    runner.run_feature.assert_has_calls([call(first_feature), call(second_feature)])
+
+
+def test_should_only_run_feature_which_have_to_run(
+    hook_registry, default_config, mocker
+):
+    """The Runner should only run features which need to be run"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+
+    first_feature = mocker.MagicMock(name="First Feature")
+    first_feature.has_to_run.return_value = True
+    second_feature = mocker.MagicMock(name="Second Feature")
+    second_feature.has_to_run.return_value = False
+    third_feature = mocker.MagicMock(name="Third Feature")
+    third_feature.has_to_run.return_value = True
+
+    # when
+    runner.start([first_feature, second_feature, third_feature])
+
+    # given
+    runner.run_feature.assert_has_calls([call(first_feature), call(third_feature)])
+
+
+def test_should_not_exit_for_failed_feature_if_early_exit_not_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should not exit early if a Feature failes if the early exit flag is not set"""
+    # given
+    default_config.early_exit = False
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effects = [State.PASSED, State.FAILED, State.PASSED]
+
+    first_feature = mocker.MagicMock(name="First Feature")
+    second_feature = mocker.MagicMock(name="Second Feature")
+    third_feature = mocker.MagicMock(name="Third Feature")
+
+    # when
+    runner.start([first_feature, second_feature, third_feature])
+
+    # given
+    runner.run_feature.assert_has_calls(
+        [call(first_feature), call(second_feature), call(third_feature)]
+    )
+
+
+def test_should_exit_for_failed_feature_if_early_exit_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should exit early if a Feature failes if the early exit flag is set"""
+    # given
+    default_config.early_exit = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    first_feature = mocker.MagicMock(name="First Feature")
+    second_feature = mocker.MagicMock(name="Second Feature")
+    third_feature = mocker.MagicMock(name="Third Feature")
+
+    # when
+    runner.start([first_feature, second_feature, third_feature])
+
+    # given
+    runner.run_feature.assert_has_calls([call(first_feature), call(second_feature)])
+
+
+def test_should_return_good_status_if_all_features_passed(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should return a good status when finished if all features passed in normal mode
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effect = [State.PASSED, State.PASSED]
+
+    first_feature = mocker.MagicMock(name="First Feature", state=State.PASSED)
+    second_feature = mocker.MagicMock(name="Second Feature", state=State.PASSED)
+
+    # when
+    status = runner.start([first_feature, second_feature])
+
+    # given
+    assert status
+
+
+def test_should_return_failed_status_if_not_all_features_passed(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should return a failure status when finished
+    if not all features passed in normal mode
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effect = [State.PASSED, State.FAILED]
+
+    first_feature = mocker.MagicMock(name="First Feature", state=State.PASSED)
+    second_feature = mocker.MagicMock(name="Second Feature", state=State.FAILED)
+
+    # when
+    status = runner.start([first_feature, second_feature])
+
+    # given
+    assert not status
+
+
+def test_should_return_good_status_if_all_features_failed_in_wip_mode(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should return a good status when finished if all features failed in WIP mode
+    """
+    # given
+    default_config.wip_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effect = [State.FAILED, State.FAILED]
+
+    first_feature = mocker.MagicMock(name="First Feature", state=State.FAILED)
+    second_feature = mocker.MagicMock(name="Second Feature", state=State.FAILED)
+
+    # when
+    status = runner.start([first_feature, second_feature])
+
+    # given
+    assert status
+
+
+def test_should_return_failed_status_if_any_feature_passed_in_wip_mode(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should return a failure status when finished
+    if any feature passed in WIP mode
+    """
+    # given
+    default_config.wip_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_feature = mocker.MagicMock()
+    runner.run_feature.side_effect = [State.PASSED, State.FAILED]
+
+    first_feature = mocker.MagicMock(name="First Feature", state=State.PASSED)
+    second_feature = mocker.MagicMock(name="Second Feature", state=State.FAILED)
+
+    # when
+    status = runner.start([first_feature, second_feature])
+
+    # given
+    assert not status
+
+
+def test_runner_should_call_hooks_when_running_a_feature(
+    hook_registry, default_config, mocker
+):
+    """The Runner should call the ``each_feature`` hooks when running a Feature"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    feature_mock = mocker.MagicMock(name="Feature")
+
+    # when
+    runner.run_feature(feature_mock)
+
+    # then
+    hook_registry.call.assert_has_calls(
+        [
+            call("each_feature", "before", False, feature_mock),
+            call("each_feature", "after", False, feature_mock),
+        ]
+    )
+
+
+def test_runner_should_run_each_rule_in_a_feature(
+    hook_registry, default_config, mocker
+):
+    """The Runner should run each Rule from a Feature"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    feature_mock = mocker.MagicMock(name="Feature")
+    first_rule = mocker.MagicMock(name="First Rule")
+    second_rule = mocker.MagicMock(name="Second Rule")
+    feature_mock.rules = [first_rule, second_rule]
+    runner.run_rule = mocker.MagicMock()
+
+    # when
+    runner.run_feature(feature_mock)
+
+    # then
+    runner.run_rule.assert_has_calls([call(first_rule), call(second_rule)])
+
+
+def test_runner_should_only_run_rule_which_need_to_be_run(
+    hook_registry, default_config, mocker
+):
+    """The Runner should run only the Rules which need to be run"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_rule = mocker.MagicMock()
+
+    feature_mock = mocker.MagicMock(name="Feature")
+    first_rule = mocker.MagicMock(name="First Rule")
+    first_rule.has_to_run.return_value = True
+    second_rule = mocker.MagicMock(name="Second Rule")
+    second_rule.has_to_run.return_value = False
+    third_rule = mocker.MagicMock(name="Third Rule")
+    third_rule.has_to_run.return_value = True
+    feature_mock.rules = [first_rule, second_rule, third_rule]
+
+    # when
+    runner.run_feature(feature_mock)
+
+    # then
+    runner.run_rule.assert_has_calls([call(first_rule), call(third_rule)])
+
+
+def test_runner_should_not_exit_for_failed_rule_if_early_exit_flag_is_not_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should not exit for a failed Rule if the early exit flag is not set"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_rule = mocker.MagicMock()
+    runner.run_rule.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    feature_mock = mocker.MagicMock(name="Feature")
+    first_rule = mocker.MagicMock(name="First Rule")
+    second_rule = mocker.MagicMock(name="Second Rule")
+    third_rule = mocker.MagicMock(name="Third Rule")
+    feature_mock.rules = [first_rule, second_rule, third_rule]
+
+    # when
+    runner.run_feature(feature_mock)
+
+    # then
+    runner.run_rule.assert_has_calls(
+        [call(first_rule), call(second_rule), call(third_rule)]
+    )
+
+
+def test_runner_should_exit_for_failed_rule_if_early_exit_flag_is_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should exit for a failed Rule if the early exit flag is set"""
+    # given
+    default_config.early_exit = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_rule = mocker.MagicMock()
+    runner.run_rule.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    feature_mock = mocker.MagicMock(name="Feature")
+    first_rule = mocker.MagicMock(name="First Rule")
+    second_rule = mocker.MagicMock(name="Second Rule")
+    third_rule = mocker.MagicMock(name="Third Rule")
+    feature_mock.rules = [first_rule, second_rule, third_rule]
+
+    # when
+    runner.run_feature(feature_mock)
+
+    # then
+    runner.run_rule.assert_has_calls([call(first_rule), call(second_rule)])
+
+
+def test_runner_should_call_hooks_when_running_a_rule(
+    hook_registry, default_config, mocker
+):
+    """The Runner should call the ``each_rule`` hooks when running a Rule"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    rule_mock = mocker.MagicMock(name="Rule")
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    hook_registry.call.assert_has_calls(
+        [
+            call("each_rule", "before", False, rule_mock),
+            call("each_rule", "after", False, rule_mock),
+        ]
+    )
+
+
+def test_runner_should_iterate_all_scenarios_when_running_a_rule(
+    hook_registry, default_config, mocker
+):
+    """The Runner should iterate all Scenarios when running a Rule"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    rule_mock.scenarios = [first_scenario, second_scenario]
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(second_scenario)])
+
+
+def test_runner_should_only_run_scenario_which_need_to_be_run(
+    hook_registry, default_config, mocker
+):
+    """The Runner should only run Scenarios which need to be run"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    first_scenario.has_to_run.return_value = True
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    second_scenario.has_to_run.return_value = False
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    third_scenario.has_to_run.return_value = True
+    rule_mock.scenarios = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(third_scenario)])
+
+
+def test_runner_should_not_exit_for_failed_scenario_if_early_exit_flag_is_not_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should not exit for a failed Scenario if the early exit flag is not set"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+    runner.run_scenario.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    rule_mock.scenarios = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls(
+        [call(first_scenario), call(second_scenario), call(third_scenario)]
+    )
+
+
+def test_runner_should_exit_for_failed_scenario_if_early_exit_flag_is_set(
+    hook_registry, default_config, mocker
+):
+    """The Runner should exit for a failed Scenario if the early exit flag is set"""
+    # given
+    default_config.early_exit = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+    runner.run_scenario.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    rule_mock.scenarios = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(second_scenario)])
+
+
+@pytest.mark.parametrize("scenario_container_type", [ScenarioLoop, ScenarioOutline])
+def test_runner_should_run_scenario_loop_and_outline_as_scenario_container(
+    scenario_container_type, hook_registry, default_config, mocker
+):
+    """The Runner should run a ScenarioLoop and ScenarioOutline as a Scenario Container"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario_container = mocker.MagicMock()
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    scenario = mocker.MagicMock(
+        name=scenario_container_type.__name__, spec=scenario_container_type
+    )
+    rule_mock.scenarios = [scenario]
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    runner.run_scenario_container.assert_has_calls([call(scenario)])
+
+
+def test_runner_should_shuffle_scenarios_in_a_rule_if_shuffle_scenarios_flag_set(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should shuffle the Scenarios within a Rule before
+    running them if the shuffle Scenarios flag is set
+    """
+    # given
+    default_config.shuffle_scenarios = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario_container = mocker.MagicMock()
+
+    rule_mock = mocker.MagicMock(name="Rule")
+    scenario = mocker.MagicMock(name="Scenario")
+    rule_mock.scenarios = [scenario]
+
+    mocker.patch("random.sample")
+
+    # when
+    runner.run_rule(rule_mock)
+
+    # then
+    import random
+
+    random.sample.assert_called_once_with(rule_mock.scenarios, len(rule_mock.scenarios))

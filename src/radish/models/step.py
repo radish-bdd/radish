@@ -142,6 +142,26 @@ class Step(Timed):
         self.state = State.FAILED
         self.failure_report = StepFailureReport(exception)
 
+    def skip(self):
+        """Skip this Step
+
+        This method is supposed to be called from Step Implementations.
+        """
+        if self.state is not State.RUNNING:
+            raise RadishError("Steps can only be skipped when they run")
+        self.state = State.SKIPPED
+
+    def pending(self):
+        """Skip this Step
+
+        All pending Steps will be reminded about in the Runs summary.
+
+        This method is supposed to be called from Step Implementations.
+        """
+        if self.state is not State.RUNNING:
+            raise RadishError("Steps can only be marked as pending when they run")
+        self.state = State.PENDING
+
     def embed(self, data, mime_type="text/plain", encode_data_to_base64=True):
         """Embed data into Step
             - step embedded data can be used for cucumber json reports

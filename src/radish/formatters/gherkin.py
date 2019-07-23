@@ -61,7 +61,7 @@ class GherkinFormatter:
         before.each_step(is_formatter=True)(write_step_running)
         after.each_step(is_formatter=True)(write_step_result)
 
-        after.all(is_formatter=True)(write_endreport)
+        after.all(is_formatter=True)(write_summary)
 
 
 def write_tagline(tag, indentation=""):
@@ -208,7 +208,7 @@ def write_step_result(step):
         )
 
 
-def write_endreport(features):
+def write_summary(features):
     """Write the end report after all Feature Files are ran"""
     feature_states = [f.state for f in features]
     features_line = "{} Feature{} ({})".format(
@@ -237,18 +237,37 @@ def write_endreport(features):
         ),
     )
 
-    step_states = [s.state for s in scenarios for s in s.steps]
+    steps = [s for s in scenarios for s in s.steps]
     steps_line = "{} Step{} ({})".format(
-        len(step_states),
-        "s" if len(step_states) != 1 else "",
+        len(steps),
+        "s" if len(steps) != 1 else "",
         ", ".join(
-            "{} {}".format(v, k.name.lower()) for k, v in Counter(step_states).items()
+            "{} {}".format(v, k.name.lower()) for k, v in Counter(s.state for s in steps).items()
         ),
     )
 
     print(features_line, flush=True)
     print(scenarios_line, flush=True)
     print(steps_line, flush=True)
+
+    # remind about pending Steps
+    pending_steps = [s for s in steps if s.state is State.PENDING]
+    if pending_steps:
+        pending_step_implementations = {s.step_impl for s in pending_steps}
+        print(cf.orange("You have {} pending Step Implementation{} affecting {} Step{}:".format(
+            cf.bold_orange(len(pending_step_implementations)),
+            "s" if len(pending_step_implementations) != 1 else "",
+            cf.bold_orange(len(pending_steps)),
+            "s" if len(pending_steps) != 1 else "",
+        )))
+        for pending_step_implementation in pending_step_implementations:
+            print(cf.orange("*  '{} {}' @ {}:{}".format(
+                cf.bold_orange(pending_step_implementation.keyword),
+                cf.bold_orange(pending_step_implementation.pattern),
+                cf.bold_orange(pending_step_implementation.func.__code__.co_filename),
+                cf.bold_orange(pending_step_implementation.func.__code__.co_firstlineno)
+            )))
+        print(cf.orange("Note: This may be the reason for potentially failed Steps!"))
 
     total_duration = sum((f.duration() for f in features), timedelta())
     timing_information = cf.deepSkyBlue3(

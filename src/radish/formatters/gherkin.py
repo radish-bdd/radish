@@ -37,7 +37,7 @@ class GherkinFormatter:
             is_flag=True,
             help=(
                 "Turn off all Step rewrites. "
-                "Steps are rewritten once they finished running."
+                "Steps are rewritten once they finished running. [GherkinFormatter]"
             ),
         ),
     ]

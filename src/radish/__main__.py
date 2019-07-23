@@ -161,10 +161,19 @@ class CommandWithExtensionOptions(click.Command):
     "dry_run_mode",
     is_flag=True,
     help=(
-        "Run in Dry Run mode. In the Dry Run Mode Steps are matched with "
+        "Run in Dry Run mode. In the Dry Run mode Steps are matched with "
         "their implementation, but not run. "
         "Only formatter Hooks are called"
     ),
+)
+@click.option(
+    "--debug-steps",
+    "debug_steps_mode",
+    is_flag=True,
+    help=(
+        "Run in Debug Steps mode. In the Debug Steps mode every Step is "
+        "run in a Python debugger"
+    )
 )
 @click.option(
     "--user-data",

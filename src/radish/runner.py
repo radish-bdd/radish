@@ -155,6 +155,9 @@ class Runner:
             step.fail(exc)
         else:
             if not self.config.dry_run_mode:
-                step.run()
+                if self.config.debug_steps_mode:
+                    step.debug()
+                else:
+                    step.run()
 
         return step.state

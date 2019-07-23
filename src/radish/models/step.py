@@ -8,10 +8,11 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import radish.utils as utils
 from radish.errors import RadishError
 from radish.models.state import State
-from radish.models.timed import Timed
 from radish.models.stepfailurereport import StepFailureReport
+from radish.models.timed import Timed
 
 
 class Step(Timed):
@@ -75,10 +76,10 @@ class Step(Timed):
         self.step_impl = step_impl
         self.step_impl_match = match
 
-    def run(self):
-        """Run this Step
+    def __validate_if_runnable(self):
+        """Validate if this Step is able to run
 
-        The Step will only run if a ``StepImpl`` was assigned using ``assign_implementation``.
+        If it's not able to run an Exception is raised.
         """
         if not self.step_impl or not self.step_impl_match:
             raise RadishError(
@@ -93,6 +94,13 @@ class Step(Timed):
                 )
             )
 
+    def run(self):
+        """Run this Step
+
+        The Step will only run if a ``StepImpl`` was assigned using ``assign_implementation``.
+        """
+        self.__validate_if_runnable()
+
         args, kwargs = self.step_impl_match.evaluate()
 
         self.state = State.RUNNING
@@ -101,6 +109,22 @@ class Step(Timed):
                 self.step_impl.func(self, **kwargs)
             else:
                 self.step_impl.func(self, *args)
+        except Exception as exc:
+            self.fail(exc)
+        else:
+            if self.state is State.RUNNING:
+                self.state = State.PASSED
+        return self.state
+
+    def debug(self):
+        """Run this Step in a debugger"""
+        self.__validate_if_runnable()
+        args, kwargs = self.step_impl_match.evaluate()
+
+        pdb = utils.get_debugger()
+
+        try:
+            pdb.runcall(self.step_impl.func, self, *args, **kwargs)
         except Exception as exc:
             self.fail(exc)
         else:

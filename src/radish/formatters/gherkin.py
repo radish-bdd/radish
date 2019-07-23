@@ -33,22 +33,12 @@ LINE_UP_JUMP = "\r\033[A\033[K"
 class GherkinFormatter:
     OPTIONS = [
         click.Option(
-            param_decls=("--no-ansi", "no_ansi"),
-            is_flag=True,
-            help="Turn off all ANSI sequences (colors, line rewrites)",
-        ),
-        click.Option(
             param_decls=("--no-step-rewrites", "no_step_rewrites"),
             is_flag=True,
             help=(
                 "Turn off all Step rewrites. "
                 "Steps are rewritten once they finished running."
             ),
-        ),
-        click.Option(
-            param_decls=("--with-traceback", "-t", "with_traceback"),
-            is_flag=True,
-            help="Show the Traceback for failed Steps",
         ),
     ]
 
@@ -60,10 +50,6 @@ class GherkinFormatter:
             return None
 
     def __init__(self):
-        # turn of ANSI colors if requested
-        if world.config.no_ansi:
-            cf.disable()
-
         before.each_feature(is_formatter=True)(write_feature_header)
         after.each_feature(is_formatter=True)(write_feature_footer)
 

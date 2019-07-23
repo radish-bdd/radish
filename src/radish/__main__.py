@@ -15,6 +15,7 @@ import time
 from pathlib import Path
 
 import click
+import colorful as cf
 
 import radish.loader as loader
 from radish.config import Config
@@ -193,6 +194,25 @@ class CommandWithExtensionOptions(click.Command):
     type=click.Choice(["Gherkin", "Dots"]),
     help="The formatter to use for this Run. "
 )
+@click.option(
+    "--no-ansi",
+    "no_ansi",
+    is_flag=True,
+    help=(
+        "Turn off all ANSI sequences (colors, line rewrites) ."
+        "This option is mainly used by the formatters"
+    )
+)
+@click.option(
+    "--with-traceback",
+    "-t",
+    "with_traceback",
+    is_flag=True,
+    help=(
+        "Show the Traceback for failed Steps. "
+        "This option is only used by the formatters"
+    )
+)
 @click.argument(
     "feature_files",
     nargs=-1,
@@ -208,6 +228,10 @@ def cli(**kwargs):
     """
     config = Config(kwargs)
     world.config = config
+
+    # turn of ANSI colors if requested
+    if config.no_ansi:
+        cf.disable()
 
     logger.debug(
         "Loaded %d built-in extension modules: %s",

@@ -42,7 +42,9 @@ class DotsFormatter:
         self.failed_steps = []
 
         before.each_feature(is_formatter=True)(self.write_feature_header)
-        after.each_feature(is_formatter=True)(lambda *args, **kwargs: print("", flush=True))
+        after.each_feature(is_formatter=True)(
+            lambda *args, **kwargs: print("", flush=True)
+        )
 
         after.each_scenario(is_formatter=True)(self.write_dot_for_scenario)
         after.each_step(is_formatter=True)(self.remember_failed_steps)
@@ -67,7 +69,10 @@ class DotsFormatter:
         print(cf.bold_firebrick("Failures:"), flush=True)
 
         for step in self.failed_steps:
-            print("{}: {}".format(str(step.path), step.scenario.short_description), flush=True)
+            print(
+                "{}: {}".format(str(step.path), step.scenario.short_description),
+                flush=True,
+            )
             print(INDENT_STEP + "{} {}".format(step.keyword, step.text), flush=True)
 
             report = step.failure_report
@@ -82,5 +87,5 @@ class DotsFormatter:
                 cf.firebrick(
                     textwrap.indent(failure_information, failure_report_indentation)
                 ),
-                flush=True
+                flush=True,
             )

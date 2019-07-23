@@ -17,15 +17,13 @@ def start_webservice(step):
     pass
 
 
-# @when("the {:str} route is queried")
-@when("the {:S} route is queried")
+@when("the {:word} route is queried")
 def query_route(step, route):
     """Query the given route"""
     pass
 
 
-# @then("the status code is {:int}")
-@then("the status code is {:g}")
+@then("the status code is {:int}")
 def assert_status_code(step, status_code):
     # step.pending()
     assert False, "This is a failure"

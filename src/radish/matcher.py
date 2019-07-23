@@ -12,6 +12,7 @@ import re
 
 from parse_type.cfparse import Parser
 
+from radish.parsetyperegistry import registry as parsetype_registry
 from radish.models.step import Step
 from radish.errors import (
     StepImplementationNotFoundError,
@@ -57,8 +58,7 @@ class ParseTypeStepImplMatcher:
 
     def __call__(self, step_text, step_impl):
         try:
-            # parser = Parser(pattern, CustomTypeRegistry().custom_types)
-            parser = Parser(step_impl.pattern)
+            parser = Parser(step_impl.pattern, parsetype_registry.types)
         except ValueError:
             raise Exception("Cannot create parser")
             # raise StepPatternError(step_impl.pattern, func.__name__, e)

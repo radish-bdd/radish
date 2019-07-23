@@ -1668,7 +1668,10 @@ def test_parser_assign_background_to_scenario_loop(parser):
     assert ast.rules[0].scenarios[0].background is not None
     assert ast.rules[0].scenarios[0].examples[0].background is not None
     assert ast.rules[0].scenarios[0].examples[1].background is not None
-    assert ast.rules[0].scenarios[0].examples[0].background != ast.rules[0].scenarios[0].examples[1].background
+    assert (
+        ast.rules[0].scenarios[0].examples[0].background
+        != ast.rules[0].scenarios[0].examples[1].background  # noqa
+    )
 
 
 @pytest.mark.parametrize(
@@ -2192,7 +2195,10 @@ def test_parser_assign_background_to_scenario_outline(parser):
     assert ast.rules[0].scenarios[0].background is not None
     assert ast.rules[0].scenarios[0].examples[0].background is not None
     assert ast.rules[0].scenarios[0].examples[1].background is not None
-    assert ast.rules[0].scenarios[0].examples[0].background != ast.rules[0].scenarios[0].examples[1].background
+    assert (
+        ast.rules[0].scenarios[0].examples[0].background
+        != ast.rules[0].scenarios[0].examples[1].background  # noqa
+    )
 
 
 def test_parser_replace_examples_parameter_in_scenario_outline_examples(parser):

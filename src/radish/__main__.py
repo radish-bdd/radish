@@ -173,7 +173,7 @@ class CommandWithExtensionOptions(click.Command):
     help=(
         "Run in Debug Steps mode. In the Debug Steps mode every Step is "
         "run in a Python debugger"
-    )
+    ),
 )
 @click.option(
     "--user-data",
@@ -183,17 +183,14 @@ class CommandWithExtensionOptions(click.Command):
     help=(
         "Add arbitrary user-defined data to the 'radish.world' object. "
         "The data can be in a 'key=value' form or just a key"
-    )
+    ),
 )
 @click.option(
     "--marker",
     "-m",
     "marker",
     default=str(int(time.time())),
-    help=(
-        "Unique Marker for this Run. "
-        "The Marker can be used in reports and logs"
-    )
+    help=("Unique Marker for this Run. " "The Marker can be used in reports and logs"),
 )
 @click.option(
     "--formatter",
@@ -201,7 +198,7 @@ class CommandWithExtensionOptions(click.Command):
     "formatter",
     default="Gherkin",
     type=click.Choice(["Gherkin", "Dots"]),
-    help="The formatter to use for this Run. "
+    help="The formatter to use for this Run. ",
 )
 @click.option(
     "--no-ansi",
@@ -210,7 +207,7 @@ class CommandWithExtensionOptions(click.Command):
     help=(
         "Turn off all ANSI sequences (colors, line rewrites) ."
         "This option is mainly used by the formatters"
-    )
+    ),
 )
 @click.option(
     "--with-traceback",
@@ -220,7 +217,7 @@ class CommandWithExtensionOptions(click.Command):
     help=(
         "Show the Traceback for failed Steps. "
         "This option is only used by the formatters"
-    )
+    ),
 )
 @click.argument(
     "feature_files",
@@ -282,7 +279,8 @@ def cli(**kwargs):
         )
         logger.debug(
             "Starting Runner WIP mode: %r, Dry-Run mode: %r",
-            config.wip_mode, config.dry_run_mode
+            config.wip_mode,
+            config.dry_run_mode,
         )
         success = runner.start(features)
         logger.debug("Finished Runner with status %s", success)

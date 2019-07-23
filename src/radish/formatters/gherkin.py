@@ -39,7 +39,7 @@ class GherkinFormatter:
                 "Turn off all Step rewrites. "
                 "Steps are rewritten once they finished running. [GherkinFormatter]"
             ),
-        ),
+        )
     ]
 
     @classmethod
@@ -242,7 +242,8 @@ def write_summary(features):
         len(steps),
         "s" if len(steps) != 1 else "",
         ", ".join(
-            "{} {}".format(v, k.name.lower()) for k, v in Counter(s.state for s in steps).items()
+            "{} {}".format(v, k.name.lower())
+            for k, v in Counter(s.state for s in steps).items()
         ),
     )
 
@@ -254,26 +255,38 @@ def write_summary(features):
     pending_steps = [s for s in steps if s.state is State.PENDING]
     if pending_steps:
         pending_step_implementations = {s.step_impl for s in pending_steps}
-        print(cf.orange("You have {} pending Step Implementation{} affecting {} Step{}:".format(
-            cf.bold_orange(len(pending_step_implementations)),
-            "s" if len(pending_step_implementations) != 1 else "",
-            cf.bold_orange(len(pending_steps)),
-            "s" if len(pending_steps) != 1 else "",
-        )))
+        print(
+            cf.orange(
+                "You have {} pending Step Implementation{} affecting {} Step{}:".format(
+                    cf.bold_orange(len(pending_step_implementations)),
+                    "s" if len(pending_step_implementations) != 1 else "",
+                    cf.bold_orange(len(pending_steps)),
+                    "s" if len(pending_steps) != 1 else "",
+                )
+            )
+        )
         for pending_step_implementation in pending_step_implementations:
-            print(cf.orange("*  '{} {}' @ {}:{}".format(
-                cf.bold_orange(pending_step_implementation.keyword),
-                cf.bold_orange(pending_step_implementation.pattern),
-                cf.bold_orange(pending_step_implementation.func.__code__.co_filename),
-                cf.bold_orange(pending_step_implementation.func.__code__.co_firstlineno)
-            )))
+            print(
+                cf.orange(
+                    "*  '{} {}' @ {}:{}".format(
+                        cf.bold_orange(pending_step_implementation.keyword),
+                        cf.bold_orange(pending_step_implementation.pattern),
+                        cf.bold_orange(
+                            pending_step_implementation.func.__code__.co_filename
+                        ),
+                        cf.bold_orange(
+                            pending_step_implementation.func.__code__.co_firstlineno
+                        ),
+                    )
+                )
+            )
         print(cf.orange("Note: This may be the reason for potentially failed Steps!"))
 
     total_duration = sum((f.duration() for f in features), timedelta())
     timing_information = cf.deepSkyBlue3(
         "Run {marker} finished within {duration} seconds".format(
             marker=cf.bold_deepSkyBlue3(world.config.marker),
-            duration=cf.bold_deepSkyBlue3(total_duration.total_seconds())
+            duration=cf.bold_deepSkyBlue3(total_duration.total_seconds()),
         )
     )
 

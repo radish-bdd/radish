@@ -203,7 +203,8 @@ To following example illustrates a possible use for a *Background*:
 **Note:** the entire example can be found `here <https://github.com/radish-bdd/radish/tree/master/tests/functional/background>`_.
 
 
-Cucumber defined some useful `good practices for using backgrounds <https://github.com/cucumber/cucumber/wiki/Background#good-practices-for-using-background>`_. It's worth to read them carefully.
+Cucumber defined some useful `good practices for using backgrounds <https://cucumber.io/docs/gherkin/reference/#background>`_.
+It's worth to read them carefully.
 
 Steps
 -----

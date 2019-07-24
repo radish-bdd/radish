@@ -52,7 +52,7 @@ class Scenario(Timed):
             steps=len(self.steps),
             path=self.path,
             line=self.line,
-        )
+        )  # pragma: no cover
 
     def set_feature(self, feature):
         """Set the Feature for this Scenario"""
@@ -73,19 +73,21 @@ class Scenario(Timed):
         for step in self.steps:
             step.set_rule(rule)
 
+    def _steps_state(self, steps):
+        """Get the State for some Steps"""
+        return State.report_state(s.state for s in steps)
+
     @property
     def state(self):
         """Get the State of this Scenario"""
+        steps = self.steps
         if self.background:
             state = self.background.state
-            if state is not State.PASSED:
+            if state is State.FAILED:
                 return state
+            steps = self.steps + self.background.steps
 
-        for step_state in (s.state for s in self.steps):
-            if step_state is not State.PASSED:
-                return step_state
-
-        return State.PASSED
+        return self._steps_state(steps)
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Scenario has to run or not

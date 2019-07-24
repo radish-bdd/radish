@@ -8,15 +8,20 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-from enum import Enum
+from enum import IntEnum
 
 
-class State(Enum):
+class State(IntEnum):
     """Represents the State of other models"""
 
-    UNTESTED = 0
-    RUNNING = 1
-    SKIPPED = 2
-    PENDING = 3
-    PASSED = 4
+    PASSED = 0
+    UNTESTED = 1
+    RUNNING = 2
+    SKIPPED = 3
+    PENDING = 4
     FAILED = 5
+
+    @staticmethod
+    def report_state(states):
+        """Report the single most appropriate State out of a list of States"""
+        return sorted(states, reverse=True)[0]

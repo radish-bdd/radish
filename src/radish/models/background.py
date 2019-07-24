@@ -9,7 +9,6 @@ the root from red to green.  BDD tooling for Python.
 """
 
 from radish.models.scenario import Scenario
-from radish.models.state import State
 
 
 class Background(Scenario):
@@ -41,8 +40,4 @@ class Background(Scenario):
     @property
     def state(self):
         """Get the State of this Scenario"""
-        for step_state in (s.state for s in self.steps):
-            if step_state is not State.PASSED:
-                return step_state
-
-        return State.PASSED
+        return self._steps_state(self.steps)

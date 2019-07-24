@@ -131,18 +131,18 @@ class Runner:
 
     @with_hooks("each_scenario")
     def run_scenario(self, scenario: Scenario):
-        # run background steps
-        if scenario.background:
-            for step in scenario.background.steps:
+        def __run_steps(steps):
+            for step in steps:
                 state = self.run_step(step)
                 if state is not State.PASSED and not self.config.dry_run_mode:
                     break
 
+        # run background steps
+        if scenario.background:
+            __run_steps(scenario.background.steps)
+
         if not scenario.background or scenario.background.state is State.PASSED:
-            for step in scenario.steps:
-                state = self.run_step(step)
-                if state is not State.PASSED and not self.config.dry_run_mode:
-                    break
+            __run_steps(scenario.steps)
 
         return scenario.state
 

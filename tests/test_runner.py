@@ -13,6 +13,7 @@ from unittest.mock import call
 import pytest
 
 from radish.config import Config
+from radish.errors import RadishError
 from radish.hookregistry import HookRegistry
 from radish.models import ScenarioLoop, ScenarioOutline
 from radish.models.state import State
@@ -497,7 +498,7 @@ def test_runner_should_shuffle_scenarios_in_a_rule_if_shuffle_scenarios_flag_set
     default_config.shuffle_scenarios = True
 
     runner = Runner(default_config, None, hook_registry)
-    runner.run_scenario_container = mocker.MagicMock()
+    runner.run_scenario = mocker.MagicMock()
 
     rule_mock = mocker.MagicMock(name="Rule")
     scenario = mocker.MagicMock(name="Scenario")
@@ -512,3 +513,414 @@ def test_runner_should_shuffle_scenarios_in_a_rule_if_shuffle_scenarios_flag_set
     import random
 
     random.sample.assert_called_once_with(rule_mock.scenarios, len(rule_mock.scenarios))
+
+
+def test_runner_should_iterate_all_scenarios_when_running_a_scenario_container(
+    hook_registry, default_config, mocker
+):
+    """The Runner should iterate all Scenarios when running a Scenario Container"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+
+    scenario_container_mock = mocker.MagicMock(name="Scenario Container")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    scenario_container_mock.examples = [first_scenario, second_scenario]
+
+    # when
+    runner.run_scenario_container(scenario_container_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(second_scenario)])
+
+
+def test_runner_should_only_run_scenario_in_a_scenario_container_which_need_to_be_run(
+    hook_registry, default_config, mocker
+):
+    """The Runner should only run Scenarios in a Scenario Container which need to be run"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+
+    scenario_container_mock = mocker.MagicMock(name="Scenario Container")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    first_scenario.has_to_run.return_value = True
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    second_scenario.has_to_run.return_value = False
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    third_scenario.has_to_run.return_value = True
+    scenario_container_mock.examples = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_scenario_container(scenario_container_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(third_scenario)])
+
+
+def test_runner_should_not_exit_for_failed_scenario_in_scenario_container_if_early_exit_flag_is_not_set(  # noqa
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should not exit for a failed Scenario
+    in Scenario Container if the early exit flag is not set
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+    runner.run_scenario.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    scenario_container_mock = mocker.MagicMock(name="Scenario Container")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    scenario_container_mock.examples = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_scenario_container(scenario_container_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls(
+        [call(first_scenario), call(second_scenario), call(third_scenario)]
+    )
+
+
+def test_runner_should_exit_for_failed_scenario_in_scenario_container_if_early_exit_flag_is_set(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should exit for a failed Scenario in
+    Scenario Container if the early exit flag is set
+    """
+    # given
+    default_config.early_exit = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+    runner.run_scenario.side_effect = [State.PASSED, State.FAILED, State.PASSED]
+
+    scenario_container_mock = mocker.MagicMock(name="Scenario Container")
+    first_scenario = mocker.MagicMock(name="First Scenario")
+    second_scenario = mocker.MagicMock(name="Second Scenario")
+    third_scenario = mocker.MagicMock(name="Third Scenario")
+    scenario_container_mock.examples = [first_scenario, second_scenario, third_scenario]
+
+    # when
+    runner.run_scenario_container(scenario_container_mock)
+
+    # then
+    runner.run_scenario.assert_has_calls([call(first_scenario), call(second_scenario)])
+
+
+def test_runner_should_shuffle_scenarios_in_a_scenario_container_if_shuffle_scenarios_flag_set(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should shuffle the Scenarios within a Scenario Container before
+    running them if the shuffle Scenarios flag is set
+    """
+    # given
+    default_config.shuffle_scenarios = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_scenario = mocker.MagicMock()
+
+    scenario_container_mock = mocker.MagicMock(name="Rule")
+    scenario = mocker.MagicMock(name="Scenario")
+    scenario_container_mock.examples = [scenario]
+
+    mocker.patch("random.sample")
+
+    # when
+    runner.run_scenario_container(scenario_container_mock)
+
+    # then
+    import random
+
+    random.sample.assert_called_once_with(
+        scenario_container_mock.examples, len(scenario_container_mock.examples)
+    )
+
+
+def test_runner_should_call_hooks_when_runner_a_scenario(
+    hook_registry, default_config, mocker
+):
+    """The Runner should call the ``each_scenario`` hooks when running a Scenario"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    scenario_mock = mocker.MagicMock(name="Scenario")
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    hook_registry.call.assert_has_calls(
+        [
+            call("each_scenario", "before", False, scenario_mock),
+            call("each_scenario", "after", False, scenario_mock),
+        ]
+    )
+
+
+def test_runner_should_iterate_all_steps_in_a_scenario(
+    hook_registry, default_config, mocker
+):
+    """The Runner should iterate all Steps in a Scenario"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.return_value = State.PASSED
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background = None
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    scenario_mock.steps = [first_step, second_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([call(first_step), call(second_step)])
+
+
+def test_runner_should_only_not_run_steps_in_a_scenario_if_background_not_passed(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should not run Steps in a Scenario
+    if the Background is available and did not pass.
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.return_value = State.PASSED
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background.state = State.FAILED
+    first_step = mocker.MagicMock(name="First Step")
+    scenario_mock.steps = [first_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_not_called()
+
+
+def test_runner_should_only_run_steps_in_scenario_if_background_passed(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should only run Steps in a Scenario
+    if the Background is available and did pass.
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.return_value = State.PASSED
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background.state = State.PASSED
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    scenario_mock.steps = [first_step, second_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([call(first_step), call(second_step)])
+
+
+def test_runner_should_stop_running_steps_after_first_failed(
+    hook_registry, default_config, mocker
+):
+    """The Runner should stop running Steps after the first Step failed in normal mode"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.side_effect = [State.PASSED, State.FAILED]
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background = None
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    scenario_mock.steps = [first_step, second_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([call(first_step)])
+
+
+def test_runner_should_run_all_steps_even_when_failed_in_dry_run_mode(
+    hook_registry, default_config, mocker
+):
+    """The Runner should runn all Steps even when one failed in the dry run mode"""
+    # given
+    default_config.dry_run_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.side_effect = [State.FAILED, State.UNTESTED]
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background = None
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    scenario_mock.steps = [first_step, second_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([call(first_step), call(second_step)])
+
+
+def test_runner_should_run_steps_from_a_background(
+    hook_registry, default_config, mocker
+):
+    """The Runner should run all Steps from a Background before running the Scenario steps"""
+    # given
+    default_config.dry_run_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.side_effect = [
+        State.PASSED,
+        State.PASSED,
+        State.PASSED,
+        State.PASSED,
+    ]
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+
+    first_background_step = mocker.MagicMock(name="First Background Step")
+    second_background_step = mocker.MagicMock(name="Second Background Step")
+    scenario_mock.background.steps = [first_background_step, second_background_step]
+    scenario_mock.background.state = State.PASSED
+
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    scenario_mock.steps = [first_step, second_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls(
+        [
+            call(first_background_step),
+            call(second_background_step),
+            call(first_step),
+            call(second_step),
+        ]
+    )
+
+
+def test_runner_should_call_hooks_when_running_a_step(
+    hook_registry, default_config, mocker
+):
+    """The Runner should call the ``each_step`` hooks when running a Step"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    step_mock = mocker.MagicMock(name="Step")
+
+    # when
+    runner.run_step(step_mock)
+
+    # then
+    hook_registry.call.assert_has_calls(
+        [
+            call("each_step", "before", False, step_mock),
+            call("each_step", "after", False, step_mock),
+        ]
+    )
+
+
+def test_runner_should_run_step_after_being_matched_in_normal_mode(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should run a Step after it's being
+    successfully matched with a Step Implementation
+    in the normal mode.
+    """
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    step_mock = mocker.MagicMock(name="Step")
+
+    mocker.patch("radish.runner.matcher")
+
+    # when
+    runner.run_step(step_mock)
+
+    # then
+    step_mock.run.assert_called_once()
+
+
+def test_runner_should_debug_step_after_being_matched_in_debug_steps_mode(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should debug a Step after it's being
+    successfully matched with a Step Implementation
+    in the debug steps mode.
+    """
+    # given
+    default_config.debug_steps_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    step_mock = mocker.MagicMock(name="Step")
+
+    mocker.patch("radish.runner.matcher")
+
+    # when
+    runner.run_step(step_mock)
+
+    # then
+    step_mock.debug.assert_called_once()
+
+
+def test_runner_should_not_run_nor_debug_step_after_being_matched_in_dry_run_mode(
+    hook_registry, default_config, mocker
+):
+    """
+    The Runner should not run nor debug a Step after it's being
+    successfully matched with a Step Implementation in the dry run mode.
+    """
+    # given
+    default_config.dry_run_mode = True
+
+    runner = Runner(default_config, None, hook_registry)
+    step_mock = mocker.MagicMock(name="Step")
+
+    mocker.patch("radish.runner.matcher")
+
+    # when
+    runner.run_step(step_mock)
+
+    # then
+    step_mock.run.assert_not_called()
+    step_mock.debug.assert_not_called()
+
+
+def test_runner_should_fail_step_when_it_cannot_be_matched(
+    hook_registry, default_config, mocker
+):
+    """The Runner should fail a Step when it cannot be matched with any Step Implementation"""
+    runner = Runner(default_config, None, hook_registry)
+    step_mock = mocker.MagicMock(name="Step")
+
+    matcher_mock = mocker.patch("radish.runner.matcher")
+    match_exc = RadishError("buuh!")
+    matcher_mock.match_step.side_effect = match_exc
+
+    # when
+    runner.run_step(step_mock)
+
+    # then
+    step_mock.fail.assert_called_once_with(match_exc)

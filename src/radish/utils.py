@@ -19,9 +19,9 @@ def get_debugger():
     2. Use Python's built-in Pdb
     """
     try:
-        from IPython.core.debugger import Pdb
+        from IPython.core.debugger import Pdb  # pragma: no cover
 
-        pdb = Pdb()
+        pdb = Pdb()  # pragma: no cover
     except ImportError:
         warnings.warn(
             UserWarning(

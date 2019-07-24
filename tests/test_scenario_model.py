@@ -14,6 +14,16 @@ from tagexpressions import parse
 from radish.models import Scenario, Tag
 
 
+def test_scenario_should_set_feature_to_step_when_feature_set(mocker):
+    """A Scenario should forward the feature to each Step"""
+    # given
+    feature_mock = mocker.MagicMock(name="Feature")
+    scenario = Scenario(
+        1, "My Scenario", [], None, None, []
+    )
+    scenario.set_feature(feature_mock)
+
+
 @pytest.mark.parametrize(
     "tagexpression, scenario_ids, expected_has_to_run",
     [

@@ -62,15 +62,15 @@ class Step(Timed):
             text=self.text,
             path=self.path,
             line=self.line,
-        )
+        )  # pragma: no cover
 
     def set_feature(self, feature):
         """Set the Feature for this Step"""
-        self.feature = feature
+        self.feature = feature  # pragma: no cover
 
     def set_rule(self, rule):
         """Set the Rule for this Step"""
-        self.rule = rule
+        self.rule = rule  # pragma: no cover
 
     def set_scenario(self, scenario):
         """Set the Scenario for this Step"""
@@ -110,7 +110,6 @@ class Step(Timed):
         The Step will only run if a ``StepImpl`` was assigned using ``assign_implementation``.
         """
         self.__validate_if_runnable()
-
         args, kwargs = self.step_impl_match.evaluate()
 
         self.state = State.RUNNING
@@ -133,6 +132,7 @@ class Step(Timed):
 
         pdb = utils.get_debugger()
 
+        self.state = State.RUNNING
         try:
             pdb.runcall(self.step_impl.func, self, *args, **kwargs)
         except Exception as exc:

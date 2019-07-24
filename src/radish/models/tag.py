@@ -20,4 +20,4 @@ class Tag:
     def __repr__(self) -> str:
         return "<Tag: {name} @ {path}:{line}>".format(
             name=self.name, path=self.path, line=self.line
-        )
+        )  # pragma: no cover

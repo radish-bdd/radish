@@ -17,7 +17,7 @@ class ParseTypeRegistry:
     def __init__(self):
         self.types = {}
 
-    def register(self, name, func):
+    def register(self, name, pattern, func):
         """Register a new parse type"""
         if name in self.types:
             raise RadishError(
@@ -26,6 +26,7 @@ class ParseTypeRegistry:
                 )
             )
 
+        func.pattern = pattern
         self.types[name] = func
 
     def create_decorator(self, context=None):
@@ -40,8 +41,7 @@ class ParseTypeRegistry:
         def __create_decorator(decorator_name):
             def __decorator(name, pattern):
                 def __wrapper(func):
-                    func.pattern = pattern
-                    self.register(name, func)
+                    self.register(name, pattern, func)
                     return func
 
                 return __wrapper

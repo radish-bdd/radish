@@ -13,6 +13,7 @@ import random
 import radish.matcher as matcher
 from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
 from radish.models.state import State
+from radish.errors import RadishError
 
 
 class Runner:
@@ -134,7 +135,15 @@ class Runner:
         def __run_steps(steps):
             for step in steps:
                 state = self.run_step(step)
-                if state is not State.PASSED and not self.config.dry_run_mode:
+                if self.config.dry_run_mode:
+                    continue  # ignore Step states in dry run mode
+
+                if state is State.RUNNING:
+                    raise RadishError(
+                        "The Step {} was still in RUNNING state after it has run".format(step)
+                    )
+
+                if state is State.FAILED:
                     break
 
         # run background steps

@@ -756,6 +756,63 @@ def test_runner_should_stop_running_steps_after_first_failed(
     runner.run_step.assert_has_calls([call(first_step)])
 
 
+def test_runner_should_continue_running_steps_when_step_is_skipped_or_pending(
+    hook_registry, default_config, mocker
+):
+    """The Runner should continue running Steps after a Step is skipped"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.side_effect = [State.PASSED, State.SKIPPED, State.PENDING, State.PASSED]
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background = None
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    third_step = mocker.MagicMock(name="Third Step")
+    fourth_step = mocker.MagicMock(name="Fourth Step")
+    scenario_mock.steps = [first_step, second_step, third_step, fourth_step]
+
+    # when
+    runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([
+        call(first_step),
+        call(second_step),
+        call(third_step),
+        call(fourth_step),
+    ])
+
+
+def test_runner_should_abort_if_step_is_still_running_after_running_it(
+    hook_registry, default_config, mocker
+):
+    """The Runner should abort if a Steps State is still running after its ran"""
+    # given
+    runner = Runner(default_config, None, hook_registry)
+    runner.run_step = mocker.MagicMock()
+    runner.run_step.side_effect = [State.PASSED, State.RUNNING, State.PASSED]
+
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.background = None
+    first_step = mocker.MagicMock(name="First Step")
+    second_step = mocker.MagicMock(name="Second Step")
+    third_step = mocker.MagicMock(name="Third Step")
+    scenario_mock.steps = [first_step, second_step, third_step]
+
+    # then
+    with pytest.raises(RadishError):
+        # when
+        runner.run_scenario(scenario_mock)
+
+    # then
+    runner.run_step.assert_has_calls([
+        call(first_step),
+        call(second_step)
+    ])
+
+
 def test_runner_should_run_all_steps_even_when_failed_in_dry_run_mode(
     hook_registry, default_config, mocker
 ):

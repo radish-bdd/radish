@@ -16,10 +16,10 @@ class State(IntEnum):
 
     PASSED = 0
     UNTESTED = 1
-    RUNNING = 2
-    SKIPPED = 3
-    PENDING = 4
-    FAILED = 5
+    SKIPPED = 2
+    PENDING = 3
+    FAILED = 4
+    RUNNING = 5
 
     @staticmethod
     def report_state(states):

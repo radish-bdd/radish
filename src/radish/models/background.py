@@ -2,7 +2,7 @@
 radish
 ~~~~~~
 
-the root from red to green.  BDD tooling for Python.
+The root from red to green. BDD tooling for Python.
 
 :copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
 :license: MIT, see LICENSE for more details.
@@ -26,7 +26,7 @@ class Background(Scenario):
             steps=len(self.steps),
             path=self.path,
             line=self.line,
-        )
+        )  # pragma: no cover
 
     def set_scenario(self, scenario):
         """Set the Scenario instance for this Background
@@ -35,7 +35,7 @@ class Background(Scenario):
         The given Scenario will be used to access the execution hierarchy
         and other context sensitive functionalities.
         """
-        self.scenario = scenario
+        self.scenario = scenario  # pragma: no cover
 
     @property
     def state(self):

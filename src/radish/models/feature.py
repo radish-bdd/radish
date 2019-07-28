@@ -47,16 +47,12 @@ class Feature(Timed):
             rules=len(self.rules),
             path=self.path,
             line=self.line,
-        )
+        )  # pragma: no cover
 
     @property
     def state(self):
         """Read-only property to get the State for this Feature"""
-        for rule_state in (r.state for r in self.rules):
-            if rule_state is not State.PASSED:
-                return rule_state
-
-        return State.PASSED
+        return State.report_state(r.state for r in self.rules)
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Feature has to run or not

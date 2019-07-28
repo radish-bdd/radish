@@ -21,7 +21,7 @@ class Config:
             setattr(self, opt_key, opt_value)
 
         # make some configuration options easily accessible
-        if self.tags:
+        if hasattr(self, "tags") and self.tags:
             try:
                 self.tag_expression = parse(self.tags)
             except Exception as exc:

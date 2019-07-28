@@ -18,15 +18,7 @@ def test_scenarioloop_set_feature_on_all_examples(mocker):
     """A ScenarioLoop should forward a set Feature to all its Examples"""
     # given
     feature_mock = mocker.MagicMock(name="Feature")
-    scenario = ScenarioLoop(
-        1,
-        "My ScenarioLoop",
-        [],
-        None,
-        None,
-        [],
-        0,
-    )
+    scenario = ScenarioLoop(1, "My ScenarioLoop", [], None, None, [], 0)
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -44,15 +36,7 @@ def test_scenarioloop_set_background_on_all_examples(mocker):
     """A ScenarioLoop should forward a set Background to all its Examples"""
     # given
     background_mock = mocker.MagicMock(name="Background")
-    scenario = ScenarioLoop(
-        1,
-        "My ScenarioLoop",
-        [],
-        None,
-        None,
-        [],
-        0,
-    )
+    scenario = ScenarioLoop(1, "My ScenarioLoop", [], None, None, [], 0)
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -70,15 +54,7 @@ def test_scenarioloop_set_rule_on_all_examples(mocker):
     """A ScenarioLoop should forward a set Rule to all its Examples"""
     # given
     rule_mock = mocker.MagicMock(name="Rule")
-    scenario = ScenarioLoop(
-        1,
-        "My ScenarioLoop",
-        [],
-        None,
-        None,
-        [],
-        0,
-    )
+    scenario = ScenarioLoop(1, "My ScenarioLoop", [], None, None, [], 0)
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -95,15 +71,7 @@ def test_scenarioloop_set_rule_on_all_examples(mocker):
 def test_scenarioloop_build_examples_from_iterations():
     """A ScenarioLoop should build its Examples from the given amount of Iterations"""
     # given & when
-    scenario = ScenarioLoop(
-        1,
-        "My ScenarioLoop",
-        [],
-        None,
-        None,
-        [],
-        2,  # two examples
-    )
+    scenario = ScenarioLoop(1, "My ScenarioLoop", [], None, None, [], 2)  # two examples
 
     # then
     assert len(scenario.examples) == 2
@@ -112,15 +80,7 @@ def test_scenarioloop_build_examples_from_iterations():
 def test_scenarioloop_should_build_examples_with_info_in_short_description():
     """A ScenarioLoop should build its Examples with the Iteration id in the short description"""
     # given & when
-    scenario = ScenarioLoop(
-        1,
-        "My ScenarioLoop",
-        [],
-        None,
-        None,
-        [],
-        2,
-    )
+    scenario = ScenarioLoop(1, "My ScenarioLoop", [], None, None, [], 2)
 
     # then
     assert scenario.examples[0].short_description == "My ScenarioLoop [Iteration: 1]"

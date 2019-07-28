@@ -2,7 +2,7 @@
 radish
 ~~~~~~
 
-the root from red to green.  BDD tooling for Python.
+The root from red to green. BDD tooling for Python.
 
 :copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
 :license: MIT, see LICENSE for more details.
@@ -28,7 +28,7 @@ class Rule:
             scenarios=len(self.scenarios),
             path=self.path,
             line=self.line,
-        )
+        )  # pragma: no cover
 
     def set_feature(self, feature):
         """Set the Feature for this Rule"""
@@ -44,11 +44,7 @@ class Rule:
     @property
     def state(self):
         """Read-only property to get the State for this Feature"""
-        for scenario_state in (s.state for s in self.scenarios):
-            if scenario_state is not State.PASSED:
-                return scenario_state
-
-        return State.PASSED
+        return State.report_state(s.state for s in self.scenarios)
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Rule has to run or not
@@ -67,4 +63,4 @@ class DefaultRule(Rule):
     def __repr__(self) -> str:
         return "<DefaultRule: with {scenarios} Scenarios @ {path}:{line}>".format(
             scenarios=len(self.scenarios), path=self.path, line=self.line
-        )
+        )  # pragma: no cover

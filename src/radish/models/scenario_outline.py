@@ -39,7 +39,7 @@ class ScenarioOutline(Scenario):
                 path=self.path,
                 line=self.line,
             )
-        )
+        )  # pragma: no cover
 
     def set_feature(self, feature):
         """Set the Feature for this Scenario"""
@@ -109,8 +109,9 @@ class ScenarioOutline(Scenario):
             has_to_run_tag_expression = tag_expression.evaluate(tag_names)
 
         if scenario_ids:
-            has_to_run_scenario_ids = bool(
-                {e.id for e in self.examples} & set(scenario_ids)
+            has_to_run_scenario_ids = (
+                bool({e.id for e in self.examples} & set(scenario_ids))
+                or self.id in scenario_ids  # noqa
             )
 
         if tag_expression and scenario_ids:

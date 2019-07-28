@@ -140,7 +140,9 @@ class Runner:
 
                 if state is State.RUNNING:
                     raise RadishError(
-                        "The Step {} was still in RUNNING state after it has run".format(step)
+                        "The Step {} was still in RUNNING state after it has run".format(
+                            step
+                        )
                     )
 
                 if state is State.FAILED:

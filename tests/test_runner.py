@@ -763,7 +763,12 @@ def test_runner_should_continue_running_steps_when_step_is_skipped_or_pending(
     # given
     runner = Runner(default_config, None, hook_registry)
     runner.run_step = mocker.MagicMock()
-    runner.run_step.side_effect = [State.PASSED, State.SKIPPED, State.PENDING, State.PASSED]
+    runner.run_step.side_effect = [
+        State.PASSED,
+        State.SKIPPED,
+        State.PENDING,
+        State.PASSED,
+    ]
 
     scenario_mock = mocker.MagicMock(name="Scenario")
     scenario_mock.background = None
@@ -777,12 +782,9 @@ def test_runner_should_continue_running_steps_when_step_is_skipped_or_pending(
     runner.run_scenario(scenario_mock)
 
     # then
-    runner.run_step.assert_has_calls([
-        call(first_step),
-        call(second_step),
-        call(third_step),
-        call(fourth_step),
-    ])
+    runner.run_step.assert_has_calls(
+        [call(first_step), call(second_step), call(third_step), call(fourth_step)]
+    )
 
 
 def test_runner_should_abort_if_step_is_still_running_after_running_it(
@@ -807,10 +809,7 @@ def test_runner_should_abort_if_step_is_still_running_after_running_it(
         runner.run_scenario(scenario_mock)
 
     # then
-    runner.run_step.assert_has_calls([
-        call(first_step),
-        call(second_step)
-    ])
+    runner.run_step.assert_has_calls([call(first_step), call(second_step)])
 
 
 def test_runner_should_run_all_steps_even_when_failed_in_dry_run_mode(

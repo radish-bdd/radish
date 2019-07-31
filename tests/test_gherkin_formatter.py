@@ -14,8 +14,13 @@ import textwrap
 import colorful as cf
 import pytest
 
-from radish.formatters.gherkin import write_feature_header, write_tagline
-from radish.models import Background, Feature, Step, Tag
+from radish.formatters.gherkin import (
+    write_feature_footer,
+    write_feature_header,
+    write_rule_header,
+    write_tagline,
+)
+from radish.models import Background, DefaultRule, Feature, Rule, Step, Tag
 
 
 @pytest.fixture(name="disabled_colors", scope="function")
@@ -301,3 +306,97 @@ def test_gf_write_feature_header_background_with_steps(disabled_colors, capsys, 
             """
         ),
     )
+
+
+def test_gf_write_feature_footer_blank_line_if_no_description_and_no_rules(
+    disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter writes a blank line after a Feature
+    without a description and Rules
+    """
+    # given
+    feature = mocker.MagicMock(spec=Feature)
+    feature.description = []
+    feature.rules = []
+
+    # when
+    write_feature_footer(feature)
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == "\n"
+
+
+def test_gf_write_feature_footer_no_blank_line_if_description(
+    disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter writes no blank line after a Feature
+    with a Description
+    """
+    # given
+    feature = mocker.MagicMock(spec=Feature)
+    feature.description = ["foo"]
+    feature.rules = []
+
+    # when
+    write_feature_footer(feature)
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == ""
+
+
+def test_gf_write_feature_footer_no_blank_line_if_rules(
+    disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter writes no blank line after a Feature
+    with a Rule
+    """
+    # given
+    feature = mocker.MagicMock(spec=Feature)
+    feature.description = []
+    feature.rules = ["foo"]
+
+    # when
+    write_feature_footer(feature)
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == ""
+
+
+def test_gf_write_rule_header(disabled_colors, capsys, mocker):
+    """Test that the Gherkin Formatter properly writes a Rule"""
+    # given
+    rule = mocker.MagicMock(spec=Rule)
+    rule.short_description = "My Rule"
+
+    # when
+    write_rule_header(rule)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>    )Rule: My Rule
+
+            """
+        ),
+    )
+
+
+def test_gf_write_rule_header_nothing_for_default_rule(disabled_colors, capsys, mocker):
+    """Test that the Gherkin Formatter writes no Rule header for a DefaultRule"""
+    # given
+    rule = mocker.MagicMock(spec=DefaultRule)
+
+    # when
+    write_rule_header(rule)
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == ""

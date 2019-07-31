@@ -18,9 +18,11 @@ from radish.formatters.gherkin import (
     write_feature_footer,
     write_feature_header,
     write_rule_header,
+    write_scenario_footer,
+    write_scenario_header,
     write_tagline,
 )
-from radish.models import Background, DefaultRule, Feature, Rule, Step, Tag
+from radish.models import Background, DefaultRule, Feature, Rule, Scenario, Step, Tag
 
 
 @pytest.fixture(name="disabled_colors", scope="function")
@@ -400,3 +402,84 @@ def test_gf_write_rule_header_nothing_for_default_rule(disabled_colors, capsys, 
     # then
     stdout = capsys.readouterr().out
     assert stdout == ""
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 4), (Rule, " " * 8)],
+    ids=["DefaultRule", "Rule"],
+)
+def test_gf_write_scenario_header_without_tags(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """Test that the Gherkin Formatter properly formatter a Scenario Header without Tags"""
+    # given
+    scenario = mocker.MagicMock(spec=Scenario)
+    scenario.rule = mocker.MagicMock(spec=given_rule_type)
+    scenario.short_description = "My Scenario"
+    scenario.tags = []
+
+    # when
+    write_scenario_header(scenario)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})Scenario: My Scenario
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 4), (Rule, " " * 8)],
+    ids=["DefaultRule", "Rule"],
+)
+def test_gf_write_scenario_header_with_tags(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """Test that the Gherkin Formatter properly formatter a Scenario Header with Tags"""
+    # given
+    scenario = mocker.MagicMock(spec=Scenario)
+    scenario.rule = mocker.MagicMock(spec=given_rule_type)
+    scenario.short_description = "My Scenario"
+    first_tag = mocker.MagicMock(spec=Tag)
+    first_tag.name = "tag-a"
+    second_tag = mocker.MagicMock(spec=Tag)
+    second_tag.name = "tag-b"
+    scenario.tags = [first_tag, second_tag]
+
+    # when
+    write_scenario_header(scenario)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})@tag-a
+            (?P<indentation>{indentation})@tag-b
+            (?P<indentation>{indentation})Scenario: My Scenario
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )
+
+
+def test_gf_wirte_scenario_footer_always_a_blank_line(disabled_colors, capsys, mocker):
+    """Test that the Gherkin Formatter always writes a blank line after a Scenario"""
+    # given
+    scenario = mocker.MagicMock(spec=Scenario)
+
+    # when
+    write_scenario_footer(scenario)
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == "\n"

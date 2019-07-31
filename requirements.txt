@@ -6,5 +6,5 @@ tag-expressions>=1.0.0
 lxml==4.4.0
 parse_type==0.4.2
 coverage==4.5.4
-PyYAML==5.1.1
+PyYAML==5.1.2
 humanize==0.5.1

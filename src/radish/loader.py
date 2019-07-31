@@ -12,6 +12,8 @@ import importlib.util
 from pathlib import Path
 from typing import List
 
+from radish.errors import RadishError
+
 
 def load_modules(locations: List[Path]) -> List[Path]:
     """Load all Python modules in the given locations
@@ -23,7 +25,7 @@ def load_modules(locations: List[Path]) -> List[Path]:
     loaded_modules = []
     for location in locations:
         if not location.exists():
-            raise OSError(
+            raise RadishError(
                 "Location '{0}' to load modules does not exist".format(location)
             )
 

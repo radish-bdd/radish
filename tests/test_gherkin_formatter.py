@@ -21,6 +21,7 @@ from radish.formatters.gherkin import (
     write_scenario_footer,
     write_scenario_header,
     write_tagline,
+    write_step
 )
 from radish.models import Background, DefaultRule, Feature, Rule, Scenario, Step, Tag
 
@@ -472,7 +473,7 @@ def test_gf_write_scenario_header_with_tags(
     )
 
 
-def test_gf_wirte_scenario_footer_always_a_blank_line(disabled_colors, capsys, mocker):
+def test_gf_write_scenario_footer_always_a_blank_line(disabled_colors, capsys, mocker):
     """Test that the Gherkin Formatter always writes a blank line after a Scenario"""
     # given
     scenario = mocker.MagicMock(spec=Scenario)
@@ -483,3 +484,155 @@ def test_gf_wirte_scenario_footer_always_a_blank_line(disabled_colors, capsys, m
     # then
     stdout = capsys.readouterr().out
     assert stdout == "\n"
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 8), (Rule, " " * 12)],
+    ids=["DefaultRule", "Rule"],
+)
+def test_gf_write_step_without_doc_string_without_data_table(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step without a doc string and data table
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = None
+    step.data_table = None
+    step.rule = mocker.MagicMock(spec=given_rule_type)
+
+    # when
+    write_step(step, step_color_func=lambda x: x)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})Given there is a Step
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )
+
+
+def test_gf_write_step_explicit_indentation_without_doc_string_without_data_table(
+    disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step with an explicit indentation
+    butwithout a doc string and data table
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = None
+    step.data_table = None
+
+    # when
+    write_step(step, step_color_func=lambda x: x, indentation="   ")
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>   )Given there is a Step
+            """
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 8), (Rule, " " * 12)],
+    ids=["DefaultRule", "Rule"],
+)
+def test_gf_write_step_with_doc_string_without_data_table(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step with a doc string
+    but without a data table
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = """foo
+bar
+bla"""
+    step.data_table = None
+    step.rule = mocker.MagicMock(spec=given_rule_type)
+
+    # when
+    write_step(step, step_color_func=lambda x: x)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})Given there is a Step
+            (?P<indentation>{indentation}    )\"\"\"
+            (?P<indentation>{indentation}    )foo
+            (?P<indentation>{indentation}    )bar
+            (?P<indentation>{indentation}    )bla
+            (?P<indentation>{indentation}    )\"\"\"
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 8), (Rule, " " * 12)],
+    ids=["DefaultRule", "Rule"],
+)
+def test_gf_write_step_with_doc_string_keep_indentation_without_data_table(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step with a doc string
+    that has an indentation itself
+    but without a data table
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = """foo
+    bar
+  meh
+bla"""
+    step.data_table = None
+    step.rule = mocker.MagicMock(spec=given_rule_type)
+
+    # when
+    write_step(step, step_color_func=lambda x: x)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})Given there is a Step
+            (?P<indentation>{indentation}    )\"\"\"
+            (?P<indentation>{indentation}    )foo
+            (?P<indentation>{indentation}    )    bar
+            (?P<indentation>{indentation}    )  meh
+            (?P<indentation>{indentation}    )bla
+            (?P<indentation>{indentation}    )\"\"\"
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )

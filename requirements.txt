@@ -1,5 +1,5 @@
 pysingleton==0.2.1
-colorful==0.5.0
+colorful==0.5.2
 docopt==0.6.2
 ipython==7.7.0
 tag-expressions>=1.0.0

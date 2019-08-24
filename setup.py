@@ -32,7 +32,7 @@ CLASSIFIERS = [
 INSTALL_REQUIRES = [
     "lark-parser",
     "click",
-    "colorful>=0.3.11",
+    "colorful>=0.5.3",
     "tag-expressions>=1.0.0",
     "parse_type>0.4.0",
     "humanize",

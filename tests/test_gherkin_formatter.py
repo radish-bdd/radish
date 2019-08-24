@@ -20,17 +20,28 @@ from radish.formatters.gherkin import (
     write_rule_header,
     write_scenario_footer,
     write_scenario_header,
+    write_step,
+    write_step_result,
     write_tagline,
-    write_step
 )
-from radish.models import Background, DefaultRule, Feature, Rule, Scenario, Step, Tag
+from radish.models import (
+    Background,
+    DefaultRule,
+    Feature,
+    Rule,
+    Scenario,
+    State,
+    Step,
+    Tag,
+)
 
 
 @pytest.fixture(name="disabled_colors", scope="function")
-def disable_ansi_colors():
+def disable_ansi_colors(world_default_config):
     """Fixture to disable ANSI colors"""
     orig_colormode = cf.colormode
     cf.disable()
+    world_default_config.no_ansi = True
     yield
     cf.colormode = orig_colormode
 
@@ -636,3 +647,34 @@ bla"""
             )
         ),
     )
+
+
+@pytest.mark.parametrize(
+    "step_state, expected_color",
+    [
+        pytest.param(State.PASSED, cf.forestGreen, id="State.PASSED => cf.forestGreen"),
+        pytest.param(State.FAILED, cf.firebrick, id="State.FAILED => cf.firebrick"),
+        pytest.param(State.PENDING, cf.orange, id="State.PENDING => cf.orange"),
+        pytest.param(
+            State.UNTESTED, cf.deepSkyBlue3, id="State.UNTESTED => cf.deepSkyBlue3"
+        ),
+    ],
+)
+def test_gf_write_step_result_without_failure_report(
+    step_state, expected_color, world_default_config, disabled_colors, capsys, mocker
+):
+    """Test that the Gherkin Formatter properly formats a Step result without a Failure Report"""
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.text = "there is a Step"
+    step.state = step_state
+    step.failure_report = None
+
+    write_step_mock = mocker.patch("radish.formatters.gherkin.write_step")
+
+    # when
+    write_step_result(step)
+
+    # then
+    write_step_mock.assert_called_once_with(step, expected_color)

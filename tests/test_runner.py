@@ -12,7 +12,6 @@ from unittest.mock import call
 
 import pytest
 
-from radish.config import Config
 from radish.errors import RadishError
 from radish.hookregistry import HookRegistry
 from radish.models import ScenarioLoop, ScenarioOutline
@@ -29,26 +28,6 @@ def setup_fake_hookregistry(mocker):
     fake_hookregistry = mocker.MagicMock(spec=HookRegistry)
 
     return fake_hookregistry
-
-
-@pytest.fixture(name="default_config", scope="function")
-def setup_default_config():
-    """Setup a default radish config
-
-    This config can be used by a Runner under test for most Test Cases.
-    """
-    return Config(
-        {
-            "wip_mode": False,
-            "dry_run_mode": False,
-            "debug_steps_mode": False,
-            "tags": None,
-            "tag_expression": None,
-            "scenario_ids": [],
-            "early_exit": False,
-            "shuffle_scenarios": False,
-        }
-    )
 
 
 def test_start_run_without_features(hook_registry, default_config):

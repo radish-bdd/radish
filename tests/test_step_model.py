@@ -119,7 +119,7 @@ def test_step_should_evaluate_its_matched_step_impl_arguments(mocker):
     step.run()
 
     # then
-    step_impl_match_mock.evaluate.assert_called_once()
+    step_impl_match_mock.evaluate.assert_called_once_with()
 
 
 def test_step_should_set_state_to_running_before_running_step_impl(mocker):
@@ -143,7 +143,7 @@ def test_step_should_set_state_to_running_before_running_step_impl(mocker):
     step.run()
 
     # then
-    w.step_func.assert_called_once()
+    w.step_func.assert_called_once_with(step)
 
 
 def test_step_should_pass_evaluated_kwargs_to_step_impl_func(mocker):
@@ -190,7 +190,8 @@ def test_step_fail_if_step_impl_func_raises(mocker):
     step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step.fail = mocker.MagicMock(name="Step fail function")
     step_impl_mock = mocker.MagicMock(name="Step Impl")
-    step_impl_mock.func.side_effect = Exception("buuh!")
+    exception = Exception("buuh!")
+    step_impl_mock.func.side_effect = exception
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step_impl_match_mock.evaluate.return_value = ([], {})
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
@@ -199,7 +200,7 @@ def test_step_fail_if_step_impl_func_raises(mocker):
     step.run()
 
     # then
-    step.fail.assert_called_once()
+    step.fail.assert_called_once_with(exception)
 
 
 def test_step_should_change_state_to_passed_if_step_impl_func_not_raised(mocker):

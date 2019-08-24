@@ -894,7 +894,7 @@ def test_runner_should_run_step_after_being_matched_in_normal_mode(
     runner.run_step(step_mock)
 
     # then
-    step_mock.run.assert_called_once()
+    step_mock.run.assert_called_once_with()
 
 
 def test_runner_should_debug_step_after_being_matched_in_debug_steps_mode(
@@ -917,7 +917,7 @@ def test_runner_should_debug_step_after_being_matched_in_debug_steps_mode(
     runner.run_step(step_mock)
 
     # then
-    step_mock.debug.assert_called_once()
+    step_mock.debug.assert_called_once_with()
 
 
 def test_runner_should_not_run_nor_debug_step_after_being_matched_in_dry_run_mode(

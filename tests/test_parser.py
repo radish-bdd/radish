@@ -2138,8 +2138,17 @@ def test_parser_add_example_data_to_short_description_for_scenario_outline_examp
 
     # then
     examples = ast.rules[0].scenarios[0].examples
-    assert examples[0].short_description == "My Scenario Outline [hdr1: foo, hdr2: meh]"
-    assert examples[1].short_description == "My Scenario Outline [hdr1: bar, hdr2: bla]"
+    assert (
+        examples[0].short_description == "My Scenario Outline [hdr1: foo, hdr2: meh]"
+        # Python 3.5 has no dict ordering
+        or examples[0].short_description == "My Scenario Outline [hdr2: meh, hdr1: foo]"  # noqa
+    )
+
+    assert (
+        examples[1].short_description == "My Scenario Outline [hdr1: bar, hdr2: bla]"
+        # Python 3.5 has no dict ordering
+        or examples[1].short_description == "My Scenario Outline [hdr2: bla, hdr1: bar]"  # noqa
+    )
 
 
 def test_parser_built_examples_for_scenario_outline_have_copied_steps(parser):

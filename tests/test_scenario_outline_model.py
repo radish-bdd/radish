@@ -96,10 +96,16 @@ def test_scenariooutline_should_build_examples_with_info_in_short_description():
     assert (
         scenario.examples[0].short_description
         == "My ScenarioOutline [foo: bar, bla: meh]"  # noqa
+        # Python 3.5 has no dict ordering
+        or scenario.examples[0].short_description  # noqa
+        == "My ScenarioOutline [bla: meh, foo: bar]"  # noqa
     )
     assert (
         scenario.examples[1].short_description
         == "My ScenarioOutline [bar: foo, meh: bla]"  # noqa
+        # Python 3.5 has no dict ordering
+        or scenario.examples[1].short_description  # noqa
+        == "My ScenarioOutline [meh: bla, bar: foo]"  # noqa
     )
 
 

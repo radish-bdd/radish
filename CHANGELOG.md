@@ -6,6 +6,32 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## WIP [v1.0.0]
+
+The radish **v1.0.0** release will be the first major release.
+In order to add more features we've refactored large parts of the radish internals
+and external interfaces compared to the latest stable release **v0.13.1**.
+
+The following list should clarify what's new, what's changed and what's been fixed
+with this release:
+
+### New
+
+- radish is fully [Gherkin v6](https://cucumber.io/docs/gherkin/reference/) compatible.
+- added `Rule` support.
+
+### Changed
+
+- internal interfaces for the models like: `Feature`, `Scenario`, `Step`.
+
+### Removed
+
+- removed the `--profile / -p` command line flag and feature. Use `--user-data` instead.
+
+### Fixed
+
+- Support the PIPE (|) character in table cell values and Scenario Outline Examples
+
 ## [v0.13.1]
 ### Fixed
 
@@ -219,7 +245,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v1.0.0...HEAD
+[v1.0.0]: https://github.com/radish-bdd/radish/compare/v0.13.1...v1.0.0
 [v0.13.1]: https://github.com/radish-bdd/radish/compare/v0.13.0...v0.13.1
 [v0.13.0]: https://github.com/radish-bdd/radish/compare/v0.12.1...v0.13.0
 [v0.12.1]: https://github.com/radish-bdd/radish/compare/v0.12.0...v0.12.1

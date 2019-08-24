@@ -17,7 +17,6 @@ Contents:
    quickstart
    tutorial
    commandline
-   modules
 
 
 Indices and tables

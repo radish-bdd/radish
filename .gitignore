@@ -4,8 +4,8 @@
 # python bytecode files
 *.pyc
 
-# nosetools coverage file
-.coverage
+# coverage file
+.coverage*
 
 # python virtualenv
 env*
@@ -13,10 +13,11 @@ env*
 # python tox files
 .tox
 
-# python setuptools
+# python setuptools & pip
 build/
 dist/
 radish_bdd.egg-info/
+pip-wheel-metadata/
 
 # generated files by radish (these files could be created during manual tests of radish)
 result.xml
@@ -35,9 +36,6 @@ docs/radish.rst
 .pybuild
 debian/files
 debian/radish-bdd*
-
-# ignore README.rst which is only generated for pypi
-README.rst
 
 # IDE configuration
 .idea/

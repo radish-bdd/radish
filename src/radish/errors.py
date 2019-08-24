@@ -1,0 +1,61 @@
+"""
+radish
+~~~~~~
+
+the root from red to green.  BDD tooling for Python.
+
+:copyright: (c) 2019 by Timo Furrer <tuxtimo@gmail.com>
+:license: MIT, see LICENSE for more details.
+"""
+
+import textwrap
+
+from radish.terrain import world
+
+
+class RadishError(Exception):
+    """Base-Exception for all radish based errors."""
+
+    pass
+
+
+class StepImplementationNotFoundError(RadishError):
+    """Exception raised when no Step Implementation can be found for a Step"""
+
+    def __init__(self, step):
+        self.step = step
+
+    def __str__(self) -> str:
+        return textwrap.dedent(
+            """
+            Radish is unable to find a matching Step Implementation for the Step:
+                "{keyword} {text}"
+
+            This Step is defined in the Feature File {path} on Line {line}.
+            You can register a Step Implementation by using the
+            "{keyword_lower}" decorator and placing the code below in one of these modules:
+            {basedirs}
+
+            from radish import {keyword_lower}
+
+            @{keyword_lower}("{text}")
+            def my_awesome_step(step):
+                raise NotImplementedError("Oups, no implementation for this Step, yet")
+        """.format(
+                keyword=self.step.keyword,
+                keyword_lower=self.step.keyword.lower(),
+                text=self.step.text,
+                path=self.step.path,
+                line=self.step.line,
+                basedirs="\n".join(str(b) for b in world.config.basedirs),
+            )
+        )
+
+
+class StepImplementationPatternNotSupported(RadishError):
+    """
+    Exception raised when a registered Step Implementation Pattern is not supported by any matcher
+    """
+
+    def __init__(self, step_impl):
+        self.step_impl = step_impl

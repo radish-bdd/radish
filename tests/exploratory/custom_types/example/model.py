@@ -1,5 +1,0 @@
-class Hero:
-    def __init__(self, forename, surname, hero):
-        self.forename = forename
-        self.surname = surname
-        self.heroname = hero

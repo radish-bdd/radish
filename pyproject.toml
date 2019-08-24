@@ -1,18 +1,4 @@
 [tool.black]
-line-length = 88
-py36 = true
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+target_version = ["py37"]
+include = "(setup.py|src|tests)"
+exclude = "legacy_.*"

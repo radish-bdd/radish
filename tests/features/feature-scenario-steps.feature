@@ -1,8 +1,9 @@
-Feature: Feature with a Scenario and Steps
-    Radish shall support parsing a Feature containing
-    a Scenario which contains multiple Steps
+Feature: Parse a Feature with a Scenario with Steps
+    The radish parser should be able to
+    parse a Feature File containing a Feature
+    with a Scenario which has some Steps.
 
-    Scenario: Scenario with multiple Steps
-        Given I have a Step
-        When I do something
-        Then I expect something
+    Scenario: A simple Scenario containing three Steps
+        Given the webservice is started
+        When the /foo/bar route is queried
+        Then the status code is 200

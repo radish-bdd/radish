@@ -33,10 +33,3 @@ prune docs/_build
 # Last rule wins!
 exclude changelog.d/*.rst
 include changelog.d/towncrier_template.rst
-
-# Prune azure pipelines configuration
-prune .azure
-
-# Prune legacy
-prune legacy_radish
-prune legacy_tests

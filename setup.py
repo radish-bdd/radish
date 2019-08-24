@@ -51,9 +51,6 @@ EXTRAS_REQUIRES = {
 EXTRAS_REQUIRES["dev"] = (
     EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit"]
 )
-EXTRAS_REQUIRES["azure-pipelines"] = EXTRAS_REQUIRES["tests"] + [
-    "pytest-azurepipelines"
-]
 
 #: Holds the contents of the README file
 with open("README.md", encoding="utf-8") as readme:

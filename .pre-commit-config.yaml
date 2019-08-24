@@ -6,11 +6,6 @@ repos:
         language_version: python3.7
         # override until resolved: https://github.com/ambv/black/issues/402
         files: \.pyi?$
-        exclude: |
-            (?x)(
-                ^legacy_radish/|
-                ^legacy_tests/
-            )
         types: []
 
   - repo: https://gitlab.com/pycqa/flake8

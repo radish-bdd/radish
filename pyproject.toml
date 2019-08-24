@@ -1,4 +1,3 @@
 [tool.black]
 target_version = ["py37"]
 include = "(setup.py|src|tests)"
-exclude = "legacy_.*"

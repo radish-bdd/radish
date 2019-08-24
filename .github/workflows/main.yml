@@ -1,4 +1,4 @@
-name: Build, Test & Publish
+name: Continuous Integration and Deployment
 
 on: [push]
 

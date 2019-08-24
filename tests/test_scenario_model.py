@@ -110,11 +110,7 @@ def test_scenario_should_ignore_to_set_none_for_a_background(mocker):
 @pytest.mark.parametrize(
     "given_background_state, given_steps, expected_state",
     [
-        (
-            State.PASSED,
-            [],
-            State.PASSED
-        ),
+        (State.PASSED, [], State.PASSED),
         (
             State.PASSED,
             [

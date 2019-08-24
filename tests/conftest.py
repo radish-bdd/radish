@@ -30,7 +30,7 @@ def setup_default_config():
             "scenario_ids": [],
             "early_exit": False,
             "shuffle_scenarios": False,
-            "no_ansi": False
+            "no_ansi": False,
         }
     )
 

@@ -8,7 +8,7 @@
 [![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/master/LICENSE)
 [![Gitter](https://badges.gitter.im/radish-bdd/radish.svg)](https://gitter.im/radish-bdd/radish?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <br>
-[![Actions Status](https://github.com/radish-bdd/radish/workflows/Continuous Integration and Deployment/badge.svg)](https://github.com/radish-bdd/radish/actions)
+[![Actions Status](https://github.com/radish-bdd/radish/workflows/Continuous%20Integration%20and%20Deployment/badge.svg)](https://github.com/radish-bdd/radish/actions)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 <br>
 [![PyPI version](https://badge.fury.io/py/radish-bdd.svg)](https://badge.fury.io/py/radish-bdd)

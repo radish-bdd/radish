@@ -24,4 +24,8 @@ class State(IntEnum):
     @staticmethod
     def report_state(states):
         """Report the single most appropriate State out of a list of States"""
-        return sorted(states, reverse=True)[0]
+        try:
+            return sorted(states, reverse=True)[0]
+        except IndexError:
+            # states generator did not yield any States
+            return State.UNTESTED

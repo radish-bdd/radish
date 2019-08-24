@@ -112,6 +112,11 @@ def test_scenario_should_ignore_to_set_none_for_a_background(mocker):
     [
         (
             State.PASSED,
+            [],
+            State.PASSED
+        ),
+        (
+            State.PASSED,
             [
                 MagicMock(state=State.PASSED),
                 MagicMock(state=State.PASSED),
@@ -220,6 +225,7 @@ def test_scenario_should_ignore_to_set_none_for_a_background(mocker):
         ),
     ],
     ids=[
+        "Background PASSED, No Steps -> Scenario PASSED",
         "Background PASSED, Steps all PASSED -> Scenario PASSED",
         "Background PASSED, Steps [PASSED, FAILED, UNTESTED] -> Scenario FAILED",
         "Background PASSED, Steps [PASSED, UNTESTED, UNTESTED] -> Scenario UNTESTED",
@@ -253,6 +259,21 @@ def test_scenario_should_return_correct_state(
 
     # then
     assert actual_state == expected_state
+
+
+def test_scenario_without_steps_should_return_untested_state(mocker):
+    """
+    A Scneario without any Steps should return the State UNTESTED
+    """
+    # given
+    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario.background = None
+
+    # when
+    actual_state = scenario.state
+
+    # then
+    assert actual_state == State.UNTESTED
 
 
 def test_scenario_should_ignore_background_state_if_no_background(mocker):

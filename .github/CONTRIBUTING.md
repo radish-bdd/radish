@@ -15,6 +15,8 @@ Please make sure you provide enough information to work on your submitted Issue 
 * Which version of python are you using?
 * On which platform are you running radish?
 
+Make sure to use the GitHub Template when reporting an issue.
+
 ## Pull Requests
 
 We are very happy to receive Pull Requests considering:
@@ -38,11 +40,6 @@ However, if you want to test your code on certain circumstances you can create a
 cd ~/work/radish
 virtualenv env
 source env/bin/activate
-pip install -r requirements-dev.txt
-pip install .
-coverage run -a --source radish -m pytest tests/ -s --failed-first
+pip install -e '.[dev]'
+commands = coverage run --parallel -m pytest -s --failed-first
 ```
-
-## AUTHORS file
-Please feel free to open a Pull Request and add yourself to the `AUTHORS` file. <br>
-Well, ... only if you've done some considerable changes :beers:

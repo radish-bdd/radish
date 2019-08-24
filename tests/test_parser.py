@@ -758,6 +758,7 @@ def test_parse_single_scenario_with_single_step(parser, keyword):
     # then
     assert len(ast.rules[0].scenarios[0].steps) == 1
     assert ast.rules[0].scenarios[0].steps[0].keyword == keyword
+    assert ast.rules[0].scenarios[0].steps[0].used_keyword == keyword
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a Step"
 
 
@@ -850,12 +851,19 @@ def test_parse_second_level_keyword_assigned_correct_first_level_keyword(parser)
     # then
     steps = ast.rules[0].scenarios[0].steps
     assert steps[0].keyword == "Given"
+    assert steps[0].used_keyword == "Given"
     assert steps[1].keyword == "Given"
+    assert steps[1].used_keyword == "And"
     assert steps[2].keyword == "When"
+    assert steps[2].used_keyword == "When"
     assert steps[3].keyword == "When"
+    assert steps[3].used_keyword == "And"
     assert steps[4].keyword == "Then"
+    assert steps[4].used_keyword == "Then"
     assert steps[5].keyword == "Then"
+    assert steps[5].used_keyword == "And"
     assert steps[6].keyword == "Then"
+    assert steps[6].used_keyword == "But"
 
 
 def test_parse_keyword_context_reset_after_scenario(parser):

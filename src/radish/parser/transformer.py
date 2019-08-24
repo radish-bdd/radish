@@ -129,6 +129,7 @@ class RadishGherkinTransformer(Transformer):
         step = Step(
             self.__step_id,
             self.__step_keyword_ctx,
+            keyword,
             text,
             doc_string,
             data_table,

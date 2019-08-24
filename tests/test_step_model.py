@@ -19,7 +19,7 @@ from radish.models.stepfailurereport import StepFailureReport
 def test_step_is_initialized_without_a_step_impl():
     """A Step is initialized without a Step Implementation assigned to it"""
     # when
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     assert step.step_impl is None
@@ -29,7 +29,7 @@ def test_step_is_initialized_without_a_step_impl():
 def test_step_is_intialized_in_untested_state():
     """A Step is initialized in the UNTESTED State"""
     # when
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     assert step.state is State.UNTESTED
@@ -38,7 +38,7 @@ def test_step_is_intialized_in_untested_state():
 def test_step_is_intialized_without_a_failure_report():
     """A Step is initialized without a Failure report"""
     # when
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     assert step.failure_report is None
@@ -47,7 +47,7 @@ def test_step_is_intialized_without_a_failure_report():
 def test_step_is_intialized_without_any_embeddings():
     """A Step is initialized without any embeddings"""
     # when
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     assert step.embeddings == []
@@ -56,7 +56,7 @@ def test_step_is_intialized_without_any_embeddings():
 def test_step_context_returns_the_same_as_scenario_context(mocker):
     """A Steps context returns the Scenarios context it belongs to"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     scenario_mock = mocker.MagicMock(name="Scenario")
     scenario_mock.context = mocker.MagicMock(name="Scenario Context")
     step.set_scenario(scenario_mock)
@@ -68,7 +68,7 @@ def test_step_context_returns_the_same_as_scenario_context(mocker):
 def test_step_can_assign_a_step_impl(mocker):
     """A Step can be assigned a Step Implementation"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
 
@@ -83,7 +83,7 @@ def test_step_can_assign_a_step_impl(mocker):
 def test_step_fail_to_run_if_no_step_impl():
     """A Step should fail to run if it has no Step Implementation assigned to it"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     with pytest.raises(RadishError):
@@ -94,7 +94,7 @@ def test_step_fail_to_run_if_no_step_impl():
 def test_step_fail_to_run_if_already_run(mocker):
     """A Step should fail to run if it was already run / has another state then UNTESTED"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
@@ -109,7 +109,7 @@ def test_step_fail_to_run_if_already_run(mocker):
 def test_step_should_evaluate_its_matched_step_impl_arguments(mocker):
     """A Step should evlauate the arguments of its matched Step Implementation"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step_impl_match_mock.evaluate.return_value = ([], {})
@@ -132,7 +132,7 @@ def test_step_should_set_state_to_running_before_running_step_impl(mocker):
     w = WrapperForMockerSpy()
     mocker.spy(w, "step_func")
 
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_mock.func = w.step_func
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
@@ -152,7 +152,7 @@ def test_step_should_pass_evaluated_kwargs_to_step_impl_func(mocker):
     to the Step Implementation function.
     """
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step_impl_match_mock.evaluate.return_value = ([], {"foo": "bar", "bla": "meh"})
@@ -171,7 +171,7 @@ def test_step_should_pass_evaluated_args_to_step_impl_func(mocker):
     to the Step Implementation function.
     """
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step_impl_match_mock.evaluate.return_value = (["foo", "bar"], {})
@@ -187,7 +187,7 @@ def test_step_should_pass_evaluated_args_to_step_impl_func(mocker):
 def test_step_fail_if_step_impl_func_raises(mocker):
     """A Step should fail if the Step Implementation function raised an Exception"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step.fail = mocker.MagicMock(name="Step fail function")
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_mock.func.side_effect = Exception("buuh!")
@@ -208,7 +208,7 @@ def test_step_should_change_state_to_passed_if_step_impl_func_not_raised(mocker)
     Step Implementation function did not raise any Exception
     """
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")
     step_impl_match_mock.evaluate.return_value = ([], {})
@@ -224,7 +224,7 @@ def test_step_should_change_state_to_passed_if_step_impl_func_not_raised(mocker)
 def test_step_should_fail_with_failed_state_and_report():
     """When a Step is failed it should change its State to FAILED and create a report"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # when
     try:
@@ -240,7 +240,7 @@ def test_step_should_fail_with_failed_state_and_report():
 def test_step_should_be_able_to_skip_while_running():
     """A Step should be able to be skipped while it's running"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step.state = State.RUNNING
 
     # when
@@ -253,7 +253,7 @@ def test_step_should_be_able_to_skip_while_running():
 def test_step_should_not_be_able_to_skip_when_not_running():
     """A Step should not be able to be skipped when it's not running"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     with pytest.raises(RadishError):
@@ -266,7 +266,7 @@ def test_step_should_not_be_able_to_skip_when_not_running():
 def test_step_should_be_able_to_mark_pending_while_running():
     """A Step should be able to be marked pending while it's running"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step.state = State.RUNNING
 
     # when
@@ -279,7 +279,7 @@ def test_step_should_be_able_to_mark_pending_while_running():
 def test_step_should_not_be_able_to_mark_pending_when_not_running():
     """A Step should not be able to be marked pending when it's not running"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # then
     with pytest.raises(RadishError):
@@ -292,7 +292,7 @@ def test_step_should_not_be_able_to_mark_pending_when_not_running():
 def test_step_should_embed_data_without_encoding():
     """A Step should be able to embed data without an encoding"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
 
     # when
     step.embed("data", encode_data_to_base64=False)
@@ -304,7 +304,7 @@ def test_step_should_embed_data_without_encoding():
 def test_step_should_embed_data_with_base64_encoding():
     """A Step should be able to embed data base64 encoded"""
     # given
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     data_b64_encoded = "ZGF0YQ=="  # == "data"
 
     # when
@@ -320,7 +320,7 @@ def test_step_should_not_set_passed_state_if_state_changed_during_run(mocker):
     def step_change_state(step):
         step.skip()
 
-    step = Step(1, "keyword", "text", None, None, None, None)
+    step = Step(1, "keyword", "used_keyword", "text", None, None, None, None)
     step_impl_mock = mocker.MagicMock(name="Step Impl")
     step_impl_mock.func = step_change_state
     step_impl_match_mock = mocker.MagicMock(name="Step Impl Match")

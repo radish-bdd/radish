@@ -300,7 +300,7 @@ def write_step(step, step_color_func, indentation=None):
         indentation = INDENT_STEP * indentation_level
 
     step_text = "{step_keyword} {text}".format(
-        step_keyword=step_color_func(step.keyword), text=step_color_func(step.text)
+        step_keyword=step_color_func(step.used_keyword), text=step_color_func(step.text)
     )
 
     print(indentation + step_text, flush=True)

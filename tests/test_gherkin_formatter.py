@@ -292,6 +292,7 @@ def test_gf_write_feature_header_background_with_steps(disabled_colors, capsys, 
     first_step = mocker.MagicMock(
         spec=Step,
         keyword="Given",
+        used_keyword="Given",
         text="there is a Step",
         doc_string=None,
         data_table=None,
@@ -299,6 +300,7 @@ def test_gf_write_feature_header_background_with_steps(disabled_colors, capsys, 
     second_step = mocker.MagicMock(
         spec=Step,
         keyword="When",
+        used_keyword="When",
         text="there is a Step",
         doc_string=None,
         data_table=None,
@@ -511,6 +513,7 @@ def test_gf_write_step_without_doc_string_without_data_table(
     # given
     step = mocker.MagicMock(spec=Step)
     step.keyword = "Given"
+    step.used_keyword = "Given"
     step.text = "there is a Step"
     step.doc_string = None
     step.data_table = None
@@ -542,6 +545,7 @@ def test_gf_write_step_explicit_indentation_without_doc_string_without_data_tabl
     # given
     step = mocker.MagicMock(spec=Step)
     step.keyword = "Given"
+    step.used_keyword = "Given"
     step.text = "there is a Step"
     step.doc_string = None
     step.data_table = None
@@ -575,6 +579,7 @@ def test_gf_write_step_with_doc_string_without_data_table(
     # given
     step = mocker.MagicMock(spec=Step)
     step.keyword = "Given"
+    step.used_keyword = "Given"
     step.text = "there is a Step"
     step.doc_string = """foo
 bar
@@ -619,6 +624,7 @@ def test_gf_write_step_with_doc_string_keep_indentation_without_data_table(
     # given
     step = mocker.MagicMock(spec=Step)
     step.keyword = "Given"
+    step.used_keyword = "Given"
     step.text = "there is a Step"
     step.doc_string = """foo
     bar
@@ -667,6 +673,7 @@ def test_gf_write_step_result_without_failure_report(
     # given
     step = mocker.MagicMock(spec=Step)
     step.keyword = "Given"
+    step.used_keyword = "Given"
     step.text = "there is a Step"
     step.state = step_state
     step.failure_report = None
@@ -678,3 +685,43 @@ def test_gf_write_step_result_without_failure_report(
 
     # then
     write_step_mock.assert_called_once_with(step, expected_color)
+
+
+def test_gf_write_and_as_keyword_if_not_first_step_of_keyword_context(
+    disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter writes the ``And`` keyword instead of the keyword itself
+    if it's not the first Step of this keyword context.
+    """
+    # given
+    first_step = mocker.MagicMock(spec=Step)
+    first_step.keyword = "Given"
+    first_step.used_keyword = "Given"
+    first_step.text = "there is the first Step"
+    first_step.doc_string = None
+    first_step.data_table = None
+    first_step.rule = mocker.MagicMock(spec=DefaultRule)
+
+    second_step = mocker.MagicMock(spec=Step)
+    second_step.keyword = "Given"
+    second_step.used_keyword = "And"
+    second_step.text = "there is the second Step"
+    second_step.doc_string = None
+    second_step.data_table = None
+    second_step.rule = mocker.MagicMock(spec=DefaultRule)
+
+    # when
+    write_step(first_step, step_color_func=lambda x: x)
+    write_step(second_step, step_color_func=lambda x: x)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>        )Given there is the first Step
+            (?P<indentation>        )And there is the second Step
+            """
+        ),
+    )

@@ -24,6 +24,7 @@ class Step(Timed):
         self,
         step_id: int,
         keyword: str,
+        used_keyword: str,
         text: str,
         doc_string,
         data_table,
@@ -33,6 +34,7 @@ class Step(Timed):
         super().__init__()
         self.id = step_id
         self.keyword = keyword
+        self.used_keyword = used_keyword
         self.text = text
         self.doc_string = doc_string
         self.data_table = data_table

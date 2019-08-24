@@ -58,7 +58,7 @@ the code on [GitHub](https://github.com/radish-bdd/radish),
 and the latest release on [PyPI](https://pypi.org/project/radish-bdd).
 It’s rigorously tested on Python 3.5+.
 
-If you'd like to contribute to radish you're most welcome and we've written a [little guide](https://github.com/radish-bdd/radish/blob/master/CONTRIBUTING.md) to get you started!
+If you'd like to contribute to radish you're most welcome and we've written a [little guide](https://github.com/radish-bdd/radish/blob/master/.github/CONTRIBUTING.md) to get you started!
 
 ***
 

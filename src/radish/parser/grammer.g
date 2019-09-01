@@ -65,7 +65,7 @@ step_data_table_row: "|" (step_data_table_cell "|")+ _NEWLINE
 step_data_table_cell: STRING_NO_VBAR
 
 // A step doc string is additional multilined text data for the previous step
-step_doc_string: _DOC_STRING_DELIMITER _NEWLINE (STRING_NO_NL _NEWLINE)+ _DOC_STRING_DELIMITER
+step_doc_string: _DOC_STRING_DELIMITER _NEWLINE (STRING_NO_NL? _NEWLINE)+ _DOC_STRING_DELIMITER
 
 // Keywords
 _FEATURE: "Feature:"i

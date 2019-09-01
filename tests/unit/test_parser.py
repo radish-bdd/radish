@@ -1084,6 +1084,37 @@ def test_parse_step_with_multi_line_doc_string(parser):
     )
 
 
+def test_parse_step_with_multi_line_doc_string_with_blank_lines(parser):
+    """The parser should parse a Step with a multi-line Doc String containing blank lines"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                Given there is a setup
+                \"\"\"
+                Before blank lines
+
+
+                After blank lines
+                \"\"\"
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert len(ast.rules[0].scenarios[0].steps) == 1
+    assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
+    assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == (
+        "Before blank lines\n"
+        "\n"
+        "\n"
+        "After blank lines"
+    )
+
+
 def test_parse_dedent_doc_string(parser):
     """The parser should dedent the Doc String to the common leading whitespaces"""
     # given

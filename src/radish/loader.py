@@ -40,7 +40,7 @@ def load_module(path: Path) -> None:
     """Load the given module into the Python runtime"""
     module_name = path.stem
     try:
-        spec = importlib.util.spec_from_file_location(module_name, path)
+        spec = importlib.util.spec_from_file_location(module_name, str(path))
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     except Exception as exc:

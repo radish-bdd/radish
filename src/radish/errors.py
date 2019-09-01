@@ -59,3 +59,12 @@ class StepImplementationPatternNotSupported(RadishError):
 
     def __init__(self, step_impl):
         self.step_impl = step_impl
+
+
+class StepBehaveLikeRecursionError(RadishError):
+    """Exception raised when a recursion is detected in behave-like calls of a Step"""
+
+    def __init__(self):
+        super().__init__(
+            "Detected a infinit recursion in your ``step.behave_like`` calls"
+        )

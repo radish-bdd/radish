@@ -8,7 +8,7 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-from unittest.mock import call
+from unittest.mock import call, ANY
 
 import pytest
 
@@ -894,7 +894,7 @@ def test_runner_should_run_step_after_being_matched_in_normal_mode(
     runner.run_step(step_mock)
 
     # then
-    step_mock.run.assert_called_once_with()
+    step_mock.run.assert_called_once_with(ANY)
 
 
 def test_runner_should_debug_step_after_being_matched_in_debug_steps_mode(
@@ -917,7 +917,7 @@ def test_runner_should_debug_step_after_being_matched_in_debug_steps_mode(
     runner.run_step(step_mock)
 
     # then
-    step_mock.debug.assert_called_once_with()
+    step_mock.debug.assert_called_once_with(ANY)
 
 
 def test_runner_should_not_run_nor_debug_step_after_being_matched_in_dry_run_mode(

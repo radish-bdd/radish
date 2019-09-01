@@ -8,12 +8,13 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import functools
 import random
 
 import radish.matcher as matcher
+from radish.errors import RadishError
 from radish.models import Feature, Rule, Scenario, ScenarioLoop, ScenarioOutline, Step
 from radish.models.state import State
-from radish.errors import RadishError
 
 
 class Runner:
@@ -164,6 +165,9 @@ class Runner:
 
     @with_hooks("each_step")
     def run_step(self, step: Step):
+        return self._run_step(step)
+
+    def _run_step(self, step: Step):
         try:
             # match the Step with a Step Implementation
             matcher.match_step(step, self.step_registry)
@@ -172,8 +176,27 @@ class Runner:
         else:
             if not self.config.dry_run_mode:
                 if self.config.debug_steps_mode:
-                    step.debug()
+                    step.debug(functools.partial(self._behave_like_runner, step))
                 else:
-                    step.run()
+                    step.run(functools.partial(self._behave_like_runner, step))
 
         return step.state
+
+    def _behave_like_runner(self, step, step_line):
+        """Wrapper function for a Step to run ``step.behave_like``"""
+        behave_like_step_keyword, behave_like_step_text = step_line.split(maxsplit=1)
+        behave_like_step = Step(
+            step.id,
+            behave_like_step_keyword,
+            behave_like_step_keyword,
+            behave_like_step_text,
+            None,
+            None,
+            step.path,
+            step.line,
+        )
+        behave_like_step.feature = step.feature
+        behave_like_step.rule = step.rule
+        behave_like_step.scenario = step.scenario
+
+        return self._run_step(behave_like_step), behave_like_step

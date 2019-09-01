@@ -106,5 +106,6 @@ def match_step(step: Step, registry):
         # get best match
         best_step_impl, best_match = min(potentional_matches, key=lambda x: x[1])[0]
         step.assign_implementation(best_step_impl, best_match)
+        return
 
     raise StepImplementationNotFoundError(step)

@@ -95,7 +95,7 @@ def create_base_dir_module(step, module_filename):
 def run_feature_file(step, feature_filename):
     """Run the given Feature File"""
     feature_path = os.path.join(step.context.features_dir, feature_filename)
-    radish_command = ["radish", "-b", step.context.base_dir, feature_path]
+    radish_command = ["radish", "-b", step.context.base_dir, feature_path, "-t"]
     proc = subprocess.Popen(
         radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
@@ -134,12 +134,17 @@ def expect_fail_with_exc(step, exc_type_name):
     with open(
         step.context.failure_report_path, encoding="utf-8"
     ) as failure_report_file:
-        actual_exc_type_name = failure_report_file.readline()
-        actual_exc_reason = failure_report_file.readline()
+        actual_exc_type_name = failure_report_file.readline().strip()
+        actual_exc_reason = failure_report_file.readline().strip()
 
-    assert actual_exc_type_name == exc_type_name
+    assert (
+        actual_exc_type_name == exc_type_name
+    ), "Exception types don't match '{}' == '{}'".format(
+        actual_exc_type_name, exc_type_name
+    )
+
     if step.doc_string is not None:
-        assert actual_exc_reason == step.doc_string.strip()
+        assert step.doc_string.strip() in actual_exc_reason, "Reasons don't match"
 
 
 @then("the run should fail with")

@@ -88,7 +88,7 @@ def test_step_fail_to_run_if_no_step_impl():
     # then
     with pytest.raises(RadishError):
         # when
-        step.run()
+        step.run(None)
 
 
 def test_step_fail_to_run_if_already_run(mocker):
@@ -103,7 +103,7 @@ def test_step_fail_to_run_if_already_run(mocker):
     # then
     with pytest.raises(RadishError):
         # when
-        step.run()
+        step.run(None)
 
 
 def test_step_should_evaluate_its_matched_step_impl_arguments(mocker):
@@ -116,7 +116,7 @@ def test_step_should_evaluate_its_matched_step_impl_arguments(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     step_impl_match_mock.evaluate.assert_called_once_with()
@@ -140,7 +140,7 @@ def test_step_should_set_state_to_running_before_running_step_impl(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     w.step_func.assert_called_once_with(step)
@@ -159,7 +159,7 @@ def test_step_should_pass_evaluated_kwargs_to_step_impl_func(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     step_impl_mock.func.assert_called_once_with(step, foo="bar", bla="meh")
@@ -178,7 +178,7 @@ def test_step_should_pass_evaluated_args_to_step_impl_func(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     step_impl_mock.func.assert_called_once_with(step, "foo", "bar")
@@ -197,7 +197,7 @@ def test_step_fail_if_step_impl_func_raises(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     step.fail.assert_called_once_with(exception)
@@ -216,7 +216,7 @@ def test_step_should_change_state_to_passed_if_step_impl_func_not_raised(mocker)
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     assert step.state is State.PASSED
@@ -329,7 +329,7 @@ def test_step_should_not_set_passed_state_if_state_changed_during_run(mocker):
     step.assign_implementation(step_impl_mock, step_impl_match_mock)
 
     # when
-    step.run()
+    step.run(None)
 
     # then
     assert step.state is State.SKIPPED

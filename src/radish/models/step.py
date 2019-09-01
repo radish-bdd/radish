@@ -11,7 +11,7 @@ The root from red to green. BDD tooling for Python.
 import base64
 
 import radish.utils as utils
-from radish.errors import RadishError
+from radish.errors import RadishError, StepBehaveLikeRecursionError
 from radish.models.state import State
 from radish.models.stepfailurereport import StepFailureReport
 from radish.models.timed import Timed
@@ -49,6 +49,9 @@ class Step(Timed):
         #: Holds information about the Step Implementation this Step was matched with.
         self.step_impl = None
         self.step_impl_match = None
+
+        #: Holds the behave-like runner
+        self._behave_like_runner = None
 
         #: Holds information about the State of this Step
         self.state = State.UNTESTED
@@ -106,6 +109,17 @@ class Step(Timed):
                 )
             )
 
+    def with_behave_like_runner(func):
+        def __wrapper(self, behave_like_runner, *args, **kwargs):
+            self._behave_like_runner = behave_like_runner
+            try:
+                return func(self, *args, **kwargs)
+            finally:
+                self._behave_like_runner = None
+
+        return __wrapper
+
+    @with_behave_like_runner
     def run(self):
         """Run this Step
 
@@ -127,6 +141,7 @@ class Step(Timed):
                 self.state = State.PASSED
         return self.state
 
+    @with_behave_like_runner
     def debug(self):
         """Run this Step in a debugger"""
         self.__validate_if_runnable()
@@ -144,6 +159,23 @@ class Step(Timed):
                 self.state = State.PASSED
         return self.state
 
+    def behave_like(self, step_line):
+        """Run this Step as if it would be the one given in ``step_line``
+
+        This function requires ``self._behave_like_runner`` to be set.
+        """
+        if self._behave_like_runner is None:
+            raise RadishError(
+                "This Step is unable to use the `behave_like`-Feature because no runner is provided"
+            )
+
+        state, step = self._behave_like_runner(step_line)
+        if state is State.FAILED:
+            try:
+                raise step.failure_report.exception
+            except RecursionError:
+                raise StepBehaveLikeRecursionError()
+
     def fail(self, exception):
         """Let this Step fail with the given exception"""
         self.state = State.FAILED
@@ -159,7 +191,7 @@ class Step(Timed):
         self.state = State.SKIPPED
 
     def pending(self):
-        """Skip this Step
+        """Mark this Step as pending
 
         All pending Steps will be reminded about in the Runs summary.
 

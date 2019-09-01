@@ -8,7 +8,6 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-import re
 import os
 import shutil
 import tempfile
@@ -40,7 +39,7 @@ def gather_failure(step):
     if step.state is not State.FAILED:
         return
 
-    with open("{}", "w+", encoding="utf-8") as failure_report_file:
+    with open(r"{}", "w+", encoding="utf-8") as failure_report_file:
         failure_report_file.write("{{}}\\n".format(step.failure_report.name))
         failure_report_file.write("{{}}\\n".format(step.failure_report.reason))
     """.format(
@@ -154,7 +153,7 @@ def expect_fail(step):
         + stdout
     )
 
-    match = re.search(step.doc_string, stdout)
+    match = step.doc_string in stdout
     assert match, (
         "Searched for:\n" + step.doc_string + "\n" + "within stdout:\n" + stdout
     )

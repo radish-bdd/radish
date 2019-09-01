@@ -388,3 +388,16 @@ class RadishFirstStepMustUseFirstLevelKeyword(RadishSyntaxError):
         "Given, When or Then"
     )
     examples = []
+
+
+class RadishPreconditionScenarioDoesNotExist(RadishSyntaxError):
+    examples = []
+
+    def __init__(
+        self, featurefile_path, scenario_short_description, scenario_short_descriptions
+    ):
+        self.label = "No Scenario '{}' found in '{}' to use as a Precondition. Use one of: {}".format(  # noqa
+            scenario_short_description,
+            featurefile_path,
+            ", ".join(scenario_short_descriptions),
+        )

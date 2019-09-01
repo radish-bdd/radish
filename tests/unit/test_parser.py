@@ -6,7 +6,13 @@ from pathlib import Path
 
 import pytest
 
-from radish.models import DefaultRule, Scenario, ScenarioLoop, ScenarioOutline
+from radish.models import (
+    DefaultRule,
+    Scenario,
+    ScenarioLoop,
+    ScenarioOutline,
+    PreconditionTag,
+)
 from radish.parser import FeatureFileParser
 from radish.parser.errors import (
     RadishMisplacedBackground,
@@ -31,8 +37,9 @@ FEATURE_FILES_DIR = Path(__file__).parent / "features"
 
 
 @pytest.fixture(name="parser")
-def setup_default_featurefileparser():
+def setup_default_featurefileparser(mocker):
     parser = FeatureFileParser()
+    parser._resolve_preconditions = mocker.MagicMock()
     return parser
 
 
@@ -1126,10 +1133,7 @@ def test_parse_step_with_multi_line_doc_string_with_blank_lines(parser):
     assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
     assert ast.rules[0].scenarios[0].steps[0].doc_string == (
-        "Before blank lines\n"
-        "\n"
-        "\n"
-        "After blank lines\n"
+        "Before blank lines\n" "\n" "\n" "After blank lines\n"
     )
 
 
@@ -2190,13 +2194,15 @@ def test_parser_add_example_data_to_short_description_for_scenario_outline_examp
     assert (
         examples[0].short_description == "My Scenario Outline [hdr1: foo, hdr2: meh]"
         # Python 3.5 has no dict ordering
-        or examples[0].short_description == "My Scenario Outline [hdr2: meh, hdr1: foo]"  # noqa
+        or examples[0].short_description
+        == "My Scenario Outline [hdr2: meh, hdr1: foo]"  # noqa
     )
 
     assert (
         examples[1].short_description == "My Scenario Outline [hdr1: bar, hdr2: bla]"
         # Python 3.5 has no dict ordering
-        or examples[1].short_description == "My Scenario Outline [hdr2: bla, hdr1: bar]"  # noqa
+        or examples[1].short_description
+        == "My Scenario Outline [hdr2: bla, hdr1: bar]"  # noqa
     )
 
 
@@ -2299,3 +2305,25 @@ def test_parser_replace_examples_parameter_in_scenario_outline_examples(parser):
     assert (
         ast.rules[0].scenarios[0].examples[1].steps[2].text == "there is a meh-bla Step"
     )
+
+
+def test_parser_precondition_tag_on_scenario(parser):
+    """The parser should recognize a precondition Tag on a Scenario"""
+    feature_file = """
+        Feature: My Feature
+
+            @precondition(some.feature: My Base Scenario)
+            Scenario: My Scenario with a Precondition
+                Given there is a Step
+    """
+    # when
+    ast = parser.parse_contents(Path(__file__), feature_file)
+
+    # then
+    scenario = ast.rules[0].scenarios[0]
+    precondition_tag = scenario.tags[0]
+
+    assert isinstance(precondition_tag, PreconditionTag)
+    assert precondition_tag.name == "precondition(some.feature: My Base Scenario)"
+    assert precondition_tag.feature_filename == "some.feature"
+    assert precondition_tag.scenario_short_description == "My Base Scenario"

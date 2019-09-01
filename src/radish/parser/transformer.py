@@ -18,6 +18,7 @@ from radish.models import (
     Background,
     DefaultRule,
     Feature,
+    PreconditionTag,
     Rule,
     Scenario,
     ScenarioLoop,
@@ -26,9 +27,9 @@ from radish.models import (
     Tag,
 )
 from radish.parser.errors import (
+    RadishFirstStepMustUseFirstLevelKeyword,
     RadishScenarioOutlineExamplesInconsistentCellCount,
     RadishStepDataTableInconsistentCellCount,
-    RadishFirstStepMustUseFirstLevelKeyword,
 )
 
 
@@ -140,9 +141,9 @@ class RadishGherkinTransformer(Transformer):
 
     def scenario(self, subtree):
         """Transform the ``scenario``-subtree for the radish AST"""
-        # consume Feature Tags
         tags = list(itertools.takewhile(lambda t: isinstance(t, Tag), subtree))
         short_description, *steps = subtree[len(tags) :]
+
         scenario = Scenario(
             self.__scenario_id,
             short_description,
@@ -194,6 +195,7 @@ class RadishGherkinTransformer(Transformer):
         # increment scenario id and reset step id for the next scenario
         self.__scenario_id += 1 + len(examples_table)
         self.__step_id = 1
+        self.__step_keyword_ctx = None
         return scenario_outline
 
     def iterations(self, subtree):
@@ -223,6 +225,7 @@ class RadishGherkinTransformer(Transformer):
         # increment scenario id and reset step id for the next scenario
         self.__scenario_id += 1 + iterations
         self.__step_id = 1
+        self.__step_keyword_ctx = None
         return scenario_loop
 
     def background(self, subtree):
@@ -326,8 +329,23 @@ class RadishGherkinTransformer(Transformer):
 
     def tag(self, subtree):
         """Transform the ``tag``-subtree for the radish AST"""
+        return subtree[0]
+
+    def std_tag(self, subtree):
+        """Transform the ``tag``-subtree for the radish AST"""
         tag_name = subtree[0]
         tag = Tag(str(tag_name).strip(), self.featurefile_path, tag_name.line)
+        return tag
+
+    def precondition_tag(self, subtree):
+        """Transform the ``precondition_tag``-subtree for the radish AST"""
+        feature_filename, scenario_short_description = subtree
+        tag = PreconditionTag(
+            str(feature_filename),
+            str(scenario_short_description),
+            self.featurefile_path,
+            feature_filename.line,
+        )
         return tag
 
     def _expand_background_and_scenarios(self, scenarios):

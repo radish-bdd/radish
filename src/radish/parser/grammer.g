@@ -4,7 +4,16 @@ start: _NEWLINE* feature?
 // * Feature
 // * Scenario
 // * Scenario outline
-tag: "@" STRING_NO_TAG_NL _NEWLINE?
+tag: std_tag | precondition_tag
+
+// A standard gherkin Tag in the form of:
+// * @tag
+// * @tag with whitespace
+std_tag: "@" STRING_NO_TAG_NL _NEWLINE?
+
+// A radish Precondition Tag in the form of:
+// * @precondition(feature: scenario)
+precondition_tag: "@precondition(" STRING_NO_COLON_NL ":" STRING_NO_PAREN_NL ")" _NEWLINE?
 
 // A Feature may contain:
 //   * An optional description consisting of multiple free textline, but without
@@ -88,6 +97,8 @@ BUT: "But "i
 // terminals used to match things
 TEXTLINE.0: /.*\n/
 STRING_NO_TAG_NL.0: /[^\n@]/+
+STRING_NO_COLON_NL.0: /[^\n:]/+
+STRING_NO_PAREN_NL.0: /[^\n\)\(]/+
 STRING_NO_NL.0: /[^\n]/+
 _NEWLINE: /\n/
 STRING_NO_WS.0: /[^ \t\f\r\n]/+

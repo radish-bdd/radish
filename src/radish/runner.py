@@ -152,6 +152,11 @@ class Runner:
         if scenario.background:
             __run_steps(scenario.background.steps)
 
+        # run precondition steps
+        if scenario.preconditions:
+            for precondition in scenario.preconditions:
+                __run_steps(precondition.steps)
+
         if not scenario.background or scenario.background.state is State.PASSED:
             __run_steps(scenario.steps)
 

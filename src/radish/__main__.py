@@ -71,6 +71,23 @@ def expand_basedirs(ctx, param, basedirs):
     return expanded_basedirs
 
 
+def expand_feature_files(ctx, param, feature_files):
+    """Expand the given feature files
+
+    Expanding directories recursively for Feature Files
+    """
+    expanded_feature_files = []
+    for feature_file_location in (Path(f) for f in feature_files):
+        if feature_file_location.is_dir():
+            expanded_feature_files.extend(
+                list(feature_file_location.glob("**/*.feature"))
+            )
+        else:
+            expanded_feature_files.append(feature_file_location)
+
+    return expanded_feature_files
+
+
 def evaluate_user_data(ctx, param, userdata):
     """Evaluate the given user-defined data
 
@@ -223,7 +240,7 @@ class CommandWithExtensionOptions(click.Command):
     "feature_files",
     nargs=-1,
     type=click.Path(exists=True),
-    callback=lambda _, __, x: [Path(p) for p in x],
+    callback=expand_feature_files,
 )
 def cli(**kwargs):
     """radish - The root from red to green. BDD tooling for Python.
@@ -260,7 +277,7 @@ def cli(**kwargs):
     features = []
     for feature_file in config.feature_files:
         logger.debug("Parsing Feature File %s", feature_file)
-        feature_ast = parser.parse_file(feature_file)
+        feature_ast = parser.parse(feature_file)
         if feature_ast:
             features.append(feature_ast)
 

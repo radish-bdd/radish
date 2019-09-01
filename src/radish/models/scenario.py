@@ -41,6 +41,7 @@ class Scenario(Timed):
         self.feature = None
         self.background = None
         self.rule = None
+        self.preconditions = None
 
         #: Holds the ``Context`` object.
         self.context = Context()
@@ -72,6 +73,17 @@ class Scenario(Timed):
         self.rule = rule
         for step in self.steps:
             step.set_rule(rule)
+        if self.preconditions:
+            for precondition in self.preconditions:
+                precondition.set_rule(rule)
+
+    def set_preconditions(self, preconditions):
+        """Set Preconditions for this Scenario"""
+        if preconditions:
+            self.preconditions = copy.deepcopy(preconditions)
+            for precondition in self.preconditions:
+                for step in precondition.steps:
+                    step.set_scenario(self)
 
     def _steps_state(self, steps):
         """Get the State for some Steps"""

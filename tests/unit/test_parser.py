@@ -167,6 +167,22 @@ def test_parse_tag_from_a_feature(parser):
     assert ast.tags[0].name == "tag-a"
 
 
+def test_parse_tag_with_spaces_from_a_feature(parser):
+    """The parser should parse a Tag containing spaces from a Feature"""
+    # given
+    feature_file = """
+        @tag - a
+        Feature: My Feature
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert len(ast.tags) == 1
+    assert ast.tags[0].name == "tag - a"
+
+
 def test_parse_tags_on_multiple_lines_from_a_feature(parser):
     """The parser should parse multiple Tags on multiple lines from a Feature"""
     # given
@@ -189,7 +205,7 @@ def test_parse_tags_on_same_line_from_a_feature(parser):
     """The parser should parse multiple Tags on the same line from a Feature"""
     # given
     feature_file = """
-        @tag-a @tag-b
+        @tag-a @tag-b @tag - c @tag-d
         Feature: My Feature
     """
 
@@ -197,9 +213,11 @@ def test_parse_tags_on_same_line_from_a_feature(parser):
     ast = parser.parse_contents(None, feature_file)
 
     # then
-    assert len(ast.tags) == 2
+    assert len(ast.tags) == 4
     assert ast.tags[0].name == "tag-a"
     assert ast.tags[1].name == "tag-b"
+    assert ast.tags[2].name == "tag - c"
+    assert ast.tags[3].name == "tag-d"
 
 
 def test_parse_tags_on_multiple_and_same_line_from_a_feature(parser):

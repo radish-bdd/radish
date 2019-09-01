@@ -4,7 +4,7 @@ start: _NEWLINE* feature?
 // * Feature
 // * Scenario
 // * Scenario outline
-tag: "@" STRING_NO_WS _NEWLINE?
+tag: "@" STRING_NO_TAG_NL _NEWLINE?
 
 // A Feature may contain:
 //   * An optional description consisting of multiple free textline, but without
@@ -87,6 +87,7 @@ BUT: "But "i
 
 // terminals used to match things
 TEXTLINE.0: /.*\n/
+STRING_NO_TAG_NL.0: /[^\n@]/+
 STRING_NO_NL.0: /[^\n]/+
 _NEWLINE: /\n/
 STRING_NO_WS.0: /[^ \t\f\r\n]/+

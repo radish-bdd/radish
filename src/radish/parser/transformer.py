@@ -327,7 +327,7 @@ class RadishGherkinTransformer(Transformer):
     def tag(self, subtree):
         """Transform the ``tag``-subtree for the radish AST"""
         tag_name = subtree[0]
-        tag = Tag(str(tag_name), self.featurefile_path, tag_name.line)
+        tag = Tag(str(tag_name).strip(), self.featurefile_path, tag_name.line)
         return tag
 
     def _expand_background_and_scenarios(self, scenarios):

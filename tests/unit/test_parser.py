@@ -1028,7 +1028,7 @@ def test_parse_step_with_single_line_doc_string(parser):
     assert len(ast.rules[0].scenarios[0].steps) == 1
     assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
-    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String\n"
 
 
 def test_parse_step_with_single_line_doc_string_consecutive_step(parser):
@@ -1052,7 +1052,7 @@ def test_parse_step_with_single_line_doc_string_consecutive_step(parser):
     assert len(ast.rules[0].scenarios[0].steps) == 2
     assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
-    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String\n"
     assert ast.rules[0].scenarios[0].steps[1].keyword == "When"
     assert ast.rules[0].scenarios[0].steps[1].text == "there is a Step"
     assert ast.rules[0].scenarios[0].steps[1].doc_string is None
@@ -1080,7 +1080,7 @@ def test_parse_step_with_multi_line_doc_string(parser):
     assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
     assert ast.rules[0].scenarios[0].steps[0].doc_string == (
-        "My Doc String\nAnother line in the Doc String"
+        "My Doc String\nAnother line in the Doc String\n"
     )
 
 
@@ -1111,7 +1111,7 @@ def test_parse_step_with_multi_line_doc_string_with_blank_lines(parser):
         "Before blank lines\n"
         "\n"
         "\n"
-        "After blank lines"
+        "After blank lines\n"
     )
 
 
@@ -1142,7 +1142,7 @@ def test_parse_dedent_doc_string(parser):
         "My Doc String\n"
         "    which is somewhat indented\n"
         "which is awesome\n"
-        "    and useful"
+        "    and useful\n"
     )
 
 
@@ -1400,7 +1400,7 @@ def test_parse_step_doc_string_and_step_data_table(parser):
     assert len(ast.rules[0].scenarios[0].steps) == 2
     assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
     assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
-    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == "My Doc String\n"
     assert ast.rules[0].scenarios[0].steps[0].data_table == [
         ["foo", "bar"],
         ["meh", "bla"],

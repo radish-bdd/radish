@@ -66,9 +66,6 @@ class RadishGherkinTransformer(Transformer):
         startline = subtree[0].line - 1
         endline = subtree[-1].line
         lines = "".join(self.featurefile_contents[startline:endline])
-        # remove single trailing newline
-        if lines[-1] == "\n":
-            lines = lines[:-1]
         return textwrap.dedent(lines)
 
     def _table_cell(self, subtree):

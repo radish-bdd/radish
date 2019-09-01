@@ -180,7 +180,7 @@ def write_step_result(step):
     if not world.config.no_ansi and not world.config.no_step_rewrites:
         # calculate how many line-ups are needed to rewrite the entire Step
         step_doc_string_lines = (
-            step.doc_string.count("\n") + 3 if step.doc_string else 0
+            step.doc_string.count("\n") + 2 if step.doc_string else 0
         )
         step_data_table_lines = len(step.data_table) if step.data_table else 0
         line_jumps = 1 + step_doc_string_lines + step_data_table_lines
@@ -310,6 +310,7 @@ def write_step(step, step_color_func, indentation=None):
         print(doc_string_indentation + step_color_func('"""'), flush=True)
         print(
             step_color_func(textwrap.indent(step.doc_string, doc_string_indentation)),
+            end="",
             flush=True,
         )
         print(step_color_func(doc_string_indentation + '"""'), flush=True)

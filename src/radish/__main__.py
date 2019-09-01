@@ -277,9 +277,20 @@ def cli(**kwargs):
     features = []
     for feature_file in config.feature_files:
         logger.debug("Parsing Feature File %s", feature_file)
-        feature_ast = parser.parse(feature_file)
-        if feature_ast:
-            features.append(feature_ast)
+        try:
+            feature_ast = parser.parse(feature_file)
+            if feature_ast:
+                features.append(feature_ast)
+        except RadishError as exc:
+            print("", flush=True)
+            print(
+                "An error occured while parsing the Feature File {}:".format(
+                    feature_file
+                ),
+                flush=True,
+            )
+            print(exc, flush=True)
+            sys.exit(1)
 
     logger.debug("Loading all modules from the basedirs")
     loaded_modules = loader.load_modules(config.basedirs)

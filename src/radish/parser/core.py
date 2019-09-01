@@ -12,6 +12,7 @@ from pathlib import Path
 
 from lark import Lark, UnexpectedInput
 
+from radish.models import PreconditionTag
 from radish.parser.errors import (
     RadishMisplacedBackground,
     RadishMissingFeatureShortDescription,
@@ -19,6 +20,7 @@ from radish.parser.errors import (
     RadishMissingScenarioShortDescription,
     RadishMultipleBackgrounds,
     RadishPreconditionScenarioDoesNotExist,
+    RadishPreconditionScenarioRecursion,
     RadishScenarioLoopInvalidIterationsValue,
     RadishScenarioLoopMissingIterations,
     RadishScenarioOutlineExamplesInconsistentCellCount,
@@ -30,7 +32,6 @@ from radish.parser.errors import (
     RadishStepDoesNotStartWithKeyword,
 )
 from radish.parser.transformer import RadishGherkinTransformer
-from radish.models import PreconditionTag
 
 
 class FeatureFileParser:
@@ -122,7 +123,7 @@ class FeatureFileParser:
                     if (
                         precondition_scenario.short_description
                         == precondition_tag.scenario_short_description
-                    ):  # noqa
+                    ):
                         break
                 else:
                     raise RadishPreconditionScenarioDoesNotExist(
@@ -133,6 +134,15 @@ class FeatureFileParser:
                             for rules in ast.rules
                             for s in rules.scenarios
                         ),
+                    )
+
+                # check if the precondition leads to a recursion
+                if (
+                    precondition_scenario in preconditions
+                    or precondition_scenario == scenario
+                ):
+                    raise RadishPreconditionScenarioRecursion(
+                        scenario, precondition_scenario
                     )
 
                 preconditions.append(precondition_scenario)

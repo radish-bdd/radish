@@ -17,12 +17,11 @@ import pytest
 @pytest.fixture(name="radish_runner")
 def setup_radish_runner(tmpdir):
     """Fixture to setup a radish command line runner"""
+
     def __runner(features, basedir, radish_args):
         cmdline = ["radish", *features, "-b", basedir, *radish_args]
         proc = subprocess.Popen(
-            cmdline,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-            cwd=str(tmpdir)
+            cmdline, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=str(tmpdir)
         )
         stdout, stderr = proc.communicate()
         return proc.returncode, stdout, stderr

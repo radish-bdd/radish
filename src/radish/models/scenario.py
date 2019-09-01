@@ -55,6 +55,19 @@ class Scenario(Timed):
             line=self.line,
         )  # pragma: no cover
 
+    def __eq__(self, other):
+        if not isinstance(other, type(self)):
+            return False
+
+        return (
+            self.short_description == other.short_description
+            and self.path == other.path
+            and self.line == other.line
+        )
+
+    def __hash__(self):
+        return hash((self.short_description, self.path, self.line))
+
     def set_feature(self, feature):
         """Set the Feature for this Scenario"""
         self.feature = feature

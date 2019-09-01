@@ -691,7 +691,7 @@ def test_parser_assign_background_to_multiple_scenarios_outside_rule(parser):
     assert ast.rules[0].scenarios[0].background is not None
     assert ast.rules[0].scenarios[1].background is not None
 
-    assert ast.rules[0].scenarios[0].background != ast.rules[0].scenarios[1].background
+    assert ast.rules[0].scenarios[0].background is not ast.rules[0].scenarios[1].background
 
 
 def test_parser_assign_background_to_single_scenario_inside_rule(parser):
@@ -739,9 +739,9 @@ def test_parser_assign_background_to_every_scenario_inside_rules(parser):
     assert ast.rules[1].scenarios[0].background is not None
     assert ast.rules[1].scenarios[1].background is not None
 
-    assert ast.rules[0].scenarios[0].background != ast.rules[0].scenarios[1].background
-    assert ast.rules[0].scenarios[1].background != ast.rules[1].scenarios[0].background
-    assert ast.rules[1].scenarios[0].background != ast.rules[1].scenarios[1].background
+    assert ast.rules[0].scenarios[0].background is not ast.rules[0].scenarios[1].background
+    assert ast.rules[0].scenarios[1].background is not ast.rules[1].scenarios[0].background
+    assert ast.rules[1].scenarios[0].background is not ast.rules[1].scenarios[1].background
 
 
 @pytest.mark.xfail(
@@ -1672,11 +1672,11 @@ def test_parser_add_iteration_id_to_scenario_loop_example(parser):
     # then
     assert (
         ast.rules[0].scenarios[0].examples[0].short_description
-        == "My Scenario [Iteration: 1]"  # noqa
+        == "My Scenario [Iteration: 1]"
     )
     assert (
         ast.rules[0].scenarios[0].examples[1].short_description
-        == "My Scenario [Iteration: 2]"  # noqa
+        == "My Scenario [Iteration: 2]"
     )
 
 
@@ -1731,7 +1731,7 @@ def test_parser_assign_background_to_scenario_loop(parser):
     assert ast.rules[0].scenarios[0].examples[1].background is not None
     assert (
         ast.rules[0].scenarios[0].examples[0].background
-        != ast.rules[0].scenarios[0].examples[1].background  # noqa
+        is not ast.rules[0].scenarios[0].examples[1].background
     )
 
 
@@ -2195,14 +2195,14 @@ def test_parser_add_example_data_to_short_description_for_scenario_outline_examp
         examples[0].short_description == "My Scenario Outline [hdr1: foo, hdr2: meh]"
         # Python 3.5 has no dict ordering
         or examples[0].short_description
-        == "My Scenario Outline [hdr2: meh, hdr1: foo]"  # noqa
+        == "My Scenario Outline [hdr2: meh, hdr1: foo]"
     )
 
     assert (
         examples[1].short_description == "My Scenario Outline [hdr1: bar, hdr2: bla]"
         # Python 3.5 has no dict ordering
         or examples[1].short_description
-        == "My Scenario Outline [hdr2: bla, hdr1: bar]"  # noqa
+        == "My Scenario Outline [hdr2: bla, hdr1: bar]"
     )
 
 
@@ -2269,7 +2269,7 @@ def test_parser_assign_background_to_scenario_outline(parser):
     assert ast.rules[0].scenarios[0].examples[1].background is not None
     assert (
         ast.rules[0].scenarios[0].examples[0].background
-        != ast.rules[0].scenarios[0].examples[1].background  # noqa
+        is not ast.rules[0].scenarios[0].examples[1].background
     )
 
 

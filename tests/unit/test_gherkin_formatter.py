@@ -583,7 +583,8 @@ def test_gf_write_step_with_doc_string_without_data_table(
     step.text = "there is a Step"
     step.doc_string = """foo
 bar
-bla"""
+bla
+"""
     step.data_table = None
     step.rule = mocker.MagicMock(spec=given_rule_type)
 
@@ -629,7 +630,8 @@ def test_gf_write_step_with_doc_string_keep_indentation_without_data_table(
     step.doc_string = """foo
     bar
   meh
-bla"""
+bla
+"""
     step.data_table = None
     step.rule = mocker.MagicMock(spec=given_rule_type)
 

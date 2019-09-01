@@ -401,3 +401,15 @@ class RadishPreconditionScenarioDoesNotExist(RadishSyntaxError):
             featurefile_path,
             ", ".join(scenario_short_descriptions),
         )
+
+
+class RadishPreconditionScenarioRecursion(RadishSyntaxError):
+    examples = []
+
+    def __init__(self, scenario, precondition_scenario):
+        self.label = "Detected a Precondition Recursion in '{}' caused by '{}'".format(
+            scenario.short_description, precondition_scenario.short_description
+        )
+
+    def __str__(self):
+        return self.label

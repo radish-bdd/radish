@@ -174,3 +174,41 @@ Feature: Test the radish @precondition feature
             """
         When the "precondition.feature" is run
         Then the exit code should be 0
+
+    Scenario: Recursions in Precondition Scenarios should be detected
+        Given the Feature File "precondition.feature"
+            """
+            Feature: User of a Precondition
+
+                @precondition(precondition.feature: Add user to database)
+                Scenario: Add user to database
+                    When the users are added to the database
+                        | barry |
+                        | kara  |
+                    Then the database should have 2 users
+            """
+        And the base dir module "steps.py"
+            """
+            from radish import given, when, then
+
+            @given("the database is running")
+            def db_running(step):
+                step.context.db_running = True
+
+
+            @when("the users are added to the database")
+            def user_add(step):
+                assert step.context.db_running, "DB not running"
+
+                step.context.users = step.data_table
+
+
+            @then("the database should have {:int} users")
+            def expect_users(step, amount_users):
+                assert len(step.context.users) == amount_users
+            """
+        When the "precondition.feature" is run
+        Then the run should fail with
+            """
+            Detected a Precondition Recursion in 'Add user to database' caused by 'Add user to database'
+            """

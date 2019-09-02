@@ -317,9 +317,7 @@ def write_step(step, step_color_func, indentation=None):
 
     if step.data_table is not None:
         data_table_indentation = indentation + INDENT_STEP
-        pretty_table = pretty_print_table(
-            step.data_table, cf.white, cf.deepSkyBlue3
-        )
+        pretty_table = pretty_print_table(step.data_table, cf.white, cf.deepSkyBlue3)
         print(textwrap.indent(pretty_table, data_table_indentation), flush=True)
 
 

@@ -160,7 +160,7 @@ def expect_fail_with_exc(step, exc_type_name):
 @then("the run should fail with")
 def expect_fail(step):
     """Expect the run failed with an exception"""
-    stdout = step.context.stdout.decode("utf-8")
+    stdout = step.context.stdout.decode("utf-8").replace("\r", "")
 
     assert step.context.exit_code != 0, (
         "Actual exit code was: {}\n".format(step.context.exit_code)

@@ -35,10 +35,10 @@ jobs:
           check-manifest
       - name: Unit Test with pytest
         run: |
-          coverage run --parallel -m pytest
+          coverage run -p -m pytest
       - name: Integration Test with radish
         run: |
-            radish -b tests/integration/radish tests/integration/features --no-ansi
+          coverage run -p -m radish -b tests/integration/radish tests/integration/features --no-ansi
       - name: Report code coverage
         run: |
           coverage combine

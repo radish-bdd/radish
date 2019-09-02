@@ -95,7 +95,17 @@ def create_base_dir_module(step, module_filename):
 def run_feature_file(step, feature_filename):
     """Run the given Feature File"""
     feature_path = os.path.join(step.context.features_dir, feature_filename)
-    radish_command = ["radish", "-b", step.context.base_dir, feature_path, "-t"]
+    radish_command = [
+        "coverage",
+        "run",
+        "-p",
+        "-m",
+        "radish",
+        "-b",
+        step.context.base_dir,
+        feature_path,
+        "-t",
+    ]
     proc = subprocess.Popen(
         radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )

@@ -307,18 +307,18 @@ def write_step(step, step_color_func, indentation=None):
 
     if step.doc_string is not None:
         doc_string_indentation = indentation + INDENT_STEP
-        print(doc_string_indentation + step_color_func('"""'), flush=True)
+        print(doc_string_indentation + cf.white('"""'), flush=True)
         print(
-            step_color_func(textwrap.indent(step.doc_string, doc_string_indentation)),
+            cf.deepSkyBlue3(textwrap.indent(step.doc_string, doc_string_indentation)),
             end="",
             flush=True,
         )
-        print(step_color_func(doc_string_indentation + '"""'), flush=True)
+        print(cf.white(doc_string_indentation + '"""'), flush=True)
 
     if step.data_table is not None:
         data_table_indentation = indentation + INDENT_STEP
         pretty_table = pretty_print_table(
-            step.data_table, step_color_func, step_color_func
+            step.data_table, cf.white, cf.deepSkyBlue3
         )
         print(textwrap.indent(pretty_table, data_table_indentation), flush=True)
 

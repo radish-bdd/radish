@@ -247,7 +247,7 @@ def cli(**kwargs):
 
     Use radish to run your Feature File.
 
-    Provide the Feature files to run in FEATURE_FILES.
+    Provide the Feature Files to run in FEATURE_FILES.
     """
     config = Config(kwargs)
     world.config = config

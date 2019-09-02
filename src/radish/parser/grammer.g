@@ -9,7 +9,7 @@ tag: std_tag | precondition_tag
 // A standard gherkin Tag in the form of:
 // * @tag
 // * @tag with whitespace
-std_tag: "@" STRING_NO_TAG_NL _NEWLINE?
+std_tag: "@" STRING_NO_WS _NEWLINE?
 
 // A radish Precondition Tag in the form of:
 // * @precondition(feature: scenario)
@@ -96,7 +96,6 @@ BUT: "But "i
 
 // terminals used to match things
 TEXTLINE.0: /.*\n/
-STRING_NO_TAG_NL.0: /[^\n@]/+
 STRING_NO_COLON_NL.0: /[^\n:]/+
 STRING_NO_PAREN_NL.0: /[^\n\)\(]/+
 STRING_NO_NL.0: /[^\n]/+

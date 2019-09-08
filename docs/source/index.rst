@@ -1,9 +1,23 @@
-radish documentation
-====================
+radish
+======
+
+radish is a tool and framework for `BDD (Behavior-driven Development)`_ practicioners
+to do BDD for Python based projects.
+
+It aims to make practicing BDD with Python as easy and efficient as possible.
+
+
+Documentation
+-------------
+
+This part of the documentation guides you through all of radish’s usage patterns.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+
+   getting_started
+   usage
+   syntax
 
 
 API Reference
@@ -24,3 +38,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _BDD (Behavior-driven Development): https://en.wikipedia.org/wiki/Behavior-driven_development

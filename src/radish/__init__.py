@@ -19,6 +19,8 @@ __bugtrack_url__ = "https://github.com/radish-bdd/radish/issues"
 
 
 # Expose useful objects on radish package level
-from radish.hookregistry import before, after  # noqa
-from radish.stepregistry import given, when, then, step  # noqa
+from radish.errors import RadishError  # noqa
+from radish.hookregistry import after, before  # noqa
 from radish.parsetyperegistry import custom_type  # noqa
+from radish.stepregistry import given, step, then, when  # noqa
+from radish.terrain import world  # noqa

@@ -12,6 +12,16 @@ The root from red to green. BDD tooling for Python.
 import threading
 
 world = threading.local()
+world.__doc__ = """Thread-local radish contex object
+
+This object can be used to attach arbitrary data like
+variables, functions and other objects which
+can be accessed later in Step Implementations and Hooks.
+
+However, it's preferred to use scoped contexts
+like :attr:`radish.Step.context`, :attr:`Scenario.context`
+or :attr:`Feature.context` for data.
+"""
 
 
 def pick(func):

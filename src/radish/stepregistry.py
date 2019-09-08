@@ -101,6 +101,32 @@ class StepRegistry:
 
                     return __wrapper
 
+                __decorator.__doc__ = """Decorator to assign a {keyword} Step Text Pattern to a Python function
+
+                This Python function will be run when ever a Step in the Feature File matches the
+                Step Text Pattern.
+                It only matches a pattern in the ``{keyword}`` context.
+
+                For example the following Step Implementation ...
+
+                .. code-block:: python
+
+                    @{keyword_func}("a simple {keyword_func} Step")
+                    def some_step_implementation(step):
+                        assert True, "Step failed to run"
+
+                ... will match the following Steps in our Feature File:
+
+                .. code-block:: gherkin
+
+                    {keyword} a simple given Step
+                    And a simple given Step
+
+                ... but it will not match Steps using any other keywords.
+                """.format(
+                    keyword=keyword, keyword_func=keyword.lower()
+                )
+
                 return __decorator
 
             decorator_name = keyword.lower()

@@ -68,7 +68,7 @@ jobs:
           python -m pip install ".[docs]"
       - name: Build documentation with sphinx
         run: |
-          sphinx-build -W -b html -d doctrees docs docs/_build/html
+          sphinx-build -W -b html -d doctrees docs/source docs/build/html
 
   publish:
     needs: [build, docs]

@@ -12,14 +12,25 @@ from enum import IntEnum
 
 
 class State(IntEnum):
-    """Represents the State of other models"""
+    """Represent the State of a Model
 
-    PASSED = 0
-    UNTESTED = 1
-    SKIPPED = 2
-    PENDING = 3
-    FAILED = 4
-    RUNNING = 5
+    A Model can be one of:
+
+    * :class:`Step`
+    * :class:`Scenario`
+    * :class:`Feature`
+    """
+
+    PASSED = 0  #: State which is set for a :class:`Step` if it ran successfully
+    UNTESTED = 1  #: Default State for all :class:`Step`
+    SKIPPED = (
+        2
+    )  #: State which is set for a :class:`Step` when it's skipped using :func:`Step.skip`
+    PENDING = (
+        3
+    )  #: State which is set for a :class:`Step` when it's marked pending using :func:`Step.pending`
+    FAILED = 4  #: State which is set for a :class:`Step` when it failed to run it
+    RUNNING = 5  #: State which is set while a :class:`Step` is running
 
     @staticmethod
     def report_state(states):

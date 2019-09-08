@@ -27,7 +27,8 @@ recursive-include docs *.svg
 recursive-include docs *.py
 recursive-include docs *.rst
 recursive-include docs *.ico
-prune docs/_build
+recursive-include docs *.bat
+prune docs/build
 
 # Just to keep check-manifest happy; on releases those files are gone.
 # Last rule wins!

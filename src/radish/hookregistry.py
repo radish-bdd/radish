@@ -124,6 +124,8 @@ class HookRegistry:
         for when, whats in self._hooks.items():
 
             class HookProvider:
+                """whuat"""
+
                 def __init__(self, when):
                     self.when = when
 
@@ -145,6 +147,22 @@ class HookRegistry:
                             return func
 
                         return __wrapper
+
+                    __decorator.__doc__ = """Decorator to register a hook function
+
+                    A hook function registered with this decorator will be run {when} {what}.
+
+                    Args:
+                        on_tags (list): a list of :class:`Tag` names for which this hook will be run
+                        order (int): a number which is used to order the registered hooks when running them
+                        is_formatter (bool): flag to indicate that the hook is a formatter.
+                                             Formatter hooks are run even if ``on_tags`` do not match
+                        always (bool): flag to indicate that the hook should always be run.
+                                       Only enable this ``True`` if the hook doesn't depend on the Feature File
+                                       you will be running.
+                    """.format(  # noqa
+                        when=when, what=what
+                    )
 
                     return __decorator
 

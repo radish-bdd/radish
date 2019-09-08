@@ -41,5 +41,6 @@ cd ~/work/radish
 virtualenv env
 source env/bin/activate
 pip install -e '.[dev]'
-commands = coverage run --parallel -m pytest -s --failed-first
+pytest
+radish -b tests/integration/radish tests/integration/features
 ```

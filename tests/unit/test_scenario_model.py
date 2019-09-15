@@ -22,7 +22,9 @@ def test_scenario_should_set_feature_to_steps_when_feature_set(mocker):
     # given
     first_step = mocker.MagicMock(name="First Step")
     second_step = mocker.MagicMock(name="Second Step")
-    scenario = Scenario(1, "My Scenario", [], None, None, [first_step, second_step])
+    scenario = Scenario(
+        1, "Scenario", "My Scenario", [], None, None, [first_step, second_step]
+    )
     feature_mock = mocker.MagicMock(name="Feature")
 
     # when
@@ -39,7 +41,9 @@ def test_scenario_should_set_rule_to_steps_when_rule_set(mocker):
     # given
     first_step = mocker.MagicMock(name="First Step")
     second_step = mocker.MagicMock(name="Second Step")
-    scenario = Scenario(1, "My Scenario", [], None, None, [first_step, second_step])
+    scenario = Scenario(
+        1, "Scenario", "My Scenario", [], None, None, [first_step, second_step]
+    )
     rule_mock = mocker.MagicMock(name="Rule")
 
     # when
@@ -54,7 +58,7 @@ def test_scenario_should_set_rule_to_steps_when_rule_set(mocker):
 def test_scenario_should_copy_background_when_set(mocker):
     """A Scenario should make a deepcopy when a Background is set"""
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, [])
     background_mock = mocker.MagicMock(name="Background")
     background_mock.short_description = "My Background"
 
@@ -69,7 +73,7 @@ def test_scenario_should_copy_background_when_set(mocker):
 def test_scenario_should_set_itself_as_scenario_for_a_set_background(mocker):
     """A Scenario should set itself as Scenario for a set Background"""
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, [])
     background_mock = mocker.MagicMock(name="Background")
 
     # when
@@ -82,7 +86,7 @@ def test_scenario_should_set_itself_as_scenario_for_a_set_background(mocker):
 def test_scenario_should_set_its_rule_as_rule_for_a_set_background(mocker):
     """A Scenario should set its Rule as Rule for a set Background"""
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, [])
     scenario.rule = mocker.MagicMock(name="Rule")
     background_mock = mocker.MagicMock(name="Background")
 
@@ -96,7 +100,7 @@ def test_scenario_should_set_its_rule_as_rule_for_a_set_background(mocker):
 def test_scenario_should_ignore_to_set_none_for_a_background(mocker):
     """A Scenario should ignore to set None for a Background"""
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, [])
     background_mock = mocker.MagicMock(name="Background")
     scenario.set_background(background_mock)
 
@@ -244,7 +248,7 @@ def test_scenario_should_return_correct_state(
     Background State and its own Steps State.
     """
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, given_steps)
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, given_steps)
     background_mock = mocker.MagicMock(name="Background")
     background_mock.state = given_background_state
     background_mock.steps = [mocker.MagicMock(state=given_background_state)]
@@ -262,7 +266,7 @@ def test_scenario_without_steps_should_return_untested_state(mocker):
     A Scneario without any Steps should return the State UNTESTED
     """
     # given
-    scenario = Scenario(1, "My Scenario", [], None, None, [])
+    scenario = Scenario(1, "Scenario", "My Scenario", [], None, None, [])
     scenario.background = None
 
     # when
@@ -276,7 +280,13 @@ def test_scenario_should_ignore_background_state_if_no_background(mocker):
     """A Scenario should ignore the Background for the State if no is assigned"""
     # given
     scenario = Scenario(
-        1, "My Scenario", [], None, None, [mocker.MagicMock(state=State.SKIPPED)]
+        1,
+        "Scenario",
+        "My Scenario",
+        [],
+        None,
+        None,
+        [mocker.MagicMock(state=State.SKIPPED)],
     )
 
     # when
@@ -319,6 +329,7 @@ def test_scenario_should_correctly_evaluate_if_it_has_to_be_run(
     feature_mock = mocker.MagicMock(tags=[Tag("tag-c", None, None)])
     scenario = Scenario(
         1,
+        "Scenario",
         "My Scenario",
         [Tag("tag-a", None, None), Tag("tag-b", None, None)],
         None,

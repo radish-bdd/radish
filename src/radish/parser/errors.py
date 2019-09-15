@@ -413,3 +413,13 @@ class RadishPreconditionScenarioRecursion(RadishSyntaxError):
 
     def __str__(self):
         return self.label
+
+
+class RadishLanguageNotFound(RadishSyntaxError):
+    examples = []
+
+    def __init__(self, language):
+        self.label = "The language {} is currently not supported".format(language)
+
+    def __str__(self):
+        return self.label

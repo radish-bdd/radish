@@ -8,12 +8,15 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import json
+import re
 from pathlib import Path
 
 from lark import Lark, UnexpectedInput
 
 from radish.models import PreconditionTag
 from radish.parser.errors import (
+    RadishLanguageNotFound,
     RadishMisplacedBackground,
     RadishMissingFeatureShortDescription,
     RadishMissingRuleShortDescription,
@@ -34,6 +37,28 @@ from radish.parser.errors import (
 from radish.parser.transformer import RadishGherkinTransformer
 
 
+class LanguageSpec:
+    """Represents a gherkin language specification"""
+
+    def __init__(self, code, keywords):
+        self.code = code
+        self.keywords = keywords
+        self.first_level_step_keywords = {
+            keywords["Given"],
+            keywords["When"],
+            keywords["Then"],
+        }
+
+    def __str__(self):
+        return self.code
+
+    def __call__(self, terminal):
+        try:
+            terminal.pattern.value = self.keywords[terminal.pattern.value]
+        except KeyError:
+            pass
+
+
 class FeatureFileParser:
     """Radish Feature File Parser responsible to parse a single Feature File"""
 
@@ -47,10 +72,23 @@ class FeatureFileParser:
         self.resolve_preconditions = resolve_preconditions
 
         self._transformer = RadishGherkinTransformer()
-        self._parser = Lark.open(
-            str(grammerfile), parser="lalr", transformer=self._transformer
-        )
         self._current_feature_id = 1
+
+        self._parsers = {}
+
+    def _get_parser(self, language_spec):
+        """Get a parser and lazy create it if necessary"""
+        try:
+            return self._parsers[language_spec.code]
+        except KeyError:
+            parser = Lark.open(
+                str(self.grammerfile),
+                parser="lalr",
+                transformer=self._transformer,
+                edit_terminals=language_spec,
+            )
+            self._parsers[language_spec.code] = parser
+            return parser
 
     def parse(self, featurefile: Path):
         """Parse the given Feature File"""
@@ -69,14 +107,22 @@ class FeatureFileParser:
     def parse_contents(
         self, featurefile_path: Path, featurefile_contents: str, feature_id: int = 0
     ):
+        # evaluate the language for the Feature File content
+        language_spec = self._detect_language(featurefile_contents)
+
         # prepare the transformer for the Feature File
-        self._transformer.prepare(featurefile_path, featurefile_contents, feature_id)
+        self._transformer.prepare(
+            language_spec, featurefile_path, featurefile_contents, feature_id
+        )
+
+        # get a parser
+        parser = self._get_parser(language_spec)
 
         try:
-            ast = self._parser.parse(featurefile_contents)
+            ast = parser.parse(featurefile_contents)
         except UnexpectedInput as exc:
             exc_class = exc.match_examples(
-                self._parser.parse,
+                parser.parse,
                 {
                     RadishMissingFeatureShortDescription: RadishMissingFeatureShortDescription.examples,  # noqa
                     RadishMissingRuleShortDescription: RadishMissingRuleShortDescription.examples,
@@ -98,6 +144,33 @@ class FeatureFileParser:
                 raise
             raise exc_class(exc.get_context(featurefile_contents), exc.line, exc.column)
         return ast
+
+    def _detect_language(self, featurefile_contents: str):
+        """Detect the specified language in the first line of the Feature File
+
+        If no language code is detected ``en`` is used.
+        If an unknown language code is detected an error is raised.
+        """
+
+        def __get_language_spec(code):
+            language_spec_path = (
+                Path(__file__).parent / "languages" / "{}.json".format(code)
+            )
+            if not language_spec_path.exists():
+                raise RadishLanguageNotFound(code)
+
+            with open(
+                str(language_spec_path), "r", encoding="utf-8"
+            ) as language_spec_file:
+                keywords = json.load(language_spec_file)
+
+            return LanguageSpec(code, keywords)
+
+        match = re.match(
+            r"^#\s*language:\s*(?P<code>[a-zA-Z-]{2,})", featurefile_contents.lstrip()
+        )
+        language_code = match.groupdict()["code"] if match else "en"
+        return __get_language_spec(language_code)
 
     def _resolve_preconditions(self, features_rootdir, ast, visited_features):
         for scenario in (s for rules in ast.rules for s in rules.scenarios):

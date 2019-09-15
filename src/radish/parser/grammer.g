@@ -20,8 +20,8 @@ precondition_tag: "@precondition(" STRING_NO_COLON_NL ":" STRING_NO_PAREN_NL ")"
 //     a keyword appearing at the start.
 //   * An optional `Background` block containing any number of `step`s.
 //   * Any number of `Scenario` blocks continaing any number of `step`s.
-//feature: tag* _FEATURE TEXTLINE feature_inner?
-feature: tag* _FEATURE STRING_NO_NL _NEWLINE feature_body?
+//feature: tag* FEATURE TEXTLINE feature_inner?
+feature: tag* FEATURE ":" STRING_NO_NL _NEWLINE feature_body?
 feature_body: description background? (rule | scenario | scenario_outline | scenario_loop | _NEWLINE)*
 
 // A description consists of any textlines, but the description ends if one of
@@ -35,34 +35,34 @@ feature_body: description background? (rule | scenario | scenario_outline | scen
 description: (STRING_NO_NL | _NEWLINE)+
 
 // A Rule represents a Business Rule. It can contain Scenarios
-rule: _RULE STRING_NO_NL _NEWLINE (scenario | scenario_outline | scenario_loop | _NEWLINE)*
+rule: RULE ":" STRING_NO_NL _NEWLINE (scenario | scenario_outline | scenario_loop | _NEWLINE)*
 
 // A Background block consists of a sentence following the `Background` keyword
 // and any number of steps
-background: _BACKGROUND STRING_NO_NL? _NEWLINE (step | _NEWLINE)*
+background: BACKGROUND ":" STRING_NO_NL? _NEWLINE (step | _NEWLINE)*
 
 // A Scenario block consists of a sentence following the `Scenario` keyword
 // and any number of steps
-scenario: tag* (_SCENARIO | _EXAMPLE) STRING_NO_NL _NEWLINE (step | _NEWLINE)*
+scenario: tag* (SCENARIO | EXAMPLE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)*
 
 // A Scenario Outline block consists of a sentence following the `Scenario Outline` keyword,
 // any number of steps and an Examples block followed by a table with parameters for the
 // outlined steps.
-scenario_outline: tag* (_SCENARIO_OUTLINE | _EXAMPLE_OUTLINE) STRING_NO_NL _NEWLINE (step | _NEWLINE)* examples
+scenario_outline: tag* (SCENARIO_OUTLINE | EXAMPLE_OUTLINE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* examples
 
 // An Examples block is used to parametrize a 'Scenario Outline'
 // It's a table of data
-examples: _EXAMPLES _NEWLINE example_row example_row+
+examples: _EXAMPLES ":" _NEWLINE example_row example_row+
 
 example_row: "|" (example_cell "|")+ _NEWLINE
 example_cell: STRING_NO_VBAR
 
 // A Scenario Loop block consists of a sentence following the `Scenario Loop` keyword,
 // any number of steps and an `Iterations` block followed by a max iteration number.
-scenario_loop: tag* (_SCENARIO_LOOP | _EXAMPLE_LOOP) STRING_NO_NL _NEWLINE (step | _NEWLINE)* iterations
+scenario_loop: tag* (SCENARIO_LOOP | EXAMPLE_LOOP) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* iterations
 
 // An Iterations block indicates the max number of iterations for a `Scenario Loop`.
-iterations: _ITERATIONS INT
+iterations: _ITERATIONS ":" INT
 
 // A step is a textline beginning with `Given`, `When`, `Then`, `And` and `But`.
 step: (GIVEN | WHEN | THEN | AND | BUT) STRING_NO_NL _NEWLINE step_arguments
@@ -74,25 +74,25 @@ step_data_table_row: "|" (step_data_table_cell "|")+ _NEWLINE
 step_data_table_cell: STRING_NO_VBAR
 
 // A step doc string is additional multilined text data for the previous step
-step_doc_string: _DOC_STRING_DELIMITER _NEWLINE (STRING_NO_NL? _NEWLINE)+ _DOC_STRING_DELIMITER
+step_doc_string: DOC_STRING_DELIMITER _NEWLINE (STRING_NO_NL? _NEWLINE)* DOC_STRING_DELIMITER
 
 // Keywords
-_FEATURE: "Feature:"i
-_BACKGROUND: "Background:"i
-_EXAMPLE: "Example:"i
-_SCENARIO: "Scenario:"i
-_SCENARIO_OUTLINE: "Scenario Outline:"i
-_EXAMPLE_OUTLINE: "Example Outline:"i
-_EXAMPLES: "Examples:"i
-_SCENARIO_LOOP: "Scenario Loop:"i
-_EXAMPLE_LOOP: "Example Loop:"i
-_ITERATIONS: "Iterations:"i
-_RULE: "Rule:"i
-GIVEN: "Given "i
-WHEN: "When "i
-THEN: "Then "i
-AND: "And "i
-BUT: "But "i
+FEATURE: "Feature"i
+BACKGROUND: "Background"i
+RULE: "Rule"i
+EXAMPLE: "Example"i
+SCENARIO: "Scenario"i
+SCENARIO_OUTLINE: "Scenario Outline"i
+EXAMPLE_OUTLINE: "Example Outline"i
+_EXAMPLES: "Examples"i
+SCENARIO_LOOP: "Scenario Loop"i
+EXAMPLE_LOOP: "Example Loop"i
+_ITERATIONS: "Iterations"i
+GIVEN: "Given"i
+WHEN: "When"i
+THEN: "Then"i
+AND: "And"i
+BUT: "But"i
 
 // terminals used to match things
 TEXTLINE.0: /.*\n/
@@ -102,7 +102,7 @@ STRING_NO_NL.0: /[^\n]/+
 _NEWLINE: /\n/
 STRING_NO_WS.0: /[^ \t\f\r\n]/+
 STRING_NO_VBAR.0: /((?<!\\)\\\||[^\|\f\r\n])+/
-_DOC_STRING_DELIMITER: "\"\"\""
+DOC_STRING_DELIMITER: "\"\"\""
 COMMENT: /#[^\n]*\n/
 
 %import common (WS_INLINE)

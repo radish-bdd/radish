@@ -1,0 +1,18 @@
+{
+    "Feature": "Funktionalität",
+    "Background": "Grundlage",
+    "Scenario": "Szenario",
+    "Example": "Beispiel",
+    "Scenario Outline": "Szenariogrundriss",
+    "Example Outline": "Beispielgrundriss",
+    "Examples": "Beispiele",
+    "Scenario Loop": "Szenario Wiederholungen",
+    "Example Loop": "Beispiel Wiederholungen",
+    "Iterations": "Wiederholungen",
+    "Rule": "Regel",
+    "Given": "Gegeben",
+    "When": "Wenn",
+    "Then": "Dann",
+    "And": "Und",
+    "But": "Aber"
+}

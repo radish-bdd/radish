@@ -85,8 +85,8 @@ def write_feature_header(feature):
         write_tagline(tag)
 
     # write Feature heading
-    feature_heading = "{feature_keyword} {short_description}".format(
-        feature_keyword=cf.bold_white("Feature:"),
+    feature_heading = "{feature_keyword}: {short_description}".format(
+        feature_keyword=cf.bold_white(feature.keyword),
         short_description=cf.white(feature.short_description),
     )
     print(feature_heading, flush=True)
@@ -98,8 +98,8 @@ def write_feature_header(feature):
 
     # write Background if available
     if feature.background:
-        background = "{background_keyword} {short_description}".format(
-            background_keyword=cf.bold_white("Background:"),
+        background = "{background_keyword}: {short_description}".format(
+            background_keyword=cf.bold_white(feature.background.keyword),
             short_description=cf.white(feature.background.short_description)
             if feature.background.short_description
             else "",
@@ -132,8 +132,8 @@ def write_rule_header(rule):
     if isinstance(rule, DefaultRule):
         return
 
-    rule_heading = "{rule_keyword} {short_description}".format(
-        rule_keyword=cf.bold_white("Rule:"),
+    rule_heading = "{rule_keyword}: {short_description}".format(
+        rule_keyword=cf.bold_white(rule.keyword),
         short_description=cf.white(rule.short_description),
     )
 
@@ -145,8 +145,8 @@ def write_scenario_header(scenario):
     indentation_level = 1 if isinstance(scenario.rule, DefaultRule) else 2
     indentation = INDENT_STEP * indentation_level
 
-    scenario_heading = "{scenario_keyword} {short_description}".format(
-        scenario_keyword=cf.bold_white("Scenario:"),
+    scenario_heading = "{scenario_keyword}: {short_description}".format(
+        scenario_keyword=cf.bold_white(scenario.keyword),
         short_description=cf.white(scenario.short_description),
     )
 
@@ -162,7 +162,8 @@ def write_scenario_footer(scenario):
 
 def write_step_running(step):
     """Write the Step before it's running"""
-    write_step(step, cf.orange)
+    if not world.config.no_step_rewrites:
+        write_step(step, cf.orange)
 
 
 def write_step_result(step):

@@ -37,7 +37,11 @@ def test_background_should_correct_state(given_step_states, expected_state, mock
     """A Background should return the worst State of its Steps State as its own State"""
     # given
     background = Background(
-        "Background", None, None, [mocker.MagicMock(state=s) for s in given_step_states]
+        "Background",
+        "Background",
+        None,
+        None,
+        [mocker.MagicMock(state=s) for s in given_step_states],
     )
 
     # when

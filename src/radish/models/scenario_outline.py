@@ -19,6 +19,7 @@ class ScenarioOutline(Scenario):
     def __init__(
         self,
         scenario_id: int,
+        keyword: str,
         short_description: str,
         tags,
         path: str,
@@ -26,7 +27,9 @@ class ScenarioOutline(Scenario):
         steps,
         examples_table,
     ) -> None:
-        super().__init__(scenario_id, short_description, tags, path, line, steps)
+        super().__init__(
+            scenario_id, keyword, short_description, tags, path, line, steps
+        )
         self.examples_table = examples_table
         self.examples = self._build_examples(self.examples_table)
 
@@ -46,6 +49,7 @@ class ScenarioOutline(Scenario):
         super().set_feature(feature)
         for example in self.examples:
             example.set_feature(feature)
+            example.keyword = feature.language_spec.keywords["Scenario"]
 
     def set_background(self, background):
         super().set_background(background)
@@ -81,6 +85,7 @@ class ScenarioOutline(Scenario):
 
             example = Scenario(
                 self.id + example_id,
+                "Scenario",  # NOTE(TF): keyword will be patched in ``set_feature()``
                 short_description,
                 self.tags,
                 self.path,

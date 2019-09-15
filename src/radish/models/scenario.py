@@ -21,6 +21,7 @@ class Scenario(Timed):
     def __init__(
         self,
         scenario_id: int,
+        keyword: str,
         short_description: str,
         tags,
         path: str,
@@ -29,6 +30,7 @@ class Scenario(Timed):
     ) -> None:
         super().__init__()
         self.id = scenario_id
+        self.keyword = keyword
         self.short_description = short_description
         self.tags = tags
         self.path = path

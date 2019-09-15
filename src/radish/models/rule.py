@@ -14,7 +14,10 @@ from radish.models.state import State
 class Rule:
     """Represents a single instance of a Gherkin Rule"""
 
-    def __init__(self, short_description, path: str, line: int, scenarios) -> None:
+    def __init__(
+        self, keyword: str, short_description, path: str, line: int, scenarios
+    ) -> None:
+        self.keyword = keyword
         self.short_description = short_description
         self.path = path
         self.line = line
@@ -58,7 +61,7 @@ class DefaultRule(Rule):
     """Represents the default Rule which is used if no rule is specified"""
 
     def __init__(self, path: str, line: int, scenarios) -> None:
-        super().__init__(None, path, line, scenarios)
+        super().__init__(None, None, path, line, scenarios)
 
     def __repr__(self) -> str:
         return "<DefaultRule: with {scenarios} Scenarios @ {path}:{line}>".format(

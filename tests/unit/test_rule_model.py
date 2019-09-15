@@ -18,7 +18,7 @@ def test_rule_should_forward_set_feature_to_its_scenarios(mocker):
     # given
     first_scenario = mocker.MagicMock(name="First Scenario")
     second_scenario = mocker.MagicMock(name="Second Scenario")
-    rule = Rule("My Rule", None, None, [first_scenario, second_scenario])
+    rule = Rule("Rule", "My Rule", None, None, [first_scenario, second_scenario])
     feature_mock = mocker.MagicMock(name="Feature")
 
     # when
@@ -35,7 +35,7 @@ def test_rule_should_forward_set_background_to_its_scenarios(mocker):
     # given
     first_scenario = mocker.MagicMock(name="First Scenario")
     second_scenario = mocker.MagicMock(name="Second Scenario")
-    rule = Rule("My Rule", None, None, [first_scenario, second_scenario])
+    rule = Rule("Rule", "My Rule", None, None, [first_scenario, second_scenario])
     background_mock = mocker.MagicMock(name="Background")
 
     # when
@@ -71,6 +71,7 @@ def test_rule_should_return_correct_state_according_to_its_scenario_states(
     """A Rule should return the correct State according to its Scenario States"""
     # given
     rule = Rule(
+        "Rule",
         "My Rule",
         None,
         None,
@@ -108,7 +109,7 @@ def test_rule_should_run_if_one_of_its_scenario_has_to_run(
         scenarios.append(scenario_mock)
 
     # given
-    rule = Rule("My Rule", None, None, scenarios)
+    rule = Rule("Rule", "My Rule", None, None, scenarios)
 
     # when
     actual_has_to_run = rule.has_to_run(None, None)

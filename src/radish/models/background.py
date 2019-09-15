@@ -14,8 +14,10 @@ from radish.models.scenario import Scenario
 class Background(Scenario):
     """Represents a single instance of a Gherkin Background"""
 
-    def __init__(self, short_description: str, path: str, line: int, steps) -> None:
-        super().__init__(0, short_description, None, path, line, steps)
+    def __init__(
+        self, keyword: str, short_description: str, path: str, line: int, steps
+    ) -> None:
+        super().__init__(0, keyword, short_description, None, path, line, steps)
 
         #: Holds the Scenario for which this Background is supposed to run.
         self.scenario = None

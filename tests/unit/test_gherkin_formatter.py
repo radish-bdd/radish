@@ -102,6 +102,7 @@ def test_gf_write_feature_header_without_tags_without_description_without_backgr
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = []
     feature.tags = []
@@ -124,6 +125,7 @@ def test_gf_write_feature_header_with_tags_without_description_without_backgroun
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = []
     first_tag = mocker.MagicMock(spec=Tag)
@@ -156,6 +158,7 @@ def test_gf_write_feature_header_without_tags_with_description_without_backgroun
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = ["foo", "bar", "bla"]
     feature.tags = []
@@ -186,10 +189,12 @@ def test_gf_write_feature_header_without_description_with_empty_background_no_sh
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = []
     feature.tags = []
     feature.background = mocker.MagicMock(spec=Background)
+    feature.background.keyword = "Background"
     feature.background.short_description = None
     feature.background.steps = []
 
@@ -218,10 +223,12 @@ def test_gf_write_feature_header_with_description_with_empty_background_no_short
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = ["foo", "bar", "bla"]
     feature.tags = []
     feature.background = mocker.MagicMock(spec=Background)
+    feature.background.keyword = "Background"
     feature.background.short_description = None
     feature.background.steps = []
 
@@ -254,10 +261,12 @@ def test_gf_write_feature_header_empty_background_with_short_description(
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = []
     feature.tags = []
     feature.background = mocker.MagicMock(spec=Background)
+    feature.background.keyword = "Background"
     feature.background.short_description = "My Background"
     feature.background.steps = []
 
@@ -284,10 +293,12 @@ def test_gf_write_feature_header_background_with_steps(disabled_colors, capsys, 
     """
     # given
     feature = mocker.MagicMock(spec=Feature)
+    feature.keyword = "Feature"
     feature.short_description = "My Feature"
     feature.description = []
     feature.tags = []
     feature.background = mocker.MagicMock(spec=Background)
+    feature.background.keyword = "Background"
     feature.background.short_description = "My Background"
     first_step = mocker.MagicMock(
         spec=Step,
@@ -388,6 +399,7 @@ def test_gf_write_rule_header(disabled_colors, capsys, mocker):
     """Test that the Gherkin Formatter properly writes a Rule"""
     # given
     rule = mocker.MagicMock(spec=Rule)
+    rule.keyword = "Rule"
     rule.short_description = "My Rule"
 
     # when
@@ -429,6 +441,7 @@ def test_gf_write_scenario_header_without_tags(
     """Test that the Gherkin Formatter properly formatter a Scenario Header without Tags"""
     # given
     scenario = mocker.MagicMock(spec=Scenario)
+    scenario.keyword = "Scenario"
     scenario.rule = mocker.MagicMock(spec=given_rule_type)
     scenario.short_description = "My Scenario"
     scenario.tags = []
@@ -460,6 +473,7 @@ def test_gf_write_scenario_header_with_tags(
     """Test that the Gherkin Formatter properly formatter a Scenario Header with Tags"""
     # given
     scenario = mocker.MagicMock(spec=Scenario)
+    scenario.keyword = "Scenario"
     scenario.rule = mocker.MagicMock(spec=given_rule_type)
     scenario.short_description = "My Scenario"
     first_tag = mocker.MagicMock(spec=Tag)

@@ -19,6 +19,7 @@ class ScenarioLoop(Scenario):
     def __init__(
         self,
         scenario_id: int,
+        keyword: str,
         short_description: str,
         tags,
         path: str,
@@ -26,7 +27,9 @@ class ScenarioLoop(Scenario):
         steps,
         iterations,
     ) -> None:
-        super().__init__(scenario_id, short_description, tags, path, line, steps)
+        super().__init__(
+            scenario_id, keyword, short_description, tags, path, line, steps
+        )
         self.iterations = iterations
         self.examples = self._build_examples(self.iterations)
 
@@ -46,6 +49,7 @@ class ScenarioLoop(Scenario):
         super().set_feature(feature)
         for example in self.examples:
             example.set_feature(feature)
+            example.keyword = feature.language_spec.keywords["Scenario"]
 
     def set_background(self, background):
         super().set_background(background)
@@ -70,6 +74,7 @@ class ScenarioLoop(Scenario):
             steps = copy.deepcopy(self.steps)
             example = Scenario(
                 self.id + example_id,
+                "Scenario",  # NOTE(TF): keyword will be patched in ``set_feature()``
                 short_description,
                 self.tags,
                 self.path,

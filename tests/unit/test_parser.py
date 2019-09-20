@@ -8,13 +8,15 @@ import pytest
 
 from radish.models import (
     DefaultRule,
+    PreconditionTag,
     Scenario,
     ScenarioLoop,
     ScenarioOutline,
-    PreconditionTag,
 )
 from radish.parser import FeatureFileParser
 from radish.parser.errors import (
+    RadishFirstStepMustUseFirstLevelKeyword,
+    RadishLanguageNotFound,
     RadishMisplacedBackground,
     RadishMissingFeatureShortDescription,
     RadishMissingRuleShortDescription,
@@ -30,7 +32,6 @@ from radish.parser.errors import (
     RadishStepDataTableMissingClosingVBar,
     RadishStepDocStringNotClosed,
     RadishStepDoesNotStartWithKeyword,
-    RadishFirstStepMustUseFirstLevelKeyword,
 )
 
 FEATURE_FILES_DIR = Path(__file__).parent / "features"
@@ -1205,6 +1206,56 @@ def test_parse_fail_doc_string_not_closed(parser, feature_file):
         parser.parse_contents(None, feature_file)
 
 
+def test_parse_step_doc_string_should_preverse_comments(parser):
+    """The parser should preserve gherkin comments in doc strings"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                Given there is a setup
+                \"\"\"
+                # some comment
+                My Doc String
+                # another comment
+                    foo
+                \"\"\"
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert len(ast.rules[0].scenarios[0].steps) == 1
+    assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
+    assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == (
+        "# some comment\n" "My Doc String\n" "# another comment\n" "    foo\n"
+    )
+
+
+def test_parse_step_empty_docstring(parser):
+    """The parser should be able to parse an empty doc string"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Scenario: My Scenario
+                Given there is a setup
+                \"\"\"
+                \"\"\"
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert len(ast.rules[0].scenarios[0].steps) == 1
+    assert ast.rules[0].scenarios[0].steps[0].keyword == "Given"
+    assert ast.rules[0].scenarios[0].steps[0].text == "there is a setup"
+    assert ast.rules[0].scenarios[0].steps[0].doc_string == ""
+
+
 def test_parse_step_with_single_data_table_row(parser):
     """The parser should parse a Step with a single data table row"""
     # given
@@ -2297,6 +2348,7 @@ def test_parser_replace_examples_parameter_in_scenario_outline_examples(parser):
 
 def test_parser_precondition_tag_on_scenario(parser):
     """The parser should recognize a precondition Tag on a Scenario"""
+    # given
     feature_file = """
         Feature: My Feature
 
@@ -2304,6 +2356,7 @@ def test_parser_precondition_tag_on_scenario(parser):
             Scenario: My Scenario with a Precondition
                 Given there is a Step
     """
+
     # when
     ast = parser.parse_contents(Path(__file__), feature_file)
 
@@ -2315,3 +2368,37 @@ def test_parser_precondition_tag_on_scenario(parser):
     assert precondition_tag.name == "precondition(some.feature: My Base Scenario)"
     assert precondition_tag.feature_filename == "some.feature"
     assert precondition_tag.scenario_short_description == "My Base Scenario"
+
+
+def test_parser_should_raise_error_for_unknown_language(parser):
+    """The parser should raise an error for an unknown language"""
+    # given
+    feature_file = """
+        # language: FOO
+        Feature: My Feature
+    """
+    # then
+    with pytest.raises(
+        RadishLanguageNotFound, match="The language FOO is currently not supported"
+    ):
+        # when
+        parser.parse_contents(Path(__file__), feature_file)
+
+
+def test_parser_should_recognize_the_language(parser):
+    """The parser should recognize the specified language in the Feature File"""
+    # given
+    feature_file = """
+        # language: de
+        Funktionalität: Meine Funktionalität
+
+            Szenario: Mein Szenario
+                Gegeben ist ein Schritt
+    """
+
+    # when
+    ast = parser.parse_contents(Path(__file__), feature_file)
+
+    # then
+    assert len(ast.rules[0].scenarios) == 1
+    assert ast.keyword == "Funktionalität"

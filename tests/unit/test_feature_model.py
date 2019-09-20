@@ -39,6 +39,7 @@ def test_feature_should_return_correct_state_according_to_its_rule_states(
     # given
     feature = Feature(
         1,
+        "Feature",
         "My Feature",
         None,
         [],
@@ -46,6 +47,7 @@ def test_feature_should_return_correct_state_according_to_its_rule_states(
         None,
         None,
         [mocker.MagicMock(state=s) for s in given_rule_states],
+        None,
     )
 
     # when
@@ -75,7 +77,9 @@ def test_feature_should_run_if_one_of_its_rule_has_to_run(
         rules.append(rule_mock)
 
     # given
-    feature = Feature(1, "My Feature", None, [], None, None, None, rules)
+    feature = Feature(
+        1, "Feature", "My Feature", None, [], None, None, None, rules, None
+    )
 
     # when
     actual_has_to_run = feature.has_to_run(None, None)

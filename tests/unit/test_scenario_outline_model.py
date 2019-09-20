@@ -18,7 +18,9 @@ def test_scenariooutline_set_feature_on_all_examples(mocker):
     """A ScenarioOutline should forward a set Feature to all its Examples"""
     # given
     feature_mock = mocker.MagicMock(name="Feature")
-    scenario = ScenarioOutline(1, "My ScenarioOutline", [], None, None, [], [])
+    scenario = ScenarioOutline(
+        1, "Scenario Outline", "My ScenarioOutline", [], None, None, [], []
+    )
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -36,7 +38,9 @@ def test_scenariooutline_set_background_on_all_examples(mocker):
     """A ScenarioOutline should forward a set Background to all its Examples"""
     # given
     background_mock = mocker.MagicMock(name="Background")
-    scenario = ScenarioOutline(1, "My ScenarioOutline", [], None, None, [], [])
+    scenario = ScenarioOutline(
+        1, "Scenario Outline", "My ScenarioOutline", [], None, None, [], []
+    )
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -54,7 +58,9 @@ def test_scenariooutline_set_rule_on_all_examples(mocker):
     """A ScenarioOutline should forward a set Rule to all its Examples"""
     # given
     rule_mock = mocker.MagicMock(name="Rule")
-    scenario = ScenarioOutline(1, "My ScenarioOutline", [], None, None, [], [])
+    scenario = ScenarioOutline(
+        1, "Scenario Outline", "My ScenarioOutline", [], None, None, [], []
+    )
     first_example = mocker.MagicMock(name="First Example")
     second_example = mocker.MagicMock(name="Second Example")
     scenario.examples = [first_example, second_example]
@@ -72,7 +78,14 @@ def test_scenariooutline_build_examples_from_example_table():
     """A ScenarioOutline should build its Examples from the given Example Table"""
     # given & when
     scenario = ScenarioOutline(
-        1, "My ScenarioOutline", [], None, None, [], [{}, {}]  # two empty examples
+        1,
+        "Scenario Outline",
+        "My ScenarioOutline",
+        [],
+        None,
+        None,
+        [],
+        [{}, {}],  # two empty examples
     )
 
     # then
@@ -84,6 +97,7 @@ def test_scenariooutline_should_build_examples_with_info_in_short_description():
     # given & when
     scenario = ScenarioOutline(
         1,
+        "Scenario Outline",
         "My ScenarioOutline",
         [],
         None,
@@ -114,6 +128,7 @@ def test_scenariooutline_should_build_examples_with_copied_steps(mocker):
     # given & when
     scenario = ScenarioOutline(
         1,
+        "Scenario Outline",
         "My ScenarioOutline",
         [],
         None,
@@ -136,6 +151,7 @@ def test_scenariooutline_should_build_examples_with_replaced_step_texts(mocker):
     # given & when
     scenario = ScenarioOutline(
         1,
+        "Scenario Outline",
         "My ScenarioOutline",
         [],
         None,
@@ -192,6 +208,7 @@ def test_scenario_should_correctly_evaluate_if_it_has_to_be_run(
     feature_mock = mocker.MagicMock(tags=[Tag("tag-c", None, None)])
     scenario = ScenarioOutline(
         1,
+        "Scenario Outline",
         "My ScenarioOutline",
         [Tag("tag-a", None, None), Tag("tag-b", None, None)],
         None,

@@ -19,6 +19,7 @@ class Feature(Timed):
     def __init__(
         self,
         feature_id: int,
+        keyword: str,
         short_description: str,
         description,
         tags,
@@ -26,9 +27,11 @@ class Feature(Timed):
         line: int,
         background,
         rules,
+        language_spec,
     ) -> None:
         super().__init__()
         self.id = feature_id
+        self.keyword = keyword
         self.short_description = short_description
         self.description = description
         self.tags = tags
@@ -36,6 +39,7 @@ class Feature(Timed):
         self.line = line
         self.background = background
         self.rules = rules
+        self.language_spec = language_spec
 
         #: Holds the ``Context`` object.
         self.context = Context()

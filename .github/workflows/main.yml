@@ -39,6 +39,8 @@ jobs:
       - name: Integration Test with radish
         run: |
           coverage run -p -m radish -b tests/integration/radish tests/integration/features --no-ansi
+        env: 
+          PYTHONIOENCODING: UTF-8
       - name: Report code coverage
         run: |
           coverage combine

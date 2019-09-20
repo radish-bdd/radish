@@ -1,7 +1,7 @@
 Feature: Test the radish @precondition feature
     In order to minimize duplicate setup code
-    radish supports Preconditions for dedicated
-    Scenarios in a Feature.
+    radish supports Preconditions for
+    dedicated Scenarios in a Feature.
 
     Scenario: Use single Precondition Scenario from another Feature File
         Given the Feature File "base.feature"

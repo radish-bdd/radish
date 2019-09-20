@@ -1,0 +1,18 @@
+{
+    "Feature": "Feature",
+    "Background": "Background",
+    "Scenario": "Scenario",
+    "Example": "Example",
+    "Scenario Outline": "Scenario Outline",
+    "Example Outline": "Example Outline",
+    "Examples": "Examples",
+    "Scenario Loop": "Scenario Loop",
+    "Example Loop": "Example Loop",
+    "Iterations": "Iterations",
+    "Rule": "Rule",
+    "Given": "Given",
+    "When": "When",
+    "Then": "Then",
+    "And": "And",
+    "But": "But"
+}

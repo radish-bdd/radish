@@ -9,12 +9,13 @@ The root from red to green. BDD tooling for Python.
 """
 
 import os
+import re
 import shutil
+import subprocess
 import tempfile
 import textwrap
-import subprocess
 
-from radish import before, after, given, when, then
+from radish import after, before, given, then, when
 
 
 @before.each_scenario()
@@ -35,7 +36,6 @@ from radish.models.state import State
 
 @after.each_step()
 def gather_failure(step):
-    print("Step", step.text, step.state)
     if step.state is not State.FAILED:
         return
 
@@ -116,6 +116,33 @@ def run_feature_file(step, feature_filename):
     step.context.command = radish_command
 
 
+@when(
+    "the {feature_filename:QuotedString} is run with the options {radish_options:QuotedString}"
+)
+def run_feature_file_with_options(step, feature_filename, radish_options):
+    """Run the given Feature File"""
+    feature_path = os.path.join(step.context.features_dir, feature_filename)
+    radish_command = [
+        "coverage",
+        "run",
+        "-p",
+        "-m",
+        "radish",
+        "-b",
+        step.context.base_dir,
+        feature_path,
+        "-t",
+    ] + radish_options.split()
+    proc = subprocess.Popen(
+        radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    stdout, _ = proc.communicate()
+
+    step.context.exit_code = proc.returncode
+    step.context.stdout = stdout
+    step.context.command = radish_command
+
+
 @then("the exit code should be {exit_code:int}")
 def expect_exit_code(step, exit_code):
     """Expect the exit code to be a certain integer"""
@@ -124,6 +151,27 @@ def expect_exit_code(step, exit_code):
         + "stdout from radish run: '{}':\n".format(" ".join(step.context.command))
         + step.context.stdout.decode("utf-8")
     )
+
+
+def assert_output(actual_stdout, expected_stdout):
+    """Assert that the captured stdout matches"""
+    for actual_stdout_line, expected_stdout_line in zip(
+        actual_stdout.splitlines(), expected_stdout.splitlines()
+    ):
+        assert re.match(
+            "^" + expected_stdout_line + "$", actual_stdout_line
+        ), "{!r} == {!r}".format(expected_stdout_line, actual_stdout_line)
+
+
+@then("the output to match:")
+def expect_output(step):
+    """Expect the output to match the regex in the doc string"""
+    assert (
+        step.doc_string is not None
+    ), "Please provide an output in the Step doc string"
+
+    actual_stdout = step.context.stdout.decode("utf-8").replace("\r", "")
+    assert_output(actual_stdout, step.doc_string.replace("\r", ""))
 
 
 @then("the run should fail with a {exc_type_name:word}")

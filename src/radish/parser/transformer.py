@@ -34,9 +34,6 @@ from radish.parser.errors import (
 
 
 class RadishGherkinTransformer(Transformer):
-    FIRST_LEVEL_STEP_KEYWORDS = {"Given", "When", "Then"}
-    SECOND_LEVEL_STEP_KEYWORDS = {"And", "But"}
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -47,9 +44,14 @@ class RadishGherkinTransformer(Transformer):
         self.__step_keyword_ctx = None
 
     def prepare(
-        self, featurefile_path: Path, featurefile_contents: str, feature_id: int
+        self,
+        language_spec,
+        featurefile_path: Path,
+        featurefile_contents: str,
+        feature_id: int,
     ):
         """Prepare the Transformer for the next transformation"""
+        self.language_spec = language_spec
         self.featurefile_path = featurefile_path
         self.featurefile_contents = featurefile_contents.splitlines(True)
         self.feature_id = feature_id
@@ -64,8 +66,8 @@ class RadishGherkinTransformer(Transformer):
 
     def step_doc_string(self, subtree):
         """Transform the ``step_doc_string``-subtree for the radish AST"""
-        startline = subtree[0].line - 1
-        endline = subtree[-1].line
+        startline = subtree[0].line
+        endline = subtree[-1].line - 1
         lines = "".join(self.featurefile_contents[startline:endline])
         return textwrap.dedent(lines)
 
@@ -115,18 +117,24 @@ class RadishGherkinTransformer(Transformer):
         keyword_line = keyword.line
         keyword = keyword.strip()
         if self.__step_keyword_ctx is None:
-            if keyword not in self.FIRST_LEVEL_STEP_KEYWORDS:
+            if keyword not in self.language_spec.first_level_step_keywords:
                 raise RadishFirstStepMustUseFirstLevelKeyword()
 
             self.__step_keyword_ctx = keyword
         else:
-            if keyword in self.FIRST_LEVEL_STEP_KEYWORDS:
+            if keyword in self.language_spec.first_level_step_keywords:
                 if keyword != self.__step_keyword_ctx:
                     self.__step_keyword_ctx = keyword
 
+        english_keyword = next(
+            key
+            for key, value in self.language_spec.keywords.items()
+            if value == self.__step_keyword_ctx
+        )
+
         step = Step(
             self.__step_id,
-            self.__step_keyword_ctx,
+            english_keyword,
             keyword,
             text,
             doc_string,
@@ -142,10 +150,12 @@ class RadishGherkinTransformer(Transformer):
     def scenario(self, subtree):
         """Transform the ``scenario``-subtree for the radish AST"""
         tags = list(itertools.takewhile(lambda t: isinstance(t, Tag), subtree))
-        short_description, *steps = subtree[len(tags) :]
+        keyword = subtree[len(tags)]
+        short_description, *steps = subtree[len(tags) + 1 :]
 
         scenario = Scenario(
             self.__scenario_id,
+            keyword,
             short_description,
             tags,
             self.featurefile_path,
@@ -176,14 +186,16 @@ class RadishGherkinTransformer(Transformer):
         """Transform the ``scenario_outline``-subtree for the radish AST"""
         # consume Feature Tags
         tags = list(itertools.takewhile(lambda t: isinstance(t, Tag), subtree))
-        short_description = subtree[len(tags)]
+        keyword = subtree[len(tags)]
+        short_description = subtree[len(tags) + 1]
         steps = list(
-            itertools.takewhile(lambda s: isinstance(s, Step), subtree[len(tags) + 1 :])
+            itertools.takewhile(lambda s: isinstance(s, Step), subtree[len(tags) + 2 :])
         )
-        examples_table = subtree[len(tags) + 1 + len(steps) :][0]
+        examples_table = subtree[len(tags) + 2 + len(steps) :][0]
 
         scenario_outline = ScenarioOutline(
             self.__scenario_id,
+            keyword,
             short_description,
             tags,
             self.featurefile_path,
@@ -206,14 +218,16 @@ class RadishGherkinTransformer(Transformer):
         """Transform the ``scenario_outline``-subtree for the radish AST"""
         # consume Feature Tags
         tags = list(itertools.takewhile(lambda t: isinstance(t, Tag), subtree))
-        short_description = subtree[len(tags)]
+        keyword = subtree[len(tags)]
+        short_description = subtree[len(tags) + 1]
         steps = list(
-            itertools.takewhile(lambda s: isinstance(s, Step), subtree[len(tags) + 1 :])
+            itertools.takewhile(lambda s: isinstance(s, Step), subtree[len(tags) + 2 :])
         )
-        iterations = subtree[len(tags) + 1 + len(steps)]
+        iterations = subtree[len(tags) + 2 + len(steps)]
 
         scenario_loop = ScenarioLoop(
             self.__scenario_id,
+            keyword,
             short_description,
             tags,
             self.featurefile_path,
@@ -230,6 +244,7 @@ class RadishGherkinTransformer(Transformer):
 
     def background(self, subtree):
         """Transform the ``background``-subtree for the radish AST"""
+        keyword = subtree.pop(0)
         if len(subtree) == 0:
             short_description = None
             steps = []
@@ -240,6 +255,7 @@ class RadishGherkinTransformer(Transformer):
             short_description, *steps = subtree
 
         background = Background(
+            keyword,
             short_description,
             self.featurefile_path,
             short_description.line if short_description else 0,
@@ -249,6 +265,7 @@ class RadishGherkinTransformer(Transformer):
 
     def rule(self, subtree):
         """Transform the ``rule``-subtree for the radish AST"""
+        keyword = subtree.pop(0)
         short_description = subtree[0]
         if len(subtree) > 1:
             scenarios = subtree[1:]
@@ -256,7 +273,11 @@ class RadishGherkinTransformer(Transformer):
             scenarios = []
 
         rule = Rule(
-            short_description, self.featurefile_path, short_description.line, scenarios
+            keyword,
+            short_description,
+            self.featurefile_path,
+            short_description.line,
+            scenarios,
         )
 
         # let the Scenarios know to which Rule they belong
@@ -302,9 +323,10 @@ class RadishGherkinTransformer(Transformer):
         """Transform the ``feature``-subtree for the radish AST"""
         # consume Feature Tags
         tags = list(itertools.takewhile(lambda t: isinstance(t, Tag), subtree))
-        short_description = subtree[len(tags)]
-        if len(subtree) > len(tags) + 1:
-            description, background, rules = subtree[len(tags) + 1 :][0]
+        keyword = subtree[len(tags)]
+        short_description = subtree[len(tags) + 1]
+        if len(subtree) > len(tags) + 2:
+            description, background, rules = subtree[len(tags) + 2 :][0]
         else:
             description = None
             background = None
@@ -312,6 +334,7 @@ class RadishGherkinTransformer(Transformer):
 
         feature = Feature(
             self.feature_id,
+            keyword,
             short_description,
             description,
             tags,
@@ -319,6 +342,7 @@ class RadishGherkinTransformer(Transformer):
             short_description.line,
             background,
             rules,
+            self.language_spec,
         )
 
         # let the Rules know to which Feature they belong

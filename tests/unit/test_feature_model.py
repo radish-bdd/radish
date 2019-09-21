@@ -11,6 +11,7 @@ The root from red to green. BDD tooling for Python.
 import pytest
 
 from radish.models import Feature, State
+from radish.models import ConstantTag, Tag
 
 
 @pytest.mark.parametrize(
@@ -86,3 +87,23 @@ def test_feature_should_run_if_one_of_its_rule_has_to_run(
 
     # then
     assert actual_has_to_run == expected_has_to_run
+
+
+def test_feature_should_return_all_constants():
+    """A Feature should return all Constants from the Tags"""
+    # given
+    tags = [
+        Tag("x", None, None),
+        ConstantTag("k1", "v1", None, None),
+        Tag("y", None, None),
+        ConstantTag("k2", "v2", None, None),
+    ]
+    feature = Feature(
+        1, "Feature", "My Feature", None, tags, None, None, None, None, None
+    )
+
+    # when
+    actual_constants = feature.constants
+
+    # then
+    assert actual_constants == {"k1": "v1", "k2": "v2"}

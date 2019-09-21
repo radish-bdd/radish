@@ -13,7 +13,7 @@ from unittest.mock import MagicMock
 import pytest
 from tagexpressions import parse
 
-from radish.models import Scenario, Tag
+from radish.models import ConstantTag, Scenario, Tag
 from radish.models.state import State
 
 
@@ -343,3 +343,45 @@ def test_scenario_should_correctly_evaluate_if_it_has_to_be_run(
 
     # then
     assert has_to_run == expected_has_to_run
+
+
+def test_scenario_should_return_all_constants(mocker):
+    """A Scenario should return all Constants from the Tags"""
+    # given
+    tags = [
+        Tag("x", None, None),
+        ConstantTag("k1", "v1", None, None),
+        Tag("y", None, None),
+        ConstantTag("k2", "v2", None, None),
+    ]
+    scenario = Scenario(1, "Scenario", "My Scenario", tags, None, None, [])
+    feature_mock = mocker.MagicMock(name="Feature")
+    feature_mock.constants = {}
+    scenario.set_feature(feature_mock)
+
+    # when
+    actual_constants = scenario.constants
+
+    # then
+    assert actual_constants == {"k1": "v1", "k2": "v2"}
+
+
+def test_scenario_should_inherit_feature_constants(mocker):
+    """A Scenario should inherit all Constants from the Feature"""
+    # given
+    tags = [
+        Tag("x", None, None),
+        ConstantTag("k1", "v1", None, None),
+        Tag("y", None, None),
+        ConstantTag("k2", "v2", None, None),
+    ]
+    feature_mock = mocker.MagicMock(name="Feature")
+    feature_mock.constants = {"kf1": "vf1", "kf2": "vf2"}
+    scenario = Scenario(1, "Scenario", "My Scenario", tags, None, None, [])
+    scenario.set_feature(feature_mock)
+
+    # when
+    actual_constants = scenario.constants
+
+    # then
+    assert actual_constants == {"k1": "v1", "k2": "v2", "kf1": "vf1", "kf2": "vf2"}

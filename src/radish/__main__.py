@@ -33,10 +33,15 @@ logging.basicConfig(
     level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
 )
 
-# load radish built-in extensions
-__SOURCE_DIR__ = Path(__file__).absolute().parent
-__BUILT_IN_EXTENSIONS__ = [__SOURCE_DIR__ / "extensions", __SOURCE_DIR__ / "formatters"]
-loaded_built_in_extensions = loader.load_modules(__BUILT_IN_EXTENSIONS__)
+# NOTE(TF): somehow doctest with pytest imports this module multiple times ...
+if "doctest" not in sys.modules:
+    # load radish built-in extensions
+    __SOURCE_DIR__ = Path(__file__).absolute().parent
+    __BUILT_IN_EXTENSIONS__ = [
+        __SOURCE_DIR__ / "extensions",
+        __SOURCE_DIR__ / "formatters",
+    ]
+    loaded_built_in_extensions = loader.load_modules(__BUILT_IN_EXTENSIONS__)
 
 
 def enable_radish_debug_mode(ctx, param, enabled):

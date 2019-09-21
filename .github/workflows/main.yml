@@ -36,10 +36,11 @@ jobs:
       - name: Unit Test with pytest
         run: |
           coverage run -p -m pytest
+          coverage run -p -m pytest src/ --doctest-modules
       - name: Integration Test with radish
         run: |
           coverage run -p -m radish -b tests/integration/radish tests/integration/features --no-ansi
-        env: 
+        env:
           PYTHONIOENCODING: UTF-8
       - name: Report code coverage
         run: |

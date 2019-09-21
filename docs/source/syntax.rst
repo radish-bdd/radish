@@ -287,6 +287,37 @@ don't contain this Tag directly.
 
 Hooks can also be specialized to only be run for Features or Scenarios that contain special Tags.
 
+Tag Constants
+-------------
+
+Features and Scenarios (including `Scenario Outline`_ and `Scenario Loop`_)
+can be annotated with *Tag Constants*. Those are Tags which additionally to the
+name also have a value:
+
+.. code-block:: gherkin
+
+    @constant(number: 5)
+    Feature: Calculator Addition
+
+        @constant(addend: 5)
+        Scenario: Addition with Integers
+            ...
+
+A Scenario inherits the Constants from the Feature.
+The Constants can be used in in the Steps using the `${name}` syntax:
+
+.. code-block:: gherkin
+
+    @constant(number: 5)
+    Feature: Calculator Addition
+
+        @constant(addend: 2)
+        Scenario: Addition with Integers
+            When the numbers ${number} and ${addend} are summed
+            Then the result is 7
+
+All the Constants are resolved during the Step Implementation Matching Phase.
+
 Comment
 -------
 

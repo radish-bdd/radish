@@ -27,6 +27,7 @@ def test_matcher_should_raise_error_when_no_step_impl_found(mocker):
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = []
     step = Step(1, "Given", "Given", "pattern", None, None, None, None)
+    step.set_scenario(mocker.MagicMock(name="Scenario"))
 
     # then
     with pytest.raises(StepImplementationNotFoundError) as excinfo:
@@ -49,6 +50,7 @@ def test_matcher_should_raise_error_when_no_matcher_for_pattern_type(mocker):
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = [step_impl]
     step = Step(1, "Given", "Given", "pattern", None, None, None, None)
+    step.set_scenario(mocker.MagicMock(name="Scenario"))
 
     # then
     with pytest.raises(StepImplementationPatternNotSupported) as excinfo:
@@ -66,6 +68,7 @@ def test_matcher_should_match_step_impl_with_parse_type_pattern(mocker):
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = [step_impl]
     step = Step(1, "Given", "Given", "pattern", None, None, None, None)
+    step.set_scenario(mocker.MagicMock(name="Scenario"))
 
     # when
     match_step(step, registry_mock)
@@ -82,6 +85,7 @@ def test_matcher_should_match_step_impl_with_regex_pattern(mocker):
     registry_mock = mocker.MagicMock()
     registry_mock.step_implementations.return_value = [step_impl]
     step = Step(1, "Given", "Given", "pattern", None, None, None, None)
+    step.set_scenario(mocker.MagicMock(name="Scenario"))
 
     # when
     match_step(step, registry_mock)
@@ -107,9 +111,31 @@ def test_matcher_should_match_best_step_impl_candidate(mocker):
         step_impl_no_candidate,
     ]
     step = Step(1, "Given", "Given", "foo", None, None, None, None)
+    step.set_scenario(mocker.MagicMock(name="Scenario"))
 
     # when
     match_step(step, registry_mock)
 
     # then
     assert step.step_impl == step_impl_candidate_2
+
+
+def test_matcher_should_match_step_impl_with_step_with_constants(mocker):
+    """The matcher should match a Step with Constants"""
+    # given
+    step_impl = StepImpl("Given", "pattern with A and B", None)
+    registry_mock = mocker.MagicMock()
+    registry_mock.step_implementations.return_value = [step_impl]
+    step = Step(
+        1, "Given", "Given", "pattern with ${x} and ${y}", None, None, None, None
+    )
+    scenario_mock = mocker.MagicMock(name="Scenario")
+    scenario_mock.constants = {"x": "A", "y": "B"}
+    step.set_scenario(scenario_mock)
+
+    # when
+    match_step(step, registry_mock)
+
+    # then
+    assert step.step_impl == step_impl
+    assert isinstance(step.step_impl_match, ParseTypeStepImplMatcher.Match)

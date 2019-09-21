@@ -16,6 +16,7 @@ from lark import Transformer
 
 from radish.models import (
     Background,
+    ConstantTag,
     DefaultRule,
     Feature,
     PreconditionTag,
@@ -355,6 +356,9 @@ class RadishGherkinTransformer(Transformer):
         """Transform the ``tag``-subtree for the radish AST"""
         return subtree[0]
 
+    feature_tag = tag
+    scenario_tag = tag
+
     def std_tag(self, subtree):
         """Transform the ``tag``-subtree for the radish AST"""
         tag_name = subtree[0]
@@ -370,6 +374,12 @@ class RadishGherkinTransformer(Transformer):
             self.featurefile_path,
             feature_filename.line,
         )
+        return tag
+
+    def constant_tag(self, subtree):
+        """Transform the ``constant_tag``-subtree for the radish AST"""
+        key, value = subtree
+        tag = ConstantTag(str(key), str(value), self.featurefile_path, key.line)
         return tag
 
     def _expand_background_and_scenarios(self, scenarios):

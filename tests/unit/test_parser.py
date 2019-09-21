@@ -7,6 +7,7 @@ from pathlib import Path
 import pytest
 
 from radish.models import (
+    ConstantTag,
     DefaultRule,
     PreconditionTag,
     Scenario,
@@ -2368,6 +2369,21 @@ def test_parser_precondition_tag_on_scenario(parser):
     assert precondition_tag.name == "precondition(some.feature: My Base Scenario)"
     assert precondition_tag.feature_filename == "some.feature"
     assert precondition_tag.scenario_short_description == "My Base Scenario"
+
+
+def test_parser_constant_tag_on_feature(parser):
+    """The parser should recognize a constant Tag on a Feature"""
+    # given
+    feature_file = """
+        @constant(foo: bar)
+        Feature: My Feature
+    """
+
+    # when
+    ast = parser.parse_contents(Path(__file__), feature_file)
+
+    # then
+    assert isinstance(ast.tags[0], ConstantTag)
 
 
 def test_parser_should_raise_error_for_unknown_language(parser):

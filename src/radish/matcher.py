@@ -84,6 +84,10 @@ def match_step(step: Step, registry):
     # depending on the Step Keyword.
     step_impls = registry.step_implementations(step.keyword)
 
+    # resolve the Constant Tags for the matching
+    # FIXME(TF): it's quite shitty that the matcher has to know about constants ...
+    step_text = _resolve_constant_tags_in_step_text(step.text, step.scenario.constants)
+
     potentional_matches = []
     for step_impl in step_impls:
         try:
@@ -91,15 +95,15 @@ def match_step(step: Step, registry):
         except KeyError:
             raise StepImplementationPatternNotSupported(step_impl)
 
-        match, match_length = matcher(step.text, step_impl)
+        match, match_length = matcher(step_text, step_impl)
         if match:
-            if len(step.text) == match_length:
+            if len(step_text) == match_length:
                 # if perfect match can be made we return it no
                 # matter of the other potentional matches
                 step.assign_implementation(step_impl, match)
                 return
 
-            distance_to_perfect = abs(len(step.text) - match_length)
+            distance_to_perfect = abs(len(step_text) - match_length)
             potentional_matches.append(((step_impl, match), distance_to_perfect))
 
     if potentional_matches:
@@ -109,3 +113,27 @@ def match_step(step: Step, registry):
         return
 
     raise StepImplementationNotFoundError(step)
+
+
+def _resolve_constant_tags_in_step_text(step_text, constants):
+    """Resolve all Constants in the given Step Text
+
+    The Constants must have the form of: ``${name}``.
+
+    >>> step_text = "Some Step ${x} with ${y} and Constants"
+    >>> constants = {"x": "A", "y": "B"}
+    >>> _resolve_constant_tags_in_step_text(step_text, constants)
+    'Some Step A with B and Constants'
+
+    If a ``${name}`` is not in the Constants it's not replaced
+    and doesn't cause a warning. It's assumed to be part of the Step itself.
+
+    >>> step_text = "Some Step ${x} with ${y} and Constants"
+    >>> constants = {"x": "A"}
+    >>> _resolve_constant_tags_in_step_text(step_text, constants)
+    'Some Step A with ${y} and Constants'
+    """
+    for key, value in constants.items():
+        step_text = step_text.replace("${%s}" % key, value)
+
+    return step_text

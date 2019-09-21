@@ -9,6 +9,7 @@ the root from red to green.  BDD tooling for Python.
 """
 
 from radish.models.background import Background  # noqa
+from radish.models.constant_tag import ConstantTag  # noqa
 from radish.models.feature import Feature  # noqa
 from radish.models.precondition_tag import PreconditionTag  # noqa
 from radish.models.rule import DefaultRule, Rule  # noqa

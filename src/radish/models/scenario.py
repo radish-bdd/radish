@@ -10,9 +10,10 @@ the root from red to green.  BDD tooling for Python.
 
 import copy
 
+from radish.models.constant_tag import ConstantTag
 from radish.models.context import Context
-from radish.models.timed import Timed
 from radish.models.state import State
+from radish.models.timed import Timed
 
 
 class Scenario(Timed):
@@ -115,6 +116,16 @@ class Scenario(Timed):
             steps = self.steps + self.background.steps
 
         return self._steps_state(steps)
+
+    @property
+    def constants(self):
+        """Get the Constants of this Scenario
+
+        The Constants are lazy-evaluated from the Tags.
+        """
+        consts = self.feature.constants
+        consts.update({t.key: t.value for t in self.tags if isinstance(t, ConstantTag)})
+        return consts
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Scenario has to run or not

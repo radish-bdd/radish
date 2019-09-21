@@ -8,9 +8,10 @@ the root from red to green.  BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-from radish.models.timed import Timed
+from radish.models.constant_tag import ConstantTag
 from radish.models.context import Context
 from radish.models.state import State
+from radish.models.timed import Timed
 
 
 class Feature(Timed):
@@ -57,6 +58,14 @@ class Feature(Timed):
     def state(self):
         """Read-only property to get the State for this Feature"""
         return State.report_state(r.state for r in self.rules)
+
+    @property
+    def constants(self):
+        """Get the Constants of this Feature
+
+        The Constants are lazy-evaluated from the Tags.
+        """
+        return {t.key: t.value for t in self.tags if isinstance(t, ConstantTag)}
 
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Feature has to run or not

@@ -1,19 +1,22 @@
 start: _NEWLINE* feature?
 
-// A Tag can be assigned to either of:
-// * Feature
-// * Scenario
-// * Scenario outline
-tag: std_tag | precondition_tag
+// A Tag which can be used on a Feature
+feature_tag: std_tag | constant_tag
+
+// A Tag which can be used on a Scenario
+scenario_tag: std_tag | precondition_tag | constant_tag
 
 // A standard gherkin Tag in the form of:
 // * @tag
-// * @tag with whitespace
 std_tag: "@" STRING_NO_WS _NEWLINE?
 
 // A radish Precondition Tag in the form of:
 // * @precondition(feature: scenario)
 precondition_tag: "@precondition(" STRING_NO_COLON_NL ":" STRING_NO_PAREN_NL ")" _NEWLINE?
+
+// A radish Constant Tag in the form of:
+// * @constant(name: value)
+constant_tag: "@constant(" STRING_NO_COLON_NL ":" STRING_NO_PAREN_NL ")" _NEWLINE?
 
 // A Feature may contain:
 //   * An optional description consisting of multiple free textline, but without
@@ -21,7 +24,7 @@ precondition_tag: "@precondition(" STRING_NO_COLON_NL ":" STRING_NO_PAREN_NL ")"
 //   * An optional `Background` block containing any number of `step`s.
 //   * Any number of `Scenario` blocks continaing any number of `step`s.
 //feature: tag* FEATURE TEXTLINE feature_inner?
-feature: tag* FEATURE ":" STRING_NO_NL _NEWLINE feature_body?
+feature: feature_tag* FEATURE ":" STRING_NO_NL _NEWLINE feature_body?
 feature_body: description background? (rule | scenario | scenario_outline | scenario_loop | _NEWLINE)*
 
 // A description consists of any textlines, but the description ends if one of
@@ -43,12 +46,12 @@ background: BACKGROUND ":" STRING_NO_NL? _NEWLINE (step | _NEWLINE)*
 
 // A Scenario block consists of a sentence following the `Scenario` keyword
 // and any number of steps
-scenario: tag* (SCENARIO | EXAMPLE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)*
+scenario: scenario_tag* (SCENARIO | EXAMPLE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)*
 
 // A Scenario Outline block consists of a sentence following the `Scenario Outline` keyword,
 // any number of steps and an Examples block followed by a table with parameters for the
 // outlined steps.
-scenario_outline: tag* (SCENARIO_OUTLINE | EXAMPLE_OUTLINE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* examples
+scenario_outline: scenario_tag* (SCENARIO_OUTLINE | EXAMPLE_OUTLINE) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* examples
 
 // An Examples block is used to parametrize a 'Scenario Outline'
 // It's a table of data
@@ -59,7 +62,7 @@ example_cell: STRING_NO_VBAR
 
 // A Scenario Loop block consists of a sentence following the `Scenario Loop` keyword,
 // any number of steps and an `Iterations` block followed by a max iteration number.
-scenario_loop: tag* (SCENARIO_LOOP | EXAMPLE_LOOP) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* iterations
+scenario_loop: scenario_tag* (SCENARIO_LOOP | EXAMPLE_LOOP) ":" STRING_NO_NL _NEWLINE (step | _NEWLINE)* iterations
 
 // An Iterations block indicates the max number of iterations for a `Scenario Loop`.
 iterations: _ITERATIONS ":" INT

@@ -9,6 +9,8 @@ classes and functions.
 Decorators
 ----------
 
+.. _register_step_implementations_api:
+
 Register Step Implementations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -19,6 +21,8 @@ Register Step Implementations
 .. autofunction:: radish.then
 
 .. autofunction:: radish.step
+
+.. _register_hooks_api:
 
 Register Hooks
 ~~~~~~~~~~~~~~

@@ -1,3 +1,5 @@
+.. _feature_file_syntax:
+
 Feature File Syntax
 ===================
 
@@ -60,6 +62,7 @@ for the Feature and Scenarios.
 A Rule consists of a *short description* and zero or more *Scenarios*:
 
 .. code-block:: gherkin
+   :emphasize-lines: 4
 
     Feature: ...
         ...
@@ -75,6 +78,7 @@ in a Feature which are not part of an explicit Rule.
 A simple Rule for the *Calculator Addition*-Feature might look like this:
 
 .. code-block:: gherkin
+   :emphasize-lines: 6, 14
 
     Feature: Calculator Addition
         In order to support all four elementary
@@ -114,6 +118,7 @@ A Background consists of an optional *short description* and Steps:
 A simple Background might look like this:
 
 .. code-block:: gherkin
+   :emphasize-lines: 6
 
     Feature: Calculator Addition
         In order to support all four elementary
@@ -174,6 +179,7 @@ The Example Parameters can be used in the Step by their name (defined in the *He
 The following snippets shows an example of a Scenario Outline:
 
 .. code-block:: gherkin
+   :emphasize-lines: 6
 
     Feature: Calculator Addition
         In order to support all four elementary
@@ -217,6 +223,7 @@ This *Precondition Scenario* is always run after the `Background`_ but before th
 The `Feature File`_ the *Precondition Scenario* is defined in can be any Feature File relativ to the Feature File it's used. It can even be defined in the same Feature File.
 
 .. code-block:: gherkin
+   :emphasize-lines: 2
 
     # NOTE: Make sure batteries are included
     @precondition(Calculator-Setup.feature: Include Batteries)
@@ -225,6 +232,8 @@ The `Feature File`_ the *Precondition Scenario* is defined in can be any Feature
 
 Use Scenario Preconditions with caution. They introduce additional complexity
 and intransparency to your tests - attributes which are definitely in conflict with good BDD tests.
+
+.. _step_syntax:
 
 
 Step
@@ -256,6 +265,8 @@ During a radish run Steps are matched with the Step Implementation.
 If the Step Implementation is run and passes the Scenario and eventually the
 Feature pass.
 
+.. _tag_syntax:
+
 Tag
 ---
 
@@ -265,6 +276,7 @@ A Tag always starts with the at symbol ``@`` followed by a name without a white 
 Tags can be placed on the same and/or multiple lines:
 
 .. code-block:: gherkin
+   :emphasize-lines: 1, 4, 5, 9, 10
 
     @addition @wip
     Feature: Calculator Addition
@@ -295,6 +307,7 @@ can be annotated with *Tag Constants*. Those are Tags which additionally to the
 name also have a value:
 
 .. code-block:: gherkin
+   :emphasize-lines: 1, 4
 
     @constant(number: 5)
     Feature: Calculator Addition
@@ -307,6 +320,7 @@ A Scenario inherits the Constants from the Feature.
 The Constants can be used in in the Steps using the `${name}` syntax:
 
 .. code-block:: gherkin
+   :emphasize-lines: 1, 4, 6
 
     @constant(number: 5)
     Feature: Calculator Addition
@@ -327,6 +341,7 @@ A comment starts with the hashtag symbol ``#`` and lasts until the end of the li
 A comment line mustn't contain anything prior to the hashtag symbol.
 
 .. code-block:: gherkin
+   :emphasize-lines: 3
 
     Feature: Calculator Addition
 

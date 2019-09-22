@@ -350,6 +350,35 @@ A comment line mustn't contain anything prior to the hashtag symbol.
 
             ...
 
+Language Comments
+-----------------
+
+Radish has Multi-Language Support for the parsing of Feature Files.
+The language to use to parse a Feature File can be specified on the first line
+of the Feature File as a *Language Comment*:
+
+.. code-block:: gherkin
+   :emphasize-lines: 1
+
+    # language: <language_code>
+    ...
+
+The ``<language_code>`` specifies which language to use.
+By default ``en`` is used for English.
+
+Assuming the *Calculator* Feature from above should be written in German:
+
+.. code-block:: gherkin
+   :emphasize-lines: 1
+
+    # language: de
+    Funktionalität: Taschenrechner Addition
+
+        Szenario: Addieren von Ganzzahlen
+            Gegeben sei die Zahl 5
+            Und die Zahl 2
+            Wenn die Zahlen addiert werden
+            Dann soll die Summe 7 ergeben
 
 .. _Gherkin: https://cucumber.io/docs/gherkin/reference/
 .. _EBNF Grammer: https://github.com/radish-bdd/radish/blob/master/src/radish/parser/grammer.g

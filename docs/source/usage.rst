@@ -25,6 +25,8 @@ The Feature File Syntax can be found here: :ref:`feature_file_syntax`
 
 For more information about how to run Feature Files, see: `Running Feature Files`_.
 
+.. _base_directory_usage:
+
 Base Directory
 --------------
 

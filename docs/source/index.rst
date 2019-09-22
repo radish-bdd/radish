@@ -18,6 +18,7 @@ This part of the documentation guides you through all of radish’s usage patter
    getting_started
    usage
    syntax
+   detail
 
 
 API Reference

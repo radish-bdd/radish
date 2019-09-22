@@ -8,11 +8,11 @@ Stages of a ``radish`` Run
 
 A ``radish`` Run consists of the following Stages:
 
-1. Parsing Command Line Arguments and Configuration [`Details <Stage 1 - Parsing Command Line Arguments and Configuration>`_]
-2. Loading Extensions according the the Configuration [`Details <Stage 2 - Loading Extensions according the the Configuration>`_]
-3. Parsing Feature Files [`Details <Stage 3 - Parsing Feature Files>`_]
-4. Loading of User Base Directory Python Modules [`Details <Stage 4 - Loading of User Base Directory Python Modules>`_]
-5. Running Feature Files [`Details <Stage 5 - Running Feature Files>`_]
+1. Parsing Command Line Arguments and Configuration
+2. Loading Extensions according the the Configuration
+3. Parsing Feature Files
+4. Loading of User Base Directory Python Modules
+5. Running Feature Files
 
 Stage 1 - Parsing Command Line Arguments and Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

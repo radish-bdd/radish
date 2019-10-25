@@ -29,4 +29,4 @@ other than ``features`` it is usually better to stick to a single paragraph to k
 You can install ``towncrier`` and then run ``towncrier --draft``
 if you want to get a preview of how your change will look in the final release notes.
 
-Disclaimer: this README was copied and adapted to the need of radish from the awesome pytest project.
+Disclaimer: this README was copied and adapted to the needs of radish from the awesome pytest project.

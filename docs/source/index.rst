@@ -33,6 +33,15 @@ method, this part of the documentation is for you.
    api
 
 
+ChangeLog
+---------
+
+.. toctree::
+   :maxdepth: 2
+
+   changelog
+
+
 Indices and tables
 ==================
 

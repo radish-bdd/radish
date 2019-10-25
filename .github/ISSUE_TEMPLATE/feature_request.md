@@ -2,7 +2,7 @@
 name: Feature Request
 about: Suggest an idea for a new feature or enhancement for radish
 title: ''
-labels: ''
+labels: 'feature request'
 assignees: ''
 
 ---

@@ -2,7 +2,7 @@
 name: Ask a Question
 about: Ask a Question about radish (Usage, Development, ...)
 title: ''
-labels: ''
+labels: 'question'
 assignees: ''
 
 ---

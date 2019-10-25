@@ -30,7 +30,7 @@ CLASSIFIERS = [
 
 #: Holds the runtime requirements for the end user
 INSTALL_REQUIRES = [
-    "lark-parser>=0.7.6a1",
+    "lark-parser==0.7.6a1",
     "click",
     "colorful>=0.5.4",
     "tag-expressions>=1.0.0",

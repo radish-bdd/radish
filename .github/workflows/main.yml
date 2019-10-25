@@ -73,6 +73,9 @@ jobs:
         run: |
           sphinx-build -W -b html -d doctrees docs/source docs/build/html
           sphinx-build -W -b doctest -d doctrees docs/source docs/build/html
+      - name: Generate CHANGELOG
+        run: |
+          towncrier --draft
 
   publish:
     needs: [build, docs]

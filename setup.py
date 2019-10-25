@@ -49,7 +49,7 @@ EXTRAS_REQUIRES = {
     "tests": ["freezegun", "coverage", "pytest", "pytest-mock"],
 }
 EXTRAS_REQUIRES["dev"] = (
-    EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit"]
+    EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit", "towncrier"]
 )
 
 #: Holds the contents of the README file

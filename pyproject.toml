@@ -1,3 +1,11 @@
 [tool.black]
 target_version = ["py37"]
 include = "(setup.py|src|tests)"
+
+[tool.towncrier]
+package = "radish"
+package_dir = "src"
+filename = "CHANGELOG.rst"
+directory = "changelog/"
+title_format = "radish-bdd {version} ({project_date})"
+template = "changelog/template.rst"

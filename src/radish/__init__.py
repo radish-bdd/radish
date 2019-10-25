@@ -21,6 +21,20 @@ __bugtrack_url__ = "https://github.com/radish-bdd/radish/issues"
 # Expose useful objects on radish package level
 from radish.errors import RadishError  # noqa
 from radish.hookregistry import after, before  # noqa
+from radish.models import (  # noqa
+    Background,
+    ConstantTag,
+    DefaultRule,
+    Feature,
+    PreconditionTag,
+    Rule,
+    Scenario,
+    ScenarioLoop,
+    ScenarioOutline,
+    Step,
+    Tag
+)
+from radish.parser import FeatureFileParser  # noqa
 from radish.parsetyperegistry import custom_type  # noqa
 from radish.stepregistry import given, step, then, when  # noqa
 from radish.terrain import world  # noqa

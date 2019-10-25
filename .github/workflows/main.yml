@@ -99,3 +99,13 @@ jobs:
         with:
           user: __token__
           password: ${{ secrets.pypi_token }}
+      - name: Create Release on GitHub
+        if: startsWith(github.event.ref, 'refs/tags')
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true

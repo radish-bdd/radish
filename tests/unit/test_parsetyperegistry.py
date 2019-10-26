@@ -30,7 +30,7 @@ def test_parsetyperegistry_should_register_funcs_as_custom_parse_types():
     custom_parse_type_func = lambda x: x  # noqa
 
     # when
-    registry.register("name", "pattern", custom_parse_type_func)
+    registry.register("name", custom_parse_type_func, "pattern")
 
     # then
     assert registry.types == {"name": custom_parse_type_func}
@@ -44,12 +44,12 @@ def test_parsetyperegistry_should_only_allow_unique_custom_parse_type_names():
     # given
     registry = ParseTypeRegistry()
     custom_parse_type_func = lambda x: x  # noqa
-    registry.register("name", "pattern", custom_parse_type_func)
+    registry.register("name", custom_parse_type_func, "pattern")
 
     # then
     with pytest.raises(RadishError):
         # when
-        registry.register("name", "pattern", custom_parse_type_func)
+        registry.register("name", custom_parse_type_func, "pattern")
 
 
 def test_parsetyperegistry_should_assign_pattern_to_func_during_register():
@@ -62,7 +62,7 @@ def test_parsetyperegistry_should_assign_pattern_to_func_during_register():
     custom_parse_type_func = lambda x: x  # noqa
 
     # when
-    registry.register("name", "pattern", custom_parse_type_func)
+    registry.register("name", custom_parse_type_func, "pattern")
 
     # then
     assert custom_parse_type_func.pattern == "pattern"

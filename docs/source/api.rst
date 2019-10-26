@@ -27,6 +27,8 @@ The following packages can be imported from the radish package:
 
         # Step Pattern Types
         custom_type,
+        register_custom_type,
+        TypeBuilder,
 
         # The radish parser
         FeatureFileParser,

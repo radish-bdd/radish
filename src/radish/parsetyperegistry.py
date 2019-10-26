@@ -8,6 +8,8 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from parse_type import TypeBuilder  # noqa
+
 from radish.errors import RadishError
 
 
@@ -17,7 +19,7 @@ class ParseTypeRegistry:
     def __init__(self):
         self.types = {}
 
-    def register(self, name, pattern, func):
+    def register(self, name, func, pattern=None):
         """Register a new parse type"""
         if name in self.types:
             raise RadishError(
@@ -26,7 +28,9 @@ class ParseTypeRegistry:
                 )
             )
 
-        func.pattern = pattern
+        if pattern is not None:
+            func.pattern = pattern
+
         self.types[name] = func
 
     def create_decorator(self, context=None):
@@ -41,7 +45,7 @@ class ParseTypeRegistry:
         def __create_decorator(decorator_name):
             def __decorator(name, pattern):
                 def __wrapper(func):
-                    self.register(name, pattern, func)
+                    self.register(name, func, pattern)
                     return func
 
                 return __wrapper
@@ -56,4 +60,15 @@ class ParseTypeRegistry:
 #: Holds a global instance of the ParseTypeRegistry which shall be used
 #  by all modules implementing Custom Parse Types.
 registry = ParseTypeRegistry()
+
+
+def register_custom_type(**kwargs):
+    """Register a custom type
+
+    The arguments are expected to be in the form of: type-name=func.
+    """
+    for name, func in kwargs.items():
+        registry.register(name, func)
+
+
 __all__ = registry.create_decorator()

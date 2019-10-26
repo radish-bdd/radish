@@ -301,6 +301,41 @@ The following table shows all built-in types:
 | tt              | Time e.g. 10:21:36 PM -5:30                                                   | time        |
 +-----------------+-------------------------------------------------------------------------------+-------------+
 
+All the above types can be combined with a cardinality:
+
+.. code:: text
+
+    "{:type}"     #< Cardinality: 1    (one; the normal case)
+    "{:type?}"    #< Cardinality: 0..1 (zero or one  = optional)
+    "{:type*}"    #< Cardinality: 0..* (zero or more = many0)
+    "{:type+}"    #< Cardinality: 1..* (one  or more = many)
+
+... whereas ``type`` stands for the actual type which should be used.
+
+By default the ``,`` (comma) is used as a separator between multiple occurences
+within the cardinality. However, one can specify their own separator.
+Let's assume ``and`` should be used instead of ``,``:
+
+.. code:: python
+
+    from radish import custom_type, register_custom_type, TypeBuilder
+
+    @custom_type("User", r"[A-Za-z0-9]+")
+    def user_type(text):
+        """
+        Match a username and retrieve the ``User``
+        """
+        # some database lookup
+        user = User(...)
+        return user
+
+    # register the NumberList type
+    register_custom_type(UserList=TypeBuilder.with_many(
+        user_type, listsep='and'))
+
+Now you can use ``UserList`` as the type in the step pattern.
+Follow the documentation to learn more about the ``custom_type()`` decorator.
+
 Implementing custom Step Patterns
 `````````````````````````````````
 
@@ -333,6 +368,7 @@ a Step Implementation function:
     @when("the user {user:User} is loaded from the database")
     def when_load_user(step, user):
         ...
+
 
 Regular Expression Syntax
 .........................

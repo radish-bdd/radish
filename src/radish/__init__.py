@@ -32,9 +32,13 @@ from radish.models import (  # noqa
     ScenarioLoop,
     ScenarioOutline,
     Step,
-    Tag
+    Tag,
 )
 from radish.parser import FeatureFileParser  # noqa
-from radish.parsetyperegistry import custom_type  # noqa
+from radish.parsetyperegistry import (  # noqa
+    TypeBuilder,
+    custom_type,
+    register_custom_type,
+)
 from radish.stepregistry import given, step, then, when  # noqa
 from radish.terrain import world  # noqa

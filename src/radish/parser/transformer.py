@@ -314,10 +314,6 @@ class RadishGherkinTransformer(Transformer):
 
             rules = [default_rule] + rules
 
-        # add Background to all Rules
-        for rule in rules:
-            rule.set_background(background)
-
         return description, background, rules
 
     def feature(self, subtree):
@@ -353,6 +349,10 @@ class RadishGherkinTransformer(Transformer):
         # let the Rules know to which Feature they belong
         for rule in rules:
             rule.set_feature(feature)
+
+        # add Background to all Rules
+        for rule in rules:
+            rule.set_background(background)
 
         return feature
 

@@ -83,6 +83,7 @@ class Scenario(Timed):
             self.background = copy.deepcopy(background)
             self.background.set_scenario(self)
             self.background.set_rule(self.rule)
+            self.background.set_feature(self.feature)
 
     def set_rule(self, rule):
         """Set the Rule for this Scenario"""

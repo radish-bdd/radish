@@ -17,7 +17,7 @@ class Background(Scenario):
     def __init__(
         self, keyword: str, short_description: str, path: str, line: int, steps
     ) -> None:
-        super().__init__(0, keyword, short_description, None, path, line, steps)
+        super().__init__(0, keyword, short_description, [], path, line, steps)
 
         #: Holds the Scenario for which this Background is supposed to run.
         self.scenario = None
@@ -38,6 +38,7 @@ class Background(Scenario):
         and other context sensitive functionalities.
         """
         self.scenario = scenario  # pragma: no cover
+        self.context = self.scenario.context
 
     @property
     def state(self):

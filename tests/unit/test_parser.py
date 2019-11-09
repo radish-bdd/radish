@@ -619,6 +619,22 @@ def test_parse_empty_background_with_short_description(parser):
     assert ast.background.short_description == "My Background"
 
 
+def test_parse_background_has_assigned_feature(parser):
+    """The parser should assign the Feature to the Background"""
+    # given
+    feature_file = """
+        Feature: My Feature
+
+            Background: My Background
+    """
+
+    # when
+    ast = parser.parse_contents(None, feature_file)
+
+    # then
+    assert ast.background.feature is not None
+
+
 @pytest.mark.xfail(
     reason="RadishMultipleBackgrounds is not matched. Probably a bug in lark?"
 )

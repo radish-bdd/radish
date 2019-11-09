@@ -346,6 +346,10 @@ class RadishGherkinTransformer(Transformer):
             self.language_spec,
         )
 
+        # let the Background know to which Feature it belongs to
+        if background:
+            background.set_feature(feature)
+
         # let the Rules know to which Feature they belong
         for rule in rules:
             rule.set_feature(feature)

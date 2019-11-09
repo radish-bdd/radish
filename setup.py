@@ -40,13 +40,13 @@ INSTALL_REQUIRES = [
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
     # extras for end users
-    "bddxml": ["lxml"],
+    "xml": ["lxml"],
     "ipython-debugger": ["ipython"],
     "coverage": ["coverage"],
     "testing": ["PyYAML"],
     # extras for contributors
     "docs": ["sphinx", "towncrier"],
-    "tests": ["freezegun", "coverage", "pytest", "pytest-mock"],
+    "tests": ["freezegun", "coverage", "pytest", "pytest-mock"] + ["lxml", "PyYAML"],
 }
 EXTRAS_REQUIRES["dev"] = (
     EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit"]

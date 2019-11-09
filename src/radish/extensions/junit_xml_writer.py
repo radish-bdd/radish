@@ -63,7 +63,9 @@ def generate_junit_xml(junit_xml_path, tag_expression, scenario_ids, features):
     )
 
     testsuites_element = etree.Element(
-        "testsuites", time="{:.3f}".format(total_duration.total_seconds())
+        "testsuites",
+        name="radish",
+        time="{:.3f}".format(total_duration.total_seconds()),
     )
 
     for feature in (f for f in features if f.has_to_run(tag_expression, scenario_ids)):

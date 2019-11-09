@@ -14,6 +14,9 @@ import shutil
 import subprocess
 import tempfile
 import textwrap
+from pathlib import Path
+
+from lxml import etree
 
 from radish import after, before, given, then, when
 
@@ -134,7 +137,10 @@ def run_feature_file_with_options(step, feature_filename, radish_options):
         "-t",
     ] + radish_options.split()
     proc = subprocess.Popen(
-        radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+        radish_command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        cwd=step.context.ctx_dir,
     )
     stdout, _ = proc.communicate()
 
@@ -220,3 +226,57 @@ def expect_fail(step):
     assert match, (
         "Searched for:\n" + step.doc_string + "\n" + "within stdout:\n" + stdout
     )
+
+
+@then("the XML file {xmlfile:word} validates against {xsdfile:word}")
+def expect_xml_validates(step, xmlfile, xsdfile):
+    """Expect that the given XML file validates against the given XSD file"""
+    xmlfile_path = os.path.join(step.context.ctx_dir, xmlfile)
+    xsdfile_path = Path(__file__).absolute().parent.parent / "assets" / xsdfile
+
+    xmltree = etree.parse(xmlfile_path)
+    xsdtree = etree.parse(str(xsdfile_path))
+    xsd = etree.XMLSchema(xsdtree)
+
+    xsd.assert_(xmltree)
+
+
+@then(
+    "the XML file {xmlfile:word} has the value "
+    "{expected_value:QuotedString} at {xpath:QuotedString}"
+)
+def expect_value_at_xpath(step, xmlfile, expected_value, xpath):
+    """Expect the given value at the given xpath in the given xml file"""
+    xmlfile_path = os.path.join(step.context.ctx_dir, xmlfile)
+    tree = etree.parse(xmlfile_path)
+
+    elements = tree.xpath(xpath)
+
+    assert len(elements) != 0, "Cannot find any elements at '{}'".format(xpath)
+
+    assert (
+        len(elements) == 1
+    ), "Found multiple elements at '{}'. Expected exactly one.".format(xpath)
+
+    actual_value = elements[0]
+
+    assert (
+        actual_value == expected_value
+    ), "Actual value '{}' didn't match expected value '{}'".format(
+        actual_value, expected_value
+    )
+
+
+@then("the XML file {xmlfile:word} has the content:")
+def expect_xml_content(step, xmlfile):
+    """Expect the XML file content to match the given Doc String"""
+    assert (
+        step.doc_string is not None
+    ), "Please provide the content in the Step doc string"
+
+    xmlfile_path = os.path.join(step.context.ctx_dir, xmlfile)
+
+    with open(xmlfile_path, encoding="utf-8") as f:
+        actual_content = f.read().replace("\r", "")
+
+    assert_output(actual_content, step.doc_string.replace("\r", ""))

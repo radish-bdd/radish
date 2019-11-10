@@ -16,6 +16,11 @@ Feature: Supprt Junit XML Format
             @then("the Step fails")
             def fail_it(step):
                 assert False, "Some Failure occurred"
+
+
+            @then("the Step skips")
+            def skip_it(step):
+                step.skip()
             """
 
     Scenario: Report empty Feature File Run
@@ -73,6 +78,30 @@ Feature: Supprt Junit XML Format
               <testsuite name="Multiple Passed" tests="2" skipped="0" failures="0" errors="0" time="[0-9.]{5}">
                 <testcase classname="Multiple Passed" name="Pass 1" time="[0-9.]{5}"/>
                 <testcase classname="Multiple Passed" name="Pass 2" time="[0-9.]{5}"/>
+              </testsuite>
+            </testsuites>
+            """
+
+    Scenario: Report a single skipped Scenario as Testcase
+        Given the Feature File "single-skipped.feature"
+            """
+            Feature: Single Skipped
+                Single skipped Scenario
+
+                Scenario: Skip
+                    Then the Step skips
+            """
+        When the "single-skipped.feature" is run with the options "--junit-xml results.xml"
+        Then the exit code should be 1
+        And the XML file results.xml validates against junit.xsd
+        And the XML file results.xml has the content:
+            """
+            <\?xml version='1.0' encoding='utf-8'\?>
+            <testsuites name="radish" time="[0-9.]{5}">
+              <testsuite name="Single Skipped" tests="1" skipped="1" failures="0" errors="0" time="[0-9.]{5}">
+                <testcase classname="Single Skipped" name="Skip" time="[0-9.]{5}">
+                  <skipped/>
+                </testcase>
               </testsuite>
             </testsuites>
             """

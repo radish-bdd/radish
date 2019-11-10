@@ -17,20 +17,16 @@ def test_correct_exports_on_package_level():
         when,
         then,
         step,
-
         # Hooks & Terrain
         world,
         before,
         after,
-
         # Step Pattern Types
         custom_type,
         register_custom_type,
         TypeBuilder,
-
         # The radish parser
         FeatureFileParser,
-
         # Models
         Feature,
         Rule,
@@ -43,10 +39,8 @@ def test_correct_exports_on_package_level():
         Tag,
         PreconditionTag,
         ConstantTag,
-
         # Exception Types
         RadishError,
-
         # The radish-bdd package version
-        __version__
+        __version__,
     )

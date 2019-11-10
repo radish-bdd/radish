@@ -45,7 +45,7 @@ Feature: Supprt Junit XML Format
             """
             <\?xml version='1.0' encoding='utf-8'\?>
             <testsuites name="radish" time="[0-9.]{5}">
-              <testsuite name="Single Passed" failures="0" errors="0" skipped="0" tests="1" time="[0-9.]{5}">
+              <testsuite name="Single Passed" tests="1" skipped="0" failures="0" errors="0" time="[0-9.]{5}">
                 <testcase classname="Single Passed" name="Pass" time="[0-9.]{5}"/>
               </testsuite>
             </testsuites>
@@ -70,7 +70,7 @@ Feature: Supprt Junit XML Format
             """
             <\?xml version='1.0' encoding='utf-8'\?>
             <testsuites name="radish" time="[0-9.]{5}">
-              <testsuite name="Multiple Passed" failures="0" errors="0" skipped="0" tests="2" time="[0-9.]{5}">
+              <testsuite name="Multiple Passed" tests="2" skipped="0" failures="0" errors="0" time="[0-9.]{5}">
                 <testcase classname="Multiple Passed" name="Pass 1" time="[0-9.]{5}"/>
                 <testcase classname="Multiple Passed" name="Pass 2" time="[0-9.]{5}"/>
               </testsuite>
@@ -93,7 +93,7 @@ Feature: Supprt Junit XML Format
             """
             <\?xml version='1.0' encoding='utf-8'\?>
             <testsuites name="radish" time="[0-9.]{5}">
-              <testsuite name="Single Failed" failures="1" errors="0" skipped="0" tests="1" time="[0-9.]{5}">
+              <testsuite name="Single Failed" tests="1" skipped="0" failures="1" errors="0" time="[0-9.]{5}">
                 <testcase classname="Single Failed" name="Failed" time="[0-9.]{5}">
                   <failure type="AssertionError" message="Then the Step fails"><!\[CDATA\[Then the Step fails
 
@@ -128,7 +128,7 @@ Feature: Supprt Junit XML Format
             """
             <\?xml version='1.0' encoding='utf-8'\?>
             <testsuites name="radish" time="[0-9.]{5}">
-              <testsuite name="Passed and Failed" failures="1" errors="0" skipped="0" tests="2" time="[0-9.]{5}">
+              <testsuite name="Passed and Failed" tests="2" skipped="0" failures="1" errors="0" time="[0-9.]{5}">
                 <testcase classname="Passed and Failed" name="Passed" time="[0-9.]{5}"/>
                 <testcase classname="Passed and Failed" name="Failed" time="[0-9.]{5}">
                   <failure type="AssertionError" message="Then the Step fails"><!\[CDATA\[Then the Step fails

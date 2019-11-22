@@ -26,6 +26,9 @@ def create_temporary_directory_for_radish_run(scenario):
     """Create the temporary directory for the radish run"""
     scenario.context.ctx_dir = tempfile.mkdtemp(prefix="radish-")
     scenario.context.features_dir = os.path.join(scenario.context.ctx_dir, "features")
+    scenario.context.matching_config_dir = os.path.join(
+        scenario.context.ctx_dir, "matcher-configs"
+    )
     scenario.context.base_dir = os.path.join(scenario.context.ctx_dir, "radish")
     scenario.context.results_dir = os.path.join(scenario.context.ctx_dir, "results")
     scenario.context.failure_report_path = os.path.join(
@@ -50,6 +53,7 @@ def gather_failure(step):
     )
 
     os.makedirs(scenario.context.features_dir)
+    os.makedirs(scenario.context.matching_config_dir)
     os.makedirs(scenario.context.base_dir)
     os.makedirs(scenario.context.results_dir)
 
@@ -94,6 +98,22 @@ def create_base_dir_module(step, module_filename):
         module_file.write(module_contents)
 
 
+@given("the Matcher Config File {matching_config_filename:QuotedString}")
+def create_matcher_config_file(step, matching_config_filename):
+    """Create the Matcher Config File given in the doc string"""
+    assert (
+        step.doc_string is not None
+    ), "Please provide a Matcher Config in the Step doc string"
+
+    matcher_config_contents = step.doc_string
+
+    matching_config_path = os.path.join(
+        step.context.matching_config_dir, matching_config_filename
+    )
+    with open(matching_config_path, "w+", encoding="utf-8") as matching_config_file:
+        matching_config_file.write(matcher_config_contents)
+
+
 @when("the {feature_filename:QuotedString} is run")
 def run_feature_file(step, feature_filename):
     """Run the given Feature File"""
@@ -125,6 +145,10 @@ def run_feature_file(step, feature_filename):
 def run_feature_file_with_options(step, feature_filename, radish_options):
     """Run the given Feature File"""
     feature_path = os.path.join(step.context.features_dir, feature_filename)
+
+    # replace ctx_dir in radish_options
+    radish_options = radish_options.format(ctx_dir=step.context.ctx_dir)
+
     radish_command = [
         "coverage",
         "run",
@@ -137,10 +161,7 @@ def run_feature_file_with_options(step, feature_filename, radish_options):
         "-t",
     ] + radish_options.split()
     proc = subprocess.Popen(
-        radish_command,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        cwd=step.context.ctx_dir,
+        radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
     )
     stdout, _ = proc.communicate()
 
@@ -280,3 +301,38 @@ def expect_xml_content(step, xmlfile):
         actual_content = f.read().replace("\r", "")
 
     assert_output(actual_content, step.doc_string.replace("\r", ""))
+
+
+@when("the {matching_config_filename:QuotedString} is tested")
+def run_matching_config(step, matching_config_filename):
+    """Run the given Feature File"""
+    run_matching_config_with_options(step, matching_config_filename, "")
+
+
+@when(
+    "the {matching_config_filename:QuotedString} "
+    "is tested with the options {radish_options:QuotedString}"
+)
+def run_matching_config_with_options(step, matching_config_filename, radish_options):
+    """Run the given Feature File"""
+    matching_config_path = os.path.join(
+        step.context.matching_config_dir, matching_config_filename
+    )
+    radish_command = [
+        "coverage",
+        "run",
+        "-p",
+        "-m",
+        "radish.step_testing",
+        "-b",
+        step.context.base_dir,
+        matching_config_path,
+    ] + radish_options.split()
+    proc = subprocess.Popen(
+        radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    stdout, _ = proc.communicate()
+
+    step.context.exit_code = proc.returncode
+    step.context.stdout = stdout
+    step.context.command = radish_command

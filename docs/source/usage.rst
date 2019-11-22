@@ -193,6 +193,8 @@ Thus, this Step Implementation is matched with all of the following Steps:
     When the execution is delayed
     Then the execution is delayed
 
+.. _step_pattern_usage:
+
 Step Pattern
 ~~~~~~~~~~~~
 
@@ -335,6 +337,8 @@ Let's assume ``and`` should be used instead of ``,``:
 
 Now you can use ``UserList`` as the type in the step pattern.
 Follow the documentation to learn more about the ``custom_type()`` decorator.
+
+.. _implementating_custom_step_patterns:
 
 Implementing custom Step Patterns
 `````````````````````````````````
@@ -576,7 +580,7 @@ The Step rewriting can be turned off by using the ``--no-step-rewrites`` flag.
 All ANSI escape sequences, including colors, can be turned off by using
 the ``--no-ansi`` flag.
 
-Depending on the `Formatter <Formatters>`_ used one of the above options
+Depending on the :ref:`Formatter <formatters_usage>` used one of the above options
 might be more useful than the other.
 
 Log Markers to syslog
@@ -595,6 +599,8 @@ cucumber JSON report
 jUnit XML report
 ~~~~~~~~~~~~~~~~
 
+.. _formatters_usage:
+
 Formatters
 ----------
 
@@ -603,3 +609,159 @@ Gherkin Formatter
 
 Dots Formatter
 ~~~~~~~~~~~~~~
+
+Testing
+-------
+
+Radish provides a tool `radish-test` which can be used to test the :ref:`Step Patterns <step_pattern_usage>`
+used in the Step Implementations within a `Base Directory`_.
+
+The way it works is that one can specify example Step Text and the expectation with which
+Step Implementation it should match and which parts of the Step Text are parsed into
+which Step Implementation Arguments.
+
+`radish-test` uses YAML *matcher config files* for that.
+The following example depicts a matcher config file which asserts that the
+`Given there is a Step` Step Text will match the `given_there_is_a_step`
+Step Implementation Function.
+
+.. code-block:: yaml
+
+   - step: Given there is a Step
+     should_match: given_there_is_a_step
+
+
+The matcher config file syntax can be dscribed as the following:
+
+.. code-block:: yaml
+
+   - step: <sample-step-text>
+   - [should_match | should_not_match]: <step-impl-func>
+   [ - with_arguments:
+       <args>...
+   ]
+
+Let's get into the details of the different testing use-cases in the following sections.
+
+Assert that a Step Text should match a Step Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following matcher config file will assert that the `Given there is a Step`
+Step Text matches the `given_there_is_a_step` Step Implementation Function:
+
+.. code-block:: yaml
+
+   - step: Given there is a Step
+     should_match: given_there_is_a_step
+
+If that's the case you'll get an output like the following:
+
+.. code-block::
+
+   >> STEP 'Given there is a Step' SHOULD MATCH given_there_is_a_step    ✔
+
+If that's not the case `radish-test` will tell what the exact error was:
+either the Step Text wasn't matched against any Step Implementation
+or the Step Text was matched against the wrong Step Implementation:
+
+.. code-block::
+
+   >> STEP 'Given there is a Step' SHOULD MATCH given_there_is_a_step    ✘
+     - Expected Step Text didn't match any Step Implementation
+
+
+.. code-block::
+
+   >> STEP 'Given there is a Step' SHOULD MATCH given_there_is_a_step    ✘
+     - Expected Step Text matched another_step instead of given_there_is_a_step
+
+
+Assert that a Step Text should match a Step Implementation with Arguments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`radish-test` is also able to test against the particular values of the parsed
+arguments from the Step Pattern.
+
+The following matcher config file will assert that the `Given there is the number 42`
+will match the `given_there_is_a_number` Step Implementation and that
+the `42` argument is correctly passed to the Step Implementation:
+
+.. code-block:: yaml
+
+   - step: Given there is the number 42
+     should_match: given_there_is_a_number
+     with_arguments:
+       - number: 42
+
+
+For reference the `given_there_is_a_number` Step Implementation could look like the following:
+
+.. code-block:: python
+
+   @given("there is the number {:int}")
+   def given_there_is_a_number(step, number):
+       ...
+
+If the Step Text matches correctly `radish-test` will output the following:
+
+.. code-block::
+
+   >> STEP 'Given there is the number 42' SHOULD MATCH given_there_is_a_number    ✔
+
+There are several errors that could occur here:
+
+#. the Step Text was matched against non or the wrong Step Implementation
+#. the `number` argument was not matched
+#. the `number` argument is matched against the wrong argument
+#. the `number` argument has the wrong value
+
+In all of the above cases `radish-test` will output the exact error.
+
+Some of those errors will occur because `radish-test` doesn't know how to interpret
+the simple argument specification of `- number: 42` - maybe because custom types
+where used for the Step Arguments using :ref:`Custom Types <implementating_custom_step_patterns>`.
+
+In this case this simple specification syntax can be extended using the following syntax:
+
+.. code-block:: yaml
+
+   - step: Given there is the User Giovanni
+     should_match: given_the_user
+     with_arguments:
+       - user:
+           type: User
+           value: User(name=Giovanni)
+           use_repr: True
+
+
+The above `user` argument tells `radish-test` that the parsed Step Argument `user`
+will be of the custom type `User` and it's `__repr__`-representation should be `User(name=Giovanni)`.
+
+Assert that a Step Text should not match a Step Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Like `radish-test` can match that a Step Text *should match* a Step Implementation
+it can also assert that a Step Text *should not match* a Step Implementation.
+
+For that the `should_not_match` instead of `should_match` keyword can be used:
+
+.. code-block:: yaml
+
+   - step: Given there isn't this Step
+     should_not_match: given_there_is_a_step
+
+If the Step Text wasn't matched against the `given_there_is_a_step` `radish-test` will
+output the following:
+
+.. code-block::
+
+   >> STEP 'Given there isn't this Step' SHOULD NOT MATCH given_there_is_a_step    ✔
+
+
+In the error case where it actually matched against `given_there_is_a_step` the following
+will be reported:
+
+.. code-block::
+
+   >> STEP 'Given there isn't this Step' SHOULD NOT MATCH given_there_is_a_step    ✘
+     - Expected Step Text matched given_there_is_a_step but it shouldn't

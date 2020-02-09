@@ -41,7 +41,9 @@ def get_debugger():
 
 def get_func_pos_args_as_kwargs(func, pos_arg_values):
     """Get the positional function arguments as keyword arguments given their values"""
-    pos_arg_names = func.__code__.co_varnames[1:]  # without the `step` argument
+    pos_arg_names = func.__code__.co_varnames[
+        1 : func.__code__.co_argcount
+    ]  # without the `step` argument
     kwargs = dict(zip(pos_arg_names, pos_arg_values))
     return kwargs
 

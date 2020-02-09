@@ -440,7 +440,7 @@ def test_assert_step_arguments_should_fail_if_unable_to_cast():
 
 def test_assert_step_not_match_should_pass_if_the_step_doesnt_match_any(mocker):
     # GIVEN
-    step = mocker.MagicMock(name="Step", spec=Step, text="Step")
+    step = mocker.MagicMock(name="Step", spec=Step, text="Step", keyword="")
     step_registry = mocker.MagicMock(name="StepRegistry", spec=StepRegistry)
 
     matcher_mock = mocker.patch("radish.step_testing.matcher.matcher")

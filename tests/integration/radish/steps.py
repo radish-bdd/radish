@@ -198,6 +198,7 @@ def expect_output(step):
     ), "Please provide an output in the Step doc string"
 
     actual_stdout = step.context.stdout.decode("utf-8").replace("\r", "")
+    # print(actual_stdout)
     assert_output(actual_stdout, step.doc_string.replace("\r", ""))
 
 

@@ -8,6 +8,7 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from collections import namedtuple
 from pathlib import Path
 
 import click
@@ -20,6 +21,12 @@ from radish.logger import enable_radish_debug_mode_click_hook, logger
 from radish.stepregistry import registry as step_registry
 
 from radish.step_testing.matcher import run_matcher_tests
+
+
+#: Holds a type for the coverage configuration
+CoverageConfig = namedtuple(
+    "CoverageConfig", ["show_missing", "show_missing_templates"]
+)
 
 
 def expand_matcher_configs(ctx, param, matcher_configs):
@@ -68,7 +75,20 @@ def expand_matcher_configs(ctx, param, matcher_configs):
     "--no-ansi",
     "no_ansi",
     is_flag=True,
-    help=("Turn off all ANSI sequences (colors, line rewrites)."),
+    help="Turn off all ANSI sequences (colors, line rewrites).",
+)
+@click.option(
+    "--show-missing",
+    "-m",
+    "show_missing",
+    is_flag=True,
+    help="Show all Step Implementations which are not yet covered by a test",
+)
+@click.option(
+    "--show-missing-templates",
+    "show_missing_templates",
+    is_flag=True,
+    help="Print templates for all missing Step Implementations. Implies --show-missing.",
 )
 @click.argument(
     "matcher-configs",
@@ -103,7 +123,10 @@ def cli(**kwargs):
     logger.debug(
         "Matcher configs: %s", ", ".join(str(m) for m in config.matcher_configs)
     )
-    run_matcher_tests(config.matcher_configs, step_registry)
+
+    coverage_config = CoverageConfig(config.show_missing, config.show_missing_templates)
+
+    run_matcher_tests(config.matcher_configs, coverage_config, step_registry)
 
 
 if __name__ == "__main__":

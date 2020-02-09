@@ -11,7 +11,8 @@ The root from red to green. BDD tooling for Python.
 from pathlib import Path
 from typing import List, Dict, Any
 from unittest import mock
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
+import textwrap
 
 import colorful as cf
 
@@ -75,15 +76,27 @@ def parse_matcher_config(matcher_config_path):
     return steps_matcher_config
 
 
-def run_matcher_tests(matcher_configs: List[Path], step_registry: StepRegistry):
+def run_matcher_tests(
+    matcher_configs: List[Path], coverage_config, step_registry: StepRegistry
+):
     """Run the matcher config tests against all Steps in the Registry"""
+    #: holds a set of all covered Step Implementations
+    #  A Step Implementation only counts as covered if it
+    #  was successfully tested against a positive (should_match) test.
+    covered_step_impls = set()
+
     for matcher_config_path in matcher_configs:
         match_config = parse_matcher_config(matcher_config_path)
 
         # nothing to match against, because config was empty
         if not match_config:
-            print(cf.orange("The matcher config {} was empty - Nothing to do :)".format(
-                matcher_config_path)))
+            print(
+                cf.orange(
+                    "The matcher config {} was empty - Nothing to do :)".format(
+                        matcher_config_path
+                    )
+                )
+            )
             continue
 
         for step_to_match in match_config:
@@ -111,13 +124,18 @@ def run_matcher_tests(matcher_configs: List[Path], step_registry: StepRegistry):
                 else:
                     expected_step_arguments = []  # no Step arguments to match against
 
-                assert_step_match(
+                is_matched = assert_step_match(
                     step, expected_step_func, expected_step_arguments, step_registry
                 )
+                if is_matched:
+                    covered_step_impls.add(step.step_impl)
             else:
                 assert_step_not_match(
                     step, step_to_match["should_not_match"], step_registry
                 )
+
+    # do coverage analysis on the tested Step Implementation coverage
+    coverage(covered_step_impls, step_registry, coverage_config)
 
 
 def assert_step_match(
@@ -193,7 +211,7 @@ def assert_step_not_match(
     print(
         "{} STEP '{}' SHOULD NOT MATCH {}".format(
             cf.orange(">>"),
-            cf.deepSkyBlue3(step.text),
+            cf.deepSkyBlue3("{} {}".format(step.keyword, step.text)),
             cf.deepSkyBlue3(expected_step_func if expected_step_func else "ANY"),
         ),
         end="    ",
@@ -204,6 +222,7 @@ def assert_step_not_match(
     try:
         matcher.match_step(step, step_registry)
     except StepImplementationNotFoundError:
+        print(cf.bold_forestGreen("✔"))
         return True
 
     matched_step_func = step.step_impl.func
@@ -218,6 +237,7 @@ def assert_step_not_match(
         )
         return False
 
+    print(cf.bold_forestGreen("✔"))
     return True
 
 
@@ -321,3 +341,82 @@ def print_failure(matched_step_func, errors: List[str]):
 
     for error in errors:
         print(cf.firebrick("  - {}".format(error)), flush=True)
+
+
+def coverage(covered_step_impls, step_registry, coverage_config):
+    """Analyse the coverage of the registered Step Implementations"""
+    # get all Step Implementations
+    all_step_impls = {
+        step_impl
+        for step_impls in step_registry.step_implementations().values()
+        for step_impl in step_impls
+    }
+
+    if coverage_config.show_missing or coverage_config.show_missing_templates:
+        # get all Step Implementations not covered
+        not_covered_step_impls = list(all_step_impls.difference(covered_step_impls))
+
+        if not not_covered_step_impls:
+            print("Everything is covered!")
+            return
+
+        # sort not covered steps according their line number
+        not_covered_step_impls.sort(key=lambda x: x.func.__code__.co_firstlineno)
+
+        # order missing Step Implementations by the module they are implemented in
+        ordered_not_covered_step_impls = defaultdict(list)
+        for not_covered_step_impl in not_covered_step_impls:
+            step_module = not_covered_step_impl.func.__code__.co_filename
+            ordered_not_covered_step_impls[step_module].append(not_covered_step_impl)
+
+        # output not covered Step Implementations per module
+        for module_path, step_impls in ordered_not_covered_step_impls.items():
+            print("Missing from: {}".format(cf.bold(module_path)))
+            for step_impl in step_impls:
+                print(
+                    "  - {}:{}".format(
+                        step_impl.func.__name__, step_impl.func.__code__.co_firstlineno
+                    )
+                )
+
+        if coverage_config.show_missing_templates:
+            # output template YAML to test the not covered Step Implementations
+            print()
+            print(
+                "Add the following to your matcher-config.yml "
+                "to cover the missing Step Implementations:"
+            )
+            for step_impl in not_covered_step_impls:
+                print(
+                    textwrap.dedent(
+                        """
+                      {cf.gray}# testing Step Implementation at {path}:{lineno}{cf.reset}
+                      {cf.forestGreen}-{cf.reset} {cf.bold_dodgerBlue}step{cf.reset}{cf.red}: {cf.italic_lightSkyBlue}"<insert sample Step Text here>"{cf.reset}
+                        {cf.bold_dodgerBlue}should_match{cf.reset}{cf.red}:{cf.reset} {step_impl_func_name}
+                    """.format(  # noqa
+                            cf=cf,
+                            path=step_impl.func.__code__.co_filename,
+                            lineno=step_impl.func.__code__.co_firstlineno,
+                            step_impl_func_name=step_impl.func.__name__,
+                        )
+                    ).rstrip()
+                )
+
+                # check if function has arguments which can be tested
+                arg_names = step_impl.func.__code__.co_varnames[
+                    1 : step_impl.func.__code__.co_argcount
+                ]  # without the `step` argument
+                if arg_names:
+                    argument_match_lines = [
+                        "    {cf.forestGreen}-{cf.reset} {cf.bold_dodgerBlue}{arg}{cf.reset}{cf.red}:{cf.reset} {cf.italic}<insert argument value here>{cf.reset}".format(  # noqa
+                            cf=cf, arg=x
+                        )
+                        for x in arg_names
+                    ]
+                    print(
+                        "  {cf.bold_dodgerBlue}with_arguments{cf.reset}{cf.red}:{cf.reset}".format(
+                            cf=cf
+                        )
+                    )  # noqa
+                    print("\n".join(argument_match_lines))
+                print()

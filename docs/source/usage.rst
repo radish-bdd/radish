@@ -765,3 +765,40 @@ will be reported:
 
    >> STEP 'Given there isn't this Step' SHOULD NOT MATCH given_there_is_a_step    ✘
      - Expected Step Text matched given_there_is_a_step but it shouldn't
+
+Show not covered Step Implementation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+`radish-test` provides two useful command line options to help increase the coverage
+on the tested Step Implementations.
+Those are `--show-missing` and `--show-missing-templates`.
+
+The first one `--show-missing` lists all missing Step Implementations per
+module within the Base Directory:
+
+.. code-block::
+
+   Missing from: radish/steps.py
+     - given_there_is_a_step:3
+     - given_number:8
+
+However, much more useful when trying to increase the coverage is the second option
+`--show-missing-templates`. With this flag set `radish-test` will output
+templates for a matcher config with which every Step Implementation
+is at least covered by a simple test case:
+
+.. code-block::
+
+   Add the following to your matcher-config.yml to cover the missing Step Implementations:
+
+   # testing Step Implementation at .*?/radish/steps.py:3
+   - step: "<insert sample Step Text here>"
+     should_match: given_there_is_a_step
+
+
+   # testing Step Implementation at .*?/radish/steps.py:8
+   - step: "<insert sample Step Text here>"
+     should_match: given_number
+     with_arguments:
+       - first: <insert argument value here>
+       - second: <insert argument value here>

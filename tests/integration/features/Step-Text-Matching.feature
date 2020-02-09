@@ -220,3 +220,130 @@ Feature: Support Step Text Matching
             """
             >> STEP 'Given there is a Step with 42' SHOULD MATCH given_there_is_a_step    ✔
             """
+
+    Scenario: Expect single Step not to match
+        Given the Matcher Config File "matcher-config.yml"
+            """
+            - step: Given there is another Step
+              should_not_match: given_there_is_a_step
+            """
+        And the base dir module "steps.py"
+            """
+            from radish import given
+
+            @given("there is a Step")
+            def given_there_is_a_step(step):
+                pass
+            """
+        When the "matcher-config.yml" is tested
+        Then the output to match:
+            """
+            >> STEP 'Given there is another Step' SHOULD NOT MATCH given_there_is_a_step    ✔
+            """
+
+    Rule: Coverage Features
+
+        Scenario: Do not show any missing Step Implementations if there are none
+            Given the Matcher Config File "matcher-config.yml"
+                """
+
+                """
+            And the base dir module "steps.py"
+                """
+
+                """
+            When the "matcher-config.yml" is tested with the options "--show-missing"
+            Then the output to match:
+                """
+                The matcher config .*?/matcher-config.yml was empty - Nothing to do :\)
+                Everything is covered!
+                """
+
+        Scenario: Show all missing Step Implementations
+            Given the Matcher Config File "matcher-config.yml"
+                """
+
+                """
+            And the base dir module "steps.py"
+                """
+                from radish import given
+
+                @given("there is a Step")
+                def given_there_is_a_step(step):
+                    pass
+                """
+            When the "matcher-config.yml" is tested with the options "--show-missing"
+            Then the output to match:
+                """
+                The matcher config .*?/matcher-config.yml was empty - Nothing to do :\)
+                Missing from: .*?/radish/steps.py
+                  - given_there_is_a_step:3
+                """
+
+        Scenario: Show templates for all missing Step Implementations
+            Given the Matcher Config File "matcher-config.yml"
+                """
+
+                """
+            And the base dir module "steps.py"
+                """
+                from radish import given
+
+                @given("there is a Step")
+                def given_there_is_a_step(step):
+                    pass
+                """
+            When the "matcher-config.yml" is tested with the options "--show-missing-templates"
+            Then the output to match:
+                """
+                The matcher config .*?/matcher-config.yml was empty - Nothing to do :\)
+                Missing from: .*?/radish/steps.py
+                  - given_there_is_a_step:3
+
+                Add the following to your matcher-config.yml to cover the missing Step Implementations:
+
+                # testing Step Implementation at .*?/radish/steps.py:3
+                - step: "<insert sample Step Text here>"
+                  should_match: given_there_is_a_step
+                """
+
+        Scenario: Show templates for all missing Step Implementations including Step Arguments
+            Given the Matcher Config File "matcher-config.yml"
+                """
+
+                """
+            And the base dir module "steps.py"
+                """
+                from radish import given
+
+                @given("there is a Step")
+                def given_there_is_a_step(step):
+                    pass
+
+
+                @given("there is a numbers {:int} and {second:int}")
+                def given_number(step, first, second):
+                    pass
+                """
+            When the "matcher-config.yml" is tested with the options "--show-missing-templates"
+            Then the output to match:
+                """
+                The matcher config .*?/matcher-config.yml was empty - Nothing to do :\)
+                Missing from: .*?/radish/steps.py
+                  - given_there_is_a_step:3
+                  - given_number:8
+
+                Add the following to your matcher-config.yml to cover the missing Step Implementations:
+
+                # testing Step Implementation at .*?/radish/steps.py:3
+                - step: "<insert sample Step Text here>"
+                  should_match: given_there_is_a_step
+
+
+                # testing Step Implementation at .*?/radish/steps.py:8
+                - step: "<insert sample Step Text here>"
+                  should_match: given_number
+                  with_arguments:
+                    - first: <insert argument value here>
+                    - second: <insert argument value here>
+                """

@@ -337,3 +337,29 @@ def run_matching_config_with_options(step, matching_config_filename, radish_opti
     step.context.exit_code = proc.returncode
     step.context.stdout = stdout
     step.context.command = radish_command
+
+
+@when(
+    "the {feature_filename:QuotedString} is parsed"
+)
+def run_parser(step, feature_filename):
+    """Run the given Feature File"""
+    feature_path = os.path.join(
+        step.context.features_dir, feature_filename
+    )
+    radish_command = [
+        "coverage",
+        "run",
+        "-p",
+        "-m",
+        "radish.parser",
+        feature_path,
+    ]
+    proc = subprocess.Popen(
+        radish_command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT
+    )
+    stdout, _ = proc.communicate()
+
+    step.context.exit_code = proc.returncode
+    step.context.stdout = stdout
+    step.context.command = radish_command

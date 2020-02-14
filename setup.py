@@ -106,6 +106,7 @@ setup(
         "console_scripts": [
             "radish = radish.__main__:cli",
             "radish-test = radish.step_testing.__main__:cli",
+            "radish-parser = radish.parser.__main__:cli",
         ]
     },
     keywords=KEYWORDS,

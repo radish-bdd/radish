@@ -29,7 +29,7 @@ Feature: Supprt Junit XML Format
             Feature: Empty
                 Some empty Feature
             """
-        When the "empty.feature" is run with the options "--junit-xml results.xml"
+        When the "empty.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 0
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the value "radish" at "/testsuites/@name"
@@ -43,7 +43,7 @@ Feature: Supprt Junit XML Format
                 Scenario: Pass
                     Then the Step passes
             """
-        When the "single-passed.feature" is run with the options "--junit-xml results.xml"
+        When the "single-passed.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 0
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the content:
@@ -68,7 +68,7 @@ Feature: Supprt Junit XML Format
                 Scenario: Pass 2
                     Then the Step passes
             """
-        When the "multiple-passed.feature" is run with the options "--junit-xml results.xml"
+        When the "multiple-passed.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 0
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the content:
@@ -91,7 +91,7 @@ Feature: Supprt Junit XML Format
                 Scenario: Skip
                     Then the Step skips
             """
-        When the "single-skipped.feature" is run with the options "--junit-xml results.xml"
+        When the "single-skipped.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 1
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the content:
@@ -115,7 +115,7 @@ Feature: Supprt Junit XML Format
                 Scenario: Failed
                     Then the Step fails
             """
-        When the "single-failed.feature" is run with the options "--junit-xml results.xml"
+        When the "single-failed.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 1
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the content:
@@ -150,7 +150,7 @@ Feature: Supprt Junit XML Format
                 Scenario: Failed
                     Then the Step fails
             """
-        When the "passed-failed.feature" is run with the options "--junit-xml results.xml"
+        When the "passed-failed.feature" is run with the options "--junit-xml {ctx_dir}/results.xml"
         Then the exit code should be 1
         And the XML file results.xml validates against junit.xsd
         And the XML file results.xml has the content:

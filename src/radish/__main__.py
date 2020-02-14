@@ -8,7 +8,6 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-import logging
 import os
 import sys
 import time
@@ -22,16 +21,11 @@ from radish.config import Config
 from radish.errors import RadishError
 from radish.extensionregistry import registry as extension_registry
 from radish.hookregistry import registry as hook_registry
+from radish.logger import enable_radish_debug_mode_click_hook, logger
 from radish.parser import FeatureFileParser
 from radish.runner import Runner
 from radish.stepregistry import registry as step_registry
 from radish.terrain import world
-
-# configure the radish command line logger which is used for debugging
-logger = logging.getLogger("radish")
-logging.basicConfig(
-    level=logging.CRITICAL, format="%(asctime)s - %(name)s [%(levelname)s]: %(message)s"
-)
 
 # NOTE(TF): somehow doctest with pytest imports this module multiple times ...
 if "doctest" not in sys.modules:
@@ -42,15 +36,6 @@ if "doctest" not in sys.modules:
         __SOURCE_DIR__ / "formatters",
     ]
     loaded_built_in_extensions = loader.load_modules(__BUILT_IN_EXTENSIONS__)
-
-
-def enable_radish_debug_mode(ctx, param, enabled):
-    """Enable radish for debugging"""
-    if enabled:
-        logger.setLevel(logging.DEBUG)
-        logger.debug("Enabled debug mode")
-    else:
-        logger.setLevel(logging.ERROR)
 
 
 def expand_basedirs(ctx, param, basedirs):
@@ -126,7 +111,7 @@ class CommandWithExtensionOptions(click.Command):
     "enable_debug_mode",
     is_flag=True,
     help="Enable debug mode for radish itself",
-    callback=enable_radish_debug_mode,
+    callback=enable_radish_debug_mode_click_hook,
 )
 @click.option(
     "--basedir",

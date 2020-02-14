@@ -1,0 +1,83 @@
+- step: Given the Feature File "foo.feature"
+  should_match: create_feature_file
+  with_arguments:
+    - feature_filename: foo.feature
+
+
+- step: Given the base dir module "steps.py"
+  should_match: create_base_dir_module
+  with_arguments:
+    - module_filename: steps.py
+
+
+- step: Given the Matcher Config File "matcher-config.yml"
+  should_match: create_matcher_config_file
+  with_arguments:
+    - matching_config_filename: matcher-config.yml
+
+
+- step: When the "foo.feature" is run
+  should_match: run_feature_file
+  with_arguments:
+    - feature_filename: foo.feature
+
+
+- step: When the "foo.feature" is run with the options "-t -x -l"
+  should_match: run_feature_file_with_options
+  with_arguments:
+    - feature_filename: foo.feature
+    - radish_options: "-t -x -l"
+
+
+- step: Then the exit code should be 0
+  should_match: expect_exit_code
+  with_arguments:
+    - exit_code: 0
+
+
+- step: "Then the output to match:"
+  should_match: expect_output
+
+
+- step: Then the run should fail with a AssertionError
+  should_match: expect_fail_with_exc
+  with_arguments:
+    - exc_type_name: AssertionError
+
+
+- step: Then the run should fail with
+  should_match: expect_fail
+
+
+- step: Then the XML file results.xml validates against schema.xsd
+  should_match: expect_xml_validates
+  with_arguments:
+    - xmlfile: results.xml
+    - xsdfile: schema.xsd
+
+
+- step: Then the XML file results.xml has the value "foo" at "//foo/bar"
+  should_match: expect_value_at_xpath
+  with_arguments:
+    - xmlfile: results.xml
+    - expected_value: foo
+    - xpath: //foo/bar
+
+
+- step: "Then the XML file results.xml has the content:"
+  should_match: expect_xml_content
+  with_arguments:
+    - xmlfile: results.xml
+
+
+- step: When the "matcher-config.yml" is tested
+  should_match: run_matching_config
+  with_arguments:
+    - matching_config_filename: matcher-config.yml
+
+
+- step: When the "matcher-config.yml" is tested with the options "-x -l"
+  should_match: run_matching_config_with_options
+  with_arguments:
+    - matching_config_filename: matcher-config.yml
+    - radish_options: "-x -l"

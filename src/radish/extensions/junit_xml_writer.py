@@ -11,6 +11,7 @@ The root from red to green. BDD tooling for Python.
 import re
 import functools
 from datetime import timedelta
+
 # We need an OrderedDict because Python 3.5 does not preverse
 # the order in dictionaries
 from collections import OrderedDict
@@ -67,10 +68,12 @@ def generate_junit_xml(junit_xml_path, tag_expression, scenario_ids, features):
 
     testsuites_element = etree.Element(
         "testsuites",
-        OrderedDict([
-            ("name", "radish"),
-            ("time", "{:.3f}".format(total_duration.total_seconds()))
-        ])
+        OrderedDict(
+            [
+                ("name", "radish"),
+                ("time", "{:.3f}".format(total_duration.total_seconds())),
+            ]
+        ),
     )
 
     for feature in (f for f in features if f.has_to_run(tag_expression, scenario_ids)):
@@ -89,14 +92,16 @@ def generate_junit_xml(junit_xml_path, tag_expression, scenario_ids, features):
 
             testsuite_element = etree.Element(
                 "testsuite",
-                OrderedDict([
-                    ("name", feature.short_description),
-                    ("tests", str(testsuite_states["tests"])),
-                    ("skipped", str(testsuite_states["skipped"])),
-                    ("failures", str(testsuite_states["failures"])),
-                    ("errors", str(testsuite_states["errors"])),
-                    ("time", "{:.3f}".format(feature.duration().total_seconds()))
-                ])
+                OrderedDict(
+                    [
+                        ("name", feature.short_description),
+                        ("tests", str(testsuite_states["tests"])),
+                        ("skipped", str(testsuite_states["skipped"])),
+                        ("failures", str(testsuite_states["failures"])),
+                        ("errors", str(testsuite_states["errors"])),
+                        ("time", "{:.3f}".format(feature.duration().total_seconds())),
+                    ]
+                ),
             )
 
             for scenario in (
@@ -104,11 +109,16 @@ def generate_junit_xml(junit_xml_path, tag_expression, scenario_ids, features):
             ):
                 testcase_element = etree.Element(
                     "testcase",
-                    OrderedDict([
-                        ("classname", feature.short_description),
-                        ("name", scenario.short_description),
-                        ("time", "{:.3f}".format(scenario.duration().total_seconds())),
-                    ])
+                    OrderedDict(
+                        [
+                            ("classname", feature.short_description),
+                            ("name", scenario.short_description),
+                            (
+                                "time",
+                                "{:.3f}".format(scenario.duration().total_seconds()),
+                            ),
+                        ]
+                    ),
                 )
 
                 if scenario.state in [State.UNTESTED, State.PENDING, State.SKIPPED]:
@@ -127,10 +137,12 @@ def generate_junit_xml(junit_xml_path, tag_expression, scenario_ids, features):
                         if step.state is State.FAILED:
                             failure_element = etree.Element(
                                 "failure",
-                                OrderedDict([
-                                    ("type", step.failure_report.name),
-                                    ("message", step_line),
-                                ])
+                                OrderedDict(
+                                    [
+                                        ("type", step.failure_report.name),
+                                        ("message", step_line),
+                                    ]
+                                ),
                             )
                             failure_element.text = etree.CDATA(
                                 "{}\n\n{}".format(

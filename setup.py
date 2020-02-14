@@ -37,6 +37,7 @@ INSTALL_REQUIRES = [
     "tag-expressions>=1.0.0",
     "parse_type>0.4.0",
     "humanize",
+    "PyYAML",
 ]
 #: Holds runtime requirements and development requirements
 EXTRAS_REQUIRES = {
@@ -44,7 +45,6 @@ EXTRAS_REQUIRES = {
     "xml": ["lxml"],
     "ipython-debugger": ["ipython"],
     "coverage": ["coverage"],
-    "testing": ["PyYAML"],
     # extras for contributors
     "docs": ["sphinx", "towncrier"],
     "tests": ["freezegun", "coverage", "pytest", "pytest-mock"] + ["lxml", "PyYAML"],
@@ -105,7 +105,7 @@ setup(
     entry_points={
         "console_scripts": [
             "radish = radish.__main__:cli",
-            # "radish-test = radish.testing.__main__:main [testing]",
+            "radish-test = radish.step_testing.__main__:cli",
         ]
     },
     keywords=KEYWORDS,

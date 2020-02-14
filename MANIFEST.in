@@ -20,6 +20,7 @@ include tox.ini .coveragerc conftest.py
 recursive-include tests *.py
 recursive-include tests *.feature
 recursive-include tests/integration/assets *.xsd
+recursive-include tests/integration *.yml
 
 # Documentation
 include docs/Makefile docs/docutils.conf

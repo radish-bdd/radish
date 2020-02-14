@@ -34,7 +34,7 @@ from radish.parser.errors import (
     RadishStepDocStringNotClosed,
     RadishStepDoesNotStartWithKeyword,
 )
-from radish.parser.transformer import RadishGherkinTransformer
+from radish.parser.transformer import RadishGherkinTransformer, Transformer
 
 
 class LanguageSpec:
@@ -63,7 +63,10 @@ class FeatureFileParser:
     """Radish Feature File Parser responsible to parse a single Feature File"""
 
     def __init__(
-        self, grammerfile: Path = None, resolve_preconditions: bool = True
+        self,
+        grammerfile: Path = None,
+        ast_transformer: Transformer = RadishGherkinTransformer,
+        resolve_preconditions: bool = True,
     ) -> None:
         if grammerfile is None:
             grammerfile = Path(__file__).parent / "grammer.g"
@@ -71,7 +74,11 @@ class FeatureFileParser:
         self.grammerfile = grammerfile
         self.resolve_preconditions = resolve_preconditions
 
-        self._transformer = RadishGherkinTransformer()
+        if ast_transformer is not None:
+            self._transformer = ast_transformer()
+        else:
+            self._transformer = None
+
         self._current_feature_id = 1
 
         self._parsers = {}
@@ -111,9 +118,10 @@ class FeatureFileParser:
         language_spec = self._detect_language(featurefile_contents)
 
         # prepare the transformer for the Feature File
-        self._transformer.prepare(
-            language_spec, featurefile_path, featurefile_contents, feature_id
-        )
+        if self._transformer is not None:
+            self._transformer.prepare(
+                language_spec, featurefile_path, featurefile_contents, feature_id
+            )
 
         # get a parser
         parser = self._get_parser(language_spec)

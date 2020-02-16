@@ -8,6 +8,8 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+from unittest import mock
+
 import pytest
 
 from radish.models import Tag
@@ -139,8 +141,8 @@ def test_hookregistry_call_hook_func_if_match(mocker):
     )
 
     # then
-    to_be_called_hook_func.assert_called_once()
-    not_to_be_called_hook.assert_not_called()
+    to_be_called_hook_func.assert_has_calls([mock.call(mock.ANY)])
+    not_to_be_called_hook.assert_has_calls([])
 
 
 def test_hookregistry_call_hook_func_if_tag_matched(mocker):
@@ -172,5 +174,5 @@ def test_hookregistry_call_hook_func_if_tag_matched(mocker):
     registry.call("each_scenario", "before", False, tagged_model)
 
     # then
-    to_be_called_hook_func.assert_called_once()
-    not_to_be_called_hook.assert_not_called()
+    to_be_called_hook_func.assert_has_calls([mock.call(mock.ANY)])
+    not_to_be_called_hook.assert_has_calls([])

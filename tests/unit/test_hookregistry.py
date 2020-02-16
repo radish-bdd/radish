@@ -123,18 +123,20 @@ def test_hookregistry_call_hook_func_if_match(mocker):
         when="before",
         func=to_be_called_hook_func,
         on_tags=[],
-        order=1
+        order=1,
     )
     registry.register(
         what="each_scenario",
         when="after",
         func=not_to_be_called_hook,
         on_tags=[],
-        order=1
+        order=1,
     )
 
     # when
-    registry.call("each_scenario", "before", False, mocker.MagicMock(name="TaggedModel"))
+    registry.call(
+        "each_scenario", "before", False, mocker.MagicMock(name="TaggedModel")
+    )
 
     # then
     to_be_called_hook_func.assert_called_once()
@@ -153,14 +155,14 @@ def test_hookregistry_call_hook_func_if_tag_matched(mocker):
         when="before",
         func=to_be_called_hook_func,
         on_tags=["some-tag"],
-        order=1
+        order=1,
     )
     registry.register(
         what="each_scenario",
         when="before",
         func=not_to_be_called_hook,
         on_tags=["another-tag"],
-        order=1
+        order=1,
     )
 
     tagged_model = mocker.MagicMock(name="TaggedModel")

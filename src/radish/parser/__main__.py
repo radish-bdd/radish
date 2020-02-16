@@ -85,8 +85,7 @@ def cli(**kwargs):
         cf.disable()
 
     parser = FeatureFileParser(
-        ast_transformer=None,
-        resolve_preconditions=config.resolve_preconditions
+        ast_transformer=None, resolve_preconditions=config.resolve_preconditions
     )
 
     for feature_file in config.feature_files:

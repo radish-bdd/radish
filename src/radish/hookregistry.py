@@ -12,6 +12,8 @@ import bisect
 
 import tagexpressions
 
+from radish.errors import HookExecError
+
 
 class HookImpl:
     """Represent a single Hook Implementation"""
@@ -196,14 +198,20 @@ class HookRegistry:
             if hook_impl.on_tags:
                 tag_expression = tagexpressions.parse(" or ".join(hook_impl.on_tags))
                 # get the Tags for models which actually have Tags
-                tags = tagged_model.get_all_tags() if hasattr(tagged_model, "get_all_tags") else []
+                tags = (
+                    tagged_model.get_all_tags()
+                    if hasattr(tagged_model, "get_all_tags")
+                    else []
+                )
                 call_hook = tag_expression.evaluate([t.name for t in tags])
 
             if not call_hook:
                 continue
 
-            # TODO: proper error handling
-            hook_impl.func(tagged_model, *args, **kwargs)
+            try:
+                hook_impl.func(tagged_model, *args, **kwargs)
+            except Exception as exc:
+                raise HookExecError(hook_impl, exc) from exc
 
 
 #: Holds a global instance of the HookRegistry which shall be used

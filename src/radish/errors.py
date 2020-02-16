@@ -68,3 +68,20 @@ class StepBehaveLikeRecursionError(RadishError):
         super().__init__(
             "Detected a infinit recursion in your ``step.behave_like`` calls"
         )
+
+
+class HookExecError(RadishError):
+    """Exception raised when a Hook execution raised an Exception"""
+
+    def __init__(self, hook_impl, orig_exc):
+        self.hook_impl = hook_impl
+        self.orig_exc = orig_exc
+        super().__init__(
+            "The '@{when}.{what}' Hook '{func_name}' raised an {exc_type}: {exc_msg}".format(
+                when=hook_impl.when,
+                what=hook_impl.what,
+                func_name=hook_impl.func.__name__,
+                exc_type=orig_exc.__class__.__name__,
+                exc_msg=str(orig_exc),
+            )
+        )

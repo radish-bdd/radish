@@ -12,6 +12,7 @@ import os
 import sys
 import time
 from pathlib import Path
+import traceback
 
 import click
 import colorful as cf
@@ -308,6 +309,9 @@ def cli(**kwargs):
         print("", flush=True)
         print("An error occured while running the Feature Files:", flush=True)
         print(exc, flush=True)
+        if config.with_traceback:
+            print("", flush=True)
+            traceback.print_exc()
         exit_status = 1
 
     sys.exit(exit_status)

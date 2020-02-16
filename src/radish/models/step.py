@@ -86,6 +86,13 @@ class Step(Timed):
         """Return the Context object where this Step is running in"""
         return self.scenario.context
 
+    def get_all_tags(self):
+        """Return all Tags for this Step
+
+        These Tags include the ones inherited from the Scenario and Feature.
+        """
+        return self.scenario.get_all_tags()
+
     def assign_implementation(self, step_impl, match):
         """Assign a matched Step Implementation to this Step"""
         self.step_impl = step_impl

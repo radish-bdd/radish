@@ -49,6 +49,13 @@ class Rule:
         """Read-only property to get the State for this Feature"""
         return State.report_state(s.state for s in self.scenarios)
 
+    def get_all_tags(self):
+        """Return all Tags for this Rule
+
+        These Tags include the ones inherited from the Feature.
+        """
+        return self.feature.tags
+
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Rule has to run or not
 

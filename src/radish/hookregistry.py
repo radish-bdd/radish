@@ -10,6 +10,8 @@ The root from red to green. BDD tooling for Python.
 
 import bisect
 
+import tagexpressions
+
 
 class HookImpl:
     """Represent a single Hook Implementation"""
@@ -140,6 +142,9 @@ class HookRegistry:
                         is_formatter=False,
                         always=False,
                     ):
+                        if on_tags is None:
+                            on_tags = []
+
                         def __wrapper(func):
                             self.register(
                                 what, when, func, on_tags, order, is_formatter, always
@@ -184,7 +189,18 @@ class HookRegistry:
                 if only_formatters and not hook_impl.is_formatter:
                     continue
 
-            # TODO: check if Hook has to run according to tags
+            #: holds a flag whether or not the Hook actually has to be called
+            #  which is depenend on the `on_tags` setting of the HookImpl.
+            call_hook = True
+
+            if hook_impl.on_tags:
+                tag_expression = tagexpressions.parse(" or ".join(hook_impl.on_tags))
+                # get the Tags for models which actually have Tags
+                tags = tagged_model.get_all_tags() if hasattr(tagged_model, "get_all_tags") else []
+                call_hook = tag_expression.evaluate([t.name for t in tags])
+
+            if not call_hook:
+                continue
 
             # TODO: proper error handling
             hook_impl.func(tagged_model, *args, **kwargs)

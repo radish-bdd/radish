@@ -10,6 +10,7 @@ The root from red to green. BDD tooling for Python.
 
 import pytest
 
+from radish.models import Tag
 from radish.hookregistry import HookRegistry, HookImpl
 
 
@@ -108,3 +109,66 @@ def test_hookregistry_module_should_have_global_hook_decorators():
     assert callable(after.each_feature)
     assert callable(after.each_scenario)
     assert callable(after.each_step)
+
+
+def test_hookregistry_call_hook_func_if_match(mocker):
+    # given
+    registry = HookRegistry()
+
+    to_be_called_hook_func = mocker.MagicMock(name="before_each_scenario_func")
+    not_to_be_called_hook = mocker.MagicMock(name="after_each_scenario_func")
+
+    registry.register(
+        what="each_scenario",
+        when="before",
+        func=to_be_called_hook_func,
+        on_tags=[],
+        order=1
+    )
+    registry.register(
+        what="each_scenario",
+        when="after",
+        func=not_to_be_called_hook,
+        on_tags=[],
+        order=1
+    )
+
+    # when
+    registry.call("each_scenario", "before", False, mocker.MagicMock(name="TaggedModel"))
+
+    # then
+    to_be_called_hook_func.assert_called_once()
+    not_to_be_called_hook.assert_not_called()
+
+
+def test_hookregistry_call_hook_func_if_tag_matched(mocker):
+    # given
+    registry = HookRegistry()
+
+    to_be_called_hook_func = mocker.MagicMock(name="before_each_scenario_func_tagged")
+    not_to_be_called_hook = mocker.MagicMock(name="before_each_scenario_func")
+
+    registry.register(
+        what="each_scenario",
+        when="before",
+        func=to_be_called_hook_func,
+        on_tags=["some-tag"],
+        order=1
+    )
+    registry.register(
+        what="each_scenario",
+        when="before",
+        func=not_to_be_called_hook,
+        on_tags=["another-tag"],
+        order=1
+    )
+
+    tagged_model = mocker.MagicMock(name="TaggedModel")
+    tagged_model.get_all_tags.return_value = [Tag(name="some-tag", path="", line=0)]
+
+    # when
+    registry.call("each_scenario", "before", False, tagged_model)
+
+    # then
+    to_be_called_hook_func.assert_called_once()
+    not_to_be_called_hook.assert_not_called()

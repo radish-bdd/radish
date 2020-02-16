@@ -128,6 +128,14 @@ class Scenario(Timed):
         consts.update({t.key: t.value for t in self.tags if isinstance(t, ConstantTag)})
         return consts
 
+    def get_all_tags(self):
+        """Return all Tags for this Scenario
+
+        These Tags include the ones inherited from the Feature, too.
+        Use `Scenario.tags` to get only the tags declared for this Scenario.
+        """
+        return self.tags + self.feature.tags
+
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Scenario has to run or not
 
@@ -142,7 +150,7 @@ class Scenario(Timed):
         has_to_run_scenario_ids = True
 
         if tag_expression:
-            tag_names = [t.name for t in self.tags + self.feature.tags]
+            tag_names = [t.name for t in self.get_all_tags()]
             has_to_run_tag_expression = tag_expression.evaluate(tag_names)
 
         if scenario_ids:

@@ -67,6 +67,10 @@ class Feature(Timed):
         """
         return {t.key: t.value for t in self.tags if isinstance(t, ConstantTag)}
 
+    def get_all_tags(self):
+        """Return all Tags for this Feature"""
+        return self.tags
+
     def has_to_run(self, tag_expression, scenario_ids):
         """Evaluate if this Feature has to run or not
 

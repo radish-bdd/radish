@@ -284,7 +284,17 @@ def cli(**kwargs):
             sys.exit(1)
 
     logger.debug("Loading all modules from the basedirs")
-    loaded_modules = loader.load_modules(config.basedirs)
+    try:
+        loaded_modules = loader.load_modules(config.basedirs)
+    except Exception as exc:
+        print("", flush=True)
+        print("An error occured while loading modules from the basedirs:", flush=True)
+        print(exc, flush=True)
+        if config.with_traceback:
+            print("", flush=True)
+            traceback.print_exc()
+        sys.exit(1)
+
     logger.debug(
         "Loaded %d modules from the basedirs: %s",
         len(loaded_modules),

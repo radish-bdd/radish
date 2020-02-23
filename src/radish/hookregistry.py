@@ -8,6 +8,7 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
+import inspect
 import bisect
 
 import tagexpressions
@@ -30,6 +31,9 @@ class HookImpl:
         self.order = order
         self.is_formatter = is_formatter
         self.always = always
+
+    def __call__(self, *args, **kwargs):
+        return self.func(*args, **kwargs)
 
     def __repr__(self) -> str:
         return "<HookImpl @{}.{} for tags {} with order {}>".format(
@@ -76,11 +80,42 @@ class HookImpl:
         return self.order >= other.order
 
 
-class HookRegistry:
-    """The ``HookRegistry`` keeps track of all declared ``HookImpl``s.
+class GeneratorHookImpl(HookImpl):
+    """Specialized Hook Implementation for Generator Hooks
+
+    A Generator Hook uses a yield statement to separate
+    the `before` and `after` part of a Hook.
     """
+    def __init__(
+        self, what, func, on_tags, order, is_formatter=False, always=False
+    ):
+        super().__init__(what, None, func, on_tags, order, is_formatter, always)
+
+        self.generator = None
+
+    def __call__(self, *args, **kwargs):
+        if self.generator is None:
+            # hook is called the first time, thus we create it and
+            # consume the `before` part of it
+            self.generator = self.func(*args, **kwargs)
+            return next(self.generator)
+        else:
+            # the hook is called the second time, thus we
+            # consume the `after` part of it and expect it to be exhausted
+            try:
+                return next(self.generator)
+            except StopIteration:
+                pass  # raised when the generator is exhausted
+
+
+class HookRegistry:
+    """The ``HookRegistry`` keeps track of all declared ``HookImpl``s"""
 
     DEFAULT_HOOK_ORDER = 100
+
+    GENERATOR_HOOK_NAMES = {
+        "for_all", "each_feature", "each_rule", "each_scenario", "each_step"
+    }
 
     def __init__(self):
         #: Holds a set of all possible Hook combinations
@@ -105,15 +140,31 @@ class HookRegistry:
         self, what, when, func, on_tags, order, is_formatter=False, always=False
     ):
         """Register the given Hook for later execution"""
-        hook_impl = HookImpl(what, when, func, on_tags, order, is_formatter, always)
-        if hook_impl in self._hooks[when][what]:
-            # NOTE: allow a Hook Implementation to be registered multiple times.
-            #       This can happend when one hook module imports another in the same
-            #       RADISH_BASEDIR.
-            return
+        if inspect.isgeneratorfunction(func):
+            # the registered function is a generator hook
+            hook_impl = GeneratorHookImpl(what, func, on_tags, order, is_formatter, always)
 
-        # insert the HookImpl in the order given by ``order``.
-        bisect.insort_right(self._hooks[when][what], hook_impl)
+            if hook_impl in self._hooks["before"][what] and hook_impl in self._hooks["after"][what]:
+                # NOTE: allow a Hook Implementation to be registered multiple times.
+                #       This can happend when one hook module imports another in the same
+                #       RADISH_BASEDIR.
+                return
+
+            # insert the HookImpl in the order given by ``order``.
+            bisect.insort_right(self._hooks["before"][what], hook_impl)
+            bisect.insort_right(self._hooks["after"][what], hook_impl)
+        else:
+            # we have regular hook
+            hook_impl = HookImpl(what, when, func, on_tags, order, is_formatter, always)
+
+            if hook_impl in self._hooks[when][what]:
+                # NOTE: allow a Hook Implementation to be registered multiple times.
+                #       This can happend when one hook module imports another in the same
+                #       RADISH_BASEDIR.
+                return
+
+            # insert the HookImpl in the order given by ``order``.
+            bisect.insort_right(self._hooks[when][what], hook_impl)
 
     def create_hook_decorators(self, context=None):
         """Create Hook decorators for all hook combinations
@@ -179,13 +230,73 @@ class HookRegistry:
             created_decorator_names.append(when)
         return created_decorator_names
 
+    def create_generator_hook_decorators(self, context=None):
+        """Create Generator Hook decorators for models
+
+        The created Hook decorators are injected into the given ``dict``-like ``context`` object.
+        If the given ``context`` is ``None`` the Hooks will be injected into ``globals()``.
+        """
+        if context is None:
+            context = globals()
+
+        created_decorator_names = []
+        for what in self.GENERATOR_HOOK_NAMES:
+
+            def __create_decorator(what):
+                def __decorator(
+                    on_tags=None,
+                    order=self.DEFAULT_HOOK_ORDER,
+                    is_formatter=False,
+                    always=False,
+                ):
+                    if on_tags is None:
+                        on_tags = []
+
+                    def __wrapper(func):
+                        self.register(
+                            what, None, func, on_tags, order, is_formatter, always
+                        )
+                        return func
+
+                    return __wrapper
+
+                __decorator.__doc__ = """Decorator to register a generator hook function
+
+                A generator hook function registered with this decorator will be run
+                twice for {what}, once for the `before` part before the yield statement and once
+                after the yield statement for the `after` part.
+
+                .. code-block:: python
+
+                   @{what}
+                   def do_{what}(model):
+                       # do some setup
+                       setup()
+                       yield
+                       # do some teardown
+                       teardown()
+
+                Args:
+                    on_tags (list): a list of :class:`Tag` names for which this hook will be run
+                    order (int): a number which is used to order the registered hooks when running them
+                    is_formatter (bool): flag to indicate that the hook is a formatter.
+                                         Formatter hooks are run even if ``on_tags`` do not match
+                    always (bool): flag to indicate that the hook should always be run.
+                                   Only enable this ``True`` if the hook doesn't depend on the Feature File
+                                   you will be running.
+                """.format(  # noqa
+                    what=what
+                )
+
+                return __decorator
+
+            context[what] = __create_decorator(what)
+            created_decorator_names.append(what)
+        return created_decorator_names
+
     def call(self, what, when, only_formatters, tagged_model, *args, **kwargs):
         """Calls a registered Hook"""
-        if when == "before":
-            hooks = self._hooks[when][what]
-        else:
-            hooks = reversed(self._hooks[when][what])
-
+        hooks = self._hooks[when][what]
         for hook_impl in hooks:
             if not hook_impl.always:
                 if only_formatters and not hook_impl.is_formatter:
@@ -209,7 +320,7 @@ class HookRegistry:
                 continue
 
             try:
-                hook_impl.func(tagged_model, *args, **kwargs)
+                hook_impl(tagged_model, *args, **kwargs)
             except Exception as exc:
                 raise HookExecError(hook_impl, exc) from exc
 
@@ -217,4 +328,4 @@ class HookRegistry:
 #: Holds a global instance of the HookRegistry which shall be used
 #  by all modules implementing Hooks.
 registry = HookRegistry()
-__all__ = registry.create_hook_decorators()
+__all__ = registry.create_hook_decorators() + registry.create_generator_hook_decorators()

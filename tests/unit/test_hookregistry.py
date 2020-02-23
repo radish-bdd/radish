@@ -12,8 +12,8 @@ from unittest import mock
 
 import pytest
 
+from radish.hookregistry import GeneratorHookImpl, HookImpl, HookRegistry
 from radish.models import Tag
-from radish.hookregistry import HookRegistry, HookImpl
 
 
 @pytest.mark.parametrize(
@@ -58,6 +58,49 @@ def test_hookimpls_can_be_compared_by_equality(hook_1, hook_2, expect_equal):
 
     # then
     assert are_equal == expect_equal
+
+
+def test_hookimpls_can_be_called():
+    # given
+    def func(x, y, foo=None):
+        return x, y, foo
+
+    hook = HookImpl("what", "when", func, [], 1)
+
+    # when
+    x, y, foo = hook(1, 2, foo=3)
+
+    # then
+    assert x == 1
+    assert y == 2
+    assert foo == 3
+
+
+def test_generatorhookimpls_can_be_called_twice_to_exhaust_generator():
+    # given
+    def func(x, y, foo=None):
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+
+    hook = GeneratorHookImpl("what", func, [], 1)
+
+    # when
+    first_x, first_y, first_foo = hook(1, 2, foo=3)
+    second_x, second_y, second_foo = hook(1, 2, foo=3)
+
+    # then
+    assert first_x == 2
+    assert first_y == 3
+    assert first_foo == 4
+    assert second_x == 3
+    assert second_y == 4
+    assert second_foo == 5
 
 
 def test_hookimpls_can_be_sorted_by_the_order():
@@ -105,12 +148,26 @@ def test_hookregistry_module_should_have_global_hook_decorators():
     # then
     assert callable(before.all)
     assert callable(before.each_feature)
+    assert callable(before.each_rule)
     assert callable(before.each_scenario)
     assert callable(before.each_step)
     assert callable(after.all)
     assert callable(after.each_feature)
+    assert callable(after.each_rule)
     assert callable(after.each_scenario)
     assert callable(after.each_step)
+
+
+def test_hookregistry_module_should_have_global_generator_hook_decorators():
+    # given & when
+    from radish.hookregistry import for_all, each_feature, each_rule, each_scenario, each_step
+
+    # then
+    assert callable(for_all)
+    assert callable(each_feature)
+    assert callable(each_rule)
+    assert callable(each_scenario)
+    assert callable(each_step)
 
 
 def test_hookregistry_call_hook_func_if_match(mocker):

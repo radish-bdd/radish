@@ -402,10 +402,50 @@ Features, Scenarios and Steps.
 
 The following :ref:`Hooks <register_hooks_api>` exist:
 
+* ``@for_all``
+* ``@each_feature``
+* ``@each_rule``
+* ``@each_scenario``
+* ``@each_step``
+
+The above Hooks are called *Generator Hooks* and the ``setup``
+and ``teardown`` part of the Hook is separated with an `yield`-statement:
+
+.. code-block:: python
+
+   from radish import each_scenario
+
+   @each_scenario()
+   def manage_db_connection(scenario):
+      # setup the browser
+      scenario.context.browser = create_mock_browser()
+      yield
+      # teardown the browser
+      scenario.context.browser.destroy()
+
+Or another example which uses a `with`-statement to manage a resource:
+
+.. code-block:: python
+
+   from radish import each_scenario
+
+   @each_scenario()
+   def manage_db_connection(scenario):
+      # setup the database connection
+      with DB.connect() as connection:
+         scenario.context.connection = connection
+         yield
+      # database connection is automatically closed in the teardown part
+
+The followings are simple Hooks which are either run ``before`` or ``after``
+the model:
+
 * ``@before.all``
 * ``@after.all``
 * ``@before.each_feature``
 * ``@after.each_feature``
+* ``@before.each_rule``
+* ``@after.each_rule``
 * ``@before.each_scenario``
 * ``@after.each_scenario``
 * ``@before.each_step``

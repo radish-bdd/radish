@@ -24,6 +24,11 @@ The following packages can be imported from the radish package:
         world,
         before,
         after,
+        for_all,
+        each_feature,
+        each_rule,
+        each_scenario,
+        each_step,
 
         # Step Pattern Types
         custom_type,
@@ -74,6 +79,16 @@ Register Step Implementations
 Register Hooks
 ~~~~~~~~~~~~~~
 
+.. autofunction:: radish.for_all
+
+.. autofunction:: radish.each_feature
+
+.. autofunction:: radish.each_rule
+
+.. autofunction:: radish.each_scenario
+
+.. autofunction:: radish.each_step
+
 .. autofunction:: radish.before.all
 
 .. autofunction:: radish.after.all
@@ -81,6 +96,10 @@ Register Hooks
 .. autofunction:: radish.before.each_feature
 
 .. autofunction:: radish.after.each_feature
+
+.. autofunction:: radish.before.each_rule
+
+.. autofunction:: radish.after.each_rule
 
 .. autofunction:: radish.before.each_scenario
 

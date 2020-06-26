@@ -16,7 +16,7 @@ include src/radish/py.typed
 recursive-include src *.pyi
 
 # Tests
-include tox.ini .coveragerc conftest.py
+include tox.ini conftest.py
 recursive-include tests *.py
 recursive-include tests *.feature
 recursive-include tests/integration/assets *.xsd

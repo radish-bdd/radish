@@ -289,7 +289,7 @@ class RadishGherkinTransformer(Transformer):
 
     def description(self, description_lines):
         """Transform the ``description``-subtree for the radish AST"""
-        return list((str(l) for l in description_lines))
+        return list((str(line) for line in description_lines))
 
     def feature_body(self, subtree):
         """Transform the ``feature_body``-subtree for the radish AST"""

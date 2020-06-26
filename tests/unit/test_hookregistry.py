@@ -160,7 +160,13 @@ def test_hookregistry_module_should_have_global_hook_decorators():
 
 def test_hookregistry_module_should_have_global_generator_hook_decorators():
     # given & when
-    from radish.hookregistry import for_all, each_feature, each_rule, each_scenario, each_step
+    from radish.hookregistry import (
+        for_all,
+        each_feature,
+        each_rule,
+        each_scenario,
+        each_step,
+    )
 
     # then
     assert callable(for_all)

@@ -2223,7 +2223,7 @@ def test_parser_build_examples_for_scenario_outline(parser):
 
 
 def test_parser_add_example_data_to_short_description_for_scenario_outline_examples(
-    parser
+    parser,
 ):
     """
     The parser should build Examples for every Iteration of a Scenario Outline

@@ -27,7 +27,7 @@ from radish.hookregistry import (  # noqa
     each_rule,
     each_scenario,
     each_step,
-    for_all
+    for_all,
 )
 from radish.models import (  # noqa
     Background,
@@ -40,13 +40,13 @@ from radish.models import (  # noqa
     ScenarioLoop,
     ScenarioOutline,
     Step,
-    Tag
+    Tag,
 )
 from radish.parser import FeatureFileParser  # noqa
 from radish.parsetyperegistry import (  # noqa
     TypeBuilder,
     custom_type,
-    register_custom_type
+    register_custom_type,
 )
 from radish.stepregistry import given, step, then, when  # noqa
 from radish.terrain import world  # noqa

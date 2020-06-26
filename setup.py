@@ -47,7 +47,8 @@ EXTRAS_REQUIRES = {
     "coverage": ["coverage"],
     # extras for contributors
     "docs": ["sphinx", "towncrier"],
-    "tests": ["freezegun", "coverage", "pytest", "pytest-mock"] + ["lxml", "PyYAML"],
+    "tests": ["freezegun", "coverage[toml]", "pytest", "pytest-mock"]
+    + ["lxml", "PyYAML"],
 }
 EXTRAS_REQUIRES["dev"] = (
     EXTRAS_REQUIRES["tests"] + EXTRAS_REQUIRES["docs"] + ["pre-commit"]

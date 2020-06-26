@@ -23,12 +23,8 @@ class State(IntEnum):
 
     PASSED = 0  #: State which is set for a :class:`Step` if it ran successfully
     UNTESTED = 1  #: Default State for all :class:`Step`
-    SKIPPED = (
-        2
-    )  #: State which is set for a :class:`Step` when it's skipped using :func:`Step.skip`
-    PENDING = (
-        3
-    )  #: State which is set for a :class:`Step` when it's marked pending using :func:`Step.pending`
+    SKIPPED = 2  #: State which is set for a :class:`Step` when it's skipped using :func:`Step.skip`
+    PENDING = 3  #: State which is set for a :class:`Step` when it's marked pending using :func:`Step.pending`  # noqa
     FAILED = 4  #: State which is set for a :class:`Step` when it failed to run it
     RUNNING = 5  #: State which is set while a :class:`Step` is running
 

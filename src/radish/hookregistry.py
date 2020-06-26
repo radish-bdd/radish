@@ -86,9 +86,8 @@ class GeneratorHookImpl(HookImpl):
     A Generator Hook uses a yield statement to separate
     the `before` and `after` part of a Hook.
     """
-    def __init__(
-        self, what, func, on_tags, order, is_formatter=False, always=False
-    ):
+
+    def __init__(self, what, func, on_tags, order, is_formatter=False, always=False):
         super().__init__(what, None, func, on_tags, order, is_formatter, always)
 
         self.generator = None
@@ -114,7 +113,11 @@ class HookRegistry:
     DEFAULT_HOOK_ORDER = 100
 
     GENERATOR_HOOK_NAMES = {
-        "for_all", "each_feature", "each_rule", "each_scenario", "each_step"
+        "for_all",
+        "each_feature",
+        "each_rule",
+        "each_scenario",
+        "each_step",
     }
 
     def __init__(self):
@@ -142,9 +145,14 @@ class HookRegistry:
         """Register the given Hook for later execution"""
         if inspect.isgeneratorfunction(func):
             # the registered function is a generator hook
-            hook_impl = GeneratorHookImpl(what, func, on_tags, order, is_formatter, always)
+            hook_impl = GeneratorHookImpl(
+                what, func, on_tags, order, is_formatter, always
+            )
 
-            if hook_impl in self._hooks["before"][what] and hook_impl in self._hooks["after"][what]:
+            if (
+                hook_impl in self._hooks["before"][what]
+                and hook_impl in self._hooks["after"][what]
+            ):
                 # NOTE: allow a Hook Implementation to be registered multiple times.
                 #       This can happend when one hook module imports another in the same
                 #       RADISH_BASEDIR.
@@ -328,4 +336,6 @@ class HookRegistry:
 #: Holds a global instance of the HookRegistry which shall be used
 #  by all modules implementing Hooks.
 registry = HookRegistry()
-__all__ = registry.create_hook_decorators() + registry.create_generator_hook_decorators()
+__all__ = (
+    registry.create_hook_decorators() + registry.create_generator_hook_decorators()
+)

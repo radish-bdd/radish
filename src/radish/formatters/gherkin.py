@@ -93,7 +93,9 @@ def write_feature_header(feature):
 
     # write Feature description if available
     if feature.description:
-        feature_description = "\n".join(INDENT_STEP + l for l in feature.description)
+        feature_description = "\n".join(
+            INDENT_STEP + line for line in feature.description
+        )
         print(feature_description + "\n", flush=True)
 
     # write Background if available

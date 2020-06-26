@@ -78,7 +78,7 @@ def test_parse_config_should_fail_if_should_match_keys_not_present(tmp_path):
 
 
 def test_parse_config_should_fail_if_should_match_key_and_should_match_present(
-    tmp_path
+    tmp_path,
 ):
     # GIVEN
     matcher_config_path = create_matcher_config_file(
@@ -103,7 +103,7 @@ def test_parse_config_should_fail_if_should_match_key_and_should_match_present(
 
 
 def test_parse_config_should_pass_if_should_match_key_not_and_should_not_match_present(
-    tmp_path
+    tmp_path,
 ):
     # GIVEN
     matcher_config_path = create_matcher_config_file(
@@ -122,7 +122,7 @@ def test_parse_config_should_pass_if_should_match_key_not_and_should_not_match_p
 
 
 def test_parse_config_should_pass_if_should_not_match_key_not_and_should_match_present(
-    tmp_path
+    tmp_path,
 ):
     # GIVEN
     matcher_config_path = create_matcher_config_file(
@@ -454,7 +454,7 @@ def test_assert_step_not_match_should_pass_if_the_step_doesnt_match_any(mocker):
 
 
 def test_assert_step_not_match_should_pass_if_the_step_doesnt_match_correct_step(
-    mocker
+    mocker,
 ):
     # GIVEN
     def some_step_impl(step):

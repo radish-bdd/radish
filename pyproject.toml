@@ -13,6 +13,11 @@ show_missing = true
 target_version = ["py37"]
 include = "(setup.py|src|tests)"
 
+[tool.isort]
+known_first_party=radish
+known_third_party=colorful,docopt,example,freezegun,humanize,lark,parse_type,pytest,setuptools,steps_1,steps_2,tagexpressions,yaml
+multi_line_output=3
+
 [tool.towncrier]
 package = "radish"
 package_dir = "src"

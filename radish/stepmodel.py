@@ -194,7 +194,7 @@ class Step(Model):
         if new_step.state is Step.State.FAILED:
             new_step.failure.exception.args = (
                 "Step '{0}' failed: '{1}'".format(
-                    sentence, new_step.failure.exception.message
+                    sentence, new_step.failure.reason
                 ),
             )
             raise new_step.failure.exception

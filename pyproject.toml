@@ -1,3 +1,9 @@
+[tool.pytest.ini_options]
+testpaths = [
+    "tests/",
+    "src/"
+]
+
 [tool.coverage.run]
 branch = true
 parallel = true

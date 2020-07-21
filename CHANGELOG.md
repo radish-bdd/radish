@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.13.2]
+### Fixed
+
+- PEP 352 removed the 'message' attribute from Exceptions
+
 ## [v0.13.1]
 ### Fixed
 
@@ -219,7 +224,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.2...HEAD
+[v0.13.2]: https://github.com/radish-bdd/radish/compare/v0.13.1...v0.13.2
 [v0.13.1]: https://github.com/radish-bdd/radish/compare/v0.13.0...v0.13.1
 [v0.13.0]: https://github.com/radish-bdd/radish/compare/v0.12.1...v0.13.0
 [v0.12.1]: https://github.com/radish-bdd/radish/compare/v0.12.0...v0.12.1

@@ -13,6 +13,7 @@ Each file should be named like ``<ISSUE>.<TYPE>``, where
 
 * ``feature``: new user facing features, like new command-line options and new behavior.
 * ``bugfix``: fixes a reported bug.
+* ``breaking``: a breaking change which is neither a new nor a removed feature.
 * ``doc``: documentation improvement, like rewording an entire session or adding missing docs.
 * ``removal``: feature removal.
 

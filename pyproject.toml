@@ -25,3 +25,8 @@ filename = "CHANGELOG.rst"
 directory = "changelog/"
 title_format = "radish-bdd {version} ({project_date})"
 template = "changelog/template.rst"
+
+[[tool.towncrier.type]]
+directory = "breaking"
+name = "Breaking"
+showcontent = true

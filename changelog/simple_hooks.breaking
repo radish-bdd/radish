@@ -1,0 +1,17 @@
+The simple Hooks using either ``@before`` or ``@after`` require to be called as a function.
+
+The following Hook definition:
+
+.. code-block:: python
+
+    @before.each_scenario
+    def setup(scenario):
+        pass
+
+must be changed to:
+
+.. code-block:: python
+
+    @before.each_scenario()
+    def setup(scenario):
+        pass

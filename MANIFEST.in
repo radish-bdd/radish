@@ -35,6 +35,9 @@ prune docs/build
 # Changelog
 include *.rst
 recursive-include changelog *.rst
+recursive-include changelog *.feature
+recursive-include changelog *.bugfix
+recursive-include changelog *.breaking
 
 # Just to keep check-manifest happy; on releases those files are gone.
 # Last rule wins!

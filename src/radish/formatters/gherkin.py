@@ -168,17 +168,20 @@ def write_step_running(step):
         write_step(step, cf.orange)
 
 
+def get_color_func_for_state(state):
+    if state == State.PASSED:
+        return cf.forestGreen
+    elif state == State.FAILED:
+        return cf.firebrick
+    elif state == State.PENDING:
+        return cf.orange
+    else:
+        return cf.deepSkyBlue3
+
+
 def write_step_result(step):
     """Write the Step after it's ran"""
-    step_color_func = None
-    if step.state == State.PASSED:
-        step_color_func = cf.forestGreen
-    elif step.state == State.FAILED:
-        step_color_func = cf.firebrick
-    elif step.state == State.PENDING:
-        step_color_func = cf.orange
-    else:
-        step_color_func = cf.deepSkyBlue3
+    step_color_func = get_color_func_for_state(step.state)
 
     if not world.config.no_ansi and not world.config.no_step_rewrites:
         # calculate how many line-ups are needed to rewrite the entire Step
@@ -218,7 +221,7 @@ def write_summary(features):
         len(feature_states),
         "s" if len(feature_states) != 1 else "",
         ", ".join(
-            "{} {}".format(v, k.name.lower())
+            str(get_color_func_for_state(k)("{} {}".format(v, k.name.lower())))
             for k, v in Counter(feature_states).items()
         ),
     )
@@ -235,7 +238,7 @@ def write_summary(features):
         len(scenarios),
         "s" if len(scenarios) != 1 else "",
         ", ".join(
-            "{} {}".format(v, k.name.lower())
+            str(get_color_func_for_state(k)("{} {}".format(v, k.name.lower())))
             for k, v in Counter(s.state for s in scenarios).items()
         ),
     )
@@ -245,7 +248,7 @@ def write_summary(features):
         len(steps),
         "s" if len(steps) != 1 else "",
         ", ".join(
-            "{} {}".format(v, k.name.lower())
+            str(get_color_func_for_state(k)("{} {}".format(v, k.name.lower())))
             for k, v in Counter(s.state for s in steps).items()
         ),
     )

@@ -88,7 +88,7 @@ def test_generatorhookimpls_can_be_called_twice_to_exhaust_generator():
         foo += 1
         yield x, y, foo
 
-    hook = GeneratorHookImpl("what", func, [], 1)
+    hook = GeneratorHookImpl(func)
 
     # when
     first_x, first_y, first_foo = hook(1, 2, foo=3)

@@ -80,16 +80,15 @@ class HookImpl:
         return self.order >= other.order
 
 
-class GeneratorHookImpl(HookImpl):
+class GeneratorHookImpl:
     """Specialized Hook Implementation for Generator Hooks
 
     A Generator Hook uses a yield statement to separate
     the `before` and `after` part of a Hook.
     """
 
-    def __init__(self, what, func, on_tags, order, is_formatter=False, always=False):
-        super().__init__(what, None, func, on_tags, order, is_formatter, always)
-
+    def __init__(self, func):
+        self.func = func
         self.generator = None
 
     def __call__(self, *args, **kwargs):
@@ -145,13 +144,17 @@ class HookRegistry:
         """Register the given Hook for later execution"""
         if inspect.isgeneratorfunction(func):
             # the registered function is a generator hook
-            hook_impl = GeneratorHookImpl(
-                what, func, on_tags, order, is_formatter, always
+            generator_hook = GeneratorHookImpl(func)
+            before_hook_impl = HookImpl(
+                what, "before", generator_hook, on_tags, order, is_formatter, always
+            )
+            after_hook_impl = HookImpl(
+                what, "after", generator_hook, on_tags, order * -1, is_formatter, always
             )
 
             if (
-                hook_impl in self._hooks["before"][what]
-                and hook_impl in self._hooks["after"][what]
+                before_hook_impl in self._hooks["before"][what]
+                and after_hook_impl in self._hooks["after"][what]
             ):
                 # NOTE: allow a Hook Implementation to be registered multiple times.
                 #       This can happend when one hook module imports another in the same
@@ -159,8 +162,8 @@ class HookRegistry:
                 return
 
             # insert the HookImpl in the order given by ``order``.
-            bisect.insort_right(self._hooks["before"][what], hook_impl)
-            bisect.insort_right(self._hooks["after"][what], hook_impl)
+            bisect.insort_right(self._hooks["before"][what], before_hook_impl)
+            bisect.insort_right(self._hooks["after"][what], after_hook_impl)
         else:
             # we have regular hook
             hook_impl = HookImpl(what, when, func, on_tags, order, is_formatter, always)

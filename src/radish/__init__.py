@@ -10,7 +10,7 @@ The root from red to green. BDD tooling for Python.
 
 __description__ = "Behaviour-Driven-Development tool for python"
 __license__ = "MIT"
-__version__ = "1.0.0a2"
+__version__ = "1.0.0a3"
 __author__ = "Timo Furrer"
 __author_email__ = "tuxtimo@gmail.com"
 __url__ = "http://radish-bdd.io"

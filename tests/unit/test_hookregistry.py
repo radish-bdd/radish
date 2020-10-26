@@ -103,6 +103,63 @@ def test_generatorhookimpls_can_be_called_twice_to_exhaust_generator():
     assert second_foo == 5
 
 
+def test_generatorhookimpls_can_be_wrapped_in_a_hookimpl():
+    # given
+    def func(x, y, foo=None):
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+
+    gen_hook = GeneratorHookImpl(func)
+    hook = HookImpl("what", "when", gen_hook, [], 1)
+
+    # when
+    first_x, first_y, first_foo = hook(1, 2, foo=3)
+    second_x, second_y, second_foo = hook(1, 2, foo=3)
+
+    # then
+    assert first_x == 2
+    assert first_y == 3
+    assert first_foo == 4
+    assert second_x == 3
+    assert second_y == 4
+    assert second_foo == 5
+
+
+def test_generatorhookimpls_can_be_wrapped_in_multiple_hookimpl():
+    # given
+    def func(x, y, foo=None):
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+        x += 1
+        y += 1
+        foo += 1
+        yield x, y, foo
+
+    gen_hook = GeneratorHookImpl(func)
+    hook_before = HookImpl("what", "when", gen_hook, [], 1)
+    hook_after = HookImpl("what", "when", gen_hook, [], 1)
+
+    # when
+    first_x, first_y, first_foo = hook_before(1, 2, foo=3)
+    second_x, second_y, second_foo = hook_after(1, 2, foo=3)
+
+    # then
+    assert first_x == 2
+    assert first_y == 3
+    assert first_foo == 4
+    assert second_x == 3
+    assert second_y == 4
+    assert second_foo == 5
+
+
 def test_hookimpls_can_be_sorted_by_the_order():
     """The ``HookImpl``s can be sorted by it's order"""
     # given

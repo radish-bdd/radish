@@ -105,6 +105,14 @@ class GeneratorHookImpl:
             except StopIteration:
                 pass  # raised when the generator is exhausted
 
+            # reset the generator for the next "before" call.
+            # NOTE(TF): this introduces the thread-unsafety,
+            #           which is fine for the moment, I guess ...
+            #           A better implementation might be to use
+            #           a factory approach which would create
+            #           unique hook instances for each occurance.
+            self.generator = None
+
     def __name__(self):
         return self.func.name
 

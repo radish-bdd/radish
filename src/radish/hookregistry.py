@@ -105,6 +105,9 @@ class GeneratorHookImpl:
             except StopIteration:
                 pass  # raised when the generator is exhausted
 
+    def __name__(self):
+        return self.func.name
+
 
 class HookRegistry:
     """The ``HookRegistry`` keeps track of all declared ``HookImpl``s"""

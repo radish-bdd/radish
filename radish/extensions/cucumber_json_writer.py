@@ -96,7 +96,7 @@ class CucumberJSONWriter(object):
                         {"name": "@" + tag.name, "line": start_line_no + i}
                     )
                 for step in scenario.all_steps:
-                    duration = (
+                    duration = int(
                         step.duration.total_seconds() * 1e9
                         if step.starttime and step.endtime
                         else 0.0

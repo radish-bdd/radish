@@ -113,7 +113,7 @@ def generate_cucumber_json(cucumber_json_file, tag_expression, scenario_ids, fea
                         "line": step.line,
                         "result": {
                             "status": step.state.name.lower(),
-                            "duration": step.duration().total_seconds() * 1e9,
+                            "duration": int(step.duration().total_seconds() * 1e9),
                         },
                     }
                     if step.state is State.FAILED:

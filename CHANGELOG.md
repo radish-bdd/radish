@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.13.3]
+### Fixed
+
+- Fix duration in cucumber JSON report
+
 ## [v0.13.2]
 ### Fixed
 

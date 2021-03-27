@@ -76,7 +76,9 @@ def run_features(core):
     # scenario choice
     amount_of_scenarios = sum(len(f.scenarios) for f in core.features_to_run)
     if world.config.scenarios:
-        world.config.scenarios = [int(s) for s in world.config.scenarios.split(",")]
+        world.config.scenarios = [
+            int(s.strip().replace("=", "")) for s in world.config.scenarios.split(",")
+        ]
         for s in world.config.scenarios:
             if not 0 < s <= amount_of_scenarios:
                 raise ScenarioNotFoundError(s, amount_of_scenarios)

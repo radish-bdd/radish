@@ -142,7 +142,7 @@ def test_step_matches_configs(
             for step in missing_steps:
                 missing_step_report += "- {0} at ".format(colorful.cyan(step[0]))
                 missing_step_report += colorful.cyan(step[1]) + "\n"
-            sys.stdout.write(missing_step_report)
+            sys.stdout.write(u(missing_step_report))
 
     return ret
 

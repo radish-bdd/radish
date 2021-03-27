@@ -145,7 +145,9 @@ class CommandWithExtensionOptions(click.Command):
     "-s",
     "scenario_ids",
     default="",
-    callback=lambda _, __, ids: [int(x.strip()) for x in ids.split(",") if x.strip()],
+    callback=lambda _, __, ids: [
+        int(x.strip().replace("=", "")) for x in ids.split(",") if x.strip()
+    ],
     help="Filter for Scenarios with it's Id in this comma-separated list",
 )
 @click.option(

@@ -175,33 +175,31 @@ A *Background* is a special case of the Scenario. It's used to add some context 
 You can think of it as a setup Scenario for the other Scenarios. It consists of one or more Steps in exactly the same way as
 regular Scenarios. The *Background* is run **after** the *before hooks* of each Scenario but **before** the *Steps* of this Scenario.
 
-To following example illustrates a possible use for a *Background*:
+A Background consists of an optional *short description* and Steps:
 
-.. code:: gherkin
+.. code-block:: gherkin
 
-    Feature: Restricted site support
-        As a user of AwesomeSite
-        I want to restrict my personal sites
-        to specific users.
+    Background: [optional short description]
+        [zero or more Steps]
 
-        Background: Have a multi user setup
-            Given a user named Bruce
-            And a user named Peter
-            And a user named Tony
-            And a personal site owned by Bruce
+A simple Background might look like this:
 
-        Scenario: Grant access to personal site
-            Given Bruce grants access to Tony
-            When I'm logged in as Tony
-            Then I can access Bruce personal site
+.. code-block:: gherkin
+   :emphasize-lines: 6
 
-        Scenario: Deny access to personal site
-            Given Bruce grants access to Tony
-            When I'm logged in as Peter
-            Then I cannot access Bruce personal site
+    Feature: Calculator Addition
+        In order to support all four elementary
+        binary operations the calculator shall
+        implement the binary addition operator.
 
-**Note:** the entire example can be found `here <https://github.com/radish-bdd/radish/tree/master/tests/functional/background>`_.
+        Background:
+            Given the calculator is started
 
+        Scenario: Adding two positive integers
+            Given the integer 5
+            And the integer 2
+            When the integers are added
+            Then the sum is 7
 
 Cucumber defined some useful `good practices for using backgrounds <https://github.com/cucumber/cucumber/wiki/Background#good-practices-for-using-background>`_. It's worth to read them carefully.
 

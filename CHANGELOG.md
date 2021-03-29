@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.13.4]
+### Fixed
+
+- Parse -s/--scenarios with = signe correctly
+- Fix radish matcher print
+- Update Background example in docs
+
 ## [v0.13.3]
 ### Fixed
 
@@ -229,7 +236,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.2...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.4...HEAD
+[v0.13.4]: https://github.com/radish-bdd/radish/compare/v0.13.3...v0.13.4
+[v0.13.3]: https://github.com/radish-bdd/radish/compare/v0.13.2...v0.13.3
 [v0.13.2]: https://github.com/radish-bdd/radish/compare/v0.13.1...v0.13.2
 [v0.13.1]: https://github.com/radish-bdd/radish/compare/v0.13.0...v0.13.1
 [v0.13.0]: https://github.com/radish-bdd/radish/compare/v0.12.1...v0.13.0

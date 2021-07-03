@@ -17,6 +17,7 @@ Feature: Support Tags everywhere
         When I add them up
         Then I expect the sum to be <z>
 
+    @examples_tag
     Examples:
         | x | y | z |
         | 1 | 2 | 3 |

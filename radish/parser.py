@@ -659,10 +659,6 @@ class FeatureParser(object):
         :returns: if a scenario of any type is present on the given line
         :rtype: bool
         """
-        if self._detect_examples(line_strip):
-            self._current_state = FeatureParser.State.EXAMPLES
-            return True
-
         if (
             self._detect_scenario(line)
             or self._detect_scenario_outline(line)

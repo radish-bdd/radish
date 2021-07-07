@@ -224,15 +224,18 @@ class FeatureParser(object):
         line = line.strip()
         detected_feature = self._detect_feature(line)
         if not detected_feature:
-            tag = self._detect_tag(line)
-            if tag:
-                self._current_tags.append(Tag(tag[0], tag[1]))
-                if tag[0] == "constant":
-                    name, value = self._parse_constant(tag[1])
-                    self._current_constants.append((name, value))
-                return True
+            has_tags = False
+            tags = line.split(" ")
+            for tag_line in tags:
+                tag = self._detect_tag(tag_line)
+                if tag:
+                    has_tags = True
+                    self._current_tags.append(Tag(tag[0], tag[1]))
+                    if tag[0] == "constant":
+                        name, value = self._parse_constant(tag[1])
+                        self._current_constants.append((name, value))
 
-            return False
+            return has_tags
 
         self.feature = Feature(
             self._featureid,
@@ -294,16 +297,21 @@ class FeatureParser(object):
             if not detected_scenario:
                 detected_scenario = self._detect_scenario_loop(line)
                 if not detected_scenario:
-                    tag = self._detect_tag(line)
-                    if tag:
-                        self._current_tags.append(Tag(tag[0], tag[1]))
-                        if tag[0] == "precondition":
-                            scenario = self._parse_precondition(tag[1])
-                            if scenario is not None:
-                                self._current_preconditions.append(scenario)
-                        elif tag[0] == "constant":
-                            name, value = self._parse_constant(tag[1])
-                            self._current_constants.append((name, value))
+                    has_tags = False
+                    tags = line.split(" ")
+                    for tag_line in tags:
+                        tag = self._detect_tag(tag_line)
+                        if tag:
+                            self._current_tags.append(Tag(tag[0], tag[1]))
+                            if tag[0] == "precondition":
+                                scenario = self._parse_precondition(tag[1])
+                                if scenario is not None:
+                                    self._current_preconditions.append(scenario)
+                            elif tag[0] == "constant":
+                                name, value = self._parse_constant(tag[1])
+                                self._current_constants.append((name, value))
+
+                    if has_tags:
                         return True
 
                     raise FeatureFileSyntaxError(

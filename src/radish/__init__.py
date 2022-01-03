@@ -8,15 +8,14 @@ The root from red to green. BDD tooling for Python.
 :license: MIT, see LICENSE for more details.
 """
 
-__description__ = "Behaviour-Driven-Development tool for python"
-__license__ = "MIT"
-__version__ = "1.0.0a5"
-__author__ = "Timo Furrer"
-__author_email__ = "tuxtimo@gmail.com"
-__url__ = "http://radish-bdd.io"
-__download_url__ = "https://github.com/radish-bdd/radish"
-__bugtrack_url__ = "https://github.com/radish-bdd/radish/issues"
-
+try:
+    from importlib.metadata import version
+except ImportError:
+    # NOTE(TF): This is a workaround for the lack of importlib.metadata in Python < 3.8
+    import pkg_resources
+    __version__ = pkg_resources.get_distribution("radish-bdd").version
+else:
+    __version__ = version("radish-bdd")
 
 # Expose useful objects on radish package level
 from radish.errors import RadishError  # noqa

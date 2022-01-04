@@ -29,10 +29,6 @@ jobs:
         run: |
           pip install flake8==3.8.3
           flake8 --show-source src/ tests/
-      - name: Check Manifest
-        run: |
-          pip install check-manifest
-          check-manifest
       - name: Unit Test with pytest
         run: |
           coverage run -p -m pytest

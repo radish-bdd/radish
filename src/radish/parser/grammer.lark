@@ -98,13 +98,13 @@ AND: "And"i
 BUT: "But"i
 
 // terminals used to match things
-TEXTLINE.0: /.*\n/
-STRING_NO_COLON_NL.0: /[^\n:]/+
-STRING_NO_PAREN_NL.0: /[^\n\)\(]/+
-STRING_NO_NL.0: /[^\n]/+
+TEXTLINE.-1: /.*\n/
+STRING_NO_COLON_NL.-1: /[^\n:]/+
+STRING_NO_PAREN_NL.-1: /[^\n\)\(]/+
+STRING_NO_NL.-1: /[^\n]/+
 _NEWLINE: /\n/
-STRING_NO_WS.0: /[^ \t\f\r\n]/+
-STRING_NO_VBAR.0: /((?<!\\)\\\||[^\|\f\r\n])+/
+STRING_NO_WS.-1: /[^ \t\f\r\n]/+
+STRING_NO_VBAR.-1: /((?<!\\)\\\||[^\|\f\r\n])+/
 DOC_STRING_DELIMITER: "\"\"\""
 COMMENT: /#[^\n]*\n/
 

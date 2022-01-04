@@ -69,7 +69,7 @@ class FeatureFileParser:
         resolve_preconditions: bool = True,
     ) -> None:
         if grammerfile is None:
-            grammerfile = Path(__file__).parent / "grammer.g"
+            grammerfile = Path(__file__).parent / "grammer.lark"
 
         self.grammerfile = grammerfile
         self.resolve_preconditions = resolve_preconditions

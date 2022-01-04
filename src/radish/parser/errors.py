@@ -21,7 +21,12 @@ class RadishSyntaxError(RadishError, SyntaxError):
 
 class RadishMissingFeatureShortDescription(RadishSyntaxError):
     label = "Feature is missing a short description"
-    examples = ["Feature:"]
+    examples = [
+        "Feature:",
+        """
+        Feature:
+        """,
+    ]
 
 
 class RadishMissingRuleShortDescription(RadishSyntaxError):
@@ -157,8 +162,23 @@ class RadishScenarioOutlineWithoutExamples(RadishSyntaxError):
             Test
 
             Scenario Outline: some scenario
+            Examples:
+        """,
+        """
+        Feature: some feature
+            Test
+
+            Scenario Outline: some scenario
                 When I do
 
+            Examples:
+                | hdr |
+        """,
+        """
+        Feature: some feature
+            Test
+
+            Scenario Outline: some scenario
             Examples:
                 | hdr |
         """,
@@ -373,6 +393,19 @@ class RadishScenarioOutlineExamplesMissingOpeningVBar(RadishSyntaxError):
             Examples:
                 | hdr |
                   foo |
+        """,
+        """
+        Feature: some feature
+            Test
+
+            Scenario Outline: some scenario
+                When I do
+
+            Examples:
+                | hdr |
+                | bar |
+                  foo |
+                | bar |
         """,
     ]
 

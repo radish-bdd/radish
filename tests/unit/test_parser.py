@@ -72,7 +72,7 @@ def test_parse_short_description_from_empty_feature(parser):
 
 
 def test_parse_fail_no_short_description_from_feature(parser):
-    """The parser should be fail to parse a Feature without a short description"""
+    """The parser should fail to parse a Feature without a short description"""
     # given
     feature_file = """
         Feature:
@@ -1379,8 +1379,7 @@ def test_parse_step_with_data_table_and_escaped_vbars(parser):
                 Given there is a setup
                 | foo
     """,
-        """
-        Feature: My Feature
+        """Feature: My Feature
 
             Scenario: My Scenario
                 Given there is a setup

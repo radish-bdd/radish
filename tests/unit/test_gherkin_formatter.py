@@ -10,6 +10,7 @@ The root from red to green. BDD tooling for Python.
 
 import re
 import textwrap
+import datetime
 
 import colorful as cf
 import pytest
@@ -21,8 +22,10 @@ from radish.formatters.gherkin import (
     write_scenario_footer,
     write_scenario_header,
     write_step,
+    write_step_running,
     write_step_result,
     write_tagline,
+    write_summary,
 )
 from radish.models import (
     Background,
@@ -78,7 +81,7 @@ def test_gf_write_tag_after_an_at_sign(disabled_colors, capsys, mocker):
     assert stdout == "@tag-a\n"
 
 
-def test_gf_write_tag_with_given_identation(disabled_colors, capsys, mocker):
+def test_gf_write_tag_with_given_indentation(disabled_colors, capsys, mocker):
     """Test that the Gherkin Formatter writes a Tag with the given indentation"""
     # given
     tag = mocker.MagicMock(spec=Tag)
@@ -518,6 +521,44 @@ def test_gf_write_scenario_footer_always_a_blank_line(disabled_colors, capsys, m
     [(DefaultRule, " " * 8), (Rule, " " * 12)],
     ids=["DefaultRule", "Rule"],
 )
+def test_gf_write_step_without_doc_string_with_data_table(
+    given_rule_type, expected_indentation, disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step with a data table and
+    without a doc string
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.used_keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = None
+    step.data_table = [["foo", "bar"]]
+    step.rule = mocker.MagicMock(spec=given_rule_type)
+
+    # when
+    write_step(step, step_color_func=lambda x: x)
+
+    # then
+    assert_output(
+        capsys,
+        dedent_feature_file(
+            """
+            (?P<indentation>{indentation})Given there is a Step
+            (?P<indentation>{indentation}    )| foo | bar |
+            """.format(
+                indentation=expected_indentation
+            )
+        ),
+    )
+
+
+@pytest.mark.parametrize(
+    "given_rule_type, expected_indentation",
+    [(DefaultRule, " " * 8), (Rule, " " * 12)],
+    ids=["DefaultRule", "Rule"],
+)
 def test_gf_write_step_without_doc_string_without_data_table(
     given_rule_type, expected_indentation, disabled_colors, capsys, mocker
 ):
@@ -741,3 +782,86 @@ def test_gf_write_and_as_keyword_if_not_first_step_of_keyword_context(
             """
         ),
     )
+
+
+def test_gf_write_summary(disabled_colors, capsys, mocker):
+    """
+    Test that the Gherkin Formatter properly writes a summary of the Features
+    """
+
+    # given
+
+    feature = mocker.MagicMock(spec=Feature)
+    feature.short_description = "My Feature"
+    feature.keyword = 'Feature'
+    feature.state = State.PASSED
+    mocker.patch('radish.formatters.gherkin.sum', return_value=datetime.timedelta())
+
+    rule = mocker.MagicMock(spec=Rule)
+    rule.short_description = 'My Rule'
+    rule.state = State.PASSED
+
+    scenario = mocker.MagicMock(spec=Scenario)
+    scenario.keyword = "Scenario"
+    scenario.state = State.PASSED
+    scenario.short_description = "My Scenario"
+
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = 'Given'
+    step.used_keyword = "Given"
+    step.state = State.PASSED
+    step.text = 'there is a Step 1'
+
+    scenario.steps = [step]
+    rule.scenarios = [scenario]
+    feature.rules = [rule]
+
+    # when
+    write_summary([feature])
+
+    # then
+    stdout = capsys.readouterr().out
+    assert stdout == dedent_feature_file(
+        """
+        1 Feature (1 passed)
+        1 Scenario (1 passed)
+        1 Step (1 passed)
+        Run None finished within 0.0 seconds
+        """
+    )
+
+
+@pytest.mark.parametrize(
+    "step_state, expected_color",
+    [
+        pytest.param(State.PASSED, cf.forestGreen, id="State.PASSED => cf.forestGreen"),
+        pytest.param(State.FAILED, cf.firebrick, id="State.FAILED => cf.firebrick"),
+        pytest.param(State.PENDING, cf.orange, id="State.PENDING => cf.orange"),
+        pytest.param(
+            State.UNTESTED, cf.deepSkyBlue3, id="State.UNTESTED => cf.deepSkyBlue3"
+        ),
+    ],
+)
+def test_gf_write_step_running(
+    step_state, expected_color, disabled_colors, capsys, mocker
+):
+    """
+    Test that the Gherkin Formatter properly formats a Step without a doc string and data table
+    """
+    # given
+    step = mocker.MagicMock(spec=Step)
+    step.keyword = "Given"
+    step.used_keyword = "Given"
+    step.text = "there is a Step"
+    step.doc_string = None
+    step.data_table = None
+    step.state = step_state
+    step.rule = mocker.MagicMock(spec=Rule)
+
+    write_step_mock = mocker.patch("radish.formatters.gherkin.write_step")
+
+    # when
+    write_step_running(step)
+
+    # then
+    write_step_mock.assert_called_once_with(step, expected_color)

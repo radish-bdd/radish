@@ -31,6 +31,8 @@ def setup_default_config():
             "early_exit": False,
             "shuffle_scenarios": False,
             "no_ansi": False,
+            "marker": None,
+            "no_step_rewrites": False,
         }
     )
 

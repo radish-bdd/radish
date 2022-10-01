@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-This module provide Python 2 / Python 3 compatability
+This module provide Python 3 compatability
 """
 
 from __future__ import unicode_literals
@@ -21,13 +21,11 @@ except AttributeError:
     re_pattern = re._pattern_type
 
 
-# flags to indicate Python versions
-PY2 = sys.version_info[0] == 2
-
 # RecursionError does not exist in Python < 3.5
 RecursionError = RuntimeError if sys.version_info < (3, 5) else RecursionError
 
 
+# TODO(fliiiix): remove not required since we dropped 2.7
 def u(text):  # pragma: no cover
     """
     Encode given text to unicode utf-8 in manner that works accross various
@@ -36,8 +34,4 @@ def u(text):  # pragma: no cover
     :param text: text to encode
     :type text: str,unicode
     """
-    # look for unicode in the builtins which only exists in python 2
-    if PY2 is True:
-        return unicode(text)
-
     return str(text)

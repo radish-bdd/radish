@@ -23,15 +23,3 @@ except AttributeError:
 
 # RecursionError does not exist in Python < 3.5
 RecursionError = RuntimeError if sys.version_info < (3, 5) else RecursionError
-
-
-# TODO(fliiiix): remove not required since we dropped 2.7
-def u(text):  # pragma: no cover
-    """
-    Encode given text to unicode utf-8 in manner that works accross various
-    python interpreters and version. Currently only support CPython 2 and 3.
-
-    :param text: text to encode
-    :type text: str,unicode
-    """
-    return str(text)

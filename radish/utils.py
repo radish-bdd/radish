@@ -18,8 +18,6 @@ import itertools
 import calendar
 from datetime import datetime, timedelta
 
-from .compat import u
-
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
@@ -33,8 +31,8 @@ class Failure(object):  # pylint: disable=too-few-public-methods
             :param Exception exception: the exception shrown in the step
         """
         self.exception = exception
-        self.reason = u(str(exception))
-        self.traceback = u(traceback.format_exc())
+        self.reason = str(exception)
+        self.traceback = traceback.format_exc()
         self.name = exception.__class__.__name__
         traceback_info = traceback.extract_tb(sys.exc_info()[2])[-1]
         self.filename = traceback_info[0]
@@ -47,7 +45,7 @@ def console_write(text):
 
         :param str text: the text which is printed to the console
     """
-    print(u(text))
+    print(str(text))
 
 
 def expandpath(path):

@@ -24,7 +24,6 @@ from .extensionregistry import ExtensionRegistry
 from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
-from .compat import u
 from . import utils
 
 # use only 8 ANSI colors

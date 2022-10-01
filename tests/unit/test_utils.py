@@ -44,10 +44,6 @@ def test_flattened_basedirs(mocker, basedirs, expected_basedirs, os_name):
     assert actual_basedirs == expected_basedirs
 
 
-@pytest.mark.xfail(
-        reason="freezegun doesn't support calendar.timegm(). "
-               "See https://github.com/spulec/freezegun/issues/287"
-)
 @freeze_time("2015-10-21 04:29:00", tz_offset=+1)
 def test_date_time_formatter():
     """

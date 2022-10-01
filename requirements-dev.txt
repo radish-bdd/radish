@@ -1,5 +1,5 @@
 -r requirements.txt
-freezegun==0.3.12
-pytest==4.6.3
-pytest-mock==1.10.4
-sphinx==1.8.5
+freezegun==1.1.0
+pytest==6.1.2
+pytest-mock==3.5.1
+sphinx==3.5.4

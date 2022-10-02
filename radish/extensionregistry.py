@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    Provide plugin interface for radish extensions
+Provide plugin interface for radish extensions
 """
-
-from __future__ import unicode_literals
 
 from singleton import singleton
 
@@ -12,7 +10,7 @@ from singleton import singleton
 @singleton()
 class ExtensionRegistry(object):
     """
-        Registers all extensions
+    Registers all extensions
     """
 
     DEFAULT_LOAD_PRIORITY = 1000
@@ -30,13 +28,13 @@ class ExtensionRegistry(object):
 
     def register(self, extension_class):
         """
-            Registers the class as a radish extension
+        Registers the class as a radish extension
         """
         self.extensions.append(extension_class)
 
     def load(self, config):
         """
-            Loads all needed extensions
+        Loads all needed extensions
         """
         for ext in sorted(
             self.extensions,
@@ -50,7 +48,7 @@ class ExtensionRegistry(object):
 
     def get_options(self):
         """
-            Returns all options registered by plugins
+        Returns all options registered by plugins
         """
         options = []
         for ext in self.extensions:
@@ -62,7 +60,7 @@ class ExtensionRegistry(object):
 
     def get_option_description(self):
         """
-            Returns all option descriptions registerd by plugins
+        Returns all option descriptions registerd by plugins
         """
         options = []
         for ext in self.extensions:
@@ -77,7 +75,7 @@ class ExtensionRegistry(object):
 
 def extension(klass):
     """
-        Registers the class as a radish extension
+    Registers the class as a radish extension
     """
     ExtensionRegistry().register(klass)
     return klass

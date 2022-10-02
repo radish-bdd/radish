@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    Terrain module providing step overlapping data containers
+Terrain module providing step overlapping data containers
 """
-
-from __future__ import unicode_literals
 
 import threading
 
@@ -13,7 +11,7 @@ world = threading.local()  # pylint: disable=invalid-name
 
 def pick(func):
     """
-        Picks the given function and add it to the world object
+    Picks the given function and add it to the world object
     """
     setattr(world, func.__name__, func)
     return func

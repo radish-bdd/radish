@@ -3,20 +3,24 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
-    runs-on: ${{ matrix.os }}
+  test:
     strategy:
       fail-fast: false
-      max-parallel: 4
+      max-parallel: 6
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
+        python-version: [3.7, 3.8, 3.9, "3.10"]
         os: [ubuntu-latest, windows-latest, macOS-latest]
+        include:
+          - os: ubuntu-latest
+            python-version: 3.5
+          - os: ubuntu-latest
+            python-version: 3.6
 
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Setup build and test environment
@@ -25,6 +29,10 @@ jobs:
       - name: Build Python Package
         run: |
           python -m pip install -r requirements-dev.txt
+      - name: Update pytest on Python3.10
+        if: ${{ matrix.python-version == '3.10' }}
+        run: |
+          python -m pip install pytest==7.0.1
       - name: Unit Test with pytest
         run: |
           coverage run -p --source radish -m pytest tests/unit/ --junitxml=junit/unit-test-results.xml
@@ -45,7 +53,7 @@ jobs:
       - name: Upload coverage to Codecov
         # codecov only runs on Linux
         if: startsWith(matrix.os, 'ubuntu-')
-        uses: codecov/codecov-action@v1.0.0
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.xml

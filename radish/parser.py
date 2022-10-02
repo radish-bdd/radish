@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 """
-    Feature file parser.
-    One Feature file parser instance is able to parse one feature file.
+Feature file parser.
+One Feature file parser instance is able to parse one feature file.
 """
-
-from __future__ import unicode_literals
 
 import os
 import io
@@ -29,7 +27,7 @@ from . import utils
 
 class Keywords(object):
     """
-        Represent config object for gherkin keywords.
+    Represent config object for gherkin keywords.
     """
 
     def __init__(
@@ -53,8 +51,8 @@ class Keywords(object):
 
 class FeatureParser(object):
     """
-        Class to parse a feature file.
-        A feature file contains just one feature.
+    Class to parse a feature file.
+    A feature file contains just one feature.
     """
 
     LANGUAGE_LOCATION = os.path.join(os.path.dirname(__file__), "languages")
@@ -63,7 +61,7 @@ class FeatureParser(object):
 
     class State(object):
         """
-            Represents the parser state
+        Represents the parser state
         """
 
         INIT = "init"
@@ -117,15 +115,15 @@ class FeatureParser(object):
 
     def _load_language(self, language=None):
         """
-            Loads all keywords of the given language
+        Loads all keywords of the given language
 
-            :param string language: the lanugage to use for the feature files.
-                                    if None is given `radish` tries to detect the language.
+        :param string language: the lanugage to use for the feature files.
+                                if None is given `radish` tries to detect the language.
 
-            :returns: if the language could be loaded or not
-            :rtype: bool
+        :returns: if the language could be loaded or not
+        :rtype: bool
 
-            :raises LanguageNotSupportedError: if the given language is not supported by radish
+        :raises LanguageNotSupportedError: if the given language is not supported by radish
         """
         if not language:  # try to detect language
             raise NotImplementedError("Auto detect language is not implemented yet")
@@ -141,10 +139,10 @@ class FeatureParser(object):
 
     def parse(self):
         """
-            Parses the feature file of this `FeatureParser` instance
+        Parses the feature file of this `FeatureParser` instance
 
-            :returns: if the parsing was successful or not
-            :rtype: bool
+        :returns: if the parsing was successful or not
+        :rtype: bool
         """
         with io.open(self._featurefile, "r", encoding="utf-8") as f:
             for line in f.readlines():
@@ -203,9 +201,9 @@ class FeatureParser(object):
 
     def _parse_context(self, line):
         """
-            Parses arbitrary context from a line
+        Parses arbitrary context from a line
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         parse_context_func = getattr(self, "_parse_" + self._current_state, None)
         if not parse_context_func:
@@ -217,11 +215,11 @@ class FeatureParser(object):
 
     def _parse_feature(self, line):
         """
-            Parses a Feature Sentence
+        Parses a Feature Sentence
 
-            The `INIT` state is used as initiale state.
+        The `INIT` state is used as initiale state.
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line = line.strip()
         detected_feature = self._detect_feature(line)
@@ -280,9 +278,9 @@ class FeatureParser(object):
 
     def _parse_scenario(self, line):
         """
-            Parses a Feature context
+        Parses a Feature context
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line = line.strip()
         detected_scenario = self._detect_scenario(line)
@@ -379,9 +377,9 @@ class FeatureParser(object):
 
     def _parse_examples(self, line):
         """
-            Parses the Examples header line
+        Parses the Examples header line
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line = line.strip()
         if not isinstance(self._current_scenario, ScenarioOutline):
@@ -397,9 +395,9 @@ class FeatureParser(object):
 
     def _parse_examples_row(self, line):
         """
-            Parses an Examples row
+        Parses an Examples row
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line = line.strip()
         # detect next keyword
@@ -417,9 +415,9 @@ class FeatureParser(object):
 
     def _parse_step(self, line):
         """
-            Parses a single step
+        Parses a single step
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line_strip = line.strip()
         # detect next keyword
@@ -462,9 +460,9 @@ class FeatureParser(object):
 
     def _parse_table(self, line):
         """
-            Parses a step table row
+        Parses a step table row
 
-            :param string line: the line to parse from
+        :param string line: the line to parse from
         """
         line = line.strip()
         if not self._current_scenario.steps:
@@ -488,9 +486,9 @@ class FeatureParser(object):
 
     def _parse_step_text(self, line):
         """
-            Parses additional step text
+        Parses additional step text
 
-            :param str line: the line to parse
+        :param str line: the line to parse
         """
 
         def dedent(_str):
@@ -522,12 +520,12 @@ class FeatureParser(object):
 
     def _parse_precondition(self, arguments):
         """
-            Parses scenario preconditions
+        Parses scenario preconditions
 
-            The arguments must be in format:
-                File.feature: Some scenario
+        The arguments must be in format:
+            File.feature: Some scenario
 
-            :param str arguments: the raw arguments
+        :param str arguments: the raw arguments
         """
         match = re.search(r"(.*?\.feature): (.*)", arguments)
         if not match:
@@ -588,13 +586,13 @@ class FeatureParser(object):
 
     def _parse_constant(self, arguments):
         """
-            Parses tag arguments as a constant containing name and value
+        Parses tag arguments as a constant containing name and value
 
-            The arguments must be in format:
-                ConstantName: SomeValue
-                ConstantName: 5
+        The arguments must be in format:
+            ConstantName: SomeValue
+            ConstantName: 5
 
-            :param str arguments: the raw arguments to parse
+        :param str arguments: the raw arguments to parse
         """
         name, value = arguments.split(":", 1)
         return name.strip(), value.strip()
@@ -612,8 +610,10 @@ class FeatureParser(object):
     def _detect_keyword(self, keyword, line):
         """
         Detects a keyword on a given line
+
         :param keyword: the keyword to detect
         :param line: the line in which we want to detect the keyword
+
         :return: the line without the detected keyword
         :rtype: string or None
         """
@@ -630,24 +630,24 @@ class FeatureParser(object):
 
     def _detect_feature(self, line):
         """
-            Detects a feature on the given line
+        Detects a feature on the given line
 
-            :param string line: the line to detect a feature
+        :param string line: the line to detect a feature
 
-            :returns: the detected feature on the given line
-            :rtype: string or None
+        :returns: the detected feature on the given line
+        :rtype: string or None
         """
 
         return self._detect_keyword(self.keywords.feature, line)
 
     def _detect_background(self, line):
         """
-            Detects a background on the given line
+        Detects a background on the given line
 
-            :param string line: the line to detect a background
+        :param string line: the line to detect a background
 
-            :returns: the detected background on the given line
-            :rtype: string or None
+        :returns: the detected background on the given line
+        :rtype: string or None
         """
 
         return self._detect_keyword(self.keywords.background, line)
@@ -672,48 +672,48 @@ class FeatureParser(object):
 
     def _detect_scenario(self, line):
         """
-            Detects a scenario on the given line
+        Detects a scenario on the given line
 
-            :param string line: the line to detect a scenario
+        :param string line: the line to detect a scenario
 
-            :returns: the scenario detected on the given line
-            :rtype: string or None
+        :returns: the scenario detected on the given line
+        :rtype: string or None
         """
 
         return self._detect_keyword(self.keywords.scenario, line)
 
     def _detect_scenario_outline(self, line):
         """
-            Detects a scenario outline on the given line
+        Detects a scenario outline on the given line
 
-            :param string line: the line to detect a scenario outline
+        :param string line: the line to detect a scenario outline
 
-            :returns: the scenario outline detected on the given line
-            :rtype: string or None
+        :returns: the scenario outline detected on the given line
+        :rtype: string or None
         """
 
         return self._detect_keyword(self.keywords.scenario_outline, line)
 
     def _detect_examples(self, line):
         """
-            Detects an Examples block on the given line
+        Detects an Examples block on the given line
 
-            :param string line: the line to detect the Examples
+        :param string line: the line to detect the Examples
 
-            :returns: if an Examples block was found on the given line
-            :rtype: bool
+        :returns: if an Examples block was found on the given line
+        :rtype: bool
         """
 
         return self._detect_keyword(self.keywords.examples, line) is not None
 
     def _detect_scenario_loop(self, line):
         """
-            Detects a scenario loop on the given line
+        Detects a scenario loop on the given line
 
-            :param string line: the line to detect a scenario loop
+        :param string line: the line to detect a scenario loop
 
-            :returns: if a scenario loop was found on the given line
-            :rtype: string
+        :returns: if a scenario loop was found on the given line
+        :rtype: string
         """
         match = re.search(r"^{0} (\d+):(.*)".format(self.keywords.scenario_loop), line)
         if match:
@@ -723,34 +723,34 @@ class FeatureParser(object):
 
     def _detect_table(self, line):
         """
-            Detects a step table row on the given line
+        Detects a step table row on the given line
 
-            :param string line: the line to detect the table row
+        :param string line: the line to detect the table row
 
-            :returns: if an step table row was found or not
-            :rtype: bool
+        :returns: if an step table row was found or not
+        :rtype: bool
         """
         return line.startswith("|")
 
     def _detect_step_text(self, line):
         """
-            Detects the beginning of an additional step text block
+        Detects the beginning of an additional step text block
 
-            :param str line: the line to detect the step text block
+        :param str line: the line to detect the step text block
 
-            :returns: if a step text block was found or not
-            :rtype: bool
+        :returns: if a step text block was found or not
+        :rtype: bool
         """
         return line.startswith('"""')
 
     def _detect_language(self, line):
         """
-            Detects a language on the given line
+        Detects a language on the given line
 
-            :param string line: the line to detect the language
+        :param string line: the line to detect the language
 
-            :returns: the language or None
-            :rtype: str or None
+        :returns: the language or None
+        :rtype: str or None
         """
         match = re.search("^# language: (.*)", line)
         if match:
@@ -760,12 +760,12 @@ class FeatureParser(object):
 
     def _detect_tag(self, line):
         """
-            Detects a tag on the given line
+        Detects a tag on the given line
 
-            :param string line: the line to detect the tag
+        :param string line: the line to detect the tag
 
-            :returns: the tag or None
-            :rtype: str or None
+        :returns: the tag or None
+        :rtype: str or None
         """
         match = re.search(r"^@([^\s(]+)(?:\((.*?)\))?", line)
         if match:

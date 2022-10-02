@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import os
 import sys
 import warnings
@@ -24,7 +21,6 @@ from .extensionregistry import ExtensionRegistry
 from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
-from .compat import u
 from . import utils
 
 # use only 8 ANSI colors
@@ -34,14 +30,14 @@ colorful.use_8_ansi_colors()
 
 def setup_config(arguments):
     """
-        Parses the docopt arguments and creates a configuration object in terrain.world
+    Parses the docopt arguments and creates a configuration object in terrain.world
     """
     world.config = Configuration(arguments)
 
 
 def show_features(core):
     """
-        Show the parsed features
+    Show the parsed features
     """
     # set needed configuration
     world.config.write_steps_once = True
@@ -55,9 +51,9 @@ def show_features(core):
 
 def run_features(core):
     """
-        Run the parsed features
+    Run the parsed features
 
-        :param Core core: the radish core object
+    :param Core core: the radish core object
     """
     # set needed configuration
     world.config.expand = True

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to represent a Scenario
+This module provides a class to represent a Scenario
 """
-
-from __future__ import unicode_literals
 
 from .model import Model
 from .stepmodel import Step

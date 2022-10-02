@@ -1,13 +1,10 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a hook which processes user specified data on the command-line
-    and provides this data as a dictionary attached to the world.config object
-    as per Enhancement #124.
+This module provides a hook which processes user specified data on the command-line
+and provides this data as a dictionary attached to the world.config object
+as per Enhancement #124.
 """
-
-from __future__ import unicode_literals
-
 import re
 
 from radish.terrain import world
@@ -18,7 +15,7 @@ from radish.extensionregistry import extension
 @extension
 class UserData(object):
     """
-        User Data radish extension
+    User Data radish extension
     """
 
     OPTIONS = [
@@ -42,7 +39,7 @@ class UserData(object):
 
     def process_user_data(self):
         """
-            Process the user data
+        Process the user data
         """
         if self._cli_user_data:
             for pair in self._cli_user_data:

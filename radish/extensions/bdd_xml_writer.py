@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a hook which generates a BDD XML result file at the end of the run.
+This module provides a hook which generates a BDD XML result file at the end of the run.
 """
-
-from __future__ import unicode_literals
 
 from getpass import getuser
 from socket import gethostname
@@ -25,7 +23,7 @@ import radish.utils as utils
 @extension
 class BDDXMLWriter(object):
     """
-        BDD XML Writer radish extension
+    BDD XML Writer radish extension
     """
 
     OPTIONS = [("--bdd-xml=<bddxml>", "write BDD XML result file after run")]
@@ -44,7 +42,7 @@ class BDDXMLWriter(object):
 
     def _get_element_from_model(self, what, model):
         """
-            Create a etree.Element from a given model
+        Create a etree.Element from a given model
         """
         from lxml import etree
 
@@ -68,7 +66,7 @@ class BDDXMLWriter(object):
 
     def _strip_ansi(self, text):
         """
-            Strips ANSI modifiers from the given text
+        Strips ANSI modifiers from the given text
         """
         pattern = re.compile(r"(\\033\[\d+(?:;\d+)*m)")
         return pattern.sub("", text)

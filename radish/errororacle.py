@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides some functionality to diagnose thrown exceptions
+This module provides some functionality to diagnose thrown exceptions
 """
-
-from __future__ import unicode_literals
-
 
 import sys
 from functools import wraps

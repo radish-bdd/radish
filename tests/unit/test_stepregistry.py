@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 
 """
-    radish
-    ~~~~~~
+radish
+~~~~~~
 
-    Behavior Driven Development tool for Python - the root from red to green
+Behavior Driven Development tool for Python - the root from red to green
 
-    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
-
-from __future__ import unicode_literals
 
 import re
 
@@ -17,7 +15,7 @@ import pytest
 
 from radish.stepregistry import step, steps
 from radish.stepregistry import given, when, then
-from radish.compat import PY2, re_pattern
+from radish.compat import re_pattern
 import radish.exceptions as errors
 
 
@@ -175,7 +173,7 @@ def test_registering_step_function_via_step_decorator(pattern, stepregistry):
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
+    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
         assert stepregistry.steps[pattern] == step_a
 
 
@@ -200,7 +198,7 @@ def test_registering_step_function_via_given_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
+    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 
@@ -225,7 +223,7 @@ def test_registering_step_function_via_when_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
+    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 
@@ -250,7 +248,7 @@ def test_registering_step_function_via_then_decorator(
 
     # then
     assert len(stepregistry.steps) == 1
-    if not PY2 or not isinstance(pattern, re_pattern):  # doesn't work for Python 2 and re_pattern.
+    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 

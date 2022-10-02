@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This radish extension provides the functionality to write the feature file run to the console.
+This radish extension provides the functionality to write the feature file run to the console.
 """
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 import sys
 import colorful as cf
@@ -16,7 +13,6 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.compat import u
 
 
 @extension
@@ -47,23 +43,23 @@ class DotOutputFormatter(object):
 
     def dot_formatter_before_each_feature(self, feature):
         """
-            Writes feature header to the console
+        Writes feature header to the console
 
-            :param Feature feature: the feature to write to the console
+        :param Feature feature: the feature to write to the console
         """
         output = cf.bold_black(feature.path) + ": "
-        sys.stdout.write(u(output))
+        sys.stdout.write(str(output))
 
     def dot_formatter_after_each_scenario(self, scenario):
         """
-            If the scenario is a ExampleScenario it will write the Examples header
+        If the scenario is a ExampleScenario it will write the Examples header
 
-            :param Scenario scenario: the scenario which was ran.
+        :param Scenario scenario: the scenario which was ran.
         """
         if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
             return
 
-        sys.stdout.write(u(self.STATE_SYMBOLS[scenario.state]))
+        sys.stdout.write(str(self.STATE_SYMBOLS[scenario.state]))
 
     def dot_formatter_after_each_step(self, step):
         if step.state == Step.State.FAILED:
@@ -93,4 +89,4 @@ class DotOutputFormatter(object):
                 cf.bold_red(step.failure.name), cf.red(step.failure.reason)
             )
 
-        sys.stdout.write(u(output + "\n"))
+        sys.stdout.write(str(output + "\n"))

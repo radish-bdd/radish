@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This radish extension module provide the functionality to write the end report
+This radish extension module provide the functionality to write the end report
 """
-
-from __future__ import unicode_literals
 
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
@@ -27,7 +25,7 @@ from radish.stepregistry import StepRegistry
 @extension
 class EndreportWriter(object):
     """
-        Endreport writer radish extension
+    Endreport writer radish extension
     """
 
     LOAD_IF = staticmethod(lambda config: not config.show)
@@ -38,9 +36,9 @@ class EndreportWriter(object):
 
     def console_write(self, features, marker):
         """
-            Writes the endreport for all features
+        Writes the endreport for all features
 
-            :param list features: all features
+        :param list features: all features
         """
         stats = {
             "features": {

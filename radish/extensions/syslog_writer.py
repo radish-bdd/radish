@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides an extension to write all features, scenarios and steps to the syslog.
+This module provides an extension to write all features, scenarios and steps to the syslog.
 """
-
-from __future__ import unicode_literals
 
 from radish.terrain import world
 from radish.feature import Feature
@@ -15,10 +13,10 @@ from radish.extensionregistry import extension
 @extension
 class SyslogWriter(object):
     """
-        Syslog Writer radish extension. This extension is only supported on
-        systems where the Python standard library supports the system logger
-        (syslog). For example, this extension works on UNIX and UNIX-like
-        systems (Linux), but will not work on Windows.
+    Syslog Writer radish extension. This extension is only supported on
+    systems where the Python standard library supports the system logger
+    (syslog). For example, this extension works on UNIX and UNIX-like
+    systems (Linux), but will not work on Windows.
     """
 
     OPTIONS = [
@@ -52,9 +50,9 @@ class SyslogWriter(object):
 
     def log(self, message):
         """
-            Logs the given message to the syslog
+        Logs the given message to the syslog
 
-            :param string message: the message to log
+        :param string message: the message to log
         """
         import syslog
 
@@ -70,7 +68,7 @@ class SyslogWriter(object):
         self, features, marker
     ):  # pylint: disable=unused-argument
         """
-            Opens the syslog
+        Opens the syslog
         """
         import syslog
 
@@ -81,7 +79,7 @@ class SyslogWriter(object):
         self, features, marker
     ):  # pylint: disable=unused-argument
         """
-            Closes the syslog
+        Closes the syslog
         """
         import syslog
 
@@ -90,7 +88,7 @@ class SyslogWriter(object):
 
     def syslog_writer_before_each_feature(self, feature):
         """
-            Writes the feature to the syslog
+        Writes the feature to the syslog
         """
         self.log(
             "begin feature {0}:{1} {2}".format(
@@ -100,7 +98,7 @@ class SyslogWriter(object):
 
     def syslog_writer_after_each_feature(self, feature):
         """
-            Writes the feature to the syslog
+        Writes the feature to the syslog
         """
         self.log(
             "end feature {0}:{1} {2}".format(
@@ -110,7 +108,7 @@ class SyslogWriter(object):
 
     def syslog_writer_before_each_scenario(self, scenario):
         """
-            Writes the scenario to the syslog
+        Writes the scenario to the syslog
         """
         self.log(
             "begin scenario {0}:{1}.{2} {3}".format(
@@ -123,7 +121,7 @@ class SyslogWriter(object):
 
     def syslog_writer_after_each_scenario(self, scenario):
         """
-            Writes the scenario to the syslog
+        Writes the scenario to the syslog
         """
         self.log(
             "end scenario {0}:{1}.{2} {3}".format(
@@ -136,7 +134,7 @@ class SyslogWriter(object):
 
     def syslog_writer_before_each_step(self, step):
         """
-            Writes the step to the syslog
+        Writes the step to the syslog
         """
         self.log(
             "begin step {0}:{1}.{2}.{3} {4}".format(
@@ -150,7 +148,7 @@ class SyslogWriter(object):
 
     def syslog_writer_after_each_step(self, step):
         """
-            Writes the step to the syslog
+        Writes the step to the syslog
         """
         self.log(
             "{0} step {1}:{2}.{3}.{4} {5}".format(

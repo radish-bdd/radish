@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to represent a Step
+This module provides a class to represent a Step
 """
-
-from __future__ import unicode_literals
 
 import base64
 import re
@@ -24,9 +22,9 @@ class Step(Model):
 
     class State(object):
         """
-            Represents the step state
+        Represents the step state
 
-            FIXME: for the python3 version this should be an Enum
+        FIXME: for the python3 version this should be an Enum
         """
 
         UNTESTED = "untested"
@@ -54,16 +52,16 @@ class Step(Model):
     @property
     def context(self):
         """
-            Returns the scenario context belonging to this step
+        Returns the scenario context belonging to this step
         """
         return self.parent.context
 
     @property
     def expanded_sentence(self):
         """
-            Returns the expanded sentence of this step
+        Returns the expanded sentence of this step
 
-                * Expand constants
+            * Expand constants
         """
         sentence = self.sentence
         for name, value in self.parent.constants:
@@ -90,13 +88,13 @@ class Step(Model):
     @property
     def text(self):
         """
-            Returns the additional text of this step as string
+        Returns the additional text of this step as string
         """
         return "\n".join(self.raw_text)
 
     def _validate(self):
         """
-            Checks if the step is valid to run or not
+        Checks if the step is valid to run or not
         """
 
         if not self.definition_func or not callable(self.definition_func):

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to represent a Scenario Outline
+This module provides a class to represent a Scenario Outline
 """
-
-from __future__ import unicode_literals
 
 import copy
 
@@ -16,12 +14,12 @@ from .exceptions import RadishError
 
 class ScenarioOutline(Scenario):
     """
-        Represents a Scenario
+    Represents a Scenario
     """
 
     class Example(object):
         """
-            Represents the ScenarioOutline examples
+        Represents the ScenarioOutline examples
         """
 
         def __init__(self, data, path, line):
@@ -52,10 +50,10 @@ class ScenarioOutline(Scenario):
 
     def build_scenarios(self):
         """
-            Builds the scenarios with the parsed Examples
+        Builds the scenarios with the parsed Examples
 
-            Note: This must be done before merging the steps
-                  from the feature file with the step definitions
+        Note: This must be done before merging the steps
+              from the feature file with the step definitions
         """
         for row_id, example in enumerate(self.examples):
             examples = dict(zip(self.examples_header, example.data))

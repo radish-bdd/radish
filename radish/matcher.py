@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to match the feature file steps with the registered steps from the registry
+This module provides a class to match the feature file steps with the registered steps from the registry
 """
-
-from __future__ import unicode_literals
 
 import re
 from collections import namedtuple
@@ -43,10 +41,10 @@ class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
 
 def merge_steps(features, steps):
     """
-        Merges steps from the given features with the given steps
+    Merges steps from the given features with the given steps
 
-        :param list features: the features
-        :param dict steps: the steps
+    :param list features: the features
+    :param dict steps: the steps
     """
     # FIXME: fix cycle-import ... Matcher -> ScenarioOutline -> Step -> Matcher
     from .scenariooutline import ScenarioOutline
@@ -66,10 +64,10 @@ def merge_steps(features, steps):
 
 def merge_step(step, steps):
     """
-        Merges a single step with the registered steps
+    Merges a single step with the registered steps
 
-        :param Step step: the step from a feature file to merge
-        :param list steps: the registered steps
+    :param Step step: the step from a feature file to merge
+    :param list steps: the registered steps
     """
     match = match_step(step.context_sensitive_sentence, steps)
     if not match or not match.func:
@@ -81,13 +79,13 @@ def merge_step(step, steps):
 
 def match_step(sentence, steps):
     """
-        Tries to find a match from the given sentence with the given steps
+    Tries to find a match from the given sentence with the given steps
 
-        :param string sentence: the step sentence to match
-        :param dict steps: the available registered steps
+    :param string sentence: the step sentence to match
+    :param dict steps: the available registered steps
 
-        :returns: the arguments and the func which were matched
-        :rtype: tuple
+    :returns: the arguments and the func which were matched
+    :rtype: tuple
     """
     potentional_matches = []
     for pattern, func in steps.items():

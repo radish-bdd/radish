@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-    This model provides a base class for all models:
+This model provides a base class for all models:
 
-    Models:
-        * Feature
-        * Scenario
-        * ScenarioOutline
-        * Step
+Models:
+    * Feature
+    * Scenario
+    * ScenarioOutline
+    * Step
 """
-
-from __future__ import unicode_literals
 
 from .exceptions import RadishError
 
@@ -37,13 +35,13 @@ class Tag(object):
 # FIXME: make ABC
 class Model(object):
     """
-        Represents a base model
+    Represents a base model
     """
 
     class Context(object):
         """
-            Represents a Models context.
-            For every feature/scenario a new Context object is created
+        Represents a Models context.
+        For every feature/scenario a new Context object is created
         """
 
         def __init__(self):
@@ -73,7 +71,7 @@ class Model(object):
     @property
     def duration(self):
         """
-            Returns the duration of this model
+        Returns the duration of this model
         """
         if not self.starttime or not self.endtime:
             raise RadishError(

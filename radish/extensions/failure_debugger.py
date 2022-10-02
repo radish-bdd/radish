@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 
-
 """
-    This module provides an extension which starts a debugger when a step fails
+This module provides an extension which starts a debugger when a step fails
 """
-
-from __future__ import unicode_literals
 
 from radish.hookregistry import after
 from radish.stepmodel import Step
@@ -16,7 +13,7 @@ import radish.utils as utils
 @extension
 class FailureDebugger(object):
     """
-        Failure debugger radish extension
+    Failure debugger radish extension
     """
 
     OPTIONS = [("--debug-after-failure", "start python debugger after failure")]
@@ -28,7 +25,7 @@ class FailureDebugger(object):
 
     def failure_debugger(self, step):
         """
-            Starts a python debugger if the step failed
+        Starts a python debugger if the step failed
         """
         if step.state is not Step.State.FAILED:
             return

@@ -10,10 +10,11 @@ from __future__ import unicode_literals
 import sys
 import re
 
+from io import StringIO
+
 from radish.extensionregistry import extension
 from radish.hookregistry import before, after
 from radish.terrain import world
-from radish.compat import StringIO
 from radish.exceptions import RadishError
 
 

@@ -4,8 +4,6 @@
 This module provide Python 3 compatability
 """
 
-from __future__ import unicode_literals
-
 import sys
 import re
 

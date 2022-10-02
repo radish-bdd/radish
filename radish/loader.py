@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module contains a class to load the step and terrain files
+This module contains a class to load the step and terrain files
 """
 
 import os
@@ -13,7 +13,7 @@ from . import utils
 
 def load_modules(location):
     """
-        Loads all modules in the `location` folder
+    Loads all modules in the `location` folder
     """
     location = os.path.expanduser(os.path.expandvars(location))
     if not os.path.exists(location):
@@ -26,9 +26,9 @@ def load_modules(location):
 
 def load_module(path):
     """
-        Loads a module by the given `path`
+    Loads a module by the given `path`
 
-        :param string path: the path to the module to load
+    :param string path: the path to the module to load
     """
     module_name = os.path.splitext(os.path.split(path)[1])[0]
     try:

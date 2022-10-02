@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a hook which generates a cucumber json result file at the end of the run.
+This module provides a hook which generates a cucumber json result file at the end of the run.
 """
 
 from datetime import timedelta, datetime
@@ -19,7 +19,7 @@ from radish.extensionregistry import extension
 @extension
 class CucumberJSONWriter(object):
     """
-        cucumber json Writer radish extension
+    cucumber json Writer radish extension
     """
 
     OPTIONS = [
@@ -33,7 +33,7 @@ class CucumberJSONWriter(object):
 
     def generate_ccjson(self, features, marker):
         """
-            Generates the cucumber json
+        Generates the cucumber json
         """
 
         if not features:

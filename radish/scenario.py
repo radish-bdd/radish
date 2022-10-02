@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to represent a Scenario
+This module provides a class to represent a Scenario
 """
 
 from .model import Model

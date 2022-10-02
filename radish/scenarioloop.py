@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a Scenario type which represents a Scenario loop
+This module provides a Scenario type which represents a Scenario loop
 """
 
 import copy

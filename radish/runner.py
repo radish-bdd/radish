@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Providing radish core functionality like the feature file Runner.
+Providing radish core functionality like the feature file Runner.
 """
 
 from random import shuffle
@@ -14,7 +14,7 @@ from .stepmodel import Step
 
 class Runner(object):
     """
-        Represents a class which is able to run features.
+    Represents a class which is able to run features.
     """
 
     def handle_exit(func):  # pylint: disable=no-self-argument
@@ -35,7 +35,7 @@ class Runner(object):
 
     def call_hooks(model):  # pylint: disable=no-self-argument
         """
-            Call hooks for a specific model
+        Call hooks for a specific model
         """
 
         def _decorator(func):
@@ -71,10 +71,10 @@ class Runner(object):
     @call_hooks("all")
     def start(self, features, marker):
         """
-            Start running features
+        Start running features
 
-            :param list features: the features to run
-            :param string marker: the marker for this run
+        :param list features: the features to run
+        :param string marker: the marker for this run
         """
         if world.config.shuffle:
             shuffle(features)
@@ -97,9 +97,9 @@ class Runner(object):
     @call_hooks("each_feature")
     def run_feature(self, feature):
         """
-            Runs the given feature
+        Runs the given feature
 
-            :param Feature feature: the feature to run
+        :param Feature feature: the feature to run
         """
         if world.config.shuffle:
             shuffle(feature.scenarios)
@@ -121,9 +121,9 @@ class Runner(object):
     @call_hooks("each_scenario")
     def run_scenario(self, scenario):
         """
-            Runs the given scenario
+        Runs the given scenario
 
-            :param Scenario scenario: the scnenario to run
+        :param Scenario scenario: the scnenario to run
         """
         returncode = 0
         steps = scenario.all_steps if world.config.expand else scenario.steps

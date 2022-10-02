@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This radish extension provides the functionality to write the feature file run to the console.
+This radish extension provides the functionality to write the feature file run to the console.
 """
 
 # disable no-member lint error because of dynamic method from colorful
@@ -24,7 +24,7 @@ from radish.utils import console_write as write
 @extension
 class ConsoleWriter(object):
     """
-        Console writer radish extension
+    Console writer radish extension
     """
 
     OPTIONS = [
@@ -57,7 +57,7 @@ class ConsoleWriter(object):
 
     def get_color_func(self, state):
         """
-            Returns the color func to use
+        Returns the color func to use
         """
         if state == Step.State.PASSED:
             return colorful.bold_green
@@ -70,7 +70,7 @@ class ConsoleWriter(object):
 
     def get_line_jump_seq(self):
         """
-            Returns the line jump ANSI sequence
+        Returns the line jump ANSI sequence
         """
         line_jump_seq = ""
         if (
@@ -83,11 +83,11 @@ class ConsoleWriter(object):
 
     def get_id_sentence_prefix(self, model, color_func, max_rows=None):
         """
-            Returns the id from a model as sentence prefix
+        Returns the id from a model as sentence prefix
 
-            :param Model model: a model with an id property
-            :param function color_func: a function which gives coloring
-            :param int max_rows: the maximum rows. Used for padding
+        :param Model model: a model with an id property
+        :param function color_func: a function which gives coloring
+        :param int max_rows: the maximum rows. Used for padding
         """
         padding = len("{0}. ".format(max_rows)) if max_rows else 0
         return (
@@ -98,7 +98,7 @@ class ConsoleWriter(object):
 
     def get_id_padding(self, max_rows, offset=0):
         """
-            Returns the id padding
+        Returns the id padding
         """
         if not world.config.write_ids:
             return ""
@@ -107,7 +107,7 @@ class ConsoleWriter(object):
 
     def get_table_col_widths(self, table):
         """
-            Returns the width for every column of a table (lists in list)
+        Returns the width for every column of a table (lists in list)
         """
         return [
             max(len(str(col)) for col in row) for row in zip(*table)
@@ -115,9 +115,9 @@ class ConsoleWriter(object):
 
     def console_writer_before_each_feature(self, feature):
         """
-            Writes feature header to the console
+        Writes feature header to the console
 
-            :param Feature feature: the feature to write to the console
+        :param Feature feature: the feature to write to the console
         """
         output = ""
         for tag in feature.tags:
@@ -148,9 +148,9 @@ class ConsoleWriter(object):
 
     def console_writer_before_each_scenario(self, scenario):
         """
-            Writes the scenario header to the console
+        Writes the scenario header to the console
 
-            :param Scenario scenario: the scenario to write to the console
+        :param Scenario scenario: the scenario to write to the console
         """
         output = "\n"
         if isinstance(scenario.parent, ScenarioOutline):
@@ -214,9 +214,9 @@ class ConsoleWriter(object):
 
     def console_writer_before_each_step(self, step):
         """
-            Writes the step to the console before it is run
+        Writes the step to the console before it is run
 
-            :param Step step: the step to write to the console
+        :param Step step: the step to write to the console
         """
         if not isinstance(step.parent.parent, Feature):
             return
@@ -320,9 +320,9 @@ class ConsoleWriter(object):
 
     def console_writer_after_each_step(self, step):
         """
-            Writes the step to the console after it was run
+        Writes the step to the console after it was run
 
-            :param Step step: the step to write to the console
+        :param Step step: the step to write to the console
         """
         if not isinstance(step.parent.parent, Feature):
             return
@@ -416,9 +416,9 @@ class ConsoleWriter(object):
 
     def console_writer_after_each_scenario(self, scenario):
         """
-            If the scenario is a ExampleScenario it will write the Examples header
+        If the scenario is a ExampleScenario it will write the Examples header
 
-            :param Scenario scenario: the scenario which was ran.
+        :param Scenario scenario: the scenario which was ran.
         """
         output = ""
         if isinstance(scenario, ScenarioOutline):
@@ -514,8 +514,8 @@ class ConsoleWriter(object):
         self, feature
     ):  # pylint: disable=unused-argument
         """
-            Writes a newline after each feature
+        Writes a newline after each feature
 
-            :param Feature feature: the feature which was ran.
+        :param Feature feature: the feature which was ran.
         """
         write("")

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a hook which generates a JUnit XML result file at the end of the run.
+This module provides a hook which generates a JUnit XML result file at the end of the run.
 """
 
 from datetime import timedelta
@@ -20,7 +20,7 @@ import radish.utils as utils
 @extension
 class JUnitXMLWriter(object):
     """
-        JUnit XML Writer radish extension
+    JUnit XML Writer radish extension
     """
 
     OPTIONS = [("--junit-xml=<junitxml>", "write JUnit XML result file after run")]
@@ -39,7 +39,7 @@ class JUnitXMLWriter(object):
 
     def _get_element_from_model(self, what, model):
         """
-            Create a etree.Element from a given model
+        Create a etree.Element from a given model
         """
         from lxml import etree
 
@@ -64,14 +64,14 @@ class JUnitXMLWriter(object):
 
     def _strip_ansi(self, text):
         """
-            Strips ANSI modifiers from the given text
+        Strips ANSI modifiers from the given text
         """
         pattern = re.compile(r"(\\033\[\d+(?:;\d+)*m)")
         return pattern.sub("", text)
 
     def generate_junit_xml(self, features, marker):
         """
-            Generates the junit xml
+        Generates the junit xml
         """
         from lxml import etree
 

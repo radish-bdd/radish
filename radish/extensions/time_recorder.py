@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
+This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
 """
 
 from datetime import datetime
@@ -15,7 +15,7 @@ __REQUIRED__ = True
 @extension
 class TimeRecorder(object):
     """
-        Time Recorder radish plugin
+    Time Recorder radish plugin
     """
 
     LOAD_IF = staticmethod(lambda config: not config.show)
@@ -31,36 +31,36 @@ class TimeRecorder(object):
 
     def time_recorder_before_each_feature(self, feature):
         """
-            Sets the starttime of the feature
+        Sets the starttime of the feature
         """
         feature.starttime = datetime.utcnow()
 
     def time_recorder_before_each_scenario(self, scenario):
         """
-            Sets the starttime of the scenario
+        Sets the starttime of the scenario
         """
         scenario.starttime = datetime.utcnow()
 
     def time_recorder_before_each_step(self, step):
         """
-            Sets the starttime of the step
+        Sets the starttime of the step
         """
         step.starttime = datetime.utcnow()
 
     def time_recorder_after_each_feature(self, feature):
         """
-            Sets the endtime of the feature
+        Sets the endtime of the feature
         """
         feature.endtime = datetime.utcnow()
 
     def time_recorder_after_each_scenario(self, scenario):
         """
-            Sets the endtime of the scenario
+        Sets the endtime of the scenario
         """
         scenario.endtime = datetime.utcnow()
 
     def time_recorder_after_each_step(self, step):
         """
-            Sets the endtime of the step
+        Sets the endtime of the step
         """
         step.endtime = datetime.utcnow()

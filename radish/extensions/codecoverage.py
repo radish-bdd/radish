@@ -19,7 +19,7 @@ from radish.exceptions import RadishError
 @extension
 class CodeCoverage(object):
     """
-        Code Coverage radish extension
+    Code Coverage radish extension
     """
 
     OPTIONS = [

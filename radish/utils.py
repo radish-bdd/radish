@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides several utility functions
+This module provides several utility functions
 """
 
 import os

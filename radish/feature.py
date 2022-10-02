@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a class to represent a Feature from a parsed feature file.
+This module provides a class to represent a Feature from a parsed feature file.
 """
 
 from .model import Model
@@ -13,7 +13,7 @@ from .terrain import world
 
 class Feature(Model):
     """
-        Represent a Feature
+    Represent a Feature
     """
 
     def __init__(self, id, keyword, sentence, path, line, tags=None):

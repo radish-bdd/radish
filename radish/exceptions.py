@@ -8,7 +8,7 @@ __DOCS__ = "https://github.com/radish-bdd/radish"
 
 class RadishError(Exception):
     """
-        General radish specific error
+    General radish specific error
     """
 
     pass
@@ -16,7 +16,7 @@ class RadishError(Exception):
 
 class LanguageNotSupportedError(RadishError):
     """
-        Raised if the language could not be found.
+    Raised if the language could not be found.
     """
 
     def __init__(self, language):
@@ -28,7 +28,7 @@ class LanguageNotSupportedError(RadishError):
 
 class FeatureFileNotFoundError(RadishError):
     """
-        Raised if a given feature file does not exist
+    Raised if a given feature file does not exist
     """
 
     def __init__(self, featurefile):
@@ -40,7 +40,7 @@ class FeatureFileNotFoundError(RadishError):
 
 class FeatureFileSyntaxError(RadishError, SyntaxError):
     """
-        If a a syntax error occured in a feature file
+    If a a syntax error occured in a feature file
     """
 
     MESSAGE_TEMPLATE = """{msg}
@@ -59,7 +59,7 @@ Link: {docs_link}"""
 
 class StepRegexError(RadishError, SyntaxError):
     """
-        Raised if the step regex cannot be compiled.
+    Raised if the step regex cannot be compiled.
     """
 
     def __init__(self, regex, step_func_name, re_error):
@@ -75,7 +75,7 @@ class StepRegexError(RadishError, SyntaxError):
 
 class StepPatternError(RadishError, SyntaxError):
     """
-        Raised if the steps pattern cannot be compiled.
+    Raised if the steps pattern cannot be compiled.
     """
 
     def __init__(self, pattern, step_func_name, error):
@@ -91,7 +91,7 @@ class StepPatternError(RadishError, SyntaxError):
 
 class SameStepError(RadishError):
     """
-        Raised if two step regex are exactly the same.
+    Raised if two step regex are exactly the same.
     """
 
     MESSAGE_TEMPLATE = """Cannot register step {0} with regex '{1}' because it is already used by step {2}
@@ -113,7 +113,7 @@ you may want to add a $ to mark the sentence's end - take care of the code order
 
 class StepDefinitionNotFoundError(RadishError):
     """
-        Raised if the Matcher cannot find a step from the feature file in the registered steps.
+    Raised if the Matcher cannot find a step from the feature file in the registered steps.
     """
 
     MESSAGE_TEMPLATE = """Cannot find step definition for step '{sentence}' in {step_path}:{step_line}
@@ -141,7 +141,7 @@ def my_step(step):
 
 class RunnerEarlyExit(RadishError):
     """
-        Raised if the runner has to exit to run.
+    Raised if the runner has to exit to run.
     """
 
     pass
@@ -149,7 +149,7 @@ class RunnerEarlyExit(RadishError):
 
 class HookError(RadishError):
     """
-        Raised if an exception was raised inside a hook
+    Raised if an exception was raised inside a hook
     """
 
     def __init__(self, hook_function, failure):
@@ -168,7 +168,7 @@ class HookError(RadishError):
 
 class ScenarioNotFoundError(RadishError):
     """
-        Raised if a scenario cannot be found
+    Raised if a scenario cannot be found
     """
 
     def __init__(self, scenario_id, amount_of_scenarios):
@@ -183,7 +183,7 @@ class ScenarioNotFoundError(RadishError):
 
 class ValidationError(RadishError):
     """
-        Raised by the user if a step is somehow not valid
+    Raised by the user if a step is somehow not valid
     """
 
     pass

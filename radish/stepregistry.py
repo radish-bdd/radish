@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a registry for all custom steps which were decorated with the @step-decorator.
+This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
 
 import re
@@ -15,7 +15,7 @@ from .compat import re_pattern
 @singleton()
 class StepRegistry(object):
     """
-        Represents the step registry
+    Represents the step registry
     """
 
     def __init__(self):
@@ -23,7 +23,7 @@ class StepRegistry(object):
 
     def register(self, pattern, func):
         """
-            Registers a given regex with the given step function.
+        Registers a given regex with the given step function.
         """
         if pattern in self._steps:
             raise SameStepError(pattern, self._steps[pattern], func)
@@ -32,16 +32,16 @@ class StepRegistry(object):
 
     def get_pattern(self, func):
         """
-            Get step pattern from a given function.
+        Get step pattern from a given function.
         """
         return next((k for k, v in self._steps.items() if v == func), "Unknown")
 
     def register_object(self, steps_object):
         """
-            Registers all public methods from the given object as steps.
-            The step regex must be in the first line of the docstring
+        Registers all public methods from the given object as steps.
+        The step regex must be in the first line of the docstring
 
-            :param instance steps_object: the object with step definition methods
+        :param instance steps_object: the object with step definition methods
         """
         ignore = getattr(steps_object, "ignore", [])
         for attr in dir(steps_object):
@@ -59,9 +59,9 @@ class StepRegistry(object):
     @staticmethod
     def _extract_regex(func):
         """
-            Extracts a step regex from the docstring of the given func
+        Extracts a step regex from the docstring of the given func
 
-            :param function func: the step definition function
+        :param function func: the step definition function
         """
         docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:

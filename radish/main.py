@@ -30,14 +30,14 @@ colorful.use_8_ansi_colors()
 
 def setup_config(arguments):
     """
-        Parses the docopt arguments and creates a configuration object in terrain.world
+    Parses the docopt arguments and creates a configuration object in terrain.world
     """
     world.config = Configuration(arguments)
 
 
 def show_features(core):
     """
-        Show the parsed features
+    Show the parsed features
     """
     # set needed configuration
     world.config.write_steps_once = True
@@ -51,9 +51,9 @@ def show_features(core):
 
 def run_features(core):
     """
-        Run the parsed features
+    Run the parsed features
 
-        :param Core core: the radish core object
+    :param Core core: the radish core object
     """
     # set needed configuration
     world.config.expand = True

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    This radish extension provides the functionality to write the feature file run to the console.
+This radish extension provides the functionality to write the feature file run to the console.
 """
 
 import sys
@@ -43,18 +43,18 @@ class DotOutputFormatter(object):
 
     def dot_formatter_before_each_feature(self, feature):
         """
-            Writes feature header to the console
+        Writes feature header to the console
 
-            :param Feature feature: the feature to write to the console
+        :param Feature feature: the feature to write to the console
         """
         output = cf.bold_black(feature.path) + ": "
         sys.stdout.write(str(output))
 
     def dot_formatter_after_each_scenario(self, scenario):
         """
-            If the scenario is a ExampleScenario it will write the Examples header
+        If the scenario is a ExampleScenario it will write the Examples header
 
-            :param Scenario scenario: the scenario which was ran.
+        :param Scenario scenario: the scenario which was ran.
         """
         if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):
             return

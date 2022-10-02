@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-    Providing radish core functionality.
+Providing radish core functionality.
 """
 
 from threading import Lock

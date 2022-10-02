@@ -4,9 +4,6 @@
     This radish extension provides the functionality to write the feature file run to the console.
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 # disable no-member lint error because of dynamic method from colorful
 # pylint: disable=no-member
 

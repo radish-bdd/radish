@@ -5,8 +5,6 @@ This module provides a radish extension to make
 coverage measurements.
 """
 
-from __future__ import unicode_literals
-
 import sys
 import re
 

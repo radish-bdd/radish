@@ -5,9 +5,6 @@
     and provides this data as a dictionary attached to the world.config object
     as per Enhancement #124.
 """
-
-from __future__ import unicode_literals
-
 import re
 
 from radish.terrain import world

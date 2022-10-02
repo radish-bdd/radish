@@ -4,8 +4,6 @@
     This module provides an extension which starts a python shell after a step failed
 """
 
-from __future__ import unicode_literals
-
 from radish.hookregistry import after
 from radish.stepmodel import Step
 from radish.exceptions import RadishError

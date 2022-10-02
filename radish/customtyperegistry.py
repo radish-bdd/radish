@@ -4,8 +4,6 @@
     This module provides the Argument-Expression Registry
 """
 
-from __future__ import unicode_literals
-
 from singleton import singleton
 
 from .exceptions import RadishError

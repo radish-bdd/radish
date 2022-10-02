@@ -4,8 +4,6 @@
     This module provides a class to represent a Step
 """
 
-from __future__ import unicode_literals
-
 import base64
 import re
 

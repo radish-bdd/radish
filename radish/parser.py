@@ -618,7 +618,7 @@ class FeatureParser(object):
         :rtype: string or None
         """
 
-        pattern = "^{keyword}\s*{delimiter}(.*)$".format(
+        pattern = r"^{keyword}\s*{delimiter}(.*)$".format(
             keyword=keyword, delimiter=self._keywords_delimiter
         )
         match = re.match(pattern, line)

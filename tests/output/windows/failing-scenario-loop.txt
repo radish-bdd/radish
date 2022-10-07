@@ -19,13 +19,13 @@
 [A[K        [36mThen I expect the sum to be 42[39m[26m
 
     [1m[37mIterations[22m[39m[26m: [36m2[39m[26m
-        [1m[37m|[22m[39m[26m [1m[33m0[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m0[22m[39m[26m [1m[37m|[22m[39m[26m
 
-[A[K        [1m[37m|[22m[39m[26m [1m[31m0[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[31m0[22m[39m[26m [1m[37m|[22m[39m[26m
           [1m[31mAssertionError[22m[39m[26m: [31mThe expected sum 42 does not match actual sum 3[39m[26m
-        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m [1m[37m|[22m[39m[26m
+        [1m[37m|[22m[39m[26m [1m[33m1[22m[39m[26m [1m[37m|[22m[39m[26m
 
-[A[K        [1m[37m|[22m[39m[26m [1m[31m1[22m[39m [1m[37m|[22m[39m[26m
+[A[K        [1m[37m|[22m[39m[26m [1m[31m1[22m[39m[26m [1m[37m|[22m[39m[26m
           [1m[31mAssertionError[22m[39m[26m: [31mThe expected sum 42 does not match actual sum 3[39m[26m
 
 [1m[37m1 features ([22m[39m[1m[32m0 passed[22m[39m[1m[37m, [22m[39m[1m[31m1 failed[22m[39m[1m[37m)[22m[39m

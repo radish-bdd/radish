@@ -184,7 +184,7 @@ class ConsoleWriter(object):
             )
             colored_pipe = colorful.bold_white("|")
             output = "        {0}{1} {2: <18} {1}".format(
-                id_prefix, colored_pipe, str(colorful.bold_yellow(scenario.iteration))
+                id_prefix, colored_pipe, colorful.bold_yellow(str(scenario.iteration))
             )
         else:
             id_prefix = self.get_id_sentence_prefix(scenario, colorful.bold_cyan)
@@ -437,7 +437,7 @@ class ConsoleWriter(object):
         elif isinstance(scenario, ScenarioLoop):
             output += "\n    {0}: {1}".format(
                 colorful.bold_white(scenario.iterations_keyword),
-                colorful.cyan(scenario.iterations),
+                colorful.cyan(str(scenario.iterations)),
             )
         elif isinstance(scenario.parent, ScenarioOutline):
             colored_pipe = colorful.bold_white("|")
@@ -486,7 +486,7 @@ class ConsoleWriter(object):
                     scenario, colorful.bold_cyan, len(scenario.parent.scenarios)
                 ),
                 colored_pipe,
-                str(color_func(scenario.iteration)),
+                color_func(str(scenario.iteration)),
             )
 
             if scenario.state == Step.State.FAILED:

@@ -146,9 +146,9 @@ class EndreportWriter(object):
             output += colorful.white(
                 "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
                     len(pending_step_implementations),
-                    "s" if len(pending_step_implementations) is not 1 else "",
+                    "s" if len(pending_step_implementations) != 1 else "",
                     len(pending_steps),
-                    "s" if len(pending_steps) is not 1 else "",
+                    "s" if len(pending_steps) != 1 else "",
                     "\n  ".join(
                         [
                             "-  '{0}' @ {1}".format(

@@ -1,22 +1,22 @@
-Feature[26m: Support Scenario Loop[26m  # features\scenario-loop.feature[26m
-    Radish shall support Scenario Loops.[26m
+Feature: Support Scenario Loop  # features\scenario-loop.feature
+    Radish shall support Scenario Loops.
 
-    Scenario Loop[26m: This is a looped Scenario[26m
+    Scenario Loop: This is a looped Scenario
 
-        Given I have an instable function[26m
-        Given I have an instable function[26m
+        Given I have an instable function
+        Given I have an instable function
 
-        When I execute it[26m
-        When I execute it[26m
+        When I execute it
+        When I execute it
 
-        Then I expect it to pass[26m
-        Then I expect it to pass[26m
+        Then I expect it to pass
+        Then I expect it to pass
 
-    Iterations[26m: 2[26m
-        |[26m 0                  |[26m
-        |[26m 0                  |[26m
-        |[26m 1                  |[26m
-        |[26m 1                  |[26m
+    Iterations: 2
+        | 0                  |
+        | 0                  |
+        | 1                  |
+        | 1                  |
 
 1 features (1 passed)
 2 scenarios (2 passed)

@@ -6,10 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.14.0]
+### Changes
+
+- Drop Python 2.7 and Python 3.4
+- Switched to colorful 0.5.4 (slightly different output rendering)
+- Switch and fix CI to run on GitHub Actions
+- Test support for new Python versions 3.9, 3.10
+- Fix warnings unknown escape strings, wrong comparison
+- Use latests dependencies available on Python3.5
+
 ## [v0.13.4]
 ### Fixed
 
-- Parse -s/--scenarios with = signe correctly
+- Parse -s/--scenarios with = sign correctly
 - Fix radish matcher print
 - Update Background example in docs
 
@@ -236,7 +246,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.13.4...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.14.0...HEAD
+[v0.14.0]: https://github.com/radish-bdd/radish/compare/v0.13.4...v0.14.0
 [v0.13.4]: https://github.com/radish-bdd/radish/compare/v0.13.3...v0.13.4
 [v0.13.3]: https://github.com/radish-bdd/radish/compare/v0.13.2...v0.13.3
 [v0.13.2]: https://github.com/radish-bdd/radish/compare/v0.13.1...v0.13.2

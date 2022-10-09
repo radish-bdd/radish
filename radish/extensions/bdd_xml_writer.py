@@ -4,6 +4,7 @@
 This module provides a hook which generates a BDD XML result file at the end of the run.
 """
 
+from os import getlogin
 from getpass import getuser
 from socket import gethostname
 from datetime import timedelta
@@ -85,12 +86,23 @@ class BDDXMLWriter(object):
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration
 
+        try:
+            user = getuser()
+        except ModuleNotFoundError:
+            # Note(FN):
+            # File "Python\Python39\lib\getpass.py", line 168, in getuser
+            # +     import pwd
+            # + ModuleNotFoundError: No module named 'pwd'
+            # Somehow getuser() fails on windows sometimes,
+            # we fallback on getlogin which seems to work in these situations
+            user = getlogin()
+
         testrun_element = etree.Element(
             "testrun",
             starttime=utils.format_utc_to_local_tz(features[0].starttime),
             endtime=utils.format_utc_to_local_tz(features[-1].endtime),
             duration=str(duration.total_seconds()),
-            agent="{0}@{1}".format(getuser(), gethostname()),
+            agent="{0}@{1}".format(user, gethostname()),
         )
 
         for feature in features:

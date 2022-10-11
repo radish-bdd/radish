@@ -4,6 +4,9 @@
 This module provides an extension to write all features, scenarios and steps to the syslog.
 """
 
+import os
+import sys
+
 from radish.terrain import world
 from radish.feature import Feature
 from radish.hookregistry import before, after
@@ -26,6 +29,10 @@ class SyslogWriter(object):
     LOAD_PRIORITY = 40
 
     def __init__(self):
+        if os.name == 'nt':
+            sys.stdout.write("Using --syslog on Windows is not supported.\n")
+            return
+
         # import syslog only if the extension got loaded
         # but not if the module got loaded.
         import syslog
@@ -41,7 +48,7 @@ class SyslogWriter(object):
 
     def get_scenario_feature(self, scenario):
         """
-            Gets the scenarios feature
+        Gets the scenarios feature
         """
         if not isinstance(scenario.parent, Feature):
             return scenario.parent.parent
@@ -72,7 +79,7 @@ class SyslogWriter(object):
         """
         import syslog
 
-        syslog.openlog(b"radish")
+        syslog.openlog("radish")
         self.log("begin run {0}".format(marker))
 
     def syslog_writer_after_all(

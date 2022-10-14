@@ -62,14 +62,7 @@ class SyslogWriter(object):
         :param string message: the message to log
         """
         import syslog
-
-        try:
-            if isinstance(message, unicode):
-                message = message.encode("utf8")
-        except Exception:  # pylint: disable=broad-except
-            pass
-        finally:
-            syslog.syslog(syslog.LOG_INFO, message)
+        syslog.syslog(syslog.LOG_INFO, message)
 
     def syslog_writer_before_all(
         self, features, marker

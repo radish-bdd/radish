@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 """
-    radish
-    ~~~~~~
+radish
+~~~~~~
 
-    Behavior Driven Development tool for Python - the root from red to green
+Behavior Driven Development tool for Python - the root from red to green
 
-    Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
+Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
 import os
@@ -214,6 +214,7 @@ from radish.main import main
             1,
             "everything_with_failures_dot_formatter",
         ),
+        (["feature-scenario-steps"], ["--syslog"], 0, "feature-scenario-steps-syslog"),
     ],
     ids=[
         "Empty Feature File",
@@ -293,6 +294,7 @@ from radish.main import main
         "Feature which fails with wip tag",
         "Feature which does not fail with wip tag",
         "Feature which has everything in it and some Scenario fail",
+        "Syslog extention is supported"
     ],
 )
 def test_main_cli_calls(

@@ -52,6 +52,16 @@ Help us to improve these piece of software. You don't know what to do?
 Just have a look at the Issues or create a new one.
 Please have a look at the [Contributing Guidelines](https://github.com/radish-bdd/radish/blob/master/CONTRIBUTING.md), too.
 
+# Release
+
+```
+vim CHANGELOG.md docs/conf.py radish/__init__.py
+git commit -am "release: x.x.x" && git tag x.x.x
+rm -rf dist
+python3 setup.py sdist bdist_wheel
+python3 -m twine upload dist/*
+```
+
 # Special Thanks
 
 A special thanks goes to [Hassan Ashraf](mailto:info@cyberavanza.com) from the company [Cyber Avanza](http://www.cyberavanza.com) for creating an awesome logo for free! I really appreciate their work and time!

@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.14.1]
+### Fixed
+- Update colorful to 0.5.5
+- Test support for Python 3.11
+
 ## [v0.14.0]
 ### Changes
 
@@ -246,7 +251,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.14.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.14.1...HEAD
+[v0.14.1]: https://github.com/radish-bdd/radish/compare/v0.14.0...v0.14.1
 [v0.14.0]: https://github.com/radish-bdd/radish/compare/v0.13.4...v0.14.0
 [v0.13.4]: https://github.com/radish-bdd/radish/compare/v0.13.3...v0.13.4
 [v0.13.3]: https://github.com/radish-bdd/radish/compare/v0.13.2...v0.13.3

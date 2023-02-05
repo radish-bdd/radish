@@ -78,6 +78,9 @@ class ScenarioOutline(Scenario):
                 sentence = self._replace_examples_in_sentence(
                     outlined_step.sentence, examples
                 )
+                raw_text = self._replace_examples_in_raw_text(
+                    outlined_step.raw_text, examples
+                )
                 step = Step(
                     step_id + 1,
                     sentence,
@@ -91,7 +94,7 @@ class ScenarioOutline(Scenario):
                 step.table_header = copy.copy(outlined_step.table_header)
                 step.table_data = copy.copy(outlined_step.table_data)
                 step.table = copy.copy(outlined_step.table)
-                step.raw_text = copy.copy(outlined_step.raw_text)
+                step.raw_text = raw_text
 
                 # add step to scenario
                 scenario.steps.append(step)
@@ -100,23 +103,44 @@ class ScenarioOutline(Scenario):
     @staticmethod
     def _replace_examples_in_sentence(sentence, examples):
         """
-            Replaces the given examples in the given sentece
+        Replaces the given examples in the given sentence
 
-            :param string sentence: the step sentence in which to replace the examples
-            :param dict examples: the examples
+        :param string sentence: the step sentence in which to replace the examples
+        :param dict examples: the examples
 
-            :returns: the new step sentence
-            :rtype: string
+        :returns: the new step sentence
+        :rtype: string
         """
         for key, value in examples.items():
             sentence = sentence.replace("<{0}>".format(key), value)
         return sentence
 
+    @staticmethod
+    def _replace_examples_in_raw_text(raw_text, examples):
+        """
+        Replaces the given examples in the given raw_text, which is
+        a list of strings
+
+        :param list raw_text: list of strings in which to replace the examples
+        :param dict examples: the examples
+
+        :returns: the new list raw_text
+        :rtype: list
+        """
+        raw_text_list = []
+        for raw_text_item in raw_text:
+            raw_text_item = ScenarioOutline._replace_examples_in_sentence(
+                raw_text_item , examples
+            )
+            raw_text_list.append(raw_text_item)
+        return raw_text_list
+
+
     def get_column_width(self, column_index):
         """
-            Gets the column width from the given column
+        Gets the column width from the given column
 
-            :param int column_index: the column index to get the width from
+        :param int column_index: the column index to get the width from
         """
         try:
             return max(
@@ -132,7 +156,7 @@ class ScenarioOutline(Scenario):
 
     def after_parse(self):
         """
-            Build outlined scenarios
+        Build outlined scenarios
         """
         Scenario.after_parse(self)
         self.build_scenarios()

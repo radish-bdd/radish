@@ -301,6 +301,27 @@ def test_parse_scenario_outline_with_step_text(parser):
 
 
 @pytest.mark.parametrize(
+    "parser", [("scenario-outline-step-text-example",)], indirect=["parser"]
+)
+def test_parse_scenario_outline_with_step_text(parser):
+    """
+    Test parsing a Scenario Outline with a Step with Text
+    """
+    # when
+    feature = parser.parse()
+
+    # then
+    assert len(feature.scenarios) == 1
+    assert isinstance(feature.scenarios[0], ScenarioOutline)
+    assert len(feature.scenarios[0].scenarios) == 3
+
+    # then - expect correct scenario steps with replaced fields
+    assert "<n1>:10" in str(feature.scenarios[0].scenarios[0].steps[0].text)
+    assert "n2:2" in str(feature.scenarios[0].scenarios[0].steps[0].text)
+    assert "<n1>:6" in str(feature.scenarios[0].scenarios[1].steps[0].text)
+
+
+@pytest.mark.parametrize(
     "parser", [("escaping-scenario-examples",)], indirect=["parser"]
 )
 def test_pipes_in_scenario_example_rows_can_be_escaped(parser):

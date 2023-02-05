@@ -18,14 +18,14 @@ from datetime import datetime, timedelta
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
-        Represents the fail reason for a step
+    Represents the fail reason for a step
     """
 
     def __init__(self, exception):
         """
-            Initalizes the Step failure with a given Exception
+        Initalizes the Step failure with a given Exception
 
-            :param Exception exception: the exception shrown in the step
+        :param Exception exception: the exception shrown in the step
         """
         self.exception = exception
         self.reason = str(exception)
@@ -38,31 +38,31 @@ class Failure(object):  # pylint: disable=too-few-public-methods
 
 def console_write(text):
     """
-        Writes the given text to the console
+    Writes the given text to the console
 
-        :param str text: the text which is printed to the console
+    :param str text: the text which is printed to the console
     """
     print(str(text))
 
 
 def expandpath(path):
     """
-        Expands a path
+    Expands a path
 
-        :param string path: the path to expand
+    :param string path: the path to expand
     """
     return os.path.expanduser(os.path.expandvars(path))
 
 
 def recursive_glob(root, pattern):
     """
-        Recursively search for files with given pattern inside a path
+    Recursively search for files with given pattern inside a path
 
-        :param str root: the root location to start search
-        :param str pattern: to pattern to look for. It's matched against the filenames under `root`.
+    :param str root: the root location to start search
+    :param str pattern: to pattern to look for. It's matched against the filenames under `root`.
 
-        :rtype: list
-        :returns: A list of matching files
+    :rtype: list
+    :returns: A list of matching files
     """
     matches = []
     for root, dirnames, filenames in os.walk(root):
@@ -73,7 +73,7 @@ def recursive_glob(root, pattern):
 
 def get_debugger():
     """
-        Returns a debugger instance
+    Returns a debugger instance
     """
     try:
         from IPython.core.debugger import Pdb
@@ -119,8 +119,8 @@ def format_utc_to_local_tz(utc_dt, fmt="%Y-%m-%dT%H:%M:%S"):
 
 def make_unique_obj_list(somelist, attr):
     """
-        Make list with objects unique
-        according to an objects attribute.
+    Make list with objects unique
+    according to an objects attribute.
     """
     tmp = {}
     for item in somelist:
@@ -130,7 +130,7 @@ def make_unique_obj_list(somelist, attr):
 
 def get_func_code(func):
     """
-        Get the code object for the given function.
+    Get the code object for the given function.
     """
     if sys.version_info[0] == 3:
         return func.__code__
@@ -140,14 +140,14 @@ def get_func_code(func):
 
 def get_func_arg_names(func):
     """
-        Get the argument names of the given function.
+    Get the argument names of the given function.
     """
     return get_func_code(func).co_varnames
 
 
 def get_func_location(func):
     """
-        Get the location where the given function is implemented.
+    Get the location where the given function is implemented.
     """
     func_code = get_func_code(func)
     return "{0}:{1}".format(func_code.co_filename, func_code.co_firstlineno)
@@ -186,7 +186,7 @@ def flattened_basedirs(basedirs):
     return list(x for x in itertools.chain(*(x.split(separator) for x in basedirs)) if x)
 
 
-def split_unescape(s, delim, escape='\\', unescape=True):
+def split_unescape(s, delim, escape="\\", unescape=True):
     """
     >>> split_unescape('foo|bar', '|')
     ['foo', 'bar']
@@ -214,9 +214,9 @@ def split_unescape(s, delim, escape='\\', unescape=True):
                     current.append(escape)
         elif ch == delim:
             # split! (add current to the list and reset it)
-            ret.append(''.join(current))
+            ret.append("".join(current))
             current = []
         else:
             current.append(ch)
-    ret.append(''.join(current))
+    ret.append("".join(current))
     return ret

@@ -19,6 +19,7 @@ def test_register_simple_extension_class(extensionregistry):
     """
     Test registering simple Extension class
     """
+
     # given
     class SimpleExtension(object):
         pass
@@ -36,6 +37,7 @@ def test_register_simple_extension_class_using_decorator(extensionregistry):
     """
     Test registering simple Extension class using the extension decorator
     """
+
     # given & when
     @extension
     class SimpleExtension(object):
@@ -51,6 +53,7 @@ def test_loading_simple_extension(extensionregistry, mocker):
     """
     Test loading simple extension
     """
+
     # given
     @extension
     class SimpleExtension(object):
@@ -71,6 +74,7 @@ def test_loading_invalid_extension(extensionregistry, mocker):
     """
     Test loading an invalid extension
     """
+
     # given
     @extension
     class SimpleExtension(object):
@@ -88,6 +92,7 @@ def test_loading_extension_which_raises_exceptions_init(extensionregistry, mocke
     """
     Test loading extension which raises exceptions in init
     """
+
     # given
     @extension
     class SimpleExtension(object):
@@ -108,6 +113,7 @@ def test_loading_simple_extension_if_wanted(extensionregistry, mocker):
     """
     Test loading extension if wanted by config
     """
+
     # given
     @extension
     class WantedExtension(object):
@@ -130,6 +136,7 @@ def test_extension_loading_order(extensionregistry, mocker):
     """
     Test the loading order of extensions
     """
+
     # given
     @extension
     class SecondExtension(object):
@@ -160,6 +167,7 @@ def test_getting_extension_options(extensionregistry, mocker):
     """
     Test getting command line options from extensions
     """
+
     # given
     @extension
     class FooExtension(object):

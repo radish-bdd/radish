@@ -19,12 +19,12 @@ class Runner(object):
 
     def handle_exit(func):  # pylint: disable=no-self-argument
         """
-            Handles an runner exit
+        Handles an runner exit
         """
 
         def _decorator(self, *args, **kwargs):
             """
-                Actual decorator
+            Actual decorator
             """
             if self._required_exit:  # pylint: disable=protected-access
                 return 1
@@ -40,12 +40,12 @@ class Runner(object):
 
         def _decorator(func):
             """
-                The actual decorator
+            The actual decorator
             """
 
             def _wrapper(self, model_instance, *args, **kwargs):
                 """
-                    Decorator wrapper
+                Decorator wrapper
                 """
                 self._hooks.call(
                     "before", model, True, model_instance, *args, **kwargs
@@ -143,9 +143,9 @@ class Runner(object):
     @call_hooks("each_step")
     def run_step(self, step):
         """
-            Runs the given step
+        Runs the given step
 
-            :param Step step: the step to run
+        :param Step step: the step to run
         """
         if self._show_only:
             return 0
@@ -159,9 +159,9 @@ class Runner(object):
 
     def skip_step(self, step):
         """
-            Skips the given step
+        Skips the given step
 
-            :param Step step: the step to skip
+        :param Step step: the step to skip
         """
         self._hooks.call("before", "each_step", True, step)
         step.skip()
@@ -169,6 +169,6 @@ class Runner(object):
 
     def exit(self):
         """
-            Exits the runner
+        Exits the runner
         """
         self._required_exit = True

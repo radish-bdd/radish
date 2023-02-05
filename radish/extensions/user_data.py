@@ -25,9 +25,7 @@ class UserData(object):
         )
     ]
     LOAD_IF = staticmethod(lambda config: True)
-    LOAD_PRIORITY = (
-        2
-    )  # This should probably load early in-case another extension needs to inspect this data.
+    LOAD_PRIORITY = 2  # This should probably load early in-case another extension needs to inspect this data.
 
     def __init__(self):
         self._kv_regex = re.compile(r"\s*=\s*")

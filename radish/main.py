@@ -72,9 +72,7 @@ def run_features(core):
     # scenario choice
     amount_of_scenarios = sum(len(f.scenarios) for f in core.features_to_run)
     if world.config.scenarios:
-        world.config.scenarios = [
-            int(s.strip().replace("=", "")) for s in world.config.scenarios.split(",")
-        ]
+        world.config.scenarios = [int(s.strip().replace("=", "")) for s in world.config.scenarios.split(",")]
         for s in world.config.scenarios:
             if not 0 < s <= amount_of_scenarios:
                 raise ScenarioNotFoundError(s, amount_of_scenarios)
@@ -154,9 +152,7 @@ Options:
     sys.excepthook = catch_unhandled_exception
 
     # add version to the usage
-    arguments = docopt(
-        "radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__
-    )
+    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
@@ -198,11 +194,13 @@ Options:
     core.parse_features(feature_files, tag_expression)
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
-        utils.console_write(colorful.bold_red("Error: ")
+        utils.console_write(
+            colorful.bold_red("Error: ")
             + colorful.red("No feature or no scenario specified in at least one of the given feature files")
         )
         if tag_expression:
-            utils.console_write(colorful.red(
+            utils.console_write(
+                colorful.red(
                     "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run."
                 )
             )

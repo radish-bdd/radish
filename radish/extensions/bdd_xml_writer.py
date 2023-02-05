@@ -49,11 +49,7 @@ class BDDXMLWriter(object):
 
         # round duration to 10 decimal points, to avoid it being printed in
         # scientific notation
-        duration = (
-            "%.10f" % model.duration.total_seconds()
-            if model.starttime and model.endtime
-            else ""
-        )
+        duration = "%.10f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -74,7 +70,7 @@ class BDDXMLWriter(object):
 
     def generate_bdd_xml(self, features, marker):
         """
-            Generates the bdd xml
+        Generates the bdd xml
         """
         from lxml import etree
 
@@ -123,11 +119,7 @@ class BDDXMLWriter(object):
 
             scenarios_element = etree.Element("scenarios")
 
-            for scenario in (
-                s
-                for s in feature.all_scenarios
-                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
-            ):
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_element = self._get_element_from_model("scenario", scenario)
@@ -150,9 +142,7 @@ class BDDXMLWriter(object):
                             type=step.failure.name,
                             message=step.failure.reason,
                         )
-                        failure_element.text = etree.CDATA(
-                            self._strip_ansi(step.failure.traceback)
-                        )
+                        failure_element.text = etree.CDATA(self._strip_ansi(step.failure.traceback))
                         step_element.append(failure_element)
                     scenario_element.append(step_element)
                 scenarios_element.append(scenario_element)

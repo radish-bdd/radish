@@ -107,9 +107,7 @@ def test_building_scenariooutline_scenarios_with_background(mocker):
     Test building Scenarios from a Scenario Outline Example including a Background
     """
     # given
-    background = Background(
-        "Background", "I am a Background", "foo.feature", 1, parent=None
-    )
+    background = Background("Background", "I am a Background", "foo.feature", 1, parent=None)
     # add some Steps
     background.steps.extend(
         [
@@ -222,10 +220,7 @@ def test_scenariooutline_example_invalid_colum_width():
         scenario_outline.get_column_width(42)
 
     # then
-    assert (
-        str(exc.value)
-        == "Invalid colum_index to get column width for ScenarioOutline 'I am a Scenario Outline'"
-    )
+    assert str(exc.value) == "Invalid colum_index to get column width for ScenarioOutline 'I am a Scenario Outline'"
 
 
 def test_scenariooutline_afterparse_logic(mocker):

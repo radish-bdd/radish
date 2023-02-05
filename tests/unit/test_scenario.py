@@ -296,9 +296,7 @@ def test_scenario_after_parse_logic(mocker):
     """
     # given
     background = Background(1, "Background", "I am a Background", "foo.feature", 1)
-    precondition_scenario = Scenario(
-        2, "Scenario", "I am a Scenario", "foo.feature", 1, parent=None
-    )
+    precondition_scenario = Scenario(2, "Scenario", "I am a Scenario", "foo.feature", 1, parent=None)
     scenario = Scenario(
         1,
         "Scenario",
@@ -311,9 +309,7 @@ def test_scenario_after_parse_logic(mocker):
         background=background,
     )
     # add Steps to this Scenario
-    scenario.steps.extend(
-        [mocker.MagicMock(id=99, as_background=False, as_precondition=False)]
-    )
+    scenario.steps.extend([mocker.MagicMock(id=99, as_background=False, as_precondition=False)])
     # set Scenario Step parents
     for step in scenario.steps:
         step.parent = scenario

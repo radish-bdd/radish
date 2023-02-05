@@ -109,8 +109,7 @@ def test_getting_model_duration_with_missing_time():
         model.duration
     # then
     assert (
-        str(exc.value)
-        == "Cannot get duration of Model 'I am a Model' because either starttime or endtime is not set"
+        str(exc.value) == "Cannot get duration of Model 'I am a Model' because either starttime or endtime is not set"
     )
 
     # when - missing starttime
@@ -119,6 +118,5 @@ def test_getting_model_duration_with_missing_time():
         model.duration
     # then
     assert (
-        str(exc.value)
-        == "Cannot get duration of Model 'I am a Model' because either starttime or endtime is not set"
+        str(exc.value) == "Cannot get duration of Model 'I am a Model' because either starttime or endtime is not set"
     )

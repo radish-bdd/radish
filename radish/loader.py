@@ -38,6 +38,4 @@ def load_module(path):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     except Exception as e:
-        raise ImportError(
-            "Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e)
-        )
+        raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e))

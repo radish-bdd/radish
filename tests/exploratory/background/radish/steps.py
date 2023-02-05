@@ -36,6 +36,4 @@ def can_access_personal_site(step, username):
 @then("I cannot access {username:w} personal site")
 def cannot_access_personal_site(step, username):
     # print(step.context)
-    assert (
-        step.context.current_user not in step.context.users[username]["site"]["access"]
-    )
+    assert step.context.current_user not in step.context.users[username]["site"]["access"]

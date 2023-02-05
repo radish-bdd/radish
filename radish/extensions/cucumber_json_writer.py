@@ -22,9 +22,7 @@ class CucumberJSONWriter(object):
     cucumber json Writer radish extension
     """
 
-    OPTIONS = [
-        ("--cucumber-json=<ccjson>", "write cucumber json result file after run")
-    ]
+    OPTIONS = [("--cucumber-json=<ccjson>", "write cucumber json result file after run")]
     LOAD_IF = staticmethod(lambda config: config.cucumber_json)
     LOAD_PRIORITY = 60
 
@@ -68,14 +66,8 @@ class CucumberJSONWriter(object):
                 "elements": [],
             }
             for i, j in enumerate(feature.tags):
-                feature_json["tags"].append(
-                    {"name": "@" + j.name, "line": feature.line - len(feature.tags) + i}
-                )
-            for scenario in (
-                s
-                for s in feature.all_scenarios
-                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
-            ):
+                feature_json["tags"].append({"name": "@" + j.name, "line": feature.line - len(feature.tags) + i})
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
                 scenario_json = {
@@ -90,15 +82,9 @@ class CucumberJSONWriter(object):
                 }
                 start_line_no = scenario.line - len(scenario.tags)
                 for i, tag in enumerate(scenario.tags):
-                    scenario_json["tags"].append(
-                        {"name": "@" + tag.name, "line": start_line_no + i}
-                    )
+                    scenario_json["tags"].append({"name": "@" + tag.name, "line": start_line_no + i})
                 for step in scenario.all_steps:
-                    duration = int(
-                        step.duration.total_seconds() * 1e9
-                        if step.starttime and step.endtime
-                        else 0.0
-                    )
+                    duration = int(step.duration.total_seconds() * 1e9 if step.starttime and step.endtime else 0.0)
                     step_json = {
                         "keyword": step.sentence.split()[0],
                         "name": step.sentence,

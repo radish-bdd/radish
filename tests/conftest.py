@@ -171,11 +171,7 @@ def parser(request, core):
 
     # create the Feature Parser instance
     return FeatureParser(
-        core,
-        os.path.join(__FEATURE_FILES_DIR__, featurename + ".feature"),
-        1,
-        *parser_args,
-        **parser_kwargs
+        core, os.path.join(__FEATURE_FILES_DIR__, featurename + ".feature"), 1, *parser_args, **parser_kwargs
     )
 
 

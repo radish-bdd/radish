@@ -13,7 +13,7 @@ from .stepmodel import Step
 
 class ScenarioLoop(Scenario):
     """
-        Represents a scenario loop
+    Represents a scenario loop
     """
 
     def __init__(
@@ -46,10 +46,10 @@ class ScenarioLoop(Scenario):
 
     def build_scenarios(self):
         """
-            Builds the scenarios for every iteration
+        Builds the scenarios for every iteration
 
-            Note: This must be done before merging the steps
-                  from the feature file with the step definitions
+        Note: This must be done before merging the steps
+              from the feature file with the step definitions
         """
         for i in range(self.iterations):
             scenario_id = self.id + i + 1
@@ -64,9 +64,7 @@ class ScenarioLoop(Scenario):
                 i,
             )
             if self.background:
-                background = self.background.create_instance(
-                    parent=scenario, steps_runable=True
-                )
+                background = self.background.create_instance(parent=scenario, steps_runable=True)
                 scenario.background = background
 
             for step_id, iteration_step in enumerate(self.steps):
@@ -88,7 +86,7 @@ class ScenarioLoop(Scenario):
 
     def after_parse(self):
         """
-            Build looped scenarios
+        Build looped scenarios
         """
         Scenario.after_parse(self)
         self.build_scenarios()

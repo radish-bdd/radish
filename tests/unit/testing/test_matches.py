@@ -44,10 +44,7 @@ def test_unreasonable_min_coverage(capsys):
 
     # then
     assert actual_returncode == expected_returncode
-    assert (
-        err
-        == "You are a little cocky to think you can reach a minimum coverage of 101.00%\n"
-    )
+    assert err == "You are a little cocky to think you can reach a minimum coverage of 101.00%\n"
 
 
 def test_no_steps_found(mocker, capsys):
@@ -64,10 +61,7 @@ def test_no_steps_found(mocker, capsys):
 
     # then
     assert actual_returncode == expected_returncode
-    assert (
-        err
-        == "No step implementations found in [], thus doesn't make sense to continue"
-    )
+    assert err == "No step implementations found in [], thus doesn't make sense to continue"
 
 
 def test_empty_matches_config(mocker, capsys):
@@ -154,6 +148,7 @@ def test_sentence_match_wrong_step(capsys):
     """
     Test if sentence matched wrong step
     """
+
     # given
     def foo():
         pass
@@ -175,6 +170,7 @@ def test_sentence_argument_errors(capsys):
     """
     Test if sentence arguments do not match
     """
+
     # given
     def foo(step, foo, bar):
         pass
@@ -194,14 +190,8 @@ def test_sentence_argument_errors(capsys):
     out, _ = capsys.readouterr()
 
     # then
-    assert (
-        'Expected argument "foo" with value "foooooooo" does not match value "FOO"'
-        in out
-    )
-    assert (
-        'Expected argument "bar" with value "baaaaaaar" does not match value "BAR"'
-        in out
-    )
+    assert 'Expected argument "foo" with value "foooooooo" does not match value "FOO"' in out
+    assert 'Expected argument "bar" with value "baaaaaaar" does not match value "BAR"' in out
     assert actual_returncode == expected_returncode
 
 
@@ -209,6 +199,7 @@ def test_sentence_not_match(capsys):
     """
     Test if sentence does not match if that's expected
     """
+
     # given
     def foo(step, foo, bar):
         pass
@@ -229,6 +220,7 @@ def test_sentence_not_match_anything(capsys):
     """
     Test if sentence does not match any steps
     """
+
     # given
     def foo(step, foo, bar):
         pass
@@ -249,6 +241,7 @@ def test_sentence_not_match_specific_step(capsys):
     """
     Test if sentence does not match specific step
     """
+
     # given
     def foo(step):
         pass
@@ -272,6 +265,7 @@ def test_sentence_not_match_but_does(capsys):
     """
     Test if sentence matched step but shouldn't
     """
+
     # given
     def foo():
         pass

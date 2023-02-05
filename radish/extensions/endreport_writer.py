@@ -102,9 +102,7 @@ class EndreportWriter(object):
         skipped_word = colorful.cyan("{0} skipped")
         pending_word = colorful.bold_yellow("{0} pending")
 
-        output = colorful.bold_white(
-            "{0} features (".format(stats["features"]["amount"])
-        )
+        output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
         output += passed_word.format(stats["features"]["passed"])
         if stats["features"]["failed"]:
             output += colored_comma + failed_word.format(stats["features"]["failed"])
@@ -115,9 +113,7 @@ class EndreportWriter(object):
         output += colored_closing_paren
 
         output += "\n"
-        output += colorful.bold_white(
-            "{} scenarios (".format(stats["scenarios"]["amount"])
-        )
+        output += colorful.bold_white("{} scenarios (".format(stats["scenarios"]["amount"]))
         output += passed_word.format(stats["scenarios"]["passed"])
         if stats["scenarios"]["failed"]:
             output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
@@ -140,9 +136,7 @@ class EndreportWriter(object):
 
         if pending_steps:
             sr = StepRegistry()
-            pending_step_implementations = make_unique_obj_list(
-                pending_steps, lambda x: x.definition_func
-            )
+            pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
             output += colorful.white(
                 "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
                     len(pending_step_implementations),
@@ -178,22 +172,14 @@ class EndreportWriter(object):
                         )
                     )
                     for scenario in passed_scenarios:
-                        output += colorful.red(
-                            "\n - {}: {}".format(feature.path, scenario.sentence)
-                        )
+                        output += colorful.red("\n - {}: {}".format(feature.path, scenario.sentence))
                         has_passed_scenarios = True
 
                 if has_passed_scenarios:
                     output += "\n"
             else:
-                output += colorful.green(
-                    "\nThe --wip switch was used, so the failures were expected. All is good.\n"
-                )
+                output += colorful.green("\nThe --wip switch was used, so the failures were expected. All is good.\n")
 
-        output += colorful.cyan(
-            "Run {0} finished within {1}".format(
-                marker, humanize.naturaldelta(duration)
-            )
-        )
+        output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
 
         write(output)

@@ -294,7 +294,7 @@ from radish.main import main
         "Feature which fails with wip tag",
         "Feature which does not fail with wip tag",
         "Feature which has everything in it and some Scenario fail",
-        "Syslog extention is supported"
+        "Syslog extention is supported",
     ],
 )
 def test_main_cli_calls(
@@ -317,23 +317,18 @@ def test_main_cli_calls(
         given_cli_args.extend(["-b", radishdir])
     else:
         # fixup basedir paths
-        base_dir_idx = [
-            i for i, x in enumerate(given_cli_args) if x in ("-b", "--basedir")
-        ]
+        base_dir_idx = [i for i, x in enumerate(given_cli_args) if x in ("-b", "--basedir")]
         for idx in base_dir_idx:
             given_cli_args[idx + 1] = os.path.join(radishdir, given_cli_args[idx + 1])
 
-    featurefiles = [
-        os.path.join(featurefiledir, x + ".feature") for x in given_featurefiles
-    ]
+    featurefiles = [os.path.join(featurefiledir, x + ".feature") for x in given_featurefiles]
     cli_args = featurefiles + given_cli_args
 
     expected_output_file = os.path.join(outputdir, "unix", expected_output + ".txt")
-    if os.name == 'nt':
+    if os.name == "nt":
         expected_output_file_win = os.path.join(outputdir, "windows", expected_output + ".txt")
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
-
 
     with io.open(expected_output_file, "r", encoding="utf-8") as output_file:
         expected_output_string = output_file.read()
@@ -342,7 +337,7 @@ def test_main_cli_calls(
     original_stdout = sys.stdout
 
     with tempfile.TemporaryFile() as tmp:
-        tmp_stdout = io.open(tmp.fileno(), mode='w+', encoding='utf-8', closefd=False)
+        tmp_stdout = io.open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
         # patch sys.stdout
         sys.stdout = tmp_stdout
 

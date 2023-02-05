@@ -22,9 +22,7 @@ class Background(Scenario):
         This enables a scenario to operate on the steps
         without influencing all the other copies.
         """
-        background = Background(
-            self.keyword, self.sentence, self.path, self.line, parent
-        )
+        background = Background(self.keyword, self.sentence, self.path, self.line, parent)
 
         for step in self.all_steps:
             # FIXME(TF): move to Step.copy

@@ -14,9 +14,7 @@ def have_number(step, input_variable):
             msg = "Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line."
             assert False, msg.format(input_variable)
     else:
-        assert (
-            False
-        ), "There is no user data (-u/--user-data) specified on the command-line."
+        assert False, "There is no user data (-u/--user-data) specified on the command-line."
 
 
 @when("I sum them")
@@ -33,6 +31,4 @@ def expect_result(step, result_variable):
             msg = "Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line."
             assert False, msg.format(input_variable)
     else:
-        assert (
-            False
-        ), "There is no user data (-u/--user-data) specified on the command-line."
+        assert False, "There is no user data (-u/--user-data) specified on the command-line."

@@ -73,20 +73,11 @@ class DotOutputFormatter(object):
         output = "\n" + cf.bold_red("Failures:") + "\n"
 
         for step in self._failed_steps:
-            output += "{}: {}\n    {}\n".format(
-                step.path, step.parent.sentence, cf.red(step.sentence)
-            )
+            output += "{}: {}\n    {}\n".format(step.path, step.parent.sentence, cf.red(step.sentence))
             if world.config.with_traceback:
                 output += "      {}\n".format(
-                    "\n      ".join(
-                        [
-                            str(cf.red(l))
-                            for l in step.failure.traceback.split("\n")[:-2]
-                        ]
-                    )
+                    "\n      ".join([str(cf.red(l)) for l in step.failure.traceback.split("\n")[:-2]])
                 )
-            output += "      {}: {}\n\n".format(
-                cf.bold_red(step.failure.name), cf.red(step.failure.reason)
-            )
+            output += "      {}: {}\n\n".format(cf.bold_red(step.failure.name), cf.red(step.failure.reason))
 
         sys.stdout.write(str(output + "\n"))

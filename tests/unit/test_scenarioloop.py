@@ -98,9 +98,7 @@ def test_building_scenarioloop_scenarios_with_background(mocker):
     Test building Scenarios from a Scenario Loop including a Background
     """
     # given
-    background = Background(
-        "Background", "I am a Background", "foo.feature", 1, parent=None
-    )
+    background = Background("Background", "I am a Background", "foo.feature", 1, parent=None)
     # add some Steps
     background.steps.extend(
         [

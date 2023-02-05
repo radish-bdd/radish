@@ -22,14 +22,12 @@ class SyslogWriter(object):
     systems (Linux), but will not work on Windows.
     """
 
-    OPTIONS = [
-        ("--syslog", "log all of your features, scenarios, and steps to the syslog")
-    ]
+    OPTIONS = [("--syslog", "log all of your features, scenarios, and steps to the syslog")]
     LOAD_IF = staticmethod(lambda config: config.syslog)
     LOAD_PRIORITY = 40
 
     def __init__(self):
-        if os.name == 'nt':
+        if os.name == "nt":
             sys.stdout.write("Using --syslog on Windows is not supported.\n")
             return
 
@@ -62,11 +60,10 @@ class SyslogWriter(object):
         :param string message: the message to log
         """
         import syslog
+
         syslog.syslog(syslog.LOG_INFO, message)
 
-    def syslog_writer_before_all(
-        self, features, marker
-    ):  # pylint: disable=unused-argument
+    def syslog_writer_before_all(self, features, marker):  # pylint: disable=unused-argument
         """
         Opens the syslog
         """
@@ -75,9 +72,7 @@ class SyslogWriter(object):
         syslog.openlog("radish")
         self.log("begin run {0}".format(marker))
 
-    def syslog_writer_after_all(
-        self, features, marker
-    ):  # pylint: disable=unused-argument
+    def syslog_writer_after_all(self, features, marker):  # pylint: disable=unused-argument
         """
         Closes the syslog
         """
@@ -90,21 +85,13 @@ class SyslogWriter(object):
         """
         Writes the feature to the syslog
         """
-        self.log(
-            "begin feature {0}:{1} {2}".format(
-                world.config.marker, feature.id, feature.sentence
-            )
-        )
+        self.log("begin feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
 
     def syslog_writer_after_each_feature(self, feature):
         """
         Writes the feature to the syslog
         """
-        self.log(
-            "end feature {0}:{1} {2}".format(
-                world.config.marker, feature.id, feature.sentence
-            )
-        )
+        self.log("end feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
 
     def syslog_writer_before_each_scenario(self, scenario):
         """

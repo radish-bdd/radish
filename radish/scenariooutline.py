@@ -69,18 +69,12 @@ class ScenarioOutline(Scenario):
                 example,
             )
             if self.background:
-                background = self.background.create_instance(
-                    parent=scenario, steps_runable=True
-                )
+                background = self.background.create_instance(parent=scenario, steps_runable=True)
                 scenario.background = background
 
             for step_id, outlined_step in enumerate(self.steps):
-                sentence = self._replace_examples_in_sentence(
-                    outlined_step.sentence, examples
-                )
-                raw_text = self._replace_examples_in_raw_text(
-                    outlined_step.raw_text, examples
-                )
+                sentence = self._replace_examples_in_sentence(outlined_step.sentence, examples)
+                raw_text = self._replace_examples_in_raw_text(outlined_step.raw_text, examples)
                 step = Step(
                     step_id + 1,
                     sentence,
@@ -129,12 +123,9 @@ class ScenarioOutline(Scenario):
         """
         raw_text_list = []
         for raw_text_item in raw_text:
-            raw_text_item = ScenarioOutline._replace_examples_in_sentence(
-                raw_text_item , examples
-            )
+            raw_text_item = ScenarioOutline._replace_examples_in_sentence(raw_text_item, examples)
             raw_text_list.append(raw_text_item)
         return raw_text_list
-
 
     def get_column_width(self, column_index):
         """
@@ -148,11 +139,7 @@ class ScenarioOutline(Scenario):
                 len(self.examples_header[column_index]),
             )
         except IndexError:
-            raise RadishError(
-                "Invalid colum_index to get column width for ScenarioOutline '{0}'".format(
-                    self.sentence
-                )
-            )
+            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{0}'".format(self.sentence))
 
     def after_parse(self):
         """

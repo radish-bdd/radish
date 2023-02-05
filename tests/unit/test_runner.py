@@ -66,9 +66,7 @@ def test_run_single_step(run_state, expected_returncode, hookregistry, mocker):
         "Debugging Step returing FAILED",
     ],
 )
-def test_debug_single_step(
-    debug_state, expected_returncode, world_config, hookregistry, mocker
-):
+def test_debug_single_step(debug_state, expected_returncode, world_config, hookregistry, mocker):
     """
     Test debugging a single Step
     """

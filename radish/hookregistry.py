@@ -15,8 +15,9 @@ import tagexpressions
 @singleton()
 class HookRegistry(object):
     """
-        Represents an object with all registered hooks
+    Represents an object with all registered hooks
     """
+
     DEFAULT_HOOK_ORDER = 100
 
     def __init__(self):
@@ -27,17 +28,17 @@ class HookRegistry(object):
     @property
     def hooks(self):
         """
-            Returns all registered hooks
+        Returns all registered hooks
         """
         return self._hooks
 
     class Hook(object):
         """
-            Represents a hook object
+        Represents a hook object
 
-            This object is needed to provide decorators like:
-            * @before.all
-            * @before.each_feature
+        This object is needed to provide decorators like:
+        * @before.all
+        * @before.each_feature
         """
 
         def __init__(self, when):
@@ -46,19 +47,17 @@ class HookRegistry(object):
         @classmethod
         def build_decorator(cls, what):
             """
-                Builds the hook decorator
+            Builds the hook decorator
             """
 
             def _decorator(self, *args, **kwargs):
                 """
-                    Actual hook decorator
+                Actual hook decorator
                 """
                 if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
                     func = args[0]
                     # hook was called without argument -> legacy!
-                    HookRegistry().register(
-                        self._when, what, func
-                    )  # pylint: disable=protected-access
+                    HookRegistry().register(self._when, what, func)  # pylint: disable=protected-access
                 else:
                     # hook was called with argument
                     on_tags = kwargs.get("on_tags")
@@ -69,8 +68,7 @@ class HookRegistry(object):
                         on_tags = lambda tags: expr.evaluate(tags)
 
                     def func(f):
-                        HookRegistry().register(
-                            self._when, what, f, order, on_tags)
+                        HookRegistry().register(self._when, what, f, order, on_tags)
                         return f
 
                 return func
@@ -80,14 +78,14 @@ class HookRegistry(object):
 
     def build_hooks(self):
         """
-            Builds all hooks
+        Builds all hooks
         """
         for hook in self._hooks.keys():
             self.Hook.build_decorator(hook)
 
     def register(self, when, what, func, order=None, on_tags=None):
         """
-            Registers a function as a hook
+        Registers a function as a hook
         """
         if order is None:
             order = self.DEFAULT_HOOK_ORDER
@@ -99,7 +97,7 @@ class HookRegistry(object):
 
     def reset(self):
         """
-            Resets all registerd hooks
+        Resets all registerd hooks
         """
         self._hooks = {
             "all": {"before": [], "after": []},
@@ -120,7 +118,7 @@ class HookRegistry(object):
 
     def call(self, when, what, ascending, model, *args, **kwargs):
         """
-            Calls a registered hook
+        Calls a registered hook
         """
         for _, on_tags, func in sorted(self._hooks[what][when], key=lambda h: h[0], reverse=not ascending):
             if not self.__has_to_run(model, on_tags):

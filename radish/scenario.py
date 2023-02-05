@@ -10,7 +10,7 @@ from .stepmodel import Step
 
 class Scenario(Model):
     """
-        Represents a Scenario
+    Represents a Scenario
     """
 
     def __init__(
@@ -36,7 +36,7 @@ class Scenario(Model):
     @property
     def state(self):
         """
-            Returns the state of the scenario
+        Returns the state of the scenario
         """
         steps = []
         if self.background:
@@ -51,7 +51,7 @@ class Scenario(Model):
     @property
     def constants(self):
         """
-            Returns all constants
+        Returns all constants
         """
         constants = []
         for name, value in self.context.constants:
@@ -64,7 +64,7 @@ class Scenario(Model):
     @property
     def all_steps(self):
         """
-            Returns all steps from all preconditions in the correct order
+        Returns all steps from all preconditions in the correct order
         """
         steps = []
         if self.background:
@@ -78,7 +78,7 @@ class Scenario(Model):
     @property
     def failed_step(self):
         """
-            Returns the first failed step
+        Returns the first failed step
         """
         steps = []
         if self.background:
@@ -95,9 +95,9 @@ class Scenario(Model):
 
     def has_to_run(self, scenario_choice):
         """
-            Returns wheiter the scenario has to run or not
+        Returns wheiter the scenario has to run or not
 
-            :param list scenario_choice: the scenarios to run. If None all will run
+        :param list scenario_choice: the scenarios to run. If None all will run
         """
         if not scenario_choice:
             return True
@@ -106,11 +106,11 @@ class Scenario(Model):
 
     def after_parse(self):
         """
-            This method is called after the scenario is completely parsed.
+        This method is called after the scenario is completely parsed.
 
-            Actions to do:
-              * number steps
-              * fix parent of precondition steps
+        Actions to do:
+          * number steps
+          * fix parent of precondition steps
         """
         for step_id, step in enumerate(self.all_steps, start=1):
             step.id = step_id

@@ -3,6 +3,20 @@ name: CI
 on: [push]
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Setup and install tools
+        run: |
+          python -m pip install --upgrade black
+      - name: black format check
+        run: black --check --line-length 120 radish/ tests/ setup.py
+
   test:
     strategy:
       fail-fast: false
@@ -35,7 +49,7 @@ jobs:
       - name: Build Python Package
         run: |
           python -m pip install -r requirements-dev.txt
-      - name: Update pytest on Python3.10
+      - name: Update pytest on >= Python3.10
         if: ${{ matrix.python-version == '3.10' || matrix.python-version == '3.11' }}
         run: |
           python -m pip install pytest==7.0.1

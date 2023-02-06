@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.15.0]
+### Changes
+
+- Extend support of Scenario Outline variables to step text
+
 ## [v0.14.2]
 - Made a mistake on uploading to pypi
 
@@ -254,7 +259,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.14.2...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.15.0...HEAD
+[v0.15.0]: https://github.com/radish-bdd/radish/compare/v0.14.2...v0.15.0
 [v0.14.2]: https://github.com/radish-bdd/radish/compare/v0.14.1...v0.14.2
 [v0.14.1]: https://github.com/radish-bdd/radish/compare/v0.14.0...v0.14.1
 [v0.14.0]: https://github.com/radish-bdd/radish/compare/v0.13.4...v0.14.0

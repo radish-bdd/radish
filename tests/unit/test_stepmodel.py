@@ -242,6 +242,7 @@ class StepHelper(object):
         """
         step.skip()
 
+
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
 def test_run_debug_step_function_with_kwargs(debug_or_run, mocker, mock_utils_debugger):
     """
@@ -274,9 +275,7 @@ def test_run_debug_step_function_with_kwargs(debug_or_run, mocker, mock_utils_de
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
-def test_run_debug_step_function_with_posargs(
-    debug_or_run, mocker, mock_utils_debugger
-):
+def test_run_debug_step_function_with_posargs(debug_or_run, mocker, mock_utils_debugger):
     """
     Test running/debugging a Step with a function and positional arguments
     """
@@ -307,9 +306,7 @@ def test_run_debug_step_function_with_posargs(
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
-def test_run_debug_step_function_mark_pending(
-    debug_or_run, mocker, mock_utils_debugger
-):
+def test_run_debug_step_function_mark_pending(debug_or_run, mocker, mock_utils_debugger):
     """
     Test running/debugging a Step which marks itself as pending
     """
@@ -336,9 +333,7 @@ def test_run_debug_step_function_mark_pending(
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
-def test_run_debug_step_function_mark_skipped(
-    debug_or_run, mocker, mock_utils_debugger
-):
+def test_run_debug_step_function_mark_skipped(debug_or_run, mocker, mock_utils_debugger):
     """
     Test running/debugging a Step which marks itself as skipped
     """
@@ -365,9 +360,7 @@ def test_run_debug_step_function_mark_skipped(
 
 
 @pytest.mark.parametrize("debug_or_run", [("run"), ("debug")])
-def test_run_debug_step_function_with_exception(
-    debug_or_run, mocker, mock_utils_debugger
-):
+def test_run_debug_step_function_with_exception(debug_or_run, mocker, mock_utils_debugger):
     """
     Test running/debugging a Step which raises an Exception
     """

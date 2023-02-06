@@ -52,9 +52,7 @@ class CodeCoverage(object):
         try:
             from coverage import Coverage
         except ImportError:
-            raise RadishError(
-                'if you want to use the code coverage you have to "pip install radish-bdd[coverage]"'
-            )
+            raise RadishError('if you want to use the code coverage you have to "pip install radish-bdd[coverage]"')
 
         before.all(self.coverage_start)
         after.all(self.coverage_stop)

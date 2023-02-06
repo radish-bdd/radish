@@ -38,6 +38,7 @@ def test_registering_simple_hook(hookregistry):
     """
     Test registering simple hooks
     """
+
     # given & when
     @before.all
     def before_all_hook_legacy():
@@ -55,6 +56,7 @@ def test_call_hook(hookregistry, mocker):
     """
     Test calling registered hooks
     """
+
     # given
     @before.all()
     def before_all(features, stub):
@@ -78,6 +80,7 @@ def test_call_hook_exception(hookregistry, mocker):
     """
     Test calling registered hook which raises an exception
     """
+
     # given
     @before.all()
     def before_all(features):
@@ -95,6 +98,7 @@ def test_call_hooks_filtered_by_tags(hookregistry, mocker):
     """
     Test calling filtered hooks by tags
     """
+
     # given
     @after.all()
     def generic_cleanup(features, stub):

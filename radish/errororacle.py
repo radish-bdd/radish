@@ -25,34 +25,34 @@ __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 
 def write_error(text):
     """
-        Writes the given text to the console
+    Writes the given text to the console
     """
     console_write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
 
 
 def write_failure(failure):
     """
-        Writes the failure to the console
+    Writes the failure to the console
     """
     console_write("\n{0}".format(colorful.red(failure.traceback)))
 
 
 def abort(return_code):
     """
-        Aborts the program with the given return_code
+    Aborts the program with the given return_code
     """
     sys.exit(return_code)
 
 
 def error_oracle(func):
     """
-        Decorator to diagnose thrown exceptions
+    Decorator to diagnose thrown exceptions
     """
 
     @wraps(func)
     def _decorator(*args, **kwargs):
         """
-            The actual decorator
+        The actual decorator
         """
         try:
             return func(*args, **kwargs)
@@ -64,18 +64,18 @@ def error_oracle(func):
 
 def catch_unhandled_exception(exc_type, exc_value, traceback):
     """
-        Catch all unhandled exceptions
+    Catch all unhandled exceptions
     """
     handle_exception(exc_value)
 
 
 def handle_exception(exception):
     """
-        Handle the given exception
+    Handle the given exception
 
-        This will print more information about the given exception
+    This will print more information about the given exception
 
-        :param Exception exception: the exception to handle
+    :param Exception exception: the exception to handle
     """
     if isinstance(exception, HookError):
         write_error(exception)

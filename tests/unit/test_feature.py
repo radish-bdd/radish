@@ -56,9 +56,7 @@ def test_feature_scenario_iterator(mocker):
     # given
     feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add Scenarios to Feature
-    feature.scenarios.extend(
-        [mocker.MagicMock(id=1), mocker.MagicMock(id=2), mocker.MagicMock(id=3)]
-    )
+    feature.scenarios.extend([mocker.MagicMock(id=1), mocker.MagicMock(id=2), mocker.MagicMock(id=3)])
 
     # when
     scenario_iterator = iter(feature)
@@ -91,9 +89,7 @@ def test_feature_scenario_iterator_empty():
     "scenario_sentences, expected_scenario, found",
     [(("foo", "bar"), "foo", True), (("bar"), "foo", False), ([], "foo", False)],
 )
-def test_feature_contains_scenario(
-    scenario_sentences, expected_scenario, found, mocker
-):
+def test_feature_contains_scenario(scenario_sentences, expected_scenario, found, mocker):
     """
     Test contains protocol for Feature to check if it contains a Scenario
     """
@@ -114,9 +110,7 @@ def test_feature_contains_scenario(
     "scenario_sentences, needle_scenario, expected_scenario",
     [(("foo", "bar"), "foo", "foo"), (("bar"), "foo", None), ([], "foo", None)],
 )
-def test_feature_get_scenario_as_item(
-    scenario_sentences, needle_scenario, expected_scenario, mocker
-):
+def test_feature_get_scenario_as_item(scenario_sentences, needle_scenario, expected_scenario, mocker):
     """
     Test getitem protocol for Feature to get specific Scenario
     """
@@ -202,9 +196,7 @@ def test_feature_state(mocker):
     feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
     # add regular Scenarios to Feature
     regular_scenario = mocker.MagicMock(state=Step.State.PASSED)
-    feature.scenarios.extend(
-        [regular_scenario, mocker.MagicMock(state=Step.State.PASSED)]
-    )
+    feature.scenarios.extend([regular_scenario, mocker.MagicMock(state=Step.State.PASSED)])
     # add Scenario Outline to Feature
     scenario_outline_example = mocker.MagicMock(state=Step.State.PASSED)
     scenario_outline = mocker.MagicMock(
@@ -274,9 +266,7 @@ def test_feature_state(mocker):
         ((1, 2, 3), [4, 5], False),
     ],
 )
-def test_feature_scenario_has_to_run(
-    scenario_ids, scenario_choice, expected_has_to_run, mocker
-):
+def test_feature_scenario_has_to_run(scenario_ids, scenario_choice, expected_has_to_run, mocker):
     """
     Test logic to check whether a Scenario within a Feature has to run or not
     """

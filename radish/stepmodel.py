@@ -17,7 +17,7 @@ from . import utils
 
 class Step(Model):
     """
-        Represents a step
+    Represents a step
     """
 
     class State(object):
@@ -98,13 +98,11 @@ class Step(Model):
         """
 
         if not self.definition_func or not callable(self.definition_func):
-            raise RadishError(
-                "The step '{0}' does not have a step definition".format(self.sentence)
-            )
+            raise RadishError("The step '{0}' does not have a step definition".format(self.sentence))
 
     def run(self):
         """
-            Runs the step.
+        Runs the step.
         """
         if not self.runable:
             self.state = Step.State.UNTESTED
@@ -130,7 +128,7 @@ class Step(Model):
 
     def debug(self):
         """
-            Debugs the step
+        Debugs the step
         """
         if not self.runable:
             self.state = Step.State.UNTESTED
@@ -155,24 +153,24 @@ class Step(Model):
 
     def skip(self):
         """
-            Skips the step
+        Skips the step
         """
         self.state = Step.State.SKIPPED
 
     def pending(self):
         """
-            Mark the step as pending
+        Mark the step as pending
 
-            The end report will remind
-            about all pending steps.
+        The end report will remind
+        about all pending steps.
         """
         self.state = Step.State.PENDING
 
     def behave_like(self, sentence):
         """
-            Make step behave like another one
+        Make step behave like another one
 
-            :param string sentence: the sentence of the step to behave like
+        :param string sentence: the sentence of the step to behave like
         """
         # check if this step has already failed from a previous behave_like call
         if self.state is Step.State.FAILED:
@@ -190,11 +188,7 @@ class Step(Model):
 
         # re-raise exception if the failed
         if new_step.state is Step.State.FAILED:
-            new_step.failure.exception.args = (
-                "Step '{0}' failed: '{1}'".format(
-                    sentence, new_step.failure.reason
-                ),
-            )
+            new_step.failure.exception.args = ("Step '{0}' failed: '{1}'".format(sentence, new_step.failure.reason),)
             raise new_step.failure.exception
 
     def embed(self, data, mime_type="text/plain", encode_data_to_base64=True):

@@ -21,9 +21,7 @@ class LanguageNotSupportedError(RadishError):
 
     def __init__(self, language):
         self.language = language
-        super(LanguageNotSupportedError, self).__init__(
-            "Language {0} could not be found".format(language)
-        )
+        super(LanguageNotSupportedError, self).__init__("Language {0} could not be found".format(language))
 
 
 class FeatureFileNotFoundError(RadishError):
@@ -33,9 +31,7 @@ class FeatureFileNotFoundError(RadishError):
 
     def __init__(self, featurefile):
         self.featurefile = featurefile
-        super(FeatureFileNotFoundError, self).__init__(
-            "Feature file '{0}': No such file".format(featurefile)
-        )
+        super(FeatureFileNotFoundError, self).__init__("Feature file '{0}': No such file".format(featurefile))
 
 
 class FeatureFileSyntaxError(RadishError, SyntaxError):
@@ -67,9 +63,7 @@ class StepRegexError(RadishError, SyntaxError):
         self.step_func_name = step_func_name
         self.re_error = re_error
         super(StepRegexError, self).__init__(
-            "Cannot compile regex '{0}' from step '{1}': {2}".format(
-                regex, step_func_name, re_error
-            )
+            "Cannot compile regex '{0}' from step '{1}': {2}".format(regex, step_func_name, re_error)
         )
 
 
@@ -83,9 +77,7 @@ class StepPatternError(RadishError, SyntaxError):
         self.step_func_name = step_func_name
         self.error = error
         super(StepPatternError, self).__init__(
-            "Cannot compile pattern '{0}' of step '{1}': {2}".format(
-                pattern, step_func_name, error
-            )
+            "Cannot compile pattern '{0}' of step '{1}': {2}".format(pattern, step_func_name, error)
         )
 
 

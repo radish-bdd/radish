@@ -18,9 +18,7 @@ from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location, locate
 
 
-def test_step_matches_configs(
-    match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False
-):
+def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False):
     """
     Test if the given match config files matches the actual
     matched step implementations.
@@ -47,9 +45,7 @@ def test_step_matches_configs(
         sys.stderr.write(
             str(
                 colorful.magenta(
-                    "No step implementations found in {0}, thus doesn't make sense to continue".format(
-                        basedirs
-                    )
+                    "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs)
                 )
             )
         )
@@ -65,29 +61,15 @@ def test_step_matches_configs(
             match_config = yaml.safe_load(f)
 
         if not match_config:
-            print(
-                colorful.magenta(
-                    "No sentences found in {0} to test against".format(
-                        match_config_file
-                    )
-                )
-            )
+            print(colorful.magenta("No sentences found in {0} to test against".format(match_config_file)))
             return 5
 
-        print(
-            colorful.yellow(
-                "Testing sentences from {0}:".format(
-                    colorful.bold_yellow(match_config_file)
-                )
-            )
-        )
+        print(colorful.yellow("Testing sentences from {0}:".format(colorful.bold_yellow(match_config_file))))
         failed_sentences, passed_senteces = test_step_matches(match_config, steps)
         failed += failed_sentences
         passed += passed_senteces
 
-        covered_steps = covered_steps.union(
-            x["should_match"] for x in match_config if "should_match" in x
-        )
+        covered_steps = covered_steps.union(x["should_match"] for x in match_config if "should_match" in x)
 
         # newline
         sys.stdout.write("\n")
@@ -112,18 +94,12 @@ def test_step_matches_configs(
     ret = 0 if failed == 0 else 1
 
     if cover_min_percentage:
-        coverage_color = (
-            colorful.bold_green
-            if step_coverage >= float(cover_min_percentage)
-            else colorful.bold_red
-        )
+        coverage_color = colorful.bold_green if step_coverage >= float(cover_min_percentage) else colorful.bold_red
         coverage_report += colorful.bold_white(" (coverage: ")
         coverage_report += coverage_color("{0:.2f}%".format(step_coverage))
         if float(cover_min_percentage) > step_coverage:
             coverage_report += colorful.bold_white(
-                ", expected a minimum of {0}".format(
-                    colorful.bold_green(cover_min_percentage + "%")
-                )
+                ", expected a minimum of {0}".format(colorful.bold_green(cover_min_percentage + "%"))
             )
             if failed == 0:
                 ret = 2
@@ -158,9 +134,7 @@ def test_step_matches(match_config, steps):
         sentence = item["sentence"]
 
         if "should_match" in item:
-            has_passed = test_step_match(
-                sentence, item["should_match"], item.get("with_arguments", None), steps
-            )
+            has_passed = test_step_match(sentence, item["should_match"], item.get("with_arguments", None), steps)
         else:
             has_passed = test_step_not_match(sentence, item["should_not_match"], steps)
 
@@ -187,21 +161,13 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
     if expected_step != result.func.__name__:
         output_failure(
             result.func,
-            [
-                "Expected sentence matched {0} instead of {1}".format(
-                    result.func.__name__, expected_step
-                )
-            ],
+            ["Expected sentence matched {0} instead of {1}".format(result.func.__name__, expected_step)],
         )
         return False
 
     if expected_arguments:
         arguments = merge_step_args(result)
-        expected_arguments = {
-            k: v
-            for expected_arguments in expected_arguments
-            for k, v in expected_arguments.items()
-        }
+        expected_arguments = {k: v for expected_arguments in expected_arguments for k, v in expected_arguments.items()}
         argument_errors = check_step_arguments(expected_arguments, arguments)
         if argument_errors:
             output_failure(result.func, argument_errors)
@@ -212,30 +178,17 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
 
 
 def test_step_not_match(sentence, expected_not_matching_step, steps):
-    step_to_print = (
-        colorful.cyan(expected_not_matching_step)
-        if expected_not_matching_step
-        else "ANY"
-    )
+    step_to_print = colorful.cyan(expected_not_matching_step) if expected_not_matching_step else "ANY"
     sys.stdout.write(
-        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(
-            colorful.yellow(">>"), colorful.cyan(sentence), step_to_print
-        )
+        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(colorful.yellow(">>"), colorful.cyan(sentence), step_to_print)
     )
 
     result = match_step(sentence, steps)
     if result:
-        if (
-            not expected_not_matching_step
-            or result.func.__name__ == expected_not_matching_step
-        ):
+        if not expected_not_matching_step or result.func.__name__ == expected_not_matching_step:
             output_failure(
                 None,
-                [
-                    "Expected sentence did match {0} but it shouldn't".format(
-                        expected_not_matching_step
-                    )
-                ],
+                ["Expected sentence did match {0} but it shouldn't".format(expected_not_matching_step)],
             )
             return False
 
@@ -259,9 +212,7 @@ def validate_config_item(config):
             )
         )
 
-    if "sentence" not in config or (
-        "should_match" not in config and "should_not_match" not in config
-    ):
+    if "sentence" not in config or ("should_match" not in config and "should_not_match" not in config):
         raise ValueError(
             "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)"
         )
@@ -273,9 +224,7 @@ def output_failure(step_func, errors):
     """
     sys.stdout.write(str(colorful.bold_red("✘")))
     if step_func is not None:
-        sys.stdout.write(
-            str(colorful.red(" (at {0})".format(get_func_location(step_func))))
-        )
+        sys.stdout.write(str(colorful.red(" (at {0})".format(get_func_location(step_func)))))
 
     sys.stdout.write("\n")
 
@@ -292,9 +241,7 @@ def check_step_arguments(expected_arguments, arguments):
     for arg_name, arg_value in expected_arguments.items():
         if arg_name not in arguments:
             errors.append(
-                'Expected argument "{0}" is not in matched arguments {1}'.format(
-                    arg_name, list(arguments.keys())
-                )
+                'Expected argument "{0}" is not in matched arguments {1}'.format(arg_name, list(arguments.keys()))
             )
             continue
 
@@ -314,17 +261,13 @@ def check_step_arguments(expected_arguments, arguments):
             if "cast" in arg_value and arg_value["cast"] is True:
                 obj_type = locate(_type)
                 if obj_type is None:
-                    errors.append(
-                        'Cannot cast to type "{0}" because it is unknown'.format(_type)
-                    )
+                    errors.append('Cannot cast to type "{0}" because it is unknown'.format(_type))
                     continue
 
                 try:
                     value = obj_type(value)
                 except Exception as exc:
-                    errors.append(
-                        'Failed to cast "{0}" to given type "{1}"'.format(value, type)
-                    )
+                    errors.append('Failed to cast "{0}" to given type "{1}"'.format(value, type))
                     continue
         else:
             _type = type(arg_value).__name__

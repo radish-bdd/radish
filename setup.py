@@ -73,7 +73,7 @@ setup(
     bugtrack_url=get_meta("bugtrack_url"),
     packages=find_packages(),
     package_data={"": ["radish/languages/*", "*.md"]},
-    python_requires='>=3',
+    python_requires=">=3",
     install_requires=requirements,
     extras_require=extra_requirements,
     include_package_data=True,

@@ -45,9 +45,7 @@ class StepRegistry(object):
         """
         ignore = getattr(steps_object, "ignore", [])
         for attr in dir(steps_object):
-            if attr in ignore or not inspect.ismethod(
-                getattr(steps_object, attr)
-            ):  # attribute should be ignored
+            if attr in ignore or not inspect.ismethod(getattr(steps_object, attr)):  # attribute should be ignored
                 continue
 
             step_definition = getattr(steps_object, attr)
@@ -66,9 +64,7 @@ class StepRegistry(object):
         docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:
             raise RadishError(
-                "Step definition '{0}' from class must have step regex in docstring".format(
-                    func.__name__
-                )
+                "Step definition '{0}' from class must have step regex in docstring".format(func.__name__)
             )
 
         regex = docstr.splitlines()[0]
@@ -81,31 +77,31 @@ class StepRegistry(object):
 
     def clear(self):
         """
-            Clears all registered steps
+        Clears all registered steps
         """
         self._steps = {}
 
     @property
     def steps(self):
         """
-            Returns all registered steps
+        Returns all registered steps
         """
         return self._steps
 
 
 def step(pattern):
     """
-        Step decorator for custom steps
+    Step decorator for custom steps
 
-        :param string regex: this is the regex to match the steps in the feature file
+    :param string regex: this is the regex to match the steps in the feature file
 
-        :returns: the decorated function
-        :rtype: function
+    :returns: the decorated function
+    :rtype: function
     """
 
     def _decorator(func):
         """
-            Represents the actual decorator
+        Represents the actual decorator
         """
         StepRegistry().register(pattern, func)
         return func
@@ -115,7 +111,7 @@ def step(pattern):
 
 def steps(cls):
     """
-        Decorator for classes with step definitions inside
+    Decorator for classes with step definitions inside
     """
     old_cls_init = getattr(cls, "__init__")
 
@@ -127,8 +123,8 @@ def steps(cls):
 
     def new_cls_init(self, *args, **kwargs):
         """
-            New __init__ method for the given class which calls the old __init__ method
-            and registers the steps
+        New __init__ method for the given class which calls the old __init__ method
+        and registers the steps
         """
         old_cls_init(self, *args, **kwargs)
 
@@ -143,7 +139,7 @@ def steps(cls):
 
 def given(pattern):
     """
-        Step decorator prefixed with the Given-keyword.
+    Step decorator prefixed with the Given-keyword.
     """
     if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
         return step(re.compile(r"Given {0}".format(pattern.pattern)))
@@ -152,7 +148,7 @@ def given(pattern):
 
 def when(pattern):
     """
-        Step decorator prefixed with the When-keyword.
+    Step decorator prefixed with the When-keyword.
     """
     if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
         return step(re.compile(r"When {0}".format(pattern.pattern)))
@@ -161,7 +157,7 @@ def when(pattern):
 
 def then(pattern):
     """
-        Step decorator prefixed with the Then-keyword.
+    Step decorator prefixed with the Then-keyword.
     """
     if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
         return step(re.compile(r"Then {0}".format(pattern.pattern)))

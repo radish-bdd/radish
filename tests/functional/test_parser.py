@@ -42,9 +42,7 @@ def test_parse_invalid_state(parser):
     "language, feature_keyword, scenario_keyword",
     [("en", "Feature", "Scenario"), ("de", "Funktionalität", "Szenario")],
 )
-def test_creating_language_agnostic_parser(
-    language, feature_keyword, scenario_keyword, core
-):
+def test_creating_language_agnostic_parser(language, feature_keyword, scenario_keyword, core):
     """
     Test creating a language agnostic parser
     """
@@ -154,14 +152,10 @@ def test_parse_featurefile_with_multiple_features(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "radish supports only one Feature per feature file"
-    )
+    assert str(exc.value).startswith("radish supports only one Feature per feature file")
 
 
-@pytest.mark.parametrize(
-    "parser", [("syntax-error-unknown-keyword",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("syntax-error-unknown-keyword",)], indirect=["parser"])
 def test_parse_featurefile_with_syntax_error(parser):
     """
     Test parsing a Feature File with Syntax Errors
@@ -249,36 +243,18 @@ def test_parse_feature_with_scenario_outline(parser):
     assert len(feature.scenarios[0].scenarios) == 2
 
     # then - expect correct scenario steps with replaced fields
-    assert (
-        feature.scenarios[0].scenarios[0].steps[0].sentence
-        == "Given I have the number 1"
-    )
-    assert (
-        feature.scenarios[0].scenarios[0].steps[1].sentence == "And I have the number 2"
-    )
+    assert feature.scenarios[0].scenarios[0].steps[0].sentence == "Given I have the number 1"
+    assert feature.scenarios[0].scenarios[0].steps[1].sentence == "And I have the number 2"
     assert feature.scenarios[0].scenarios[0].steps[2].sentence == "When I add them up"
-    assert (
-        feature.scenarios[0].scenarios[0].steps[3].sentence
-        == "Then I expect the sum to be 3"
-    )
+    assert feature.scenarios[0].scenarios[0].steps[3].sentence == "Then I expect the sum to be 3"
 
-    assert (
-        feature.scenarios[0].scenarios[1].steps[0].sentence
-        == "Given I have the number 4"
-    )
-    assert (
-        feature.scenarios[0].scenarios[1].steps[1].sentence == "And I have the number 5"
-    )
+    assert feature.scenarios[0].scenarios[1].steps[0].sentence == "Given I have the number 4"
+    assert feature.scenarios[0].scenarios[1].steps[1].sentence == "And I have the number 5"
     assert feature.scenarios[0].scenarios[1].steps[2].sentence == "When I add them up"
-    assert (
-        feature.scenarios[0].scenarios[1].steps[3].sentence
-        == "Then I expect the sum to be 9"
-    )
+    assert feature.scenarios[0].scenarios[1].steps[3].sentence == "Then I expect the sum to be 9"
 
 
-@pytest.mark.parametrize(
-    "parser", [("scenario-outline-step-text",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("scenario-outline-step-text",)], indirect=["parser"])
 def test_parse_scenario_outline_with_step_text(parser):
     """
     Test parsing a Scenario Outline with a Step with Text
@@ -292,17 +268,12 @@ def test_parse_scenario_outline_with_step_text(parser):
     assert len(feature.scenarios[0].scenarios) == 3
 
     # then - expect correct scenario steps with replaced fields
-    assert (
-        feature.scenarios[0].scenarios[0].steps[0].sentence
-        == "Given I have the number 10"
-    )
+    assert feature.scenarios[0].scenarios[0].steps[0].sentence == "Given I have the number 10"
     assert feature.scenarios[0].scenarios[0].steps[1].sentence == "And I have the text"
     assert feature.scenarios[0].scenarios[0].steps[1].text == "foobar"
 
 
-@pytest.mark.parametrize(
-    "parser", [("scenario-outline-step-text-example",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("scenario-outline-step-text-example",)], indirect=["parser"])
 def test_parse_scenario_outline_with_step_text(parser):
     """
     Test parsing a Scenario Outline with a Step with Text
@@ -321,9 +292,7 @@ def test_parse_scenario_outline_with_step_text(parser):
     assert "<n1>:6" in str(feature.scenarios[0].scenarios[1].steps[0].text)
 
 
-@pytest.mark.parametrize(
-    "parser", [("escaping-scenario-examples",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("escaping-scenario-examples",)], indirect=["parser"])
 def test_pipes_in_scenario_example_rows_can_be_escaped(parser):
     """
     Test that a PIPE (|) can be used in a Scenario Example row value
@@ -343,9 +312,7 @@ def test_pipes_in_scenario_example_rows_can_be_escaped(parser):
     assert step.sentence == "I do some stuff 1 hei\\ho 2"
 
 
-@pytest.mark.parametrize(
-    "parser", [("regular-scenario-examples",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("regular-scenario-examples",)], indirect=["parser"])
 def test_parse_feature_with_scenario_and_examples(parser):
     """
     Test parsing a Feature with a Scenario combined with Examples without a Scenario Outline
@@ -355,9 +322,7 @@ def test_parse_feature_with_scenario_and_examples(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "Scenario does not support Examples. Use 'Scenario Outline'"
-    )
+    assert str(exc.value).startswith("Scenario does not support Examples. Use 'Scenario Outline'")
 
 
 @pytest.mark.parametrize("parser", [("scenario-loop",)], indirect=["parser"])
@@ -373,25 +338,13 @@ def test_parse_feature_with_scenario_loop(parser):
     assert isinstance(feature.scenarios[0], ScenarioLoop)
     assert len(feature.scenarios[0].scenarios) == 2
 
-    assert (
-        feature.scenarios[0].scenarios[0].steps[0].sentence
-        == "Given I have an instable function"
-    )
+    assert feature.scenarios[0].scenarios[0].steps[0].sentence == "Given I have an instable function"
     assert feature.scenarios[0].scenarios[0].steps[1].sentence == "When I execute it"
-    assert (
-        feature.scenarios[0].scenarios[0].steps[2].sentence
-        == "Then I expect it to pass"
-    )
+    assert feature.scenarios[0].scenarios[0].steps[2].sentence == "Then I expect it to pass"
 
-    assert (
-        feature.scenarios[0].scenarios[1].steps[0].sentence
-        == "Given I have an instable function"
-    )
+    assert feature.scenarios[0].scenarios[1].steps[0].sentence == "Given I have an instable function"
     assert feature.scenarios[0].scenarios[1].steps[1].sentence == "When I execute it"
-    assert (
-        feature.scenarios[0].scenarios[1].steps[2].sentence
-        == "Then I expect it to pass"
-    )
+    assert feature.scenarios[0].scenarios[1].steps[2].sentence == "Then I expect it to pass"
 
 
 @pytest.mark.parametrize("parser", [("step-tabular-data",)], indirect=["parser"])
@@ -423,9 +376,7 @@ def test_parse_step_tabular_data(parser):
     }
 
 
-@pytest.mark.parametrize(
-    "parser", [("step-tabular-data-invalid",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("step-tabular-data-invalid",)], indirect=["parser"])
 def test_parse_step_tabular_data_invalid(parser):
     """
     Test parsing a Step Table without a Step
@@ -435,9 +386,7 @@ def test_parse_step_tabular_data_invalid(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "Found step table without previous step definition on line 6"
-    )
+    assert str(exc.value).startswith("Found step table without previous step definition on line 6")
 
 
 @pytest.mark.parametrize("parser", [("step-text-data",)], indirect=["parser"])
@@ -481,9 +430,7 @@ def test_parse_tags(parser, expected_feature_tags, expected_scenarios_tags):
     # then
     assert feature.tags == expected_feature_tags
     assert len(feature.scenarios) == len(expected_scenarios_tags)
-    for scenario, expected_scenario_tags in zip(
-        feature.scenarios, expected_scenarios_tags
-    ):
+    for scenario, expected_scenario_tags in zip(feature.scenarios, expected_scenarios_tags):
         assert scenario.tags == expected_scenario_tags
 
 
@@ -601,9 +548,7 @@ def test_parse_simple_background(parser):
     # then
     assert isinstance(feature.background, Background)
     assert len(feature.scenarios) == 2
-    assert all(
-        s.background.sentence == feature.background.sentence for s in feature.scenarios
-    )
+    assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios)
 
 
 @pytest.mark.parametrize("parser", [("background-no-sentence",)], indirect=["parser"])
@@ -618,14 +563,10 @@ def test_parse_background_no_sentence(parser):
     assert isinstance(feature.background, Background)
     assert feature.background.sentence == ""
     assert len(feature.scenarios) == 2
-    assert all(
-        s.background.sentence == feature.background.sentence for s in feature.scenarios
-    )
+    assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios)
 
 
-@pytest.mark.parametrize(
-    "parser", [("background-scenariooutline",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("background-scenariooutline",)], indirect=["parser"])
 def test_parse_background_for_scenario_outline(parser):
     """
     Test parsing a Feature with a Background and Scenario Outline
@@ -635,10 +576,7 @@ def test_parse_background_for_scenario_outline(parser):
 
     # then
     assert isinstance(feature.background, Background)
-    assert all(
-        s.background.sentence == feature.background.sentence
-        for s in feature.scenarios[0].scenarios
-    )
+    assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios[0].scenarios)
 
 
 @pytest.mark.parametrize("parser", [("background-scenarioloop",)], indirect=["parser"])
@@ -651,15 +589,10 @@ def test_parse_background_for_scenario_loop(parser):
 
     # then
     assert isinstance(feature.background, Background)
-    assert all(
-        s.background.sentence == feature.background.sentence
-        for s in feature.scenarios[0].scenarios
-    )
+    assert all(s.background.sentence == feature.background.sentence for s in feature.scenarios[0].scenarios)
 
 
-@pytest.mark.parametrize(
-    "parser", [("background-subsequent-tag",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("background-subsequent-tag",)], indirect=["parser"])
 def test_parse_background_subsequent_tag(parser):
     """
     Test parsing a Feature with Background followed by a tagged Scenario
@@ -683,9 +616,7 @@ def test_parse_misplaced_background(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "The Background block must be placed before any Scenario block"
-    )
+    assert str(exc.value).startswith("The Background block must be placed before any Scenario block")
 
 
 @pytest.mark.parametrize("parser", [("background-multiple",)], indirect=["parser"])
@@ -698,9 +629,7 @@ def test_parse_multiple_background(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "The Background block may only appear once in a Feature"
-    )
+    assert str(exc.value).startswith("The Background block may only appear once in a Feature")
 
 
 @pytest.mark.parametrize("parser", [("constants",)], indirect=["parser"])
@@ -717,9 +646,7 @@ def test_parse_constants(parser):
     assert len(feature.scenarios[1].constants) == 2
 
 
-@pytest.mark.parametrize(
-    "parser", [("scenario-sentence-duplicate",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("scenario-sentence-duplicate",)], indirect=["parser"])
 def test_parse_scenario_sentence_duplicate(parser):
     """
     Test detecting Scenario sentence duplicates
@@ -729,9 +656,7 @@ def test_parse_scenario_sentence_duplicate(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith(
-        "Scenario with name 'A great name for a Scenario' " "defined twice in feature"
-    )
+    assert str(exc.value).startswith("Scenario with name 'A great name for a Scenario' " "defined twice in feature")
 
 
 @pytest.mark.parametrize("parser", [("precondition-level-2",)], indirect=["parser"])
@@ -748,9 +673,7 @@ def test_parse_simple_layered_preconditions(parser):
     assert len(feature.scenarios[0].preconditions[0].preconditions) == 1
 
 
-@pytest.mark.parametrize(
-    "parser", [("precondition-same-feature",)], indirect=["parser"]
-)
+@pytest.mark.parametrize("parser", [("precondition-same-feature",)], indirect=["parser"])
 def test_parse_scenario_precondition_same_feature(parser):
     """
     Test parsing simple three layered Scenario preconditions

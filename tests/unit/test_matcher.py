@@ -81,9 +81,7 @@ def test_regex_step_arguments_object(regex, string, expected_args, expected_kwar
         "Parse Pattern with unnamed and named groups",
     ],
 )
-def test_parse_step_arguments_object(
-    parse_pattern, string, expected_args, expected_kwargs
-):
+def test_parse_step_arguments_object(parse_pattern, string, expected_args, expected_kwargs):
     """
     Test functionality of ParseStepArguments object
     """
@@ -142,9 +140,7 @@ def test_parse_step_arguments_object(
         (
             "Given I have the number 5 which I use to test",
             {
-                re.compile(
-                    r"Given I have the number (\d+) which I use to do some stuff"
-                ): 1,
+                re.compile(r"Given I have the number (\d+) which I use to do some stuff"): 1,
                 re.compile(r"Given I have the number (\d+) which I use"): 2,
             },
             matcher.RegexStepArguments,
@@ -207,9 +203,7 @@ def test_parse_step_arguments_object(
         "Parse: match step with args with multiple candidate - closest match",
     ],
 )
-def test_match_sentence_with_steps(
-    given_sentence, given_steps, expected_argument_match_type, expected_func_match
-):
+def test_match_sentence_with_steps(given_sentence, given_steps, expected_argument_match_type, expected_func_match):
     """
     Test matching a sentence with given Steps
     """
@@ -258,9 +252,7 @@ def test_invalid_parse_pattern():
     with pytest.raises(errors.StepPatternError) as exc:
         matcher.match_step("Given I have the number 5", {invalid_pattern: int})
 
-    assert str(exc.value).startswith(
-        "Cannot compile pattern 'Given I have the number {:d {}' of step 'int': "
-    )
+    assert str(exc.value).startswith("Cannot compile pattern 'Given I have the number {:d {}' of step 'int': ")
 
 
 @pytest.mark.parametrize(
@@ -296,9 +288,7 @@ def test_invalid_parse_pattern():
         "Parse: step merge with arguments",
     ],
 )
-def test_merging_step(
-    given_sentence, given_steps, expected_func, expected_args, expected_kwargs, mocker
-):
+def test_merging_step(given_sentence, given_steps, expected_func, expected_args, expected_kwargs, mocker):
     """
     Test merging a Step with registered Step functions
     """

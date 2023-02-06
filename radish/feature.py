@@ -26,8 +26,8 @@ class Feature(Model):
     @property
     def all_scenarios(self):
         """
-            Returns all scenarios from the feature
-            The ScenarioOutline scenarios will be extended to the normal scenarios
+        Returns all scenarios from the feature
+        The ScenarioOutline scenarios will be extended to the normal scenarios
         """
         scenarios = []
         for scenario in self.scenarios:
@@ -39,7 +39,7 @@ class Feature(Model):
     @property
     def constants(self):
         """
-            Returns all constants
+        Returns all constants
         """
         return self.context.constants
 
@@ -51,35 +51,33 @@ class Feature(Model):
 
     def __iter__(self):
         """
-            Returns an iterator for the scenario of this feature
+        Returns an iterator for the scenario of this feature
         """
         return iter(self.scenarios)
 
     def __contains__(self, sentence):
         """
-            Checks if the given scenario sentence is from a scenario of this feature
+        Checks if the given scenario sentence is from a scenario of this feature
 
-            :param str sentence: the scenario sentence to search
+        :param str sentence: the scenario sentence to search
         """
         return any(s for s in self.scenarios if s.sentence == sentence)
 
     def __getitem__(self, sentence):
         """
-            Returns the scenario with the given sentence
+        Returns the scenario with the given sentence
 
-            :param str sentence: the scenario sentence to search
+        :param str sentence: the scenario sentence to search
         """
         return next((s for s in self.scenarios if s.sentence == sentence), None)
 
     @property
     def state(self):
         """
-            Returns the state of the scenario
+        Returns the state of the scenario
         """
         for scenario in self.all_scenarios:
-            if isinstance(
-                scenario, (ScenarioOutline, ScenarioLoop)
-            ):  # skip scenario outlines
+            if isinstance(scenario, (ScenarioOutline, ScenarioLoop)):  # skip scenario outlines
                 continue
 
             if not scenario.has_to_run(world.config.scenarios):
@@ -91,15 +89,13 @@ class Feature(Model):
 
     def has_to_run(self, scenario_choice):
         """
-            Returns wheiter the feature has to run or not
+        Returns wheiter the feature has to run or not
         """
         if not scenario_choice:
             return True
 
         in_choice = False
         if scenario_choice:
-            in_choice = any(
-                s for s in self.scenarios if s.absolute_id in scenario_choice
-            )
+            in_choice = any(s for s in self.scenarios if s.absolute_id in scenario_choice)
 
         return in_choice

@@ -46,11 +46,7 @@ class JUnitXMLWriter(object):
         # round duration to 3 decimal points, to avoid it being printed in
         # scientific notation (According to the junit people 3 is enough)
         # https://issues.jenkins-ci.org/browse/JENKINS-52152
-        duration = (
-            "%.3f" % model.duration.total_seconds()
-            if model.starttime and model.endtime
-            else ""
-        )
+        duration = "%.3f" % model.duration.total_seconds() if model.starttime and model.endtime else ""
         return etree.Element(
             what,
             sentence=model.sentence,
@@ -83,22 +79,15 @@ class JUnitXMLWriter(object):
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 duration += feature.duration
 
-        testsuites_element = etree.Element(
-            "testsuites", time="%.3f" % duration.total_seconds()
-        )
+        testsuites_element = etree.Element("testsuites", time="%.3f" % duration.total_seconds())
 
         for feature in features:
-
             if not feature.has_to_run(world.config.scenarios):
                 continue
 
             testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
 
-            for scenario in (
-                s
-                for s in feature.all_scenarios
-                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
-            ):
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
@@ -122,11 +111,7 @@ class JUnitXMLWriter(object):
                 time="%.3f" % feature.duration.total_seconds(),
             )
 
-            for scenario in (
-                s
-                for s in feature.all_scenarios
-                if not isinstance(s, (ScenarioOutline, ScenarioLoop))
-            ):
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
@@ -151,9 +136,7 @@ class JUnitXMLWriter(object):
                         step_element = self._get_element_from_model("step", step)
                         steps_sentence.append(step.sentence)
                         if step.state is Step.State.FAILED:
-                            failure_element = etree.Element(
-                                "failure", type=step.failure.name, message=step.sentence
-                            )
+                            failure_element = etree.Element("failure", type=step.failure.name, message=step.sentence)
                             failure_element.text = etree.CDATA(
                                 "%s\n\n%s"
                                 % (

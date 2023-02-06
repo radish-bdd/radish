@@ -22,11 +22,7 @@ import radish.utils as utils
     [
         (["foo", "bar"], ["foo", "bar"], "posix"),
         (["foo:bar", "foobar"], ["foo", "bar", "foobar"], "posix"),
-        (
-            ["foo:bar", "foobar", "one:two:three"],
-            ["foo", "bar", "foobar", "one", "two", "three"],
-            "posix"
-        ),
+        (["foo:bar", "foobar", "one:two:three"], ["foo", "bar", "foobar", "one", "two", "three"], "posix"),
         (["foo:", ":bar"], ["foo", "bar"], "posix"),
         (["C:\\windows\\radish"], ["C:\\windows\\radish"], "nt"),
         (["C:\\windows;radish"], ["C:\\windows", "radish"], "nt"),

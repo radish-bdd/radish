@@ -65,9 +65,7 @@ class ExtensionRegistry(object):
         options = []
         for ext in self.extensions:
             try:
-                options.extend(
-                    "{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS
-                )
+                options.extend("{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
             except AttributeError:
                 pass
         return "\n    ".join(options)

@@ -1,7 +1,7 @@
 <img align="right" src="https://raw.githubusercontent.com/radish-bdd/radish/master/artwork/radish-bdd-logo-trans-bg.png">
 
 # radish - the root from red to green
-> Awesome python BDD tool http://radish-bdd.io
+> Awesome python BDD tool https://radish-bdd.github.io
 
 ***
 
@@ -39,7 +39,7 @@ pip install radish-bdd
 
 # Getting started
 
-radish is very easy to use. Take the 5 minutes and follow the *Getting started* instruction on the radish website: http://radish-bdd.io/#gettingstarted
+radish is very easy to use. Take the 5 minutes and follow the *Getting started* instruction on the radish website: https://radish-bdd.github.io/#gettingstarted
 
 # Documentation
 

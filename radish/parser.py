@@ -205,21 +205,26 @@ class FeatureParser(object):
         """
         Parses a Feature Sentence
 
-        The `INIT` state is used as initiale state.
+        The `INIT` state is used as initial state.
 
         :param string line: the line to parse from
         """
         line = line.strip()
         detected_feature = self._detect_feature(line)
         if not detected_feature:
-            tag = self._detect_tag(line)
-            if tag:
-                self._current_tags.append(Tag(tag[0], tag[1]))
-                if tag[0] == "constant":
-                    name, value = self._parse_constant(tag[1])
-                    self._current_constants.append((name, value))
+            has_tags = self._detect_tag(line)
+            if has_tags:
+                # If a tag is detected we split on @ and try to parse
+                # each part as tag (also for constant)
+                # this is required for @foo @bar @baz
+                for line in ["@" + l.strip() for l in line.split("@")]:
+                    tag = self._detect_tag(line)
+                    if tag:
+                        self._current_tags.append(Tag(tag[0], tag[1]))
+                        if tag[0] == "constant":
+                            name, value = self._parse_constant(tag[1])
+                            self._current_constants.append((name, value))
                 return True
-
             return False
 
         self.feature = Feature(
@@ -282,16 +287,22 @@ class FeatureParser(object):
             if not detected_scenario:
                 detected_scenario = self._detect_scenario_loop(line)
                 if not detected_scenario:
-                    tag = self._detect_tag(line)
-                    if tag:
-                        self._current_tags.append(Tag(tag[0], tag[1]))
-                        if tag[0] == "precondition":
-                            scenario = self._parse_precondition(tag[1])
-                            if scenario is not None:
-                                self._current_preconditions.append(scenario)
-                        elif tag[0] == "constant":
-                            name, value = self._parse_constant(tag[1])
-                            self._current_constants.append((name, value))
+                    has_tags = self._detect_tag(line)
+                    if has_tags:
+                        # If a tag is detected we split on @ and try to parse
+                        # each part as tag (also for constant)
+                        # this is required for @foo @bar @baz
+                        for line in ["@" + l.strip() for l in line.split("@")]:
+                            tag = self._detect_tag(line)
+                            if tag:
+                                self._current_tags.append(Tag(tag[0], tag[1]))
+                                if tag[0] == "precondition":
+                                    scenario = self._parse_precondition(tag[1])
+                                    if scenario is not None:
+                                        self._current_preconditions.append(scenario)
+                                elif tag[0] == "constant":
+                                    name, value = self._parse_constant(tag[1])
+                                    self._current_constants.append((name, value))
                         return True
 
                     raise FeatureFileSyntaxError(
@@ -718,11 +729,13 @@ class FeatureParser(object):
 
     def _detect_tag(self, line):
         """
-        Detects a tag on the given line
+        Detects and parses tag on the given line
+        Supports @name(value) syntax where a tag can have a name
+        and a value inside open parenthesis `(` and close parenthesis `)`
 
         :param string line: the line to detect the tag
 
-        :returns: the tag or None
+        :returns: the tag (name and value) or None
         :rtype: str or None
         """
         match = re.search(r"^@([^\s(]+)(?:\((.*?)\))?", line)

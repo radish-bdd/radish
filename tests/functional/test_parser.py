@@ -417,6 +417,11 @@ def test_parse_step_text_data(parser):
             ],
         ),
         (["tags-arguments"], [Tag("foo", "bar")], [[Tag("sometag", "somevalue")]]),
+        (
+            ["tags-on-single-line"],
+            [Tag("author", "mario"), Tag("date", "Sat, 25 Feb 2023 19:53:53 +0100")],
+            [[Tag("with_out_value"), Tag("author", "luigi")]],
+        ),
     ],
     indirect=["parser"],
 )

@@ -1005,7 +1005,7 @@ The **<feature>** tag contains the following tags:
 
 **<scenarios>** tag:
 
-Contains list of **<screnario>** tags
+Contains list of **<scenarios>** tags
 
 example:
 
@@ -1094,7 +1094,7 @@ example:
     starttime="2017-02-18T07:06:55"
   >
 
-The **<step>** MAY tag contains the following tags if error has occured:
+The **<step>** MAY tag contains the following tags if error has occurred:
 
 **<failure>** tag:
 
@@ -1104,7 +1104,7 @@ The **<step>** MAY tag contains the following tags if error has occured:
 :type:
   Step sentence.
 :tag content:
-  CDATA enclosed failure reason specifically excepion traceback.
+  CDATA enclosed failure reason specifically exception traceback.
 
 
 example:

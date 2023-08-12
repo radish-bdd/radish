@@ -31,6 +31,9 @@ class Tag(object):
 
         return self.name == other.name and self.arg == other.arg
 
+    def __repr__(self):
+        return "Tag name='%s' value='%s'" % (self.name, self.arg)
+
 
 # FIXME: make ABC
 class Model(object):

@@ -20,21 +20,15 @@ jobs:
   test:
     strategy:
       fail-fast: false
-      max-parallel: 6
+      max-parallel: 8
       matrix:
-        python-version: [3.7, 3.8, 3.9, "3.10"]
+        python-version: [3.7, 3.11]
         os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
-          - os: ubuntu-18.04
+          - os: ubuntu-20.04
             python-version: 3.5
-          - os: ubuntu-18.04
+          - os: ubuntu-20.04
             python-version: 3.6
-          # 3.11 fails on windows because of lxml
-          # https://github.com/radish-bdd/radish/actions/runs/3613586264/jobs/6089436445
-          - os: ubuntu-latest
-            python-version: 3.11
-          - os: macOS-latest
-            python-version: 3.11
 
     runs-on: ${{ matrix.os }}
     steps:

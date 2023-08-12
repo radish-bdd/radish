@@ -122,6 +122,18 @@ class JUnitXMLWriter(object):
                     time="%.3f" % scenario.duration.total_seconds(),
                 )
 
+                properties_element = etree.Element("properties")
+                for tag in scenario.all_tags:
+                    value = str(tag.arg) if tag.arg else ""
+                    property_element = etree.Element(
+                        "property",
+                        name=str(tag.name),
+                        value=value,
+                    )
+                    properties_element.append(property_element)
+
+                testcase_element.append(properties_element)
+
                 if scenario.state in [
                     Step.State.UNTESTED,
                     Step.State.PENDING,

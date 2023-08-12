@@ -416,7 +416,11 @@ def test_parse_step_text_data(parser):
                 [Tag("scenario_loop")],
             ],
         ),
-        (["tags-arguments"], [Tag("foo", "bar")], [[Tag("sometag", "somevalue")]]),
+        (
+            ["tags-arguments"],
+            [Tag("foo", "bar")],
+            [[Tag("sometag", "somevalue"), Tag("othertag", "Sat, 12 Aug 2023 11:47:24 +0200")]],
+        ),
         (
             ["tags-on-single-line"],
             [Tag("author", "mario"), Tag("date", "Sat, 25 Feb 2023 19:53:53 +0100")],

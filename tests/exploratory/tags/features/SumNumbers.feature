@@ -5,6 +5,7 @@ Feature: Test summing numbers
   to sum numbers.
 
   @FooBar
+  @author tuxtimo @reviewer l33tname @date Sun, 26 Feb 2023 17:52:52 +0100 @requirements 1,2
   Scenario: Sum two numbers
     Given I have the number 5
       And I have the number 3

@@ -212,20 +212,12 @@ class FeatureParser(object):
         line = line.strip()
         detected_feature = self._detect_feature(line)
         if not detected_feature:
-            has_tags = self._detect_tag(line)
-            if has_tags:
-                # If a tag is detected we split on @ and try to parse
-                # each part as tag (also for constant)
-                # this is required for @foo @bar @baz
-                for line in ["@" + l.strip() for l in line.split("@")]:
-                    tag = self._detect_tag(line)
-                    if tag:
-                        self._current_tags.append(Tag(tag[0], tag[1]))
-                        if tag[0] == "constant":
-                            name, value = self._parse_constant(tag[1])
-                            self._current_constants.append((name, value))
-                return True
-            return False
+            tags = self._try_parse_tags(line)
+            for tag in tags:
+                if tag.name == "constant":
+                    name, value = self._parse_constant(tag.arg)
+                    self._current_constants.append((name, value))
+            return bool(tags)
 
         self.feature = Feature(
             self._featureid,
@@ -287,24 +279,18 @@ class FeatureParser(object):
             if not detected_scenario:
                 detected_scenario = self._detect_scenario_loop(line)
                 if not detected_scenario:
-                    has_tags = self._detect_tag(line)
-                    if has_tags:
-                        # If a tag is detected we split on @ and try to parse
-                        # each part as tag (also for constant)
-                        # this is required for @foo @bar @baz
-                        for line in ["@" + l.strip() for l in line.split("@")]:
-                            tag = self._detect_tag(line)
-                            if tag:
-                                self._current_tags.append(Tag(tag[0], tag[1]))
-                                if tag[0] == "precondition":
-                                    scenario = self._parse_precondition(tag[1])
-                                    if scenario is not None:
-                                        self._current_preconditions.append(scenario)
-                                elif tag[0] == "constant":
-                                    name, value = self._parse_constant(tag[1])
-                                    self._current_constants.append((name, value))
-                        return True
+                    tags = self._try_parse_tags(line)
+                    for tag in tags:
+                        if tag.name == "precondition":
+                            scenario = self._parse_precondition(tag.arg)
+                            if scenario is not None:
+                                self._current_preconditions.append(scenario)
+                        elif tag.name == "constant":
+                            name, value = self._parse_constant(tag.arg)
+                            self._current_constants.append((name, value))
 
+                    if tags:
+                        return True
                     raise FeatureFileSyntaxError(
                         "The parser expected a scenario or a tag on this line. Given: '{0}'".format(line)
                     )
@@ -729,20 +715,57 @@ class FeatureParser(object):
 
     def _detect_tag(self, line):
         """
-        Detects and parses tag on the given line
-        Supports @name(value) syntax where a tag can have a name
-        and a value inside open parenthesis `(` and close parenthesis `)`
+        Detects tag or tags on the given line
+        (A line starting with @)
 
         :param string line: the line to detect the tag
 
-        :returns: the tag (name and value) or None
-        :rtype: str or None
+        :returns: if the line contains tags
+        :rtype: bool
         """
-        match = re.search(r"^@([^\s(]+)(?:\((.*?)\))?", line)
-        if match:
-            return match.group(1), match.group(2)
+        return line[0] == "@"
 
-        return None
+    def _try_parse_tags(self, line):
+        """
+        Tries to parse all tags from a line.
+        A line with tags need to start with @.
+        Each tag needs to start with @.
+        Splits multiple tags in a single line
+        @foo @bar @baz.
+        Supports a value per tag eg.
+        @foo value @bar the second value @baz.
+
+        Because of legacy reasons supports and strips
+        open parenthesis `(` and close parenthesis `)`.
+        Eg. @tag(value).
+
+        :param string line: the line to detect the tag
+
+        :returns: list of Tag or empty list
+        :rtype: list
+        """
+        has_tags = self._detect_tag(line)
+        tags = []
+        if has_tags:
+            # If a tag is detected we split on @ and try to parse
+            # each part as tag (also for constant)
+            # this is required for @foo @bar @baz
+            for line in [l.strip() for l in line.split("@") if l]:
+                match = re.search(r"^([^\s]+)\((.*)\)", line)
+                if match:
+                    tag = Tag(match.group(1), match.group(2))
+                else:
+                    line = line.split(" ")
+
+                    value = line[1:]
+                    value = " ".join(value)
+                    if not value:
+                        value = None
+                    tag = Tag(line[0], value)
+
+                tags.append(tag)
+                self._current_tags.append(tag)
+        return tags
 
     def _create_scenario_background(self, steps_runable):
         """

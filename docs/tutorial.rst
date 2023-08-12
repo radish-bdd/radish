@@ -234,9 +234,9 @@ Cucumber defined some useful `good practices for using backgrounds <https://gith
 Steps
 -----
 
-The steps are the heart piece of every Feature file. A line in a *Scenario* is called *Step*. The steps are the only thing which are really executed in a test. A Step is written in a human readable language. Each step is parsed by radish and matched with a step implementation written in python. If a Step does not match any step implementation radish will raise an exception and abort the run.
+The steps are the heart piece of every Feature file. A line in a *Scenario* is called *Step*. The steps are the only thing which are really executed in a test. A Step is written in a human readable language. Each step is parsed by radish and matched with a step implementation written in Python. If a Step does not match any step implementation radish will raise an exception and abort the run.
 
-All steps are implemented in python files located inside the *radish basedirs*. Per default this base directory points to *$PWD/radish*. However, the base directory location can be changed by specifying the *-b* option when triggering radish. You can also specify ``-b`` multiple times to load from multiple locations.
+All steps are implemented in Python files located inside the *radish basedirs*. Per default this base directory points to *$PWD/radish*. However, the base directory location can be changed by specifying the *-b* option when triggering radish. You can also specify ``-b`` multiple times to load from multiple locations.
 There are several ways how to implement steps. The most common way is by decorating your step implementation functions with one of the following decorators:
 
 * @step(pattern)
@@ -313,7 +313,7 @@ Step Pattern
 ------------
 
 The pattern for each *Step* can be defined in two ways.
-The default way is to specify the *Step pattern* in a format similar to the one used by python's ``str.format()`` method -
+The default way is to specify the *Step pattern* in a format similar to the one used by Python's ``str.format()`` method -
 but in the opposite way. radish uses `parse_type <https://github.com/jenisys/parse_type>`_ to parse this pattern.
 The pattern can be a simple string:
 
@@ -651,7 +651,7 @@ Tags
 
 Tags are a way to group or classify Features and Scenarios.
 Radish is able to only run Features or Scenarios with specific Tags.
-Tags are declared with a similar syntax as decorators in python:
+Tags are declared with a similar syntax as decorators in Python:
 
 .. code:: cucumber
 
@@ -670,6 +670,18 @@ Tags are declared with a similar syntax as decorators in python:
           ...
 
 **Note:** a Scenario inherits all tags of the Feature it is defined in!
+
+Tags can also be used for additional meta data.
+
+.. code:: cucumber
+
+   @author mario @date Sat, 12 Aug 2023 18:41:23 +0200
+   @reviewer luigi
+   Feature: Some important feature
+      In order to demonstrate
+      the Tag feature in radish
+      I write this feature.
+
 
 When triggering radish you can pass the ``--tags`` command line option
 followed by a tag expression. Tag expressions are parsed with
@@ -1219,7 +1231,7 @@ sentences defined in a YAML file. We call those files **match configs**. A *matc
     function which you expect the sentence will **not** match with.
 :with_arguments:
     **Optional for should_match**. This is a list of arguments which you expect
-    will be passed in the python Step implementation function.
+    will be passed in the Python Step implementation function.
     The arguments can be specified as key-value pairs or as an object
     with a *type* and *value* and a boolean value *cast* and a *use_repr* flag.
     This could be useful if a custom argument expression

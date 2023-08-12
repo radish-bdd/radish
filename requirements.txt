@@ -3,7 +3,7 @@ colorful==0.5.5
 docopt==0.6.2
 ipython==7.9.0
 tag-expressions>=1.0.0
-lxml==4.9.1
+lxml==4.9.3
 parse_type==0.6.0
 coverage==5.5
 PyYAML==5.3.1

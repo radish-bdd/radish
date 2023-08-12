@@ -6,6 +6,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.16.0]
+### Added
+
+- Enhanced Tag support multiple per lines
+- Tags are rendered into junit report as properties
+
+### Fixed
+
+- Website is now deployed to GitHub pages
+- Remove Python 2 instructions
+- Typos in docs
+- CI agents for Python 3.5 & 3.6 using Ubuntu 20.04 now
+- Update lxml to 4.9.4 to un-break Windows installation
+
 ## [v0.15.0]
 ### Changes
 
@@ -259,7 +273,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.16.0...HEAD
+[v0.16.0]: https://github.com/radish-bdd/radish/compare/v0.15.0...v0.16.0
 [v0.15.0]: https://github.com/radish-bdd/radish/compare/v0.14.2...v0.15.0
 [v0.14.2]: https://github.com/radish-bdd/radish/compare/v0.14.1...v0.14.2
 [v0.14.1]: https://github.com/radish-bdd/radish/compare/v0.14.0...v0.14.1

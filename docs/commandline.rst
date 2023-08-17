@@ -324,6 +324,14 @@ value must be a file path where the XML file should be written to.
 
   radish SomeFeature.feature --junit-xml /tmp/result.xml
 
+JUnit allows to add properties only to ``testsuite`` but tags on
+scenario level can be useful inside the matching ``testcase``.
+This can be achieved using ``--junit-relaxed``.
+
+.. code:: bash
+
+  radish SomeFeature.feature --junit-relaxed /tmp/result.xml
+
 Run - Log all features, scenarios, and steps to syslog
 ------------------------------------------------------
 

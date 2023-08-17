@@ -23,7 +23,10 @@ class JUnitXMLWriter(object):
     JUnit XML Writer radish extension
     """
 
-    OPTIONS = [("--junit-xml=<junitxml>", "write JUnit XML result file after run")]
+    OPTIONS = [
+        ("--junit-xml=<junitxml>", "write JUnit XML result file after run"),
+        ("--junit-relaxed", "producing a non standard JUnit XML with added features like tags in testcases"),
+    ]
     LOAD_IF = staticmethod(lambda config: config.junit_xml)
     LOAD_PRIORITY = 60
 
@@ -31,9 +34,7 @@ class JUnitXMLWriter(object):
         try:
             from lxml import etree
         except ImportError:
-            raise RadishError(
-                'if you want to use the JUnit xml writer you have to "pip install radish-bdd junit-xml lxml"'
-            )
+            raise RadishError('if you want to use the JUnit XML writer you have to "pip install radish-bdd lxml"')
 
         after.all(self.generate_junit_xml)
 
@@ -65,14 +66,27 @@ class JUnitXMLWriter(object):
         pattern = re.compile(r"(\\033\[\d+(?:;\d+)*m)")
         return pattern.sub("", text)
 
+    def _write_xml_to_disk(self, content):
+        """
+        Persist JUnit XML string to file
+        """
+        with open(world.config.junit_xml, "w+") as f:
+            try:
+                if not isinstance(content, str):
+                    content = content.decode("utf-8")
+            except Exception:
+                pass
+            finally:
+                f.write(content)
+
     def generate_junit_xml(self, features, marker):
         """
-        Generates the junit xml
+        Generates the JUnit XML
         """
         from lxml import etree
 
         if not features:
-            raise RadishError("No features given to generate JUnit xml file")
+            raise RadishError("No features given to generate JUnit XML file")
 
         duration = timedelta()
         for feature in features:
@@ -122,17 +136,18 @@ class JUnitXMLWriter(object):
                     time="%.3f" % scenario.duration.total_seconds(),
                 )
 
-                properties_element = etree.Element("properties")
-                for tag in scenario.all_tags:
-                    value = str(tag.arg) if tag.arg else ""
-                    property_element = etree.Element(
-                        "property",
-                        name=str(tag.name),
-                        value=value,
-                    )
-                    properties_element.append(property_element)
+                if world.config.junit_relaxed:
+                    properties_element = etree.Element("properties")
+                    for tag in scenario.all_tags:
+                        value = str(tag.arg) if tag.arg else ""
+                        property_element = etree.Element(
+                            "property",
+                            name=str(tag.name),
+                            value=value,
+                        )
+                        properties_element.append(property_element)
 
-                testcase_element.append(properties_element)
+                    testcase_element.append(properties_element)
 
                 if scenario.state in [
                     Step.State.UNTESTED,
@@ -162,17 +177,10 @@ class JUnitXMLWriter(object):
 
             testsuites_element.append(testsuite_element)
 
-        with open(world.config.junit_xml, "w+") as f:
-            content = etree.tostring(
-                testsuites_element,
-                pretty_print=True,
-                xml_declaration=True,
-                encoding="utf-8",
-            )
-            try:
-                if not isinstance(content, str):
-                    content = content.decode("utf-8")
-            except Exception:
-                pass
-            finally:
-                f.write(content)
+        content = etree.tostring(
+            testsuites_element,
+            pretty_print=True,
+            xml_declaration=True,
+            encoding="utf-8",
+        )
+        self._write_xml_to_disk(content)

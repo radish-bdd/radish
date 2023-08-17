@@ -202,6 +202,12 @@ from radish.main import main
             "feature-scenario-steps",
         ),
         (
+            ["feature-scenario-steps"],
+            ["--junit-xml", tempfile.mkstemp()[1], "--junit-relaxed"],
+            0,
+            "feature-scenario-steps",
+        ),
+        (
             ["failing-scenario-middle"],
             ["--wip"],
             0,
@@ -291,6 +297,7 @@ from radish.main import main
         "Feature with single Scenario and Steps with embedded data producing Cucumber JSON",
         "Feature with scenario failure producing Cucumber JSON",
         "Feature with single Scenario and Steps producing JUnit XML",
+        "Feature with single Scenario and Steps producing relaxed JUnit XML",
         "Feature which fails with wip tag",
         "Feature which does not fail with wip tag",
         "Feature which has everything in it and some Scenario fail",

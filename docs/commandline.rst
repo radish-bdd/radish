@@ -598,7 +598,7 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
                                                   You can specify -b|--basedir multiple times. All files will be imported.
       -d --dry-run                                make dry run for the given feature files
       -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
-      --shuffle                                   shuttle run order of features and scenarios
+      --shuffle                                   shuffle run order of features and scenarios
       --tags=<feature_tags>                       only run Scenarios with the given tags
       --expand                                    expand the feature file (all preconditions)
       --bdd-xml=<bddxml>                          write BDD XML result file after run

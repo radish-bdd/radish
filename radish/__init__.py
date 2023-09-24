@@ -2,7 +2,7 @@
 
 __DESCRIPTION__ = "Behaviour-Driven-Development tool for Python"
 __LICENSE__ = "MIT"
-__VERSION__ = "0.16.1"
+__VERSION__ = "0.16.2"
 __AUTHOR__ = "Timo Furrer"
 __AUTHOR_EMAIL__ = "tuxtimo+radish@gmail.com"
 __URL__ = "https://radish-bdd.github.io"

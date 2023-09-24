@@ -130,7 +130,7 @@ Options:
                                                 You can specify -b|--basedir multiple times or split multiple paths with a colon (:) similar to $PATH. All files will be imported.
     -d --dry-run                                make dry run for the given feature files
     -s=<scenarios> --scenarios=<scenarios>      only run the specified scenarios (comma separated list)
-    --shuffle                                   shuttle run order of features and scenarios
+    --shuffle                                   shuffle run order of features and scenarios
     --tags=<feature_tags>                       only run Scenarios with the given tags
     --wip                                       expects all tests to fail instead of succeeding
     -f=<formatter> --formatter=<formatter>      the output formatter which should be used. [default: gherkin]

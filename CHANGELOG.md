@@ -6,6 +6,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.16.2]
+
+### Fixed
+- Use $PWD on windows (picked fix from next branch)
+
 ## [v0.16.1]
 
 ### Fixed
@@ -279,7 +284,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.16.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.16.2...HEAD
+[v0.16.2]: https://github.com/radish-bdd/radish/compare/v0.16.1...v0.16.2
 [v0.16.1]: https://github.com/radish-bdd/radish/compare/v0.16.0...v0.16.1
 [v0.16.0]: https://github.com/radish-bdd/radish/compare/v0.15.0...v0.16.0
 [v0.15.0]: https://github.com/radish-bdd/radish/compare/v0.14.2...v0.15.0

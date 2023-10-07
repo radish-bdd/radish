@@ -201,27 +201,30 @@ class ConsoleWriter(object):
         output = ""
         if step.as_precondition and self.last_precondition != step.as_precondition:
             if step.as_background:
-                output += colorful.italic_white(
+                output += styled_text(
                     "      As Background Precondition from {0}: {1}\n".format(
                         os.path.basename(step.as_precondition.path),
                         step.as_precondition.sentence,
-                    )
+                    ), 
+                    "italic white"
                 )
             else:
-                output += colorful.italic_white(
+                output += styled_text(
                     "      As Precondition from {0}: {1}\n".format(
                         os.path.basename(step.as_precondition.path),
                         step.as_precondition.sentence,
-                    )
+                    ),
+                    "italic white"
                 )
         elif step.as_background and self.last_background != step.as_background:
-            output += colorful.italic_white("      From Background: {0}\n".format(step.as_background.sentence))
+            output += styled_text("      From Background: {0}\n".format(step.as_background.sentence), "italic white")
         elif step.as_precondition and self.last_precondition and not step.as_background and self.last_background:
-            output += colorful.italic_white(
+            output += styled_text(
                 "      From Precondition Scenario: {0}: {1}\n".format(
                     os.path.basename(step.as_precondition.path),
                     step.as_precondition.sentence,
-                )
+                ), 
+                "italic white"
             )
         elif (not step.as_precondition and self.last_precondition) or (not step.as_background and self.last_background):
             output += colorful.italic_white("      From Scenario\n")
@@ -234,17 +237,18 @@ class ConsoleWriter(object):
 
     def _get_step_before_output(self, step, color_func=None):
         if color_func is None:
-            color_func = colorful.bold_yellow
+            #todo make this color func again after migration
+            color_func = lambda x: styled_text(x, "bold yellow")
         output = "\r        {0}{1}".format(self.get_id_sentence_prefix(step, color_func), color_func(step.sentence))
 
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
-            output += colorful.bold_white('\n            {0}"""'.format(id_padding))
-            output += colorful.cyan("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
-            output += colorful.bold_white('\n            {0}"""'.format(id_padding))
+            output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
+            output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
+            output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
 
         if step.table_header:
-            colored_pipe = colorful.bold_white("|")
+            colored_pipe = styled_text("|", "bold white")
             col_widths = self.get_table_col_widths([step.table_header] + step.table_data)
 
             # output table header
@@ -253,7 +257,7 @@ class ConsoleWriter(object):
                 (" {0} ")
                 .format(colored_pipe)
                 .join(
-                    str(colorful.white("{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(step.table_header)
+                    str(styled_text("{1: <{0}}".format(col_widths[i], x)), "white") for i, x in enumerate(step.table_header)
                 ),
             )
 

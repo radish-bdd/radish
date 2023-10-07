@@ -4,22 +4,23 @@
 This radish extension module provide the functionality to write the end report
 """
 
-# disable no-member lint error because of dynamic method from colorful
-# pylint: disable=no-member
 
 from datetime import timedelta
 
-import colorful
 import humanize
 
 from radish.hookregistry import after
 from radish.stepmodel import Step
-from radish.utils import console_write as write, make_unique_obj_list, get_func_code
+from radish.utils import make_unique_obj_list, get_func_code
 from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.extensionregistry import extension
 from radish.terrain import world
 from radish.stepregistry import StepRegistry
+
+from radish.printer import printer, styled_text
+
+write = printer.write
 
 
 @extension
@@ -95,14 +96,14 @@ class EndreportWriter(object):
                     if step.state == Step.State.PENDING:
                         pending_steps.append(step)
 
-        colored_closing_paren = colorful.bold_white(")")
-        colored_comma = colorful.bold_white(", ")
-        passed_word = colorful.bold_green("{0} passed")
-        failed_word = colorful.bold_red("{0} failed")
-        skipped_word = colorful.cyan("{0} skipped")
-        pending_word = colorful.bold_yellow("{0} pending")
+        colored_closing_paren = styled_text(")", "bold white")
+        colored_comma = styled_text(", ", "bold white")
+        passed_word = styled_text("{0} passed", "bold green")
+        failed_word = styled_text("{0} failed", "bold red")
+        skipped_word = styled_text("{0} skipped", "cyan")
+        pending_word = styled_text("{0} pending", "bold yellow")
 
-        output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
+        output = styled_text("{0} features (".format(stats["features"]["amount"]), "bold white")
         output += passed_word.format(stats["features"]["passed"])
         if stats["features"]["failed"]:
             output += colored_comma + failed_word.format(stats["features"]["failed"])
@@ -113,7 +114,7 @@ class EndreportWriter(object):
         output += colored_closing_paren
 
         output += "\n"
-        output += colorful.bold_white("{} scenarios (".format(stats["scenarios"]["amount"]))
+        output += styled_text("{} scenarios (".format(stats["scenarios"]["amount"]), "bold white")
         output += passed_word.format(stats["scenarios"]["passed"])
         if stats["scenarios"]["failed"]:
             output += colored_comma + failed_word.format(stats["scenarios"]["failed"])
@@ -124,7 +125,7 @@ class EndreportWriter(object):
         output += colored_closing_paren
 
         output += "\n"
-        output += colorful.bold_white("{} steps (".format(stats["steps"]["amount"]))
+        output += styled_text("{} steps (".format(stats["steps"]["amount"]), "bold white")
         output += passed_word.format(stats["steps"]["passed"])
         if stats["steps"]["failed"]:
             output += colored_comma + failed_word.format(stats["steps"]["failed"])
@@ -137,7 +138,7 @@ class EndreportWriter(object):
         if pending_steps:
             sr = StepRegistry()
             pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
-            output += colorful.white(
+            output += styled_text(
                 "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
                     len(pending_step_implementations),
                     "s" if len(pending_step_implementations) != 1 else "",
@@ -152,15 +153,16 @@ class EndreportWriter(object):
                             for s in pending_step_implementations
                         ]
                     ),
-                )
+                ),
+                "white",
             )
 
         output += "\n"
 
         if world.config.wip:
             if stats["scenarios"]["passed"] > 0:
-                output += colorful.red(
-                    "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n"
+                output += styled_text(
+                    "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n", "red"
                 )
 
                 has_passed_scenarios = False
@@ -172,14 +174,16 @@ class EndreportWriter(object):
                         )
                     )
                     for scenario in passed_scenarios:
-                        output += colorful.red("\n - {}: {}".format(feature.path, scenario.sentence))
+                        output += styled_text("\n - {}: {}".format(feature.path, scenario.sentence), "red")
                         has_passed_scenarios = True
 
                 if has_passed_scenarios:
                     output += "\n"
             else:
-                output += colorful.green("\nThe --wip switch was used, so the failures were expected. All is good.\n")
+                output += styled_text(
+                    "\nThe --wip switch was used, so the failures were expected. All is good.\n", "green"
+                )
 
-        output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
+        output += styled_text("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)), "cyan")
 
         write(output)

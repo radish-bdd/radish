@@ -26,8 +26,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
           - os: ubuntu-20.04
-            python-version: 3.5
-          - os: ubuntu-20.04
             python-version: 3.6
 
     runs-on: ${{ matrix.os }}
@@ -58,6 +56,12 @@ jobs:
           coverage run -p --source radish -m pytest tests/integration/ --junitxml=junit/integration-test-results.xml
         env:
           PYTHONIOENCODING: UTF-8
+          STASH_ACTUAL_OUTPUT_ON_FAILURE: 1
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: actual_results
+          path: ./tests/output/
       - name: Report code coverage
         run: |
           coverage combine

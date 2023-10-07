@@ -17,6 +17,7 @@ import tempfile
 import pytest
 
 from radish.main import main
+from radish.printer import printer
 
 
 @pytest.mark.parametrize(
@@ -330,6 +331,11 @@ def test_main_cli_calls(
     """
     Test calling main CLI
     """
+    printer.clear()
+    printer.set_style_on(True)
+    printer.set_size(208, 34)
+    printer.set_live(False)
+    printer.out_to_file(io.StringIO())
     # given
     if "-m" not in given_cli_args and "--marker" not in given_cli_args:
         given_cli_args.extend(["--marker", "test-marker"])
@@ -345,22 +351,17 @@ def test_main_cli_calls(
     featurefiles = [os.path.join(featurefiledir, x + ".feature") for x in given_featurefiles]
     cli_args = featurefiles + given_cli_args
 
-    expected_output_file = os.path.join(outputdir, "unix", expected_output + ".txt")
-    if os.name == "nt":
-        expected_output_file_win = os.path.join(outputdir, "windows", expected_output + ".txt")
-        if os.path.exists(expected_output_file_win):
-            expected_output_file = expected_output_file_win
+    output_subfolder = "windows" if os.name == "nt" else "unix"
+    expected_output_file = os.path.join(outputdir, output_subfolder, expected_output + ".txt")
 
     with io.open(expected_output_file, "r", encoding="utf-8") as output_file:
         expected_output_string = output_file.read()
 
     # when
-    original_stdout = sys.stdout
 
     with tempfile.TemporaryFile() as tmp:
         tmp_stdout = io.open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
         # patch sys.stdout
-        sys.stdout = tmp_stdout
 
         try:
             actual_exitcode = main(args=cli_args)
@@ -368,15 +369,22 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = tmp_stdout.read()
+            actual_output = printer.console.file.getvalue()
             # restore stdout
-            sys.stdout = original_stdout
 
     # patch featurefile paths in actual output
     feature_parent_dir = os.path.abspath(os.path.join(featurefiledir, ".."))
     for featurefile in featurefiles:
         rel_featurefile = os.path.relpath(featurefile, feature_parent_dir)
         actual_output = actual_output.replace(featurefile, rel_featurefile)
+
+        # this is how to capture the current behavior into the expected results to
+        # adopt breaking changes.
+
+        # actual_output_file_path = os.path.join(outputdir, output_subfolder, expected_output + ".txt")
+        # with io.open(actual_output_file_path, "w", encoding="utf-8") as output_file:
+        #     output_file.write(actual_output)
+
     # then
     assert actual_output == expected_output_string
     assert actual_exitcode == expected_exitcode

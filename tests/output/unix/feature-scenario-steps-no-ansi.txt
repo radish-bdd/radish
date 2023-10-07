@@ -3,13 +3,10 @@ Feature: Feature with a Scenario and Steps  # features/feature-scenario-steps.fe
     a Scenario which contains multiple Steps
 
     Scenario: Scenario with multiple Steps
-
         Given I have a Step
         Given I have a Step
-
         When I do something
         When I do something
-
         Then I expect something
         Then I expect something
 

@@ -15,6 +15,8 @@ import itertools
 import calendar
 from datetime import datetime, timedelta
 
+from .terrain import world
+
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
@@ -34,15 +36,6 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         traceback_info = traceback.extract_tb(sys.exc_info()[2])[-1]
         self.filename = traceback_info[0]
         self.line = int(traceback_info[1])
-
-
-def console_write(text):
-    """
-    Writes the given text to the console
-
-    :param str text: the text which is printed to the console
-    """
-    print(str(text))
 
 
 def expandpath(path):

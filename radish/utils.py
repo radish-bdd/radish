@@ -14,6 +14,7 @@ import pydoc
 import itertools
 import calendar
 from datetime import datetime, timedelta
+from rich import print as pretty_print
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -35,6 +36,8 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.filename = traceback_info[0]
         self.line = int(traceback_info[1])
 
+def styled_text(text, style):
+    return f"[{style}]{text}[/{style}]"
 
 def console_write(text):
     """
@@ -42,7 +45,12 @@ def console_write(text):
 
     :param str text: the text which is printed to the console
     """
-    print(str(text))
+    #pretty_print(text)
+    styles = ['red', 'cyan', 'green', 'yellow', 'bold', 'italics']
+    if any([style in text for style in styles]):
+        pretty_print(text)
+    else:
+        print(text)
 
 
 def expandpath(path):

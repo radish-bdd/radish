@@ -18,7 +18,7 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import console_write as write
+from radish.utils import console_write as write, styled_text
 
 
 @extension
@@ -111,23 +111,23 @@ class ConsoleWriter(object):
         """
         output = ""
         for tag in feature.tags:
-            output += colorful.cyan("@{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""))
+            output += styled_text("@{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""), "cyan")
 
         leading = "\n    " if feature.description else ""
 
         output += "{0}{1}: {2}  # {3}{4}{5}".format(
             self.get_id_sentence_prefix(feature, colorful.bold_cyan),
-            colorful.bold_white(feature.keyword),
-            colorful.bold_white(feature.sentence),
-            colorful.bold_black(feature.path),
+            styled_text(feature.keyword, "bold white"),
+            styled_text(feature.sentence, "bold white"),
+            styled_text(feature.path, "bold black"),
             leading,
-            colorful.white("\n    ".join(feature.description)),
+            styled_text("\n    ".join(feature.description), "white"),
         )
 
         if feature.background:
             output += "\n\n    {0}: {1}".format(
-                colorful.bold_white(feature.background.keyword),
-                colorful.bold_white(feature.background.sentence),
+                styled_text(feature.background.keyword, "bold white"),
+                styled_text(feature.background.sentence, "bold white"),
             )
             for step in feature.background.all_steps:
                 output += "\n" + self._get_step_before_output(step, colorful.cyan)

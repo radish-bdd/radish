@@ -18,6 +18,7 @@ from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
 from radish.utils import console_write as write, styled_text
+from rich.live import Live
 
 
 @extension
@@ -53,6 +54,15 @@ class ConsoleWriter(object):
         self.last_background = None
 
         self._placeholder_regex = re.compile(r"(<[\w-]+>)", flags=re.UNICODE)
+        
+        if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
+            self.live_text = Live("", refresh_per_second=4)
+        else:
+            self.live_text = None
+        
+        #hold on to a current rich.live here, start and stop it manually and update it when the status changes from pending to complete
+        # that will replace the need for a line erase thing with no line jump
+        # dont do the live stuff if ansi is off, or no line jump is on. 
 
     def get_color_func(self, state):
         """
@@ -74,7 +84,7 @@ class ConsoleWriter(object):
         line_jump_seq = ""
         if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
             line_jump_seq = "\r\033[A\033[K"
-        return line_jump_seq
+        return ""
 
     def get_id_sentence_prefix(self, model, style, max_rows=None):
         """
@@ -234,7 +244,11 @@ class ConsoleWriter(object):
         self.last_background = step.as_background
         output += self._get_step_before_output(step)
 
-        write(output)
+        if self.live_text:
+            self.live_text.update(output)
+            self.live_text.start()
+        else:
+            write(output)
 
     def _get_step_before_output(self, step, style=None):
         if style is None:
@@ -344,8 +358,11 @@ class ConsoleWriter(object):
                 styled_text(step.failure.name, "bold red"),
                 styled_text(step.failure.reason, "red"),
             )
-
-        write(output)
+        if self.live_text:
+            self.live_text.update(output)
+            self.live_text.stop()
+        else:
+            write(output)
 
     def console_writer_after_each_scenario(self, scenario):
         """

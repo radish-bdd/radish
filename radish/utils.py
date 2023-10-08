@@ -37,7 +37,7 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 def styled_text(text, style):
-    return f"[{style}]{text}[/{style}]"
+    return f"[{style}]{text}[/{style}]<sty>"
 
 def console_write(text):
     """
@@ -47,7 +47,7 @@ def console_write(text):
     """
     #pretty_print(text)
     styles = ['red', 'cyan', 'green', 'yellow', 'bold', 'italics']
-    if any([style in text for style in styles]):
+    if '<sty>':
         pretty_print(text)
     else:
         print(text)

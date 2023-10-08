@@ -99,7 +99,7 @@ class EndreportWriter(object):
         passed_word = styled_text("{0} passed", "bold green")
         failed_word = styled_text("{0} failed", "bold red")
         skipped_word = styled_text("{0} skipped", "cyan")
-        pending_word = styled_text("{0} pending", "bod yellow")
+        pending_word = styled_text("{0} pending", "bold yellow")
 
         output = styled_text("{0} features (".format(stats["features"]["amount"]), "bold white")
         output += passed_word.format(stats["features"]["passed"])

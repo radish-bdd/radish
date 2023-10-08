@@ -22,6 +22,7 @@ from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
 from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
 from . import utils
+import rich
 
 # use only 8 ANSI colors
 # FIXME(TF): change to true colors!
@@ -157,6 +158,7 @@ Options:
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
 
+    #TODO what to do here for rich migration
     # disable colors if necessary
     if world.config.no_ansi:
         colorful.disable()
@@ -195,13 +197,14 @@ Options:
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
         utils.console_write(
-            colorful.bold_red("Error: ")
-            + colorful.red("No feature or no scenario specified in at least one of the given feature files")
+            utils.styled_textstyled_text("Error: ", "bold red")
+            + utils.styled_text("No feature or no scenario specified in at least one of the given feature files", "red")
         )
         if tag_expression:
             utils.console_write(
-                colorful.red(
-                    "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run."
+                utils.styled_text(
+                    "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run.",
+                    "red"
                 )
             )
         return 1

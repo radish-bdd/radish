@@ -39,7 +39,7 @@ class Failure(object):  # pylint: disable=too-few-public-methods
 def styled_text(text, style):
     return f"[{style}]{text}[/{style}]<sty>"
 
-def console_write(text):
+def console_write(text, output=None):
     """
     Writes the given text to the console
 
@@ -48,7 +48,7 @@ def console_write(text):
     #pretty_print(text)
     styles = ['red', 'cyan', 'green', 'yellow', 'bold', 'italics']
     if '<sty>':
-        pretty_print(text)
+        pretty_print(text, file=output)
     else:
         print(text)
 

@@ -5,7 +5,6 @@ This radish extension provides the functionality to write the feature file run t
 """
 
 import sys
-import colorful as cf
 
 from radish.terrain import world
 from radish.hookregistry import before, after
@@ -13,6 +12,7 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.utils import styled_text, console_write as write
 
 
 @extension
@@ -47,8 +47,8 @@ class DotOutputFormatter(object):
 
         :param Feature feature: the feature to write to the console
         """
-        output = cf.bold_black(feature.path) + ": "
-        sys.stdout.write(str(output))
+        output = styled_text(feature.path, "bold black") + ": "
+        write(output)
 
     def dot_formatter_after_each_scenario(self, scenario):
         """
@@ -70,14 +70,14 @@ class DotOutputFormatter(object):
         if not self._failed_steps:
             return
 
-        output = "\n" + cf.bold_red("Failures:") + "\n"
+        output = "\n" + styled_text("Failures:", "bold red") + "\n"
 
         for step in self._failed_steps:
-            output += "{}: {}\n    {}\n".format(step.path, step.parent.sentence, cf.red(step.sentence))
+            output += "{}: {}\n    {}\n".format(step.path, step.parent.sentence, styled_text(step.sentence, "red"))
             if world.config.with_traceback:
                 output += "      {}\n".format(
-                    "\n      ".join([str(cf.red(l)) for l in step.failure.traceback.split("\n")[:-2]])
+                    "\n      ".join([str(styled_text(l, "red")) for l in step.failure.traceback.split("\n")[:-2]])
                 )
-            output += "      {}: {}\n\n".format(cf.bold_red(step.failure.name), cf.red(step.failure.reason))
+            output += "      {}: {}\n\n".format(styled_text(step.failure.name, "bold red"), styled_text(step.failure.reason, "red"))
 
-        sys.stdout.write(str(output + "\n"))
+        write(output + "\n")

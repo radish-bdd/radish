@@ -76,15 +76,6 @@ class ConsoleWriter(object):
             return lambda x: styled_text(x, "bold yellow")
         elif state:
             return lambda x: styled_text(x, "cyan")
-        
-    def get_line_jump_seq(self):
-        """
-        Returns the line jump ANSI sequence
-        """
-        line_jump_seq = ""
-        if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
-            line_jump_seq = "\r\033[A\033[K"
-        return ""
 
     def get_id_sentence_prefix(self, model, style, max_rows=None):
         """
@@ -272,7 +263,7 @@ class ConsoleWriter(object):
                 (" {0} ")
                 .format(colored_pipe)
                 .join(
-                    str(styled_text("{1: <{0}}".format(col_widths[i], x)), "white") for i, x in enumerate(step.table_header)
+                    str(styled_text("{1: <{0}}".format(col_widths[i], x), "white")) for i, x in enumerate(step.table_header)
                 ),
             )
 
@@ -297,10 +288,7 @@ class ConsoleWriter(object):
             return
 
         color_func = self.get_color_func(step.state)
-        line_jump_seq = self.get_line_jump_seq() * (
-            ((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) + 1 if step.table_header else 0)
-        )
-        output = "{0}        ".format(line_jump_seq)
+        output = "        "
 
         if isinstance(step.parent, ScenarioOutline):
             # Highlight ScenarioOutline placeholders e.g. '<method>'
@@ -390,8 +378,7 @@ class ConsoleWriter(object):
         elif isinstance(scenario.parent, ScenarioOutline):
             colored_pipe = styled_text("|", "bold white")
             color_func = self.get_color_func(scenario.state)
-            output += "{0}        {1}{2} {3} {2}".format(
-                self.get_line_jump_seq(),
+            output += "        {1}{2} {3} {2}".format(
                 self.get_id_sentence_prefix(scenario, "bold cyan", len(scenario.parent.scenarios)),
                 colored_pipe,
                 (" {0} ")
@@ -419,8 +406,7 @@ class ConsoleWriter(object):
         elif isinstance(scenario.parent, ScenarioLoop):
             colored_pipe = styled_text("|", "bold white")
             color_func = self.get_color_func(scenario.state)
-            output += "{0}        {1}{2} {3: <18} {2}".format(
-                self.get_line_jump_seq(),
+            output += "        {1}{2} {3: <18} {2}".format(
                 self.get_id_sentence_prefix(scenario, "bold cyan", len(scenario.parent.scenarios)),
                 colored_pipe,
                 color_func(str(scenario.iteration)),

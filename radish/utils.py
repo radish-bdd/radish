@@ -46,8 +46,13 @@ def console_write(text, output=None):
 
     :param str text: the text which is printed to the console
     """
-    #pretty_print(text)
     
+    # rich does not support the ansi line skip sequence
+    # and making gherkin use rich's live data stuff turned out
+    # to be pretty challanging
+    
+    # so this is a work around to print the line jumps like normal
+    # then remove them from the pretty string
     line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
     print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end='')
     pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ''), file=output)

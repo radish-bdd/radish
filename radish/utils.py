@@ -16,6 +16,7 @@ import calendar
 from datetime import datetime, timedelta
 from rich import print as pretty_print
 
+ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
@@ -37,7 +38,7 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 def styled_text(text, style):
-    return f"[{style}]{text}[/{style}]<sty>"
+    return f"[{style}]{text}[/{style}]"
 
 def console_write(text, output=None):
     """
@@ -46,11 +47,10 @@ def console_write(text, output=None):
     :param str text: the text which is printed to the console
     """
     #pretty_print(text)
-    styles = ['red', 'cyan', 'green', 'yellow', 'bold', 'italics']
-    if '<sty>':
-        pretty_print(text, file=output)
-    else:
-        print(text)
+    
+    line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
+    print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end='')
+    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ''), file=output)
 
 
 def expandpath(path):

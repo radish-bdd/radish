@@ -17,8 +17,7 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import console_write as write, styled_text
-from rich.live import Live
+from radish.utils import console_write as write, styled_text, ANSI_LINE_JUMP_SEQUENCE
 
 
 @extension
@@ -54,35 +53,35 @@ class ConsoleWriter(object):
         self.last_background = None
 
         self._placeholder_regex = re.compile(r"(<[\w-]+>)", flags=re.UNICODE)
-        
-        if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
-            self.live_text = Live("", refresh_per_second=4)
-        else:
-            self.live_text = None
-        
-        #hold on to a current rich.live here, start and stop it manually and update it when the status changes from pending to complete
-        # that will replace the need for a line erase thing with no line jump
-        # dont do the live stuff if ansi is off, or no line jump is on. 
 
-    def get_color_func(self, state):
+    def get_color(self, state):
         """
         Returns the color func to use
         """
         if state == Step.State.PASSED:
-            return lambda x: styled_text(x, "bold green")
+            return "bold green"
         elif state == Step.State.FAILED:
-            return lambda x: styled_text(x, "bold red")
+            return "bold red"
         elif state == Step.State.PENDING:
-            return lambda x: styled_text(x, "bold yellow")
+            return "bold yellow"
         elif state:
-            return lambda x: styled_text(x, "cyan")
+            return "cyan"
+
+    def get_line_jump_seq(self):
+        """
+        Returns the line jump ANSI sequence that will remove a line from the console. print this sequence n times to remove n lines
+        """
+        line_jump_seq = ""
+        if not world.config.no_ansi and not world.config.no_line_jump and not world.config.write_steps_once:
+            line_jump_seq = ANSI_LINE_JUMP_SEQUENCE
+        return line_jump_seq
 
     def get_id_sentence_prefix(self, model, style, max_rows=None):
         """
         Returns the id from a model as sentence prefix
 
         :param Model model: a model with an id property
-        :param function style: a function which gives coloring
+        :param function style: the rich style to use
         :param int max_rows: the maximum rows. Used for padding
         """
         padding = len("{0}. ".format(max_rows)) if max_rows else 0
@@ -207,7 +206,7 @@ class ConsoleWriter(object):
                     "      As Background Precondition from {0}: {1}\n".format(
                         os.path.basename(step.as_precondition.path),
                         step.as_precondition.sentence,
-                    ), 
+                    ),
                     "italic white"
                 )
             else:
@@ -219,31 +218,28 @@ class ConsoleWriter(object):
                     "italic white"
                 )
         elif step.as_background and self.last_background != step.as_background:
-            output += styled_text("      From Background: {0}\n".format(step.as_background.sentence), "italic white")
+            output += styled_text("      From Background: {0}\n".format(step.as_background.sentence), 
+                    "italic white")
         elif step.as_precondition and self.last_precondition and not step.as_background and self.last_background:
             output += styled_text(
                 "      From Precondition Scenario: {0}: {1}\n".format(
                     os.path.basename(step.as_precondition.path),
                     step.as_precondition.sentence,
                 ), 
-                "italic white"
+                    "italic white"
             )
         elif (not step.as_precondition and self.last_precondition) or (not step.as_background and self.last_background):
-            output += styled_text("      From Scenario\n", "italic white")
+            output += styled_text("      From Scenario\n", 
+                    "italic white")
 
         self.last_precondition = step.as_precondition
         self.last_background = step.as_background
         output += self._get_step_before_output(step)
 
-        if self.live_text:
-            self.live_text.update(output)
-            self.live_text.start()
-        else:
-            write(output)
+        write(output)
 
     def _get_step_before_output(self, step, style=None):
         if style is None:
-            #todo make this color func again after migration
             style = "bold yellow"
         output = "\r        {0}{1}".format(self.get_id_sentence_prefix(step, style), styled_text(step.sentence, style))
 
@@ -252,6 +248,68 @@ class ConsoleWriter(object):
             output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
             output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
             output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
+
+        if step.table_header:
+            colored_pipe = styled_text("|", "bold white")
+            col_widths = self.get_table_col_widths([step.table_header] + step.table_data)
+
+            # output table header
+            output += "\n          {0} {1} {0}".format(
+                colored_pipe,
+                (" {0} ")
+                .format(colored_pipe)
+                .join(
+                    str(styled_text("{1: <{0}}".format(col_widths[i], x)), "white") for i, x in enumerate(step.table_header)
+                ),
+            )
+
+            # output table data
+            for row in step.table_data:
+                output += "\n          {0} {1} {0}".format(
+                    colored_pipe,
+                    (" {0} ")
+                    .format(colored_pipe)
+                    .join(str(styled_text("{1: <{0}}".format(col_widths[i], x)), style) for i, x in enumerate(row)),
+                )
+
+        return output
+
+    def console_writer_after_each_step(self, step):
+        """
+        Writes the step to the console after it was run
+
+        :param Step step: the step to write to the console
+        """
+        if not isinstance(step.parent.parent, Feature):
+            return
+
+        style = self.get_color(step.state)
+        line_jump_seq = self.get_line_jump_seq() * (
+            ((len(step.raw_text) + 3) if step.text else 1) + (len(step.table) + 1 if step.table_header else 0)
+        )
+        output = "{0}        ".format(line_jump_seq)
+
+        if isinstance(step.parent, ScenarioOutline):
+            # Highlight ScenarioOutline placeholders e.g. '<method>'
+            output += "".join(
+                str(
+                    styled_text(item, "white")
+                    if (self._placeholder_regex.search(item) and item.strip("<>") in step.parent.examples_header)
+                    else styled_text(item, style)
+                )
+                for item in self._placeholder_regex.split(step.sentence)
+            )
+        else:
+            output += "{0}{1}".format(
+                self.get_id_sentence_prefix(step, "bold cyan"),
+                styled_text(step.sentence, style),
+            )
+
+        if step.text:
+            id_padding = self.get_id_padding(len(step.parent.steps))
+            output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
+            output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
+            output += styled_text('\n            {0}"""'.format(id_padding), "bold cyan")
 
         if step.table_header:
             colored_pipe = styled_text("|", "bold white")
@@ -276,65 +334,6 @@ class ConsoleWriter(object):
                     .join(str(styled_text("{1: <{0}}".format(col_widths[i], x), style)) for i, x in enumerate(row)),
                 )
 
-        return output
-
-    def console_writer_after_each_step(self, step):
-        """
-        Writes the step to the console after it was run
-
-        :param Step step: the step to write to the console
-        """
-        if not isinstance(step.parent.parent, Feature):
-            return
-
-        color_func = self.get_color_func(step.state)
-        output = "        "
-
-        if isinstance(step.parent, ScenarioOutline):
-            # Highlight ScenarioOutline placeholders e.g. '<method>'
-            output += "".join(
-                str(
-                    styled_text(item, "white")
-                    if (self._placeholder_regex.search(item) and item.strip("<>") in step.parent.examples_header)
-                    else color_func(item)
-                )
-                for item in self._placeholder_regex.split(step.sentence)
-            )
-        else:
-            output += "{0}{1}".format(
-                self.get_id_sentence_prefix(step, "bold cyan"),
-                color_func(step.sentence),
-            )
-
-        if step.text:
-            id_padding = self.get_id_padding(len(step.parent.steps))
-            output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
-            output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
-            output += styled_text('\n            {0}"""'.format(id_padding), "bold whitestyled_text")
-
-        if step.table_header:
-            colored_pipe = styled_text("|", "bold white")
-            col_widths = self.get_table_col_widths([step.table_header] + step.table_data)
-
-            # output table header
-            output += "\n          {0} {1} {0}".format(
-                colored_pipe,
-                (" {0} ")
-                .format(colored_pipe)
-                .join(
-                    str(styled_text("{1: <{0}}".format(col_widths[i], x), "white")) for i, x in enumerate(step.table_header)
-                ),
-            )
-
-            # output table data
-            for row in step.table_data:
-                output += "\n          {0} {1} {0}".format(
-                    colored_pipe,
-                    (" {0} ")
-                    .format(colored_pipe)
-                    .join(str(color_func("{1: <{0}}".format(col_widths[i], x))) for i, x in enumerate(row)),
-                )
-
         if step.state == step.State.FAILED:
             if world.config.with_traceback:
                 output += "\n          {0}{1}".format(
@@ -346,11 +345,8 @@ class ConsoleWriter(object):
                 styled_text(step.failure.name, "bold red"),
                 styled_text(step.failure.reason, "red"),
             )
-        if self.live_text:
-            self.live_text.update(output)
-            self.live_text.stop()
-        else:
-            write(output)
+
+        write(output)
 
     def console_writer_after_each_scenario(self, scenario):
         """
@@ -368,7 +364,8 @@ class ConsoleWriter(object):
                         "{1: <{0}}".format(scenario.get_column_width(i), x)
                         for i, x in enumerate(scenario.examples_header)
                     ),
-                ), "bold white"
+                ),
+                "bold white"
             )
         elif isinstance(scenario, ScenarioLoop):
             output += "\n    {0}: {1}".format(
@@ -377,14 +374,15 @@ class ConsoleWriter(object):
             )
         elif isinstance(scenario.parent, ScenarioOutline):
             colored_pipe = styled_text("|", "bold white")
-            color_func = self.get_color_func(scenario.state)
-            output += "        {1}{2} {3} {2}".format(
+            style = self.get_color(scenario.state)
+            output += "{0}        {1}{2} {3} {2}".format(
+                self.get_line_jump_seq(),
                 self.get_id_sentence_prefix(scenario, "bold cyan", len(scenario.parent.scenarios)),
                 colored_pipe,
                 (" {0} ")
                 .format(colored_pipe)
                 .join(
-                    str(color_func("{1: <{0}}".format(scenario.parent.get_column_width(i), x)))
+                    str(styled_text("{1: <{0}}".format(scenario.parent.get_column_width(i), x), style))
                     for i, x in enumerate(scenario.example.data)
                 ),
             )
@@ -404,12 +402,13 @@ class ConsoleWriter(object):
                     styled_text(failed_step.failure.reason, "red"),
                 )
         elif isinstance(scenario.parent, ScenarioLoop):
-            colored_pipe = styled_text("|", "bold white")
-            color_func = self.get_color_func(scenario.state)
-            output += "        {1}{2} {3: <18} {2}".format(
+            colored_pipe = styled_text("|", "white")
+            style = self.get_color(scenario.state)
+            output += "{0}        {1}{2} {3: <18} {2}".format(
+                self.get_line_jump_seq(),
                 self.get_id_sentence_prefix(scenario, "bold cyan", len(scenario.parent.scenarios)),
                 colored_pipe,
-                color_func(str(scenario.iteration)),
+                styled_text(str(scenario.iteration), style),
             )
 
             if scenario.state == Step.State.FAILED:

@@ -16,6 +16,8 @@ import calendar
 from datetime import datetime, timedelta
 from rich import print as pretty_print
 
+from .terrain import world
+
 ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -38,7 +40,10 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 def styled_text(text, style):
-    return f"[{style}]{text}[/{style}]"
+    if world.config.no_ansi:
+        return text
+    else:
+        return f"[{style}]{text}[/{style}]"
 
 def console_write(text, output=None):
     """

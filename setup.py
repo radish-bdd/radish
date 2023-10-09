@@ -40,7 +40,7 @@ __README_CONTENTS__ = open("README.md").read()
 requirements = [
     "docopt",
     "pysingleton",
-    "colorful>=0.3.11",
+    "rich>=13.6.0"
     "tag-expressions>=1.0.0",
     "parse_type>0.4.0",
     "humanize",

@@ -6,7 +6,6 @@ import warnings
 from time import time
 
 from docopt import docopt
-import colorful
 import tagexpressions
 
 from . import __VERSION__
@@ -26,7 +25,9 @@ import rich
 
 # use only 8 ANSI colors
 # FIXME(TF): change to true colors!
-colorful.use_8_ansi_colors()
+
+# PR TODO: --- Is this still wanted ? ---
+#    colorful.use_8_ansi_colors()
 
 
 def setup_config(arguments):
@@ -157,13 +158,6 @@ Options:
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
-
-    #TODO what to do here for rich migration
-    # disable colors if necessary
-    if world.config.no_ansi:
-        colorful.disable()
-    else:
-        colorful.use_8_ansi_colors()
 
     # load needed extensions
     extensions.load(world.config)

@@ -1,0 +1,10 @@
+Feature: Add some numbers  # 
+/Users/trevorkeegan/dev/radish/tests/features/failing-scenario-middle.feature
+
+    Scenario: Add some numbers
+        Given I have the number 1        And I have the number 2        When I add them up with failure
+          AssertionError: Unable to add numbers: [1, 2]        Then I expect the sum to be 42
+1 features (0 passed, 1 failed)
+1 scenarios (0 passed, 1 failed)
+4 steps (2 passed, 1 failed, 1 skipped)
+Run test-marker finished within 5 seconds

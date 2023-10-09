@@ -4,9 +4,6 @@
 This radish extension provides the functionality to write the feature file run to the console.
 """
 
-# disable no-member lint error because of dynamic method from colorful
-# pylint: disable=no-member
-
 import os
 import re
 

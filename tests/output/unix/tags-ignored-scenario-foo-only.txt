@@ -1,17 +1,20 @@
-[1m[37mFeature[22m[39m[26m: [1m[37mIgnore Scenario via Tag[22m[39m[26m  # [1m[30mfeatures/tags-ignored-scenario.feature[22m[39m[26m
-    [37mRadish shall support to ignore a
-    Scenario via Tags[39m[26m
+Feature: Ignore Scenario via Tag  # features/tags-ignored-scenario.feature
+    Radish shall support to ignore a
+    Scenario via Tags
 
-[36m    @foo
-[39m    [1m[37mScenario[22m[39m[26m: [1m[37mIgnored Scenario[22m[39m[26m
-        [1m[33mGiven I have a Step[22m[39m[26m
-[A[K        [1m[32mGiven I have a Step[22m[39m[26m
-        [1m[33mWhen I do something[22m[39m[26m
-[A[K        [1m[32mWhen I do something[22m[39m[26m
-        [1m[33mThen I expect something[22m[39m[26m
-[A[K        [1m[32mThen I expect something[22m[39m[26m
+    @foo
+    Scenario: Ignored Scenario
+        Given I have a Step
 
-[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
-[36mRun test-marker finished within a moment[39m
+[A[K        Given I have a Step
+        When I do something
+
+[A[K        When I do something
+        Then I expect something
+
+[A[K        Then I expect something
+
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

@@ -1,29 +1,26 @@
-[1m[36m1. [22m[39m[26m[1m[37mFeature[22m[39m[26m: [1m[37mSupport Scenario Loop[22m[39m[26m  # [1m[30mfeatures/scenario-loop.feature[22m[39m[26m
-    [37mRadish shall support Scenario Loops.[39m[26m
+1. Feature: Support Scenario Loop  # features/scenario-loop.feature
+    Radish shall support Scenario Loops.
 
-    [1m[36m1. [22m[39m[26m[1m[37mScenario Loop[22m[39m[26m: [1m[37mThis is a looped Scenario[22m[39m[26m
+    1. Scenario Loop: This is a looped Scenario
+        1. Given I have an instable function
 
-        [1m[33m1. [22m[39m[26m[1m[33mGiven I have an instable function[22m[39m[26m
+[A[K        1. Given I have an instable function
+        2. When I execute it
 
-[A[K        [1m[36m1. [22m[39m[26m[36mGiven I have an instable function[39m[26m
+[A[K        2. When I execute it
+        3. Then I expect it to pass
 
-        [1m[33m2. [22m[39m[26m[1m[33mWhen I execute it[22m[39m[26m
+[A[K        3. Then I expect it to pass
 
-[A[K        [1m[36m2. [22m[39m[26m[36mWhen I execute it[39m[26m
+    Iterations: 2
+          2. | 0 |
 
-        [1m[33m3. [22m[39m[26m[1m[33mThen I expect it to pass[22m[39m[26m
+[A[K          2. | 0 |
+          3. | 1 |
 
-[A[K        [1m[36m3. [22m[39m[26m[36mThen I expect it to pass[39m[26m
+[A[K          3. | 1 |
 
-    [1m[37mIterations[22m[39m[26m: [36m2[39m[26m
-        [1m[33m  2. [22m[39m[26m[1m[37m|[22m[39m[26m [1m[33m0[22m[39m[26m [1m[37m|[22m[39m[26m
-
-[A[K        [1m[36m  2. [22m[39m[26m[1m[37m|[22m[39m[26m [1m[32m0[22m[39m[26m [1m[37m|[22m[39m[26m
-        [1m[33m  3. [22m[39m[26m[1m[37m|[22m[39m[26m [1m[33m1[22m[39m[26m [1m[37m|[22m[39m[26m
-
-[A[K        [1m[36m  3. [22m[39m[26m[1m[37m|[22m[39m[26m [1m[32m1[22m[39m[26m [1m[37m|[22m[39m[26m
-
-[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m2 scenarios ([22m[39m[1m[32m2 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m6 steps ([22m[39m[1m[32m6 passed[22m[39m[1m[37m)[22m[39m
-[36mRun test-marker finished within a moment[39m
+1 features (1 passed)
+2 scenarios (2 passed)
+6 steps (6 passed)
+Run test-marker finished within a moment

@@ -43,6 +43,14 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 def styled_text(text, style):
+    """
+    inject the style into the text if not ansi and
+    if style not disabled
+
+    :param str text: the text which is printed to the console
+    :param str style: the style to inject. 
+    for reference: https://rich.readthedocs.io/en/latest/style.html
+    """
     if world.config.no_ansi or not STYLE_ON:
         return text
     else:
@@ -53,6 +61,7 @@ def console_write(text, **kwargs):
     Writes the given text to the console
 
     :param str text: the text which is printed to the console
+    :param kwargs: args passed to rich.print
     """
     
     # rich does not support the ansi line skip sequence

@@ -256,7 +256,7 @@ class ConsoleWriter(object):
                 (" {0} ")
                 .format(colored_pipe)
                 .join(
-                    str(styled_text("{1: <{0}}".format(col_widths[i], x)), "white") for i, x in enumerate(step.table_header)
+                    styled_text("{1: <{0}}".format(col_widths[i], x), "white") for i, x in enumerate(step.table_header)
                 ),
             )
 
@@ -266,7 +266,7 @@ class ConsoleWriter(object):
                     colored_pipe,
                     (" {0} ")
                     .format(colored_pipe)
-                    .join(str(styled_text("{1: <{0}}".format(col_widths[i], x)), style) for i, x in enumerate(row)),
+                    .join(styled_text("{1: <{0}}".format(col_widths[i], x), style) for i, x in enumerate(row)),
                 )
 
         return output

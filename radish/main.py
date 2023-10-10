@@ -191,7 +191,7 @@ Options:
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
         utils.console_write(
-            utils.styled_textstyled_text("Error: ", "bold red")
+            utils.styled_text("Error: ", "bold red")
             + utils.styled_text("No feature or no scenario specified in at least one of the given feature files", "red")
         )
         if tag_expression:

@@ -10,11 +10,12 @@ import sys
 import codecs
 
 import yaml
+import colorful
 
 from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
-from radish.utils import get_func_arg_names, get_func_location, locate, styled_text, console_write as write
+from radish.utils import get_func_arg_names, get_func_location, locate
 
 
 def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False):
@@ -23,13 +24,14 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
     matched step implementations.
     """
     if cover_min_percentage is not None and float(cover_min_percentage) > 100:
-        write(
-            styled_text(
-                "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n".format(
-                    float(cover_min_percentage)
-                ), "magenta"
-            ), 
-            sys.stderr
+        sys.stderr.write(
+            str(
+                colorful.magenta(
+                    "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n".format(
+                        float(cover_min_percentage)
+                    )
+                )
+            )
         )
         return 3
 
@@ -40,19 +42,12 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
     steps = StepRegistry().steps
 
     if not steps:
-        write(
-                styled_text(
+        sys.stderr.write(
+            str(
+                colorful.magenta(
                     "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs)
-                ), 
-                "magenta"
-        )
-        
-        write(
-            styled_text(
-                "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs), 
-                "magenta"
-            ), 
-            sys.stderr
+                )
+            )
         )
         return 4
 
@@ -66,10 +61,10 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
             match_config = yaml.safe_load(f)
 
         if not match_config:
-            write(styled_text("No sentences found in {0} to test against".format(match_config_file)), "magenta")
+            print(colorful.magenta("No sentences found in {0} to test against".format(match_config_file)))
             return 5
 
-        write(styled_text("Testing sentences from {0}:".format(styled_text(match_config_file, "bold yellow")), "yellow"))
+        print(colorful.yellow("Testing sentences from {0}:".format(colorful.bold_yellow(match_config_file))))
         failed_sentences, passed_senteces = test_step_matches(match_config, steps)
         failed += failed_sentences
         passed += passed_senteces
@@ -77,52 +72,50 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         covered_steps = covered_steps.union(x["should_match"] for x in match_config if "should_match" in x)
 
         # newline
-        write("\n")
+        sys.stdout.write("\n")
 
-    report = styled_text("{0} sentences (".format(failed + passed), "bold white")
+    report = colorful.bold_white("{0} sentences (".format(failed + passed))
     if passed > 0:
-        report += styled_text("{0} passed".format(passed), "bold green")
+        report += colorful.bold_green("{0} passed".format(passed))
 
     if passed > 0 and failed > 0:
-        report += styled_text(", ", "bold white")
+        report += colorful.bold_white(", ")
 
     if failed > 0:
-        report += styled_text("{0} failed".format(failed), "bold red")
-    report += styled_text(")", "bold white")
+        report += colorful.bold_red("{0} failed".format(failed))
+    report += colorful.bold_white(")")
     print(report)
 
     step_coverage = 100.0 / len(steps) * len(covered_steps)
-    coverage_report = styled_text(
-        "Covered {0} of {1} step implementations".format(len(covered_steps), len(steps)),
-        "bold white"
+    coverage_report = colorful.bold_white(
+        "Covered {0} of {1} step implementations".format(len(covered_steps), len(steps))
     )
 
     ret = 0 if failed == 0 else 1
 
     if cover_min_percentage:
-        coverage_color = "bold green" if step_coverage >= float(cover_min_percentage) else "bold red"
-        coverage_report += styled_text(" (coverage: ", "bold white")
-        coverage_report += styled_text("{0:.2f}%".format(step_coverage), coverage_color)
+        coverage_color = colorful.bold_green if step_coverage >= float(cover_min_percentage) else colorful.bold_red
+        coverage_report += colorful.bold_white(" (coverage: ")
+        coverage_report += coverage_color("{0:.2f}%".format(step_coverage))
         if float(cover_min_percentage) > step_coverage:
-            coverage_report += styled_text(
-                ", expected a minimum of {0}".format(styled_text(cover_min_percentage + "%", "bold green")),
-                "bold white"
+            coverage_report += colorful.bold_white(
+                ", expected a minimum of {0}".format(colorful.bold_green(cover_min_percentage + "%"))
             )
             if failed == 0:
                 ret = 2
             # if tests have passed and coverage is too low we fail with exit code 2
-        coverage_report += styled_text(")", "bold white")
+        coverage_report += colorful.bold_white(")")
 
     print(coverage_report)
 
     if cover_show_missing:
         missing_steps = get_missing_steps(steps, covered_steps)
         if missing_steps:
-            missing_step_report = styled_text("Missing steps:\n", "bold yellow")
+            missing_step_report = colorful.bold_yellow("Missing steps:\n")
             for step in missing_steps:
-                missing_step_report += "- {0} at ".format(styled_text(step[0], "cyan"))
-                missing_step_report += styled_text(step[1], "cyan") + "\n"
-            write(str(missing_step_report))
+                missing_step_report += "- {0} at ".format(colorful.cyan(step[0]))
+                missing_step_report += colorful.cyan(step[1]) + "\n"
+            sys.stdout.write(str(missing_step_report))
 
     return ret
 
@@ -154,9 +147,9 @@ def test_step_matches(match_config, steps):
 
 
 def test_step_match(sentence, expected_step, expected_arguments, steps):
-    write(
+    sys.stdout.write(
         '{0} STEP "{1}" SHOULD MATCH {2}    '.format(
-            styled_text(">>", "yellow"), styled_text(sentence, "cyan"), styled_text(expected_step, "cyan")
+            colorful.yellow(">>"), colorful.cyan(sentence), colorful.cyan(expected_step)
         )
     )
 
@@ -180,14 +173,14 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
             output_failure(result.func, argument_errors)
             return False
 
-    print(str(styled_text("✔", "bold green")))
+    print(str(colorful.bold_green("✔")))
     return True
 
 
 def test_step_not_match(sentence, expected_not_matching_step, steps):
-    step_to_print = styled_text(expected_not_matching_step, "cyan") if expected_not_matching_step else "ANY"
+    step_to_print = colorful.cyan(expected_not_matching_step) if expected_not_matching_step else "ANY"
     sys.stdout.write(
-        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(styled_text(">>", "yellow"), styled_text(sentence, "cyan"), step_to_print)
+        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(colorful.yellow(">>"), colorful.cyan(sentence), step_to_print)
     )
 
     result = match_step(sentence, steps)
@@ -199,7 +192,7 @@ def test_step_not_match(sentence, expected_not_matching_step, steps):
             )
             return False
 
-    write(styled_text("✔", "bold green"))
+    print(str(colorful.bold_green("✔")))
     return True
 
 
@@ -229,14 +222,14 @@ def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    write(("✘", "bold red"))
+    sys.stdout.write(str(colorful.bold_red("✘")))
     if step_func is not None:
-        write(styled_text(" (at {0})".format(get_func_location(step_func)), "red"))
+        sys.stdout.write(str(colorful.red(" (at {0})".format(get_func_location(step_func)))))
 
-    write("\n")
+    sys.stdout.write("\n")
 
     for error in errors:
-        print(styled_text("  - {0}".format(error), "red"))
+        print(str(colorful.red("  - {0}".format(error))))
 
 
 def check_step_arguments(expected_arguments, arguments):

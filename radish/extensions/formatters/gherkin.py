@@ -169,13 +169,11 @@ class ConsoleWriter(object):
                     tag.name == "precondition" and world.config.expand and world.config.show
                 ):  # exceptional for show command when scenario steps expand and tag is a precondition -> comment it out
                     output += styled_text(
-                        "    # @{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""),
-                        "white"
+                        "    # @{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""), "white"
                     )
                 else:
                     output += styled_text(
-                        "    @{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""),
-                        "cyan"
+                        "    @{0}{1}\n".format(tag.name, "({0})".format(tag.arg) if tag.arg else ""), "cyan"
                     )
             output += "    {0}{1}: {2}".format(
                 id_prefix,
@@ -204,7 +202,7 @@ class ConsoleWriter(object):
                         os.path.basename(step.as_precondition.path),
                         step.as_precondition.sentence,
                     ),
-                    "italic white"
+                    "italic white",
                 )
             else:
                 output += styled_text(
@@ -212,22 +210,20 @@ class ConsoleWriter(object):
                         os.path.basename(step.as_precondition.path),
                         step.as_precondition.sentence,
                     ),
-                    "italic white"
+                    "italic white",
                 )
         elif step.as_background and self.last_background != step.as_background:
-            output += styled_text("      From Background: {0}\n".format(step.as_background.sentence), 
-                    "italic white")
+            output += styled_text("      From Background: {0}\n".format(step.as_background.sentence), "italic white")
         elif step.as_precondition and self.last_precondition and not step.as_background and self.last_background:
             output += styled_text(
                 "      From Precondition Scenario: {0}: {1}\n".format(
                     os.path.basename(step.as_precondition.path),
                     step.as_precondition.sentence,
-                ), 
-                    "italic white"
+                ),
+                "italic white",
             )
         elif (not step.as_precondition and self.last_precondition) or (not step.as_background and self.last_background):
-            output += styled_text("      From Scenario\n", 
-                    "italic white")
+            output += styled_text("      From Scenario\n", "italic white")
 
         self.last_precondition = step.as_precondition
         self.last_background = step.as_background
@@ -243,7 +239,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
-            output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
+            output += styled_text(
+                "".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan"
+            )
             output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
 
         if step.table_header:
@@ -305,7 +303,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += styled_text('\n            {0}"""'.format(id_padding), "bold white")
-            output += styled_text("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan")
+            output += styled_text(
+                "".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]), "cyan"
+            )
             output += styled_text('\n            {0}"""'.format(id_padding), "bold cyan")
 
         if step.table_header:
@@ -318,7 +318,8 @@ class ConsoleWriter(object):
                 (" {0} ")
                 .format(colored_pipe)
                 .join(
-                    str(styled_text("{1: <{0}}".format(col_widths[i], x), "white")) for i, x in enumerate(step.table_header)
+                    str(styled_text("{1: <{0}}".format(col_widths[i], x), "white"))
+                    for i, x in enumerate(step.table_header)
                 ),
             )
 
@@ -362,7 +363,7 @@ class ConsoleWriter(object):
                         for i, x in enumerate(scenario.examples_header)
                     ),
                 ),
-                "bold white"
+                "bold white",
             )
         elif isinstance(scenario, ScenarioLoop):
             output += "\n    {0}: {1}".format(

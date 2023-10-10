@@ -198,7 +198,7 @@ Options:
             utils.console_write(
                 utils.styled_text(
                     "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run.",
-                    "red"
+                    "red",
                 )
             )
         return 1

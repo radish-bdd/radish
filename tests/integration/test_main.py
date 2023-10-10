@@ -363,12 +363,12 @@ def test_main_cli_calls(
     for featurefile in featurefiles:
         rel_featurefile = os.path.relpath(featurefile, feature_parent_dir)
         actual_output = actual_output.replace(featurefile, rel_featurefile)
-        
+
         # this is how to capture the current behavior into the expected results to
-        # adopt breaking changes. 
+        # adopt breaking changes.
         # with io.open(expected_output_file, "w", encoding="utf-8") as output_file:
         #    output_file.write(actual_output)
-        
+
     # then
     assert actual_output == expected_output_string
     assert actual_exitcode == expected_exitcode

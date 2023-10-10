@@ -149,8 +149,8 @@ class EndreportWriter(object):
                             for s in pending_step_implementations
                         ]
                     ),
-                ), 
-                "white"
+                ),
+                "white",
             )
 
         output += "\n"
@@ -158,8 +158,7 @@ class EndreportWriter(object):
         if world.config.wip:
             if stats["scenarios"]["passed"] > 0:
                 output += styled_text(
-                    "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n",
-                    "red"
+                    "\nThe --wip switch was used, so I didn't expect anything to pass. These scenarios passed:\n", "red"
                 )
 
                 has_passed_scenarios = False
@@ -177,7 +176,9 @@ class EndreportWriter(object):
                 if has_passed_scenarios:
                     output += "\n"
             else:
-                output += styled_text("\nThe --wip switch was used, so the failures were expected. All is good.\n", "green")
+                output += styled_text(
+                    "\nThe --wip switch was used, so the failures were expected. All is good.\n", "green"
+                )
 
         output += styled_text("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)), "cyan")
 

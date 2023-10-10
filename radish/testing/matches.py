@@ -17,8 +17,6 @@ from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location, locate, styled_text, console_write as write
 
 
-
-
 def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False):
     """
     Test if the given match config files matches the actual
@@ -30,10 +28,10 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
                 "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n".format(
                     float(cover_min_percentage)
                 ),
-                "magenta"
+                "magenta",
             ),
-            file=sys.stderr, 
-            end=''
+            file=sys.stderr,
+            end="",
         )
         return 3
 
@@ -46,13 +44,12 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
     if not steps:
         write(
             styled_text(
-                "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs),
-                "magenta"
+                "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs), "magenta"
             ),
-            file=sys.stderr, 
-            end=''
+            file=sys.stderr,
+            end="",
         )
-        
+
         return 4
 
     failed = 0
@@ -66,15 +63,12 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
 
         if not match_config:
             # its like this is word wrapping and injecting newlines
-            write(
-                styled_text(
-                    f"No sentences found in {match_config_file} to test against",
-                    "magenta"
-                )
-            )
+            write(styled_text(f"No sentences found in {match_config_file} to test against", "magenta"))
             return 5
 
-        write(styled_text("Testing sentences from {0}:".format(styled_text(match_config_file, "bold yellow")), "yellow"))
+        write(
+            styled_text("Testing sentences from {0}:".format(styled_text(match_config_file, "bold yellow")), "yellow")
+        )
         failed_sentences, passed_senteces = test_step_matches(match_config, steps)
         failed += failed_sentences
         passed += passed_senteces
@@ -98,8 +92,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
 
     step_coverage = 100.0 / len(steps) * len(covered_steps)
     coverage_report = styled_text(
-        "Covered {0} of {1} step implementations".format(len(covered_steps), len(steps)),
-        "bold white"
+        "Covered {0} of {1} step implementations".format(len(covered_steps), len(steps)), "bold white"
     )
 
     ret = 0 if failed == 0 else 1
@@ -110,8 +103,8 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         coverage_report += styled_text("{0:.2f}%".format(step_coverage), coverage_color)
         if float(cover_min_percentage) > step_coverage:
             coverage_report += styled_text(
-                ", expected a minimum of {0}".format(styled_text(cover_min_percentage + "%", "bold green")), 
-                "bold white"
+                ", expected a minimum of {0}".format(styled_text(cover_min_percentage + "%", "bold green")),
+                "bold white",
             )
             if failed == 0:
                 ret = 2
@@ -163,7 +156,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
         '{0} STEP "{1}" SHOULD MATCH {2}    '.format(
             styled_text(">>", "yellow"), styled_text(sentence, "cyan"), styled_text(expected_step, "cyan")
         ),
-        end=''
+        end="",
     )
 
     result = match_step(sentence, steps)
@@ -193,7 +186,9 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
 def test_step_not_match(sentence, expected_not_matching_step, steps):
     step_to_print = styled_text(expected_not_matching_step, "cyan") if expected_not_matching_step else "ANY"
     sys.stdout.write(
-        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(styled_text(">>", "yellow"), styled_text(sentence, "cyan"), step_to_print)
+        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(
+            styled_text(">>", "yellow"), styled_text(sentence, "cyan"), step_to_print
+        )
     )
 
     result = match_step(sentence, steps)
@@ -235,9 +230,9 @@ def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    write(styled_text("✘", "bold red"), end='')
+    write(styled_text("✘", "bold red"), end="")
     if step_func is not None:
-        write(str(styled_text(" (at {0})".format(get_func_location(step_func)), "red")), end='')
+        write(str(styled_text(" (at {0})".format(get_func_location(step_func)), "red")), end="")
 
     write("")
 

@@ -78,6 +78,8 @@ class DotOutputFormatter(object):
                 output += "      {}\n".format(
                     "\n      ".join([str(styled_text(l, "red")) for l in step.failure.traceback.split("\n")[:-2]])
                 )
-            output += "      {}: {}\n\n".format(styled_text(step.failure.name, "bold red"), styled_text(step.failure.reason, "red"))
+            output += "      {}: {}\n\n".format(
+                styled_text(step.failure.name, "bold red"), styled_text(step.failure.reason, "red")
+            )
 
         write(output + "\n")

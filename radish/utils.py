@@ -19,9 +19,9 @@ from rich import print as pretty_print
 from .terrain import world
 
 
-
 ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
 STYLE_ON = True
+
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
@@ -42,19 +42,21 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.filename = traceback_info[0]
         self.line = int(traceback_info[1])
 
+
 def styled_text(text, style):
     """
     inject the style into the text if not ansi and
     if style not disabled
 
     :param str text: the text which is printed to the console
-    :param str style: the style to inject. 
+    :param str style: the style to inject.
     for reference: https://rich.readthedocs.io/en/latest/style.html
     """
     if world.config.no_ansi or not STYLE_ON:
         return text
     else:
         return f"[{style}]{text}[/{style}]"
+
 
 def console_write(text, **kwargs):
     """
@@ -63,16 +65,16 @@ def console_write(text, **kwargs):
     :param str text: the text which is printed to the console
     :param kwargs: args passed to rich.print
     """
-    
+
     # rich does not support the ansi line skip sequence
     # and making gherkin use rich's live data stuff turned out
     # to be pretty challanging
-    
+
     # so this is a work around to print the line jumps like normal
     # then remove them from the pretty string
     line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
-    print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end='')
-    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ''), **kwargs)
+    print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end="")
+    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ""), **kwargs)
 
 
 def expandpath(path):

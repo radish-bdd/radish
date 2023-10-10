@@ -18,7 +18,10 @@ from rich import print as pretty_print
 
 from .terrain import world
 
+
+
 ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
+STYLE_ON = True
 
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
@@ -40,12 +43,12 @@ class Failure(object):  # pylint: disable=too-few-public-methods
         self.line = int(traceback_info[1])
 
 def styled_text(text, style):
-    if world.config.no_ansi:
+    if world.config.no_ansi or not STYLE_ON:
         return text
     else:
         return f"[{style}]{text}[/{style}]"
 
-def console_write(text, output=None):
+def console_write(text, **kwargs):
     """
     Writes the given text to the console
 
@@ -60,7 +63,7 @@ def console_write(text, output=None):
     # then remove them from the pretty string
     line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
     print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end='')
-    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ''), file=output)
+    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ''), **kwargs)
 
 
 def expandpath(path):

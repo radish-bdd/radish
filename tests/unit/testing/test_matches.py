@@ -16,7 +16,7 @@ import tempfile
 import pytest
 
 import radish.testing.matches as matches
-from radish.terrain import world
+from radish.utils import STYLE_ON
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -24,9 +24,10 @@ def disable_colors():
     """
     Fixture to disable colors
     """
-    world.config.no_ansi = True
+    global STYLE_ON
+    STYLE_ON = False
     yield
-    world.config.no_ansi = False
+    STYLE_ON = True
 
 
 def test_unreasonable_min_coverage(capsys):

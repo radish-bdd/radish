@@ -26,8 +26,6 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
         include:
           - os: ubuntu-20.04
-            python-version: 3.5
-          - os: ubuntu-20.04
             python-version: 3.6
 
     runs-on: ${{ matrix.os }}

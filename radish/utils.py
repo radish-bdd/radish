@@ -14,10 +14,12 @@ import pydoc
 import itertools
 import calendar
 from datetime import datetime, timedelta
-from rich import print as pretty_print
 
 from .terrain import world
 
+from rich.console import Console
+rich_console = Console()
+rich_error_console = Console(stderr=True)
 
 ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
 STYLE_ON = True
@@ -58,7 +60,7 @@ def styled_text(text, style):
         return f"[{style}]{text}[/{style}]"
 
 
-def console_write(text, **kwargs):
+def console_write(text, end="\n", stderr=False):
     """
     Writes the given text to the console
 
@@ -74,7 +76,10 @@ def console_write(text, **kwargs):
     # then remove them from the pretty string
     line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
     print(ANSI_LINE_JUMP_SEQUENCE * line_jumps, end="")
-    pretty_print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ""), **kwargs)
+    if stderr:
+        rich_error_console.print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ""), soft_wrap=True, end=end)
+    else:
+        rich_console.print(text.replace(ANSI_LINE_JUMP_SEQUENCE, ""), soft_wrap=True, end=end)
 
 
 def expandpath(path):

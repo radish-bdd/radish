@@ -30,7 +30,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
                 ),
                 "magenta",
             ),
-            file=sys.stderr,
+            stderr=True,
             end="",
         )
         return 3
@@ -46,7 +46,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
             styled_text(
                 "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs), "magenta"
             ),
-            file=sys.stderr,
+            stderr=True,
             end="",
         )
 

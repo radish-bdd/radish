@@ -18,6 +18,9 @@ from datetime import datetime, timedelta
 from .terrain import world
 
 from rich.console import Console
+
+# using direct rich.print word wraps without a way to turn it off.
+# This breaks tests with random line breaks
 rich_console = Console()
 rich_error_console = Console(stderr=True)
 

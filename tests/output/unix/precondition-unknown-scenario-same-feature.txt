@@ -1,5 +1,4 @@
-Error: Cannot import precondition scenario 'Unknown Scenario' from feature 
-'features/precondition-unknown-scenario-same-feature.feature': No such scenario
+Error: Cannot import precondition scenario 'Unknown Scenario' from feature 'features/precondition-unknown-scenario-same-feature.feature': No such scenario
 
 Error Oracle says:
 You have a SyntaxError in your feature file!

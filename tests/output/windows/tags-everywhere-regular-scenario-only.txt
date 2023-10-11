@@ -1,24 +1,21 @@
-[36m@foo
-[39m[36m@bar
-[39m[1m[37mFeature[22m[39m[26m: [1m[37mSupport Tags everywhere[22m[39m[26m  # [1m[30mfeatures\tags-everywhere.feature[22m[39m[26m
-    [37mRadish shall support tags everywhere![39m[26m
+@foo
+@bar
+Feature: Support Tags everywhere  # features\tags-everywhere.feature
+    Radish shall support tags everywhere!
 
-[36m    @regular_scenario
-[39m    [1m[37mScenario[22m[39m[26m: [1m[37mRegular Scenario with Tags[22m[39m[26m
+    @regular_scenario
+    Scenario: Regular Scenario with Tags
+        Given I have a Step
 
-        [1m[33mGiven I have a Step[22m[39m[26m
+[A[K        Given I have a Step
+        When I do something
 
-[A[K        [1m[32mGiven I have a Step[22m[39m[26m
+[A[K        When I do something
+        Then I expect something
 
-        [1m[33mWhen I do something[22m[39m[26m
+[A[K        Then I expect something
 
-[A[K        [1m[32mWhen I do something[22m[39m[26m
-
-        [1m[33mThen I expect something[22m[39m[26m
-
-[A[K        [1m[32mThen I expect something[22m[39m[26m
-
-[1m[37m1 features ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m1 scenarios ([22m[39m[1m[32m1 passed[22m[39m[1m[37m)[22m[39m
-[1m[37m3 steps ([22m[39m[1m[32m3 passed[22m[39m[1m[37m)[22m[39m
-[36mRun test-marker finished within a moment[39m
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

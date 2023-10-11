@@ -201,7 +201,7 @@ def split_unescape(s, delim, escape="\\", unescape=True):
     Examples:
     >>> split_unescape('foo|bar', '|')
     ['foo', 'bar']
-    >>> split_unescape(r'foo\|bar', '|')
+    >>> split_unescape('foo\\|bar', '|')
     ['foo|bar']
     >>> split_unescape(r'foo\\|bar', '|', unescape=True)
     ['foo\\', 'bar']

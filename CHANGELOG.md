@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+### Fixed
+- Can now filter scenarios and features by tags with values ex: @author(tuxtimo)
+
 ## [v0.16.2]
 
 ### Fixed

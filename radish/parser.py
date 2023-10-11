@@ -318,7 +318,9 @@ class FeatureParser(object):
             # inherit the tags from the current feature and the explicitely
             # inherited tags given to the parser. This tags are coming from precondition scenarios
             current_tags = self._current_tags + self.feature.tags + self._inherited_tags
-            scenario_in_tags = self._tag_expr.evaluate([t.name for t in current_tags])
+            scenario_in_tags = self._tag_expr.evaluate(
+                [t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in current_tags]
+            )
             if not scenario_in_tags:  # this scenario does not match the given tag expression
                 self._current_tags = []
                 self._current_preconditions = []
@@ -336,7 +338,7 @@ class FeatureParser(object):
             parent=self.feature,
             tags=self._current_tags,
             preconditions=self._current_preconditions,
-            background=background
+            background=background,
         )
         self.feature.scenarios.append(scenario)
         self._current_scenario = scenario

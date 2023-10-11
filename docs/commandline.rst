@@ -207,6 +207,7 @@ The following are some valid tag expressions:
   radish SomeFeature.feature --tags 'good_case'
   radish SomeFeature.feature --tags 'regression and good_case and not real_hardware'
   radish SomeFeature.feature --tags 'database or filesystem and bad_case'
+  radish SomeFeature.feature --tags 'author(tuxtimo)'
 
 Be aware that Scenarios inherit the tags from the Feature they are defined it.
 

@@ -221,6 +221,18 @@ from radish.main import main
             "everything_with_failures_dot_formatter",
         ),
         (["feature-scenario-steps"], ["--syslog"], 0, "feature-scenario-steps-syslog"),
+        (
+            ["tags-with-arg-scenario-and-non-tagged"],
+            ["--tags=sometag(somevalue)"],
+            0,
+            "filter-when-using-tags-with-args",
+        ),
+        (
+            ["tags-with-arg-scenario-and-non-tagged"],
+            ["--tags=sometag(somevalue) and othertag(othervalue)"],
+            0,
+            "filter-when-using-tags-with-args",
+        ),
     ],
     ids=[
         "Empty Feature File",
@@ -302,6 +314,8 @@ from radish.main import main
         "Feature which does not fail with wip tag",
         "Feature which has everything in it and some Scenario fail",
         "Syslog extention is supported",
+        "Filter by tags containing variables",
+        "Filter by multiple tags containing variables",
     ],
 )
 def test_main_cli_calls(

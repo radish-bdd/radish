@@ -1,18 +1,8 @@
-@Bar
-Feature: Test blaing numbers
-  In order to test the basic
-  features of radish I test
-  to sum numbers.
+@foo(bar)
+Feature: Tag with Arguments
+    Radish shall support Tags with Arguments.
 
-  Scenario: Sum two numbers
-    Given I have the number 5
-      And I have the number 3
-    When I sum them
-    Then I expect the result to be 8
+    @sometag(somevalue) @othertag othervalue FOO
+    Scenario: Some Scenario
 
-  Scenario: Sum three numbers
-    Given I have the number 5
-      And I have the number 3
-      And I have the number 2
-    When I sum them
-    Then I expect the result to be 10
+    Scenario: Some Untagged Scenario

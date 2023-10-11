@@ -700,6 +700,19 @@ Run all *good case* or *bad case* tests:
 
    radish features/ --tags 'good_case or bad_case'
 
+  
+Run all tags with some argument, example: find all tagged as authored by tuxtimo
+
+.. code:: bash
+
+   radish features/ --tags 'author(tuxtimo)'
+
+Tags with argument will have the argument inside open and closing parenthesis.
+`@tag(value)` and `@tag value` are the same tag and can be filtered as `tag(value)`.
+Tags values with spaces are not supported/behave unexpected!
+Only the part before the first space is used for filtering.
+`@tag(value)` and `@tag(value 1)` are the same tag for filtering and both will be matched with `tag(value)`.
+
 Constants
 ---------
 

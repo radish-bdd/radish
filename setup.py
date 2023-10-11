@@ -41,7 +41,7 @@ requirements = [
     "docopt",
     "pysingleton",
     "rich>=12.6.0",
-    "tag-expressions>=1.0.0",
+    "tag-expressions>=2.0.0",
     "parse_type>0.4.0",
     "humanize",
 ]
@@ -107,6 +107,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: Implementation",
         "Topic :: Education :: Testing",
         "Topic :: Software Development",

@@ -1,4 +1,4 @@
-Feature: Feature with a Scenario and Steps  # features/feature-scenario-steps.feature
+Feature: Feature with a Scenario and Steps  # [35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95mfeature-scenario-steps.feature[0m
     Radish shall support parsing a Feature containing
     a Scenario which contains multiple Steps
 
@@ -7,7 +7,7 @@ Feature: Feature with a Scenario and Steps  # features/feature-scenario-steps.fe
         When I do something
         Then I expect something
 
-1 features (1 passed)
-1 scenarios (1 passed)
-3 steps (3 passed)
+[1;36m1[0m features [1m([0m[1;36m1[0m passed[1m)[0m
+[1;36m1[0m scenarios [1m([0m[1;36m1[0m passed[1m)[0m
+[1;36m3[0m steps [1m([0m[1;36m3[0m passed[1m)[0m
 Run test-marker finished within a moment

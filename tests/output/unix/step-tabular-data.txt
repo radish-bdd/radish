@@ -1,37 +1,37 @@
-Feature: Step Tabular Data  # features/step-tabular-data.feature
-    Radish shall support tubular data
-    for a specific step
+[1;37mFeature[0m: [1;37mStep Tabular Data[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mstep-tabular-data.feature[0m
+    [37mRadish shall support tubular data[0m
+[37m    for a specific step[0m
 
-    Scenario: Tabular Data for a Step
-        Given I have the following heros
-          | firstname | surname | heroname  |
-          | Bruce     | Wayne   | Batman    |
-          | Peter     | Parker  | Spiderman |
-
-[A[K
-[A[K
-[A[K
-[A[K        Given I have the following heros
-          | firstname | surname | heroname  |
-          | Bruce     | Wayne   | Batman    |
-          | Peter     | Parker  | Spiderman |
-        When I capitalize their first name
-
-[A[K        When I capitalize their first name
-        Then I have the following names
-          | cap_heroname |
-          | BRUCE        |
-          | PETER        |
+    [1;37mScenario[0m: [1;37mTabular Data for a Step[0m
+        [1;33mGiven I have the following heros[0m
+          [1;37m|[0m [37mfirstname[0m [1;37m|[0m [37msurname[0m [1;37m|[0m [37mheroname [0m [1;37m|[0m
+          [1;37m|[0m [1;33mBruce    [0m [1;37m|[0m [1;33mWayne  [0m [1;37m|[0m [1;33mBatman   [0m [1;37m|[0m
+          [1;37m|[0m [1;33mPeter    [0m [1;37m|[0m [1;33mParker [0m [1;37m|[0m [1;33mSpiderman[0m [1;37m|[0m
 
 [A[K
 [A[K
 [A[K
-[A[K        Then I have the following names
-          | cap_heroname |
-          | BRUCE        |
-          | PETER        |
+[A[K        [1;32mGiven I have the following heros[0m
+          [1;37m|[0m [37mfirstname[0m [1;37m|[0m [37msurname[0m [1;37m|[0m [37mheroname [0m [1;37m|[0m
+          [1;37m|[0m [1;32mBruce    [0m [1;37m|[0m [1;32mWayne  [0m [1;37m|[0m [1;32mBatman   [0m [1;37m|[0m
+          [1;37m|[0m [1;32mPeter    [0m [1;37m|[0m [1;32mParker [0m [1;37m|[0m [1;32mSpiderman[0m [1;37m|[0m
+        [1;33mWhen I capitalize their first name[0m
 
-1 features (1 passed)
-1 scenarios (1 passed)
-3 steps (3 passed)
-Run test-marker finished within a moment
+[A[K        [1;32mWhen I capitalize their first name[0m
+        [1;33mThen I have the following names[0m
+          [1;37m|[0m [37mcap_heroname[0m [1;37m|[0m
+          [1;37m|[0m [1;33mBRUCE       [0m [1;37m|[0m
+          [1;37m|[0m [1;33mPETER       [0m [1;37m|[0m
+
+[A[K
+[A[K
+[A[K
+[A[K        [1;32mThen I have the following names[0m
+          [1;37m|[0m [37mcap_heroname[0m [1;37m|[0m
+          [1;37m|[0m [1;32mBRUCE       [0m [1;37m|[0m
+          [1;37m|[0m [1;32mPETER       [0m [1;37m|[0m
+
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m3[0m[1;37m steps [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

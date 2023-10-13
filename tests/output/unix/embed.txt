@@ -1,28 +1,28 @@
-Feature: A embed feature  # features/embed.feature
+[1;37mFeature[0m: [1;37mA embed feature[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30membed.feature[0m
 
-    Scenario: Embed text
-        When I embed a text "test text"
+    [1;37mScenario[0m: [1;37mEmbed text[0m
+        [1;33mWhen I embed a text [0m[1;33m"test text"[0m
 
-[A[K        When I embed a text "test text"
-        Then step with embedded text should have following embedded data
-          | mime_type  | data         |
-          | text/plain | dGVzdCB0ZXh0 |
+[A[K        [1;32mWhen I embed a text [0m[1;32m"test text"[0m
+        [1;33mThen step with embedded text should have following embedded data[0m
+          [1;37m|[0m [37mmime_type [0m [1;37m|[0m [37mdata        [0m [1;37m|[0m
+          [1;37m|[0m [1;33mtext/plain[0m [1;37m|[0m [1;33mdGVzdCB0ZXh0[0m [1;37m|[0m
 
 [A[K
 [A[K
-[A[K        Then step with embedded text should have following embedded data
-          | mime_type  | data         |
-          | text/plain | dGVzdCB0ZXh0 |
+[A[K        [1;32mThen step with embedded text should have following embedded data[0m
+          [1;37m|[0m [37mmime_type [0m [1;37m|[0m [37mdata        [0m [1;37m|[0m
+          [1;37m|[0m [1;32mtext/plain[0m [1;37m|[0m [1;32mdGVzdCB0ZXh0[0m [1;37m|[0m
 
-    Scenario: Generate cucumber json report
-        When generate cucumber report
+    [1;37mScenario[0m: [1;37mGenerate cucumber json report[0m
+        [1;33mWhen generate cucumber report[0m
 
-[A[K        When generate cucumber report
-        Then genreated cucumber json equals to "embed.json"
+[A[K        [1;32mWhen generate cucumber report[0m
+        [1;33mThen genreated cucumber json equals to [0m[1;33m"embed.json"[0m
 
-[A[K        Then genreated cucumber json equals to "embed.json"
+[A[K        [1;32mThen genreated cucumber json equals to [0m[1;32m"embed.json"[0m
 
-1 features (1 passed)
-2 scenarios (2 passed)
-4 steps (4 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m2[0m[1;37m scenarios [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
+[1;37m4[0m[1;37m steps [0m[1;37m([0m[1;32m4[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

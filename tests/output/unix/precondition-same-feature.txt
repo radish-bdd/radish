@@ -1,48 +1,48 @@
-Feature: Support Precondition from same feature  # features/precondition-same-feature.feature
-    I want to be able to use a Scenario as precondition
-    for a Scenario within the same Feature.
+[1;37mFeature[0m: [1;37mSupport Precondition from same feature[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mprecondition-same-feature.feature[0m
+    [37mI want to be able to use a Scenario as precondition[0m
+[37m    for a Scenario within the same Feature.[0m
 
-    Scenario: Precondition
-        Given a user named Bruce
+    [1;37mScenario[0m: [1;37mPrecondition[0m
+        [1;33mGiven a user named Bruce[0m
 
-[A[K        Given a user named Bruce
-        And a user named Peter
+[A[K        [1;32mGiven a user named Bruce[0m
+        [1;33mAnd a user named Peter[0m
 
-[A[K        And a user named Peter
-        And a user named Tony
+[A[K        [1;32mAnd a user named Peter[0m
+        [1;33mAnd a user named Tony[0m
 
-[A[K        And a user named Tony
-        And a personal site owned by Bruce
+[A[K        [1;32mAnd a user named Tony[0m
+        [1;33mAnd a personal site owned by Bruce[0m
 
-[A[K        And a personal site owned by Bruce
+[A[K        [1;32mAnd a personal site owned by Bruce[0m
 
-    @precondition(precondition-same-feature.feature: Precondition)
-    Scenario: Grant access to personal site
-      As Precondition from precondition-same-feature.feature: Precondition
-        Given a user named Bruce
+[36m    @[0m[1;36mprecondition[0m[1;36m([0m[36mprecondition-same-feature.feature: Precondition[0m[1;36m)[0m
+    [1;37mScenario[0m: [1;37mGrant access to personal site[0m
+[3;37m      As Precondition from precondition-same-feature.feature: Precondition[0m
+        [1;33mGiven a user named Bruce[0m
 
-[A[K        Given a user named Bruce
-        And a user named Peter
+[A[K        [1;32mGiven a user named Bruce[0m
+        [1;33mAnd a user named Peter[0m
 
-[A[K        And a user named Peter
-        And a user named Tony
+[A[K        [1;32mAnd a user named Peter[0m
+        [1;33mAnd a user named Tony[0m
 
-[A[K        And a user named Tony
-        And a personal site owned by Bruce
+[A[K        [1;32mAnd a user named Tony[0m
+        [1;33mAnd a personal site owned by Bruce[0m
 
-[A[K        And a personal site owned by Bruce
-      From Scenario
-        Given Bruce grants access to Tony
+[A[K        [1;32mAnd a personal site owned by Bruce[0m
+[3;37m      From Scenario[0m
+        [1;33mGiven Bruce grants access to Tony[0m
 
-[A[K        Given Bruce grants access to Tony
-        When I'm logged in as Tony
+[A[K        [1;32mGiven Bruce grants access to Tony[0m
+        [1;33mWhen I'm logged in as Tony[0m
 
-[A[K        When I'm logged in as Tony
-        Then I can access Bruce personal site
+[A[K        [1;32mWhen I'm logged in as Tony[0m
+        [1;33mThen I can access Bruce personal site[0m
 
-[A[K        Then I can access Bruce personal site
+[A[K        [1;32mThen I can access Bruce personal site[0m
 
-1 features (1 passed)
-2 scenarios (2 passed)
-7 steps (7 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m2[0m[1;37m scenarios [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
+[1;37m7[0m[1;37m steps [0m[1;37m([0m[1;32m7[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

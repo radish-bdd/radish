@@ -1,9 +1,9 @@
-Feature: Scenarios can be empty  # features/empty-scenario.feature
-    Radish should allow empty Scenarios
+[1;37mFeature[0m: [1;37mScenarios can be empty[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mempty-scenario.feature[0m
+    [37mRadish should allow empty Scenarios[0m
 
-    Scenario: This is an empty Scenario
+    [1;37mScenario[0m: [1;37mThis is an empty Scenario[0m
 
-1 features (1 passed)
-1 scenarios (1 passed)
-0 steps (0 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m0[0m[1;37m steps [0m[1;37m([0m[1;32m0[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

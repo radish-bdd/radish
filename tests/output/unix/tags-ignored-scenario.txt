@@ -1,43 +1,43 @@
-Feature: Ignore Scenario via Tag  # features/tags-ignored-scenario.feature
-    Radish shall support to ignore a
-    Scenario via Tags
+[1;37mFeature[0m: [1;37mIgnore Scenario via Tag[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mtags-ignored-scenario.feature[0m
+    [37mRadish shall support to ignore a[0m
+[37m    Scenario via Tags[0m
 
-    @foo
-    Scenario: Ignored Scenario
-        Given I have a Step
+[36m    @foo[0m
+    [1;37mScenario[0m: [1;37mIgnored Scenario[0m
+        [1;33mGiven I have a Step[0m
 
-[A[K        Given I have a Step
-        When I do something
+[A[K        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
-        Then I expect something
+[A[K        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
 
-[A[K        Then I expect something
+[A[K        [1;32mThen I expect something[0m
 
-    @bar
-    Scenario: Parsed Scenario
-        Given I have a Step
+[36m    @bar[0m
+    [1;37mScenario[0m: [1;37mParsed Scenario[0m
+        [1;33mGiven I have a Step[0m
 
-[A[K        Given I have a Step
-        When I do something
+[A[K        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
-        Then I expect something
+[A[K        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
 
-[A[K        Then I expect something
+[A[K        [1;32mThen I expect something[0m
 
-    Scenario: Another parsed Scenario
-        Given I have a Step
+    [1;37mScenario[0m: [1;37mAnother parsed Scenario[0m
+        [1;33mGiven I have a Step[0m
 
-[A[K        Given I have a Step
-        When I do something
+[A[K        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
-        Then I expect something
+[A[K        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
 
-[A[K        Then I expect something
+[A[K        [1;32mThen I expect something[0m
 
-1 features (1 passed)
-3 scenarios (3 passed)
-9 steps (9 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m3[0m[1;37m scenarios [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
+[1;37m9[0m[1;37m steps [0m[1;37m([0m[1;32m9[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

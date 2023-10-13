@@ -1,19 +1,19 @@
-Feature: Support Scenario Outlines  # features/scenario-outline.feature
+Feature: Support Scenario Outlines  # [35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95mscenario-outline.feature[0m
     Radish shall support parsing
     of Scenario Outlines with valid Examples
 
     Scenario Outline: A Scenario Outline
-        Given I have the number <x>
-        And I have the number <y>
+        Given I have the number [1m<[0m[1;95mx[0m[1m>[0m
+        And I have the number [1m<[0m[1;95my[0m[1m>[0m
         When I add them up
-        Then I expect the sum to be <z>
+        Then I expect the sum to be [1m<[0m[1;95mz[0m[1m>[0m
 
     Examples:
         | x | y | z |
-        | 1 | 2 | 3 |
-        | 4 | 5 | 9 |
+        | [1;36m1[0m | [1;36m2[0m | [1;36m3[0m |
+        | [1;36m4[0m | [1;36m5[0m | [1;36m9[0m |
 
-1 features (1 passed)
-2 scenarios (2 passed)
-8 steps (8 passed)
+[1;36m1[0m features [1m([0m[1;36m1[0m passed[1m)[0m
+[1;36m2[0m scenarios [1m([0m[1;36m2[0m passed[1m)[0m
+[1;36m8[0m steps [1m([0m[1;36m8[0m passed[1m)[0m
 Run test-marker finished within a moment

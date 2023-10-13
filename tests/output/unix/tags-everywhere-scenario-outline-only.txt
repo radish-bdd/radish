@@ -1,33 +1,33 @@
-@foo
-@bar
-Feature: Support Tags everywhere  # features/tags-everywhere.feature
-    Radish shall support tags everywhere!
+[36m@foo[0m
+[36m@bar[0m
+[1;37mFeature[0m: [1;37mSupport Tags everywhere[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mtags-everywhere.feature[0m
+    [37mRadish shall support tags everywhere![0m
 
-    @scenario_outline
-    Scenario Outline: A Scenario Outline
-        Given I have the number <x>
+[36m    @scenario_outline[0m
+    [1;37mScenario Outline[0m: [1;37mA Scenario Outline[0m
+        [1;33mGiven I have the number [0m[1;33m<[0m[1;33mx[0m[1;33m>[0m
 
-[A[K        Given I have the number <x>
-        And I have the number <y>
+[A[K        [36mGiven I have the number [0m[1;37m<[0m[1;37mx[0m[1;37m>[0m
+        [1;33mAnd I have the number [0m[1;33m<[0m[1;33my[0m[1;33m>[0m
 
-[A[K        And I have the number <y>
-        When I add them up
+[A[K        [36mAnd I have the number [0m[1;37m<[0m[1;37my[0m[1;37m>[0m
+        [1;33mWhen I add them up[0m
 
-[A[K        When I add them up
-        Then I expect the sum to be <z>
+[A[K        [36mWhen I add them up[0m
+        [1;33mThen I expect the sum to be [0m[1;33m<[0m[1;33mz[0m[1;33m>[0m
 
-[A[K        Then I expect the sum to be <z>
+[A[K        [36mThen I expect the sum to be [0m[1;37m<[0m[1;37mz[0m[1;37m>[0m
 
-    Examples:
-        | x | y | z |
-        | 1 | 2 | 3 |
+    [1;37mExamples[0m:
+[1;37m        | x | y | z |[0m
+        [1;37m|[0m [1;33m1[0m [1;37m|[0m [1;33m2[0m [1;37m|[0m [1;33m3[0m [1;37m|[0m
 
-[A[K        | 1 | 2 | 3 |
-        | 4 | 5 | 9 |
+[A[K        [1;37m|[0m [1;32m1[0m [1;37m|[0m [1;32m2[0m [1;37m|[0m [1;32m3[0m [1;37m|[0m
+        [1;37m|[0m [1;33m4[0m [1;37m|[0m [1;33m5[0m [1;37m|[0m [1;33m9[0m [1;37m|[0m
 
-[A[K        | 4 | 5 | 9 |
+[A[K        [1;37m|[0m [1;32m4[0m [1;37m|[0m [1;32m5[0m [1;37m|[0m [1;32m9[0m [1;37m|[0m
 
-1 features (1 passed)
-2 scenarios (2 passed)
-8 steps (8 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m2[0m[1;37m scenarios [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
+[1;37m8[0m[1;37m steps [0m[1;37m([0m[1;32m8[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

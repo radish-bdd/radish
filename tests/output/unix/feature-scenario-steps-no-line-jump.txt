@@ -1,16 +1,16 @@
-Feature: Feature with a Scenario and Steps  # features/feature-scenario-steps.feature
-    Radish shall support parsing a Feature containing
-    a Scenario which contains multiple Steps
+[1;37mFeature[0m: [1;37mFeature with a Scenario and Steps[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mfeature-scenario-steps.feature[0m
+    [37mRadish shall support parsing a Feature containing[0m
+[37m    a Scenario which contains multiple Steps[0m
 
-    Scenario: Scenario with multiple Steps
-        Given I have a Step
-        Given I have a Step
-        When I do something
-        When I do something
-        Then I expect something
-        Then I expect something
+    [1;37mScenario[0m: [1;37mScenario with multiple Steps[0m
+        [1;33mGiven I have a Step[0m
+        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
+        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
+        [1;32mThen I expect something[0m
 
-1 features (1 passed)
-1 scenarios (1 passed)
-3 steps (3 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m3[0m[1;37m steps [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

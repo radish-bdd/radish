@@ -1,30 +1,30 @@
-Feature: Feature with multiple Scenarios and Steps  # features/feature-scenarios.feature
-    Radish shall support parsing a Feature containing
-    multiple Scenarios which contain multiple Steps
+[1;37mFeature[0m: [1;37mFeature with multiple Scenarios and Steps[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mfeature-scenarios.feature[0m
+    [37mRadish shall support parsing a Feature containing[0m
+[37m    multiple Scenarios which contain multiple Steps[0m
 
-    Scenario: One Scenario with multiple Steps
-        Given I have a Step
+    [1;37mScenario[0m: [1;37mOne Scenario with multiple Steps[0m
+        [1;33mGiven I have a Step[0m
 
-[A[K        Given I have a Step
-        When I do something
+[A[K        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
-        Then I expect something
+[A[K        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
 
-[A[K        Then I expect something
+[A[K        [1;32mThen I expect something[0m
 
-    Scenario: Another Scenario with multiple Steps
-        Given I have a Step
+    [1;37mScenario[0m: [1;37mAnother Scenario with multiple Steps[0m
+        [1;33mGiven I have a Step[0m
 
-[A[K        Given I have a Step
-        When I do something
+[A[K        [1;32mGiven I have a Step[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
-        Then I expect something
+[A[K        [1;32mWhen I do something[0m
+        [1;33mThen I expect something[0m
 
-[A[K        Then I expect something
+[A[K        [1;32mThen I expect something[0m
 
-1 features (1 passed)
-2 scenarios (2 passed)
-6 steps (6 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m2[0m[1;37m scenarios [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
+[1;37m6[0m[1;37m steps [0m[1;37m([0m[1;32m6[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

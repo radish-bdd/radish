@@ -1,12 +1,12 @@
-Feature: Ignore comments in Parser  # features/comments.feature
-    Radish shall ignore comments in Feature Files
+[1;37mFeature[0m: [1;37mIgnore comments in Parser[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mcomments.feature[0m
+    [37mRadish shall ignore comments in Feature Files[0m
 
-    Scenario: A Scenario
-        When I do something
+    [1;37mScenario[0m: [1;37mA Scenario[0m
+        [1;33mWhen I do something[0m
 
-[A[K        When I do something
+[A[K        [1;32mWhen I do something[0m
 
-1 features (1 passed)
-1 scenarios (1 passed)
-1 steps (1 passed)
-Run test-marker finished within a moment
+[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[1;37m1[0m[1;37m steps [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
+[36mRun test-marker finished within a moment[0m

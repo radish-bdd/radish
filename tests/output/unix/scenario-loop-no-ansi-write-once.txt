@@ -1,4 +1,4 @@
-Feature: Support Scenario Loop  # features/scenario-loop.feature
+Feature: Support Scenario Loop  # [35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95mscenario-loop.feature[0m
     Radish shall support Scenario Loops.
 
     Scenario Loop: This is a looped Scenario
@@ -6,11 +6,11 @@ Feature: Support Scenario Loop  # features/scenario-loop.feature
         When I execute it
         Then I expect it to pass
 
-    Iterations: 2
-        | 0                  |
-        | 1                  |
+    Iterations: [1;36m2[0m
+        | [1;36m0[0m                  |
+        | [1;36m1[0m                  |
 
-1 features (1 passed)
-2 scenarios (2 passed)
-6 steps (6 passed)
+[1;36m1[0m features [1m([0m[1;36m1[0m passed[1m)[0m
+[1;36m2[0m scenarios [1m([0m[1;36m2[0m passed[1m)[0m
+[1;36m6[0m steps [1m([0m[1;36m6[0m passed[1m)[0m
 Run test-marker finished within a moment

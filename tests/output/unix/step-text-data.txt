@@ -1,60 +1,34 @@
-[1;37mFeature[0m: [1;37mStep Text Data[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mstep-text-data.feature[0m
-    [37mRadish shall support Step Text Data[0m
+Feature: Step Text Data  # features/step-text-data.feature
+    Radish shall support Step Text Data
 
-    [1;37mScenario[0m: [1;37mA Step with Text[0m
-        [1;33mGiven I have the following quote[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                To be or not to be[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-
-[A[K
-[A[K
-[A[K
-[A[K        [1;32mGiven I have the following quote[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                To be or not to be[0m
-[1;36m            [0m[1;36m""[0m[1;36m"[0m
-        [1;33mWhen I look for it's author[0m
-
-[A[K        [1;32mWhen I look for it's author[0m
-        [1;33mThen I will find Shakespeare[0m
-
-[A[K        [1;32mThen I will find Shakespeare[0m
-
-    [1;37mScenario[0m: [1;37mYAML definition in Step with Text[0m
-        [1;33mWhen YAML specification is set to[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                version: [0m[36m'3'[0m
-[36m                services:[0m
-[36m                  webapp:[0m
-[36m                    build: .[0m[36m/[0m[36mdir[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
+    Scenario: A Step with Text
+        Given I have the following quote
+            """
+                To be or not to be
+            """
 
 [A[K
 [A[K
 [A[K
-[A[K
-[A[K
-[A[K
-[A[K        [1;32mWhen YAML specification is set to[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                version: [0m[36m'3'[0m
-[36m                services:[0m
-[36m                  webapp:[0m
-[36m                    build: .[0m[36m/[0m[36mdir[0m
-[1;36m            [0m[1;36m""[0m[1;36m"[0m
-        [1;33mThen YAML specification contains proper data[0m
+[A[K        Given I have the following quote
+            """
+                To be or not to be
+            """
+        When I look for it's author
 
-[A[K        [1;32mThen YAML specification contains proper data[0m
+[A[K        When I look for it's author
+        Then I will find Shakespeare
 
-    [1;37mScenario[0m: [1;37mA step with text on endigs[0m
-        [1;33mWhen YAML specification is set to[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                version: [0m[36m'3'[0m
-[36m                services:[0m
-[36m                  webapp:[0m
-[36m                    build: .[0m[36m/[0m[36mdir[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
+[A[K        Then I will find Shakespeare
+
+    Scenario: YAML definition in Step with Text
+        When YAML specification is set to
+            """
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir
+            """
 
 [A[K
 [A[K
@@ -62,18 +36,44 @@
 [A[K
 [A[K
 [A[K
-[A[K        [1;32mWhen YAML specification is set to[0m
-[1;37m            [0m[1;37m""[0m[1;37m"[0m
-[36m                version: [0m[36m'3'[0m
-[36m                services:[0m
-[36m                  webapp:[0m
-[36m                    build: .[0m[36m/[0m[36mdir[0m
-[1;36m            [0m[1;36m""[0m[1;36m"[0m
-        [1;33mThen YAML specification contains proper data[0m
+[A[K        When YAML specification is set to
+            """
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir
+            """
+        Then YAML specification contains proper data
 
-[A[K        [1;32mThen YAML specification contains proper data[0m
+[A[K        Then YAML specification contains proper data
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m3[0m[1;37m scenarios [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
-[1;37m7[0m[1;37m steps [0m[1;37m([0m[1;32m7[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+    Scenario: A step with text on endigs
+        When YAML specification is set to
+            """
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir
+            """
+
+[A[K
+[A[K
+[A[K
+[A[K
+[A[K
+[A[K
+[A[K        When YAML specification is set to
+            """
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir
+            """
+        Then YAML specification contains proper data
+
+[A[K        Then YAML specification contains proper data
+
+1 features (1 passed)
+3 scenarios (3 passed)
+7 steps (7 passed)
+Run test-marker finished within a moment

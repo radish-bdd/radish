@@ -1,23 +1,23 @@
-[1;37mFeature[0m: [1;37mRestricted site support[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mprecondition-level-0.feature[0m
-    [37mAs a user of AwesomeSite[0m
-[37m    I want to restrict my personal sites[0m
-[37m    to specific users.[0m
+Feature: Restricted site support  # features/precondition-level-0.feature
+    As a user of AwesomeSite
+    I want to restrict my personal sites
+    to specific users.
 
-    [1;37mScenario[0m: [1;37mHave a multi user setup[0m
-        [1;33mGiven a user named Bruce[0m
+    Scenario: Have a multi user setup
+        Given a user named Bruce
 
-[A[K        [1;32mGiven a user named Bruce[0m
-        [1;33mAnd a user named Peter[0m
+[A[K        Given a user named Bruce
+        And a user named Peter
 
-[A[K        [1;32mAnd a user named Peter[0m
-        [1;33mAnd a user named Tony[0m
+[A[K        And a user named Peter
+        And a user named Tony
 
-[A[K        [1;32mAnd a user named Tony[0m
-        [1;33mAnd a personal site owned by Bruce[0m
+[A[K        And a user named Tony
+        And a personal site owned by Bruce
 
-[A[K        [1;32mAnd a personal site owned by Bruce[0m
+[A[K        And a personal site owned by Bruce
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m4[0m[1;37m steps [0m[1;37m([0m[1;32m4[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (1 passed)
+1 scenarios (1 passed)
+4 steps (4 passed)
+Run test-marker finished within a moment

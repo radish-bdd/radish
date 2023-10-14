@@ -1,30 +1,30 @@
-[1;37mFeature[0m: [1;37mBackground with subsequent tagged Scenario[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mbackground-subsequent-tag.feature[0m
-    [37mRadish shall support parsing Backgrounds with a[0m
-[37m    subsequent parsed Scenario.[0m
+Feature: Background with subsequent tagged Scenario  # features/background-subsequent-tag.feature
+    Radish shall support parsing Backgrounds with a
+    subsequent parsed Scenario.
 
-    [1;37mBackground[0m: [1;37mA simple Background[0m
-        [36mGiven I have the number [0m[1;36m5[0m
-        [36mAnd I have the number [0m[1;36m3[0m
+    Background: A simple Background
+        Given I have the number 5
+        And I have the number 3
 
-[36m    @foo[0m
-[36m    @bar[0m
-    [1;37mScenario[0m: [1;37mAdd numbers[0m
-[3;37m      From Background: A simple Background[0m
-        [1;33mGiven I have the number [0m[1;33m5[0m
+    @foo
+    @bar
+    Scenario: Add numbers
+      From Background: A simple Background
+        Given I have the number 5
 
-[A[K        [1;32mGiven I have the number [0m[1;32m5[0m
-        [1;33mAnd I have the number [0m[1;33m3[0m
+[A[K        Given I have the number 5
+        And I have the number 3
 
-[A[K        [1;32mAnd I have the number [0m[1;32m3[0m
-[3;37m      From Scenario[0m
-        [1;33mWhen I add them up[0m
+[A[K        And I have the number 3
+      From Scenario
+        When I add them up
 
-[A[K        [1;32mWhen I add them up[0m
-        [1;33mThen I expect the sum to be [0m[1;33m8[0m
+[A[K        When I add them up
+        Then I expect the sum to be 8
 
-[A[K        [1;32mThen I expect the sum to be [0m[1;32m8[0m
+[A[K        Then I expect the sum to be 8
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m2[0m[1;37m steps [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (1 passed)
+1 scenarios (1 passed)
+2 steps (2 passed)
+Run test-marker finished within a moment

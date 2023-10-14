@@ -1,22 +1,22 @@
-[1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30meverything_with_failures.feature[0m: 
+features/everything_with_failures.feature: 
 ..FFF..
 
-[1;31mFailures:[0m
-[35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95meverything_with_failures.feature[0m: Subtract numbers wrongly
-    [31mThen I expect the difference to be [0m[1;31m3[0m
-      [1;31mAttributeError[0m: [31m'int'[0m[31m object has no attribute [0m[31m'step'[0m
+Failures:
+features/everything_with_failures.feature: Subtract numbers wrongly
+    Then I expect the difference to be 3
+      AttributeError: 'int' object has no attribute 'step'
 
-[35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95meverything_with_failures.feature[0m: A Scenario Outline - row [1;36m0[0m
-    [31mThen I expect the sum to be [0m[1;31m3[0m
-      [1;31mAssertionError[0m: [31mThe expected sum [0m[1;31m3[0m[31m does not match actual sum [0m[1;31m11[0m
+features/everything_with_failures.feature: A Scenario Outline - row 0
+    Then I expect the sum to be 3
+      AssertionError: The expected sum 3 does not match actual sum 11
 
-[35m/Users/trevorkeegan/dev/radish/tests/features/[0m[95meverything_with_failures.feature[0m: A Scenario Outline - row [1;36m1[0m
-    [31mThen I expect the sum to be [0m[1;31m9[0m
-      [1;31mAssertionError[0m: [31mThe expected sum [0m[1;31m9[0m[31m does not match actual sum [0m[1;31m17[0m
+features/everything_with_failures.feature: A Scenario Outline - row 1
+    Then I expect the sum to be 9
+      AssertionError: The expected sum 9 does not match actual sum 17
 
 
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m0[0m[1;32m passed[0m[1;37m, [0m[1;31m1[0m[1;31m failed[0m[1;37m)[0m
-[1;37m7[0m[1;37m scenarios [0m[1;37m([0m[1;32m4[0m[1;32m passed[0m[1;37m, [0m[1;31m3[0m[1;31m failed[0m[1;37m)[0m
-[1;37m20[0m[1;37m steps [0m[1;37m([0m[1;32m17[0m[1;32m passed[0m[1;37m, [0m[1;31m3[0m[1;31m failed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (0 passed, 1 failed)
+7 scenarios (4 passed, 3 failed)
+20 steps (17 passed, 3 failed)
+Run test-marker finished within a moment

@@ -1,7 +1,7 @@
-[1;31mError[0m: [31mFound step table without previous step definition on line [0m[1;31m6[0m
+Error: Found step table without previous step definition on line 6
 
-[31mError Oracle says:[0m
-[31mYou have a SyntaxError in your feature file![0m
-[31mPlease have a look into the radish documentation to find out which[0m
-[31mfeatures radish supports and how you could use them:[0m
-[31mLink: [0m[4;31mhttps://github.com/radish-bdd/radish[0m
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish

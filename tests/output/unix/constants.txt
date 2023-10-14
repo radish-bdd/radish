@@ -1,43 +1,43 @@
-[36m@[0m[1;36mconstant[0m[1;36m([0m[36mSomeNumber: [0m[1;36m5[0m[1;36m)[0m
-[1;37mFeature[0m: [1;37mTest summing numbers[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mconstants.feature[0m
-    [37mIn order to test the constant[0m
-[37m    features of radish I test[0m
-[37m    to sum numbers.[0m
+@constant(SomeNumber: 5)
+Feature: Test summing numbers  # features/constants.feature
+    In order to test the constant
+    features of radish I test
+    to sum numbers.
 
-[36m    @[0m[1;36mconstant[0m[1;36m([0m[36mExpectedResult: [0m[1;36m8[0m[1;36m)[0m
-    [1;37mScenario[0m: [1;37mSum two numbers[0m
-        [1;33mGiven I have the number $[0m[1;33m{[0m[1;33mSomeNumber[0m[1;33m}[0m
+    @constant(ExpectedResult: 8)
+    Scenario: Sum two numbers
+        Given I have the number ${SomeNumber}
 
-[A[K        [1;32mGiven I have the number $[0m[1;32m{[0m[1;32mSomeNumber[0m[1;32m}[0m
-        [1;33mAnd I have the number [0m[1;33m3[0m
+[A[K        Given I have the number ${SomeNumber}
+        And I have the number 3
 
-[A[K        [1;32mAnd I have the number [0m[1;32m3[0m
-        [1;33mWhen I add them up[0m
+[A[K        And I have the number 3
+        When I add them up
 
-[A[K        [1;32mWhen I add them up[0m
-        [1;33mThen I expect the sum to be $[0m[1;33m{[0m[1;33mExpectedResult[0m[1;33m}[0m
+[A[K        When I add them up
+        Then I expect the sum to be ${ExpectedResult}
 
-[A[K        [1;32mThen I expect the sum to be $[0m[1;32m{[0m[1;32mExpectedResult[0m[1;32m}[0m
+[A[K        Then I expect the sum to be ${ExpectedResult}
 
-[36m    @[0m[1;36mconstant[0m[1;36m([0m[36mExpectedResult: [0m[1;36m10[0m[1;36m)[0m
-    [1;37mScenario[0m: [1;37mSum three numbers[0m
-        [1;33mGiven I have the number $[0m[1;33m{[0m[1;33mSomeNumber[0m[1;33m}[0m
+    @constant(ExpectedResult: 10)
+    Scenario: Sum three numbers
+        Given I have the number ${SomeNumber}
 
-[A[K        [1;32mGiven I have the number $[0m[1;32m{[0m[1;32mSomeNumber[0m[1;32m}[0m
-        [1;33mAnd I have the number [0m[1;33m3[0m
+[A[K        Given I have the number ${SomeNumber}
+        And I have the number 3
 
-[A[K        [1;32mAnd I have the number [0m[1;32m3[0m
-        [1;33mAnd I have the number [0m[1;33m2[0m
+[A[K        And I have the number 3
+        And I have the number 2
 
-[A[K        [1;32mAnd I have the number [0m[1;32m2[0m
-        [1;33mWhen I add them up[0m
+[A[K        And I have the number 2
+        When I add them up
 
-[A[K        [1;32mWhen I add them up[0m
-        [1;33mThen I expect the sum to be $[0m[1;33m{[0m[1;33mExpectedResult[0m[1;33m}[0m
+[A[K        When I add them up
+        Then I expect the sum to be ${ExpectedResult}
 
-[A[K        [1;32mThen I expect the sum to be $[0m[1;32m{[0m[1;32mExpectedResult[0m[1;32m}[0m
+[A[K        Then I expect the sum to be ${ExpectedResult}
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m2[0m[1;37m scenarios [0m[1;37m([0m[1;32m2[0m[1;32m passed[0m[1;37m)[0m
-[1;37m9[0m[1;37m steps [0m[1;37m([0m[1;32m9[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (1 passed)
+2 scenarios (2 passed)
+9 steps (9 passed)
+Run test-marker finished within a moment

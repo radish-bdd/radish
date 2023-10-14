@@ -1,19 +1,19 @@
-[1;36m1[0m[1;36m. [0m[1;37mFeature[0m: [1;37mFeature with a Scenario and Steps[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mfeature-scenario-steps.feature[0m
-    [37mRadish shall support parsing a Feature containing[0m
-[37m    a Scenario which contains multiple Steps[0m
+1. Feature: Feature with a Scenario and Steps  # features/feature-scenario-steps.feature
+    Radish shall support parsing a Feature containing
+    a Scenario which contains multiple Steps
 
-    [1;36m1[0m[1;36m. [0m[1;37mScenario[0m: [1;37mScenario with multiple Steps[0m
-        [1;33m1[0m[1;33m. [0m[1;33mGiven I have a Step[0m
+    1. Scenario: Scenario with multiple Steps
+        1. Given I have a Step
 
-[A[K        [1;36m1[0m[1;36m. [0m[1;32mGiven I have a Step[0m
-        [1;33m2[0m[1;33m. [0m[1;33mWhen I do something[0m
+[A[K        1. Given I have a Step
+        2. When I do something
 
-[A[K        [1;36m2[0m[1;36m. [0m[1;32mWhen I do something[0m
-        [1;33m3[0m[1;33m. [0m[1;33mThen I expect something[0m
+[A[K        2. When I do something
+        3. Then I expect something
 
-[A[K        [1;36m3[0m[1;36m. [0m[1;32mThen I expect something[0m
+[A[K        3. Then I expect something
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m3[0m[1;37m steps [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

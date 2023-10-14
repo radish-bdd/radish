@@ -1,1 +1,1 @@
-[1;31mError: [0m[31mNo feature or no scenario specified in at least one of the given feature files[0m
+Error: No feature or no scenario specified in at least one of the given feature files

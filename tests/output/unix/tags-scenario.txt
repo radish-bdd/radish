@@ -1,20 +1,20 @@
-[1;37mFeature[0m: [1;37mTagged Scenarios[0m  # [1;30m/Users/trevorkeegan/dev/radish/tests/features/[0m[1;30mtags-scenario.feature[0m
-    [37mRadish shall support tagged Scenarios.[0m
+Feature: Tagged Scenarios  # features/tags-scenario.feature
+    Radish shall support tagged Scenarios.
 
-[36m    @foo[0m
-[36m    @bar[0m
-    [1;37mScenario[0m: [1;37mScenario with Tags[0m
-        [1;33mGiven I have a Step[0m
+    @foo
+    @bar
+    Scenario: Scenario with Tags
+        Given I have a Step
 
-[A[K        [1;32mGiven I have a Step[0m
-        [1;33mWhen I do something[0m
+[A[K        Given I have a Step
+        When I do something
 
-[A[K        [1;32mWhen I do something[0m
-        [1;33mThen I expect something[0m
+[A[K        When I do something
+        Then I expect something
 
-[A[K        [1;32mThen I expect something[0m
+[A[K        Then I expect something
 
-[1;37m1[0m[1;37m features [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m1[0m[1;37m scenarios [0m[1;37m([0m[1;32m1[0m[1;32m passed[0m[1;37m)[0m
-[1;37m3[0m[1;37m steps [0m[1;37m([0m[1;32m3[0m[1;32m passed[0m[1;37m)[0m
-[36mRun test-marker finished within a moment[0m
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

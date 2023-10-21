@@ -1,88 +1,105 @@
-Feature: Feature with unicode all over 🐢 and 🐧  # features/unicode.feature
-    Radish shall support unicode
+[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+[bold red]Error[/bold red]: [red]No Feature found in file /Users/trevorkeegan/dev/radish/tests/features/empty.feature
 
-    Background: A simple Background with 🐢 and 🐧
-        Given I have the number 5
-        And I have the number 3
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[/red]
+[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+[bold white]Feature[/bold white]: [bold white]Feature with a Scenario and Steps[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/feature-scenario-steps.feature[/bold black]
+    [white]Radish shall support parsing a Feature containing
+    a Scenario which contains multiple Steps[/white]
 
-    Scenario: Scenario with multiple Steps with 🐢 and 🐧
-      From Background: A simple Background with 🐢 and 🐧
-        Given I have the number 5
+    [bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        Given I have the number 5
-        And I have the number 3
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Feature with multiple Scenarios and Steps[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/feature-scenarios.feature[/bold black]
+    [white]Radish shall support parsing a Feature containing
+    multiple Scenarios which contain multiple Steps[/white]
 
-[A[K        And I have the number 3
-      From Scenario
-        Given I have a Step with 🐢 and 🐧
+    [bold white]Scenario[/bold white]: [bold white]One Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        Given I have a Step with 🐢 and 🐧
-        When I do something
+    [bold white]Scenario[/bold white]: [bold white]Another Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        When I do something
-        Then I expect something
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
+[bold white]6 steps ([/bold white][bold green]6 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Ignore comments in Parser[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/comments.feature[/bold black]
+    [white]Radish shall ignore comments in Feature Files[/white]
 
-[A[K        Then I expect something
+    [bold white]Scenario[/bold white]: [bold white]A Scenario[/bold white]
+        [bold green]When I do something[/bold green]
 
-    Scenario Outline: A Scenario Outline 🐢 and 🐧
-      From Background: A simple Background with 🐢 and 🐧
-        Given I have the number 5
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 steps ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Funktionalität[/bold white]: [bold white]Das ist eine radish Funktionalität[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/german.feature[/bold black]
+    [white]Als radish Nutzer moechte ich meine Testcases
+    auch in Deutsch schreiben koennen.[/white]
 
-[A[K        Given I have the number 5
-        And I have the number 3
+    [bold white]Szenario[/bold white]: [bold white]Dies ist ein Szenario[/bold white]
+        [bold green]Gegeben sei etwas[/bold green]
+        [bold green]Wenn ich etwas mache[/bold green]
+        [bold green]Dann erwarte ich etwas[/bold green]
 
-[A[K        And I have the number 3
-      From Scenario
-        Given I have the number <x> 🐢 and 🐧
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Feature with unicode all over 🐢 and 🐧[/bold white]  # [bold black]features/unicode.feature[/bold black]
+    [white]Radish shall support unicode[/white]
 
-[A[K        Given I have the number <x> 🐢 and 🐧
-        And I have the number <y>
+    [bold white]Background[/bold white]: [bold white]A simple Background with 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
 
-[A[K        And I have the number <y>
-        When I add them up
+    [bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps with 🐢 and 🐧[/bold white]
+        [bold green]Given I have the number 5[/bold green]
+        [bold green]And I have the number 3[/bold green]
+        [bold green]Given I have a Step with 🐢 and 🐧[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        When I add them up
-        Then I expect the sum to be <z>
+    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
+        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan] 🐢 and 🐧[/cyan]
+        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [cyan]When I add them up[/cyan]
+        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
 
-[A[K        Then I expect the sum to be <z>
+    [bold white]Examples[/bold white]:
+[bold white]        | x | y | z  |[/bold white]
+        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]11[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]17[/bold green] [bold white]|[/bold white]
 
-    Examples:
-        | x | y | z  |
-        | 1 | 2 | 11 |
+    [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
+        [cyan]Given I have an instable function 🐢 and 🐧[/cyan]
+        [cyan]When I execute it[/cyan]
+        [cyan]Then I expect it to pass[/cyan]
 
-[A[K        | 1 | 2 | 11 |
-        | 4 | 5 | 17 |
+    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
+        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
 
-[A[K        | 4 | 5 | 17 |
-
-    Scenario Loop: This is a looped Scenario 🐢 and 🐧
-      From Background: A simple Background with 🐢 and 🐧
-        Given I have the number 5
-
-[A[K        Given I have the number 5
-        And I have the number 3
-
-[A[K        And I have the number 3
-      From Scenario
-        Given I have an instable function 🐢 and 🐧
-
-[A[K        Given I have an instable function 🐢 and 🐧
-        When I execute it
-
-[A[K        When I execute it
-        Then I expect it to pass
-
-[A[K        Then I expect it to pass
-
-    Iterations: 2
-        | 0 |
-
-[A[K        | 0 |
-        | 1 |
-
-[A[K        | 1 |
-
-1 features (1 passed)
-5 scenarios (5 passed)
-17 steps (17 passed)
-Run test-marker finished within a moment
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]5 scenarios ([/bold white][bold green]5 passed[/bold green][bold white])[/bold white]
+[bold white]17 steps ([/bold white][bold green]17 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]

@@ -1,7 +1,8 @@
-Error: No Feature found in file features/empty.feature
+[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+[bold red]Error[/bold red]: [red]No Feature found in file features/empty.feature
 
 Error Oracle says:
 You have a SyntaxError in your feature file!
 Please have a look into the radish documentation to find out which
 features radish supports and how you could use them:
-Link: https://github.com/radish-bdd/radish
+Link: https://github.com/radish-bdd/radish[/red]

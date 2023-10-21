@@ -1,29 +1,373 @@
-@foo
-@bar
-Feature: Support Tags everywhere  # features/tags-everywhere.feature
-    Radish shall support tags everywhere!
+[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+[bold red]Error[/bold red]: [red]No Feature found in file /Users/trevorkeegan/dev/radish/tests/features/empty.feature
 
-    @scenario_loop
-    Scenario Loop: Scenario Loop with Tags
-        Given I have a Step
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[/red]
+[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+[bold white]Feature[/bold white]: [bold white]Feature with a Scenario and Steps[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/feature-scenario-steps.feature[/bold black]
+    [white]Radish shall support parsing a Feature containing
+    a Scenario which contains multiple Steps[/white]
 
-[A[K        Given I have a Step
-        When I do something
+    [bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        When I do something
-        Then I expect something
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Feature with multiple Scenarios and Steps[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/feature-scenarios.feature[/bold black]
+    [white]Radish shall support parsing a Feature containing
+    multiple Scenarios which contain multiple Steps[/white]
 
-[A[K        Then I expect something
+    [bold white]Scenario[/bold white]: [bold white]One Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-    Iterations: 2
-        | 0 |
+    [bold white]Scenario[/bold white]: [bold white]Another Scenario with multiple Steps[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
 
-[A[K        | 0 |
-        | 1 |
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
+[bold white]6 steps ([/bold white][bold green]6 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Ignore comments in Parser[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/comments.feature[/bold black]
+    [white]Radish shall ignore comments in Feature Files[/white]
 
-[A[K        | 1 |
+    [bold white]Scenario[/bold white]: [bold white]A Scenario[/bold white]
+        [bold green]When I do something[/bold green]
 
-1 features (1 passed)
-2 scenarios (2 passed)
-6 steps (6 passed)
-Run test-marker finished within a moment
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 steps ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Funktionalität[/bold white]: [bold white]Das ist eine radish Funktionalität[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/german.feature[/bold black]
+    [white]Als radish Nutzer moechte ich meine Testcases
+    auch in Deutsch schreiben koennen.[/white]
+
+    [bold white]Szenario[/bold white]: [bold white]Dies ist ein Szenario[/bold white]
+        [bold green]Gegeben sei etwas[/bold green]
+        [bold green]Wenn ich etwas mache[/bold green]
+        [bold green]Dann erwarte ich etwas[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Feature with unicode all over 🐢 and 🐧[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/unicode.feature[/bold black]
+    [white]Radish shall support unicode[/white]
+
+    [bold white]Background[/bold white]: [bold white]A simple Background with 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
+
+    [bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps with 🐢 and 🐧[/bold white]
+        [bold green]Given I have the number 5[/bold green]
+        [bold green]And I have the number 3[/bold green]
+        [bold green]Given I have a Step with 🐢 and 🐧[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
+        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan] 🐢 and 🐧[/cyan]
+        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [cyan]When I add them up[/cyan]
+        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+
+    [bold white]Examples[/bold white]:
+[bold white]        | x | y | z  |[/bold white]
+        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]11[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]17[/bold green] [bold white]|[/bold white]
+
+    [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario 🐢 and 🐧[/bold white]
+        [cyan]Given I have the number 5[/cyan]
+        [cyan]And I have the number 3[/cyan]
+        [cyan]Given I have an instable function 🐢 and 🐧[/cyan]
+        [cyan]When I execute it[/cyan]
+        [cyan]Then I expect it to pass[/cyan]
+
+    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
+        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]5 scenarios ([/bold white][bold green]5 passed[/bold green][bold white])[/bold white]
+[bold white]17 steps ([/bold white][bold green]17 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold red]Error[/bold red]: [red]radish supports only one Feature per feature file
+
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[/red]
+[bold white]Feature[/bold white]: [bold white]Scenarios can be empty[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/empty-scenario.feature[/bold black]
+    [white]Radish should allow empty Scenarios[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]This is an empty Scenario[/bold white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]0 steps ([/bold white][bold green]0 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Support Scenario Outlines[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/scenario-outline.feature[/bold black]
+    [white]Radish shall support parsing
+    of Scenario Outlines with valid Examples[/white]
+
+    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline[/bold white]
+        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
+        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [cyan]When I add them up[/cyan]
+        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+
+    [bold white]Examples[/bold white]:
+[bold white]        | x | y | z |[/bold white]
+        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
+[bold white]8 steps ([/bold white][bold green]8 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold red]Error[/bold red]: [red]Scenario does not support Examples. Use 'Scenario Outline'
+
+Error Oracle says:
+You have a SyntaxError in your feature file!
+Please have a look into the radish documentation to find out which
+features radish supports and how you could use them:
+Link: https://github.com/radish-bdd/radish[/red]
+[bold white]Feature[/bold white]: [bold white]Support Scenario Loop[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/scenario-loop.feature[/bold black]
+    [white]Radish shall support Scenario Loops.[/white]
+
+    [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario[/bold white]
+        [cyan]Given I have an instable function[/cyan]
+        [cyan]When I execute it[/cyan]
+        [cyan]Then I expect it to pass[/cyan]
+
+    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
+        [bold green]When YAML specification is set to[/bold green][bold white]
+            """[/bold white][cyan]
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir[/cyan][bold cyan]
+            """[/bold cyan]
+        [bold green]Then YAML specification contains proper data[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 scenarios ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[bold white]7 steps ([/bold white][bold green]7 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Tagged Features[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-feature.feature[/bold black]
+    [white]Radish shall support tagged Features.[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]do something[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Tagged Features[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-feature.feature[/bold black]
+    [white]Radish shall support tagged Features.[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]do something[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Tagged Features[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-feature.feature[/bold black]
+    [white]Radish shall support tagged Features.[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]do something[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Tagged Features[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-feature.feature[/bold black]
+    [white]Radish shall support tagged Features.[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]do something[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Tagged Scenarios[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-scenario.feature[/bold black]
+    [white]Radish shall support tagged Scenarios.[/white]
+
+[cyan]    @foo
+[/cyan][cyan]    @bar
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Tagged Scenarios[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-scenario.feature[/bold black]
+    [white]Radish shall support tagged Scenarios.[/white]
+
+[cyan]    @foo
+[/cyan][cyan]    @bar
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Tagged Scenarios[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-scenario.feature[/bold black]
+    [white]Radish shall support tagged Scenarios.[/white]
+
+[cyan]    @foo
+[/cyan][cyan]    @bar
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[bold white]Feature[/bold white]: [bold white]Tagged Scenarios[/bold white]  # [bold black]/Users/trevorkeegan/dev/radish/tests/features/tags-scenario.feature[/bold black]
+    [white]Radish shall support tagged Scenarios.[/white]
+
+[cyan]    @foo
+[/cyan][cyan]    @bar
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Support Tags everywhere[/bold white]  # [bold black]features/tags-everywhere.feature[/bold black]
+    [white]Radish shall support tags everywhere![/white]
+
+[cyan]    @regular_scenario
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Regular Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[cyan]    @scenario_outline
+[/cyan]    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline[/bold white]
+        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
+        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [cyan]When I add them up[/cyan]
+        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+
+    [bold white]Examples[/bold white]:
+[bold white]        | x | y | z |[/bold white]
+        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
+
+[cyan]    @scenario_loop
+[/cyan]    [bold white]Scenario Loop[/bold white]: [bold white]Scenario Loop with Tags[/bold white]
+        [cyan]Given I have a Step[/cyan]
+        [cyan]When I do something[/cyan]
+        [cyan]Then I expect something[/cyan]
+
+    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
+        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]5 scenarios ([/bold white][bold green]5 passed[/bold green][bold white])[/bold white]
+[bold white]17 steps ([/bold white][bold green]17 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Support Tags everywhere[/bold white]  # [bold black]features/tags-everywhere.feature[/bold black]
+    [white]Radish shall support tags everywhere![/white]
+
+[cyan]    @regular_scenario
+[/cyan]    [bold white]Scenario[/bold white]: [bold white]Regular Scenario with Tags[/bold white]
+        [bold green]Given I have a Step[/bold green]
+        [bold green]When I do something[/bold green]
+        [bold green]Then I expect something[/bold green]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Support Tags everywhere[/bold white]  # [bold black]features/tags-everywhere.feature[/bold black]
+    [white]Radish shall support tags everywhere![/white]
+
+[cyan]    @scenario_outline
+[/cyan]    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline[/bold white]
+        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
+        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [cyan]When I add them up[/cyan]
+        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+
+    [bold white]Examples[/bold white]:
+[bold white]        | x | y | z |[/bold white]
+        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
+[bold white]8 steps ([/bold white][bold green]8 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]
+[cyan]@foo
+[/cyan][cyan]@bar
+[/cyan][bold white]Feature[/bold white]: [bold white]Support Tags everywhere[/bold white]  # [bold black]features/tags-everywhere.feature[/bold black]
+    [white]Radish shall support tags everywhere![/white]
+
+[cyan]    @scenario_loop
+[/cyan]    [bold white]Scenario Loop[/bold white]: [bold white]Scenario Loop with Tags[/bold white]
+        [cyan]Given I have a Step[/cyan]
+        [cyan]When I do something[/cyan]
+        [cyan]Then I expect something[/cyan]
+
+    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
+        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+
+[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
+[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
+[bold white]6 steps ([/bold white][bold green]6 passed[/bold green][bold white])[/bold white]
+[cyan]Run test-marker finished within a moment[/cyan]

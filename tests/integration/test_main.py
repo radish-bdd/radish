@@ -380,7 +380,7 @@ def test_main_cli_calls(
 
         # this is how to capture the current behavior into the expected results to
         # adopt breaking changes.
-        # with io.open(expected_output_file, "w", encoding="utf-8") as output_file:
+        #with io.open(expected_output_file, "w", encoding="utf-8") as output_file:
         #    output_file.write(actual_output)
 
     # then

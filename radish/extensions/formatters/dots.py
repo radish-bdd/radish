@@ -12,7 +12,11 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import styled_text, console_write as write
+
+from radish.printer import Printer, styled_text
+
+printer = Printer()
+write = printer.write
 
 
 @extension

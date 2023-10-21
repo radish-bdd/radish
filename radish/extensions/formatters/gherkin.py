@@ -14,7 +14,11 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.utils import console_write as write, styled_text, ANSI_LINE_JUMP_SEQUENCE
+
+from radish.printer import Printer, ANSI_LINE_JUMP_SEQUENCE, styled_text
+
+printer = Printer()
+write = printer.write
 
 
 @extension

@@ -16,8 +16,10 @@ from .exceptions import (
     HookError,
     SameStepError,
 )
-from .utils import Failure, console_write, styled_text
+from .utils import Failure
 
+from .printer import Printer, styled_text
+printer = Printer()
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 
@@ -26,14 +28,14 @@ def write_error(text):
     """
     Writes the given text to the console
     """
-    console_write("{0}: {1}".format(styled_text("Error", "bold red"), styled_text(text, "red")))
+    printer.write("{0}: {1}".format(styled_text("Error", "bold red"), styled_text(text, "red")))
 
 
 def write_failure(failure):
     """
     Writes the failure to the console
     """
-    console_write("\n{0}".format(styled_text(failure.traceback, "red")))
+    printer.write("\n{0}".format(styled_text(failure.traceback, "red")))
 
 
 def abort(return_code):
@@ -84,7 +86,7 @@ def handle_exception(exception):
         write_error(exception)
         abort(1)
     elif isinstance(exception, KeyboardInterrupt):
-        console_write("Aborted by the user...")
+        printer.write("Aborted by the user...")
         abort(1)
     else:
         write_error(exception)

@@ -14,7 +14,11 @@ import yaml
 from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
-from radish.utils import get_func_arg_names, get_func_location, locate, styled_text, console_write as write
+from radish.utils import get_func_arg_names, get_func_location, locate
+from radish.printer import Printer, styled_text
+
+printer = Printer()
+write = printer.write
 
 
 def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage=None, cover_show_missing=False):
@@ -30,7 +34,6 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
                 ),
                 "magenta",
             ),
-            stderr=True,
             end="",
         )
         return 3
@@ -46,7 +49,6 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
             styled_text(
                 "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs), "magenta"
             ),
-            stderr=True,
             end="",
         )
 
@@ -63,7 +65,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
 
         if not match_config:
             # its like this is word wrapping and injecting newlines
-            write(styled_text(f"No sentences found in {match_config_file} to test against", "magenta"))
+            write(styled_text(f"No sentences found in {match_config_file} to test against\n", "magenta"))
             return 5
 
         write(
@@ -76,7 +78,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         covered_steps = covered_steps.union(x["should_match"] for x in match_config if "should_match" in x)
 
         # newline
-        sys.stdout.write("\n")
+        write("\n")
 
     report = styled_text("{0} sentences (".format(failed + passed), "bold white")
     if passed > 0:
@@ -120,7 +122,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
             for step in missing_steps:
                 missing_step_report += "- {0} at ".format(styled_text(step[0], "cyan"))
                 missing_step_report += styled_text(step[1], "cyan") + "\n"
-            sys.stdout.write(str(missing_step_report))
+            write(str(missing_step_report))
 
     return ret
 
@@ -185,7 +187,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
 
 def test_step_not_match(sentence, expected_not_matching_step, steps):
     step_to_print = styled_text(expected_not_matching_step, "cyan") if expected_not_matching_step else "ANY"
-    sys.stdout.write(
+    write(
         '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(
             styled_text(">>", "yellow"), styled_text(sentence, "cyan"), step_to_print
         )

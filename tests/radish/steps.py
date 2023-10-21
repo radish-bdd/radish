@@ -109,11 +109,12 @@ def cap_first_name(step):
     "When I capitalize their first name"
     for hero in step.context.heros:
         hero["firstname"] = hero["firstname"].upper()
-
+from time import sleep
 
 @then("I have the following names")
 def have_names(step):
     "Then I have the following names"
+    sleep(3)
     assert list(x["firstname"] for x in step.context.heros) == list(x["cap_heroname"] for x in step.table)
 
 

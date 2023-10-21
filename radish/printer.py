@@ -53,7 +53,8 @@ class Printer(object):
         line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
         text = text.replace(ANSI_LINE_JUMP_SEQUENCE, "")
         for _ in range(line_jumps):
-            self.lines.pop()
+            if len(self.lines):
+                self.lines.pop()
         self.lines.append(text)
         self.live.update(self.get_console_text())
             

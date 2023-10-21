@@ -1,16 +1,16 @@
-[bold white]Funktionalität[/bold white]: [bold white]Das ist eine radish Funktionalität[/bold white]  # [bold black]features/german.feature[/bold black]
-    [white]Als radish Nutzer moechte ich meine Testcases
-    auch in Deutsch schreiben koennen.[/white]
+Funktionalität: Das ist eine radish Funktionalität  # features/german.feature
+    Als radish Nutzer moechte ich meine Testcases
+    auch in Deutsch schreiben koennen.
 
-    [bold white]Szenario[/bold white]: [bold white]Dies ist ein Szenario[/bold white]
-        [bold yellow]Gegeben sei etwas[/bold yellow]
-[A[K        [bold green]Gegeben sei etwas[/bold green]
-        [bold yellow]Wenn ich etwas mache[/bold yellow]
-[A[K        [bold green]Wenn ich etwas mache[/bold green]
-        [bold yellow]Dann erwarte ich etwas[/bold yellow]
-[A[K        [bold green]Dann erwarte ich etwas[/bold green]
+    Szenario: Dies ist ein Szenario
+        Gegeben sei etwas
+[A[K        Gegeben sei etwas
+        Wenn ich etwas mache
+[A[K        Wenn ich etwas mache
+        Dann erwarte ich etwas
+[A[K        Dann erwarte ich etwas
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

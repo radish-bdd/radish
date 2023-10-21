@@ -1,68 +1,68 @@
-[bold white]Feature[/bold white]: [bold white]Feature with unicode all over 🐢 and 🐧[/bold white]  # [bold black]features/unicode.feature[/bold black]
-    [white]Radish shall support unicode[/white]
+Feature: Feature with unicode all over 🐢 and 🐧  # features/unicode.feature
+    Radish shall support unicode
 
-    [bold white]Background[/bold white]: [bold white]A simple Background with 🐢 and 🐧[/bold white]
-        [cyan]Given I have the number 5[/cyan]
-        [cyan]And I have the number 3[/cyan]
+    Background: A simple Background with 🐢 and 🐧
+        Given I have the number 5
+        And I have the number 3
 
-    [bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps with 🐢 and 🐧[/bold white]
-[italic white]      From Background: A simple Background with 🐢 and 🐧
-[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [bold green]Given I have the number 5[/bold green]
-        [bold yellow]And I have the number 3[/bold yellow]
-[A[K        [bold green]And I have the number 3[/bold green]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]Given I have a Step with 🐢 and 🐧[/bold yellow]
-[A[K        [bold green]Given I have a Step with 🐢 and 🐧[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    Scenario: Scenario with multiple Steps with 🐢 and 🐧
+      From Background: A simple Background with 🐢 and 🐧
+        Given I have the number 5
+[A[K        Given I have the number 5
+        And I have the number 3
+[A[K        And I have the number 3
+      From Scenario
+        Given I have a Step with 🐢 and 🐧
+[A[K        Given I have a Step with 🐢 and 🐧
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline 🐢 and 🐧[/bold white]
-[italic white]      From Background: A simple Background with 🐢 and 🐧
-[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [cyan]Given I have the number 5[/cyan]
-        [bold yellow]And I have the number 3[/bold yellow]
-[A[K        [cyan]And I have the number 3[/cyan]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]Given I have the number <x> 🐢 and 🐧[/bold yellow]
-[A[K        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan] 🐢 and 🐧[/cyan]
-        [bold yellow]And I have the number <y>[/bold yellow]
-[A[K        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
-        [bold yellow]When I add them up[/bold yellow]
-[A[K        [cyan]When I add them up[/cyan]
-        [bold yellow]Then I expect the sum to be <z>[/bold yellow]
-[A[K        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+    Scenario Outline: A Scenario Outline 🐢 and 🐧
+      From Background: A simple Background with 🐢 and 🐧
+        Given I have the number 5
+[A[K        Given I have the number 5
+        And I have the number 3
+[A[K        And I have the number 3
+      From Scenario
+        Given I have the number <x> 🐢 and 🐧
+[A[K        Given I have the number <x> 🐢 and 🐧
+        And I have the number <y>
+[A[K        And I have the number <y>
+        When I add them up
+[A[K        When I add them up
+        Then I expect the sum to be <z>
+[A[K        Then I expect the sum to be <z>
 
-    [bold white]Examples[/bold white]:
-[bold white]        | x | y | z  |[/bold white]
-        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white] [bold yellow]2[/bold yellow] [bold white]|[/bold white] [bold yellow]11[/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]11[/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold yellow]4[/bold yellow] [bold white]|[/bold white] [bold yellow]5[/bold yellow] [bold white]|[/bold white] [bold yellow]17[/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]17[/bold green] [bold white]|[/bold white]
+    Examples:
+        | x | y | z  |
+        | 1 | 2 | 11 |
+[A[K        | 1 | 2 | 11 |
+        | 4 | 5 | 17 |
+[A[K        | 4 | 5 | 17 |
 
-    [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario 🐢 and 🐧[/bold white]
-[italic white]      From Background: A simple Background with 🐢 and 🐧
-[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [cyan]Given I have the number 5[/cyan]
-        [bold yellow]And I have the number 3[/bold yellow]
-[A[K        [cyan]And I have the number 3[/cyan]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]Given I have an instable function 🐢 and 🐧[/bold yellow]
-[A[K        [cyan]Given I have an instable function 🐢 and 🐧[/cyan]
-        [bold yellow]When I execute it[/bold yellow]
-[A[K        [cyan]When I execute it[/cyan]
-        [bold yellow]Then I expect it to pass[/bold yellow]
-[A[K        [cyan]Then I expect it to pass[/cyan]
+    Scenario Loop: This is a looped Scenario 🐢 and 🐧
+      From Background: A simple Background with 🐢 and 🐧
+        Given I have the number 5
+[A[K        Given I have the number 5
+        And I have the number 3
+[A[K        And I have the number 3
+      From Scenario
+        Given I have an instable function 🐢 and 🐧
+[A[K        Given I have an instable function 🐢 and 🐧
+        When I execute it
+[A[K        When I execute it
+        Then I expect it to pass
+[A[K        Then I expect it to pass
 
-    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
-[A[K        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
-[A[K        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+    Iterations: 2
+        | 0 |
+[A[K        | 0 |
+        | 1 |
+[A[K        | 1 |
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]5 scenarios ([/bold white][bold green]5 passed[/bold green][bold white])[/bold white]
-[bold white]17 steps ([/bold white][bold green]17 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+5 scenarios (5 passed)
+17 steps (17 passed)
+Run test-marker finished within a moment

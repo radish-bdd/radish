@@ -1,34 +1,34 @@
-[bold white]Feature[/bold white]: [bold white]Ignore Scenario via Tag[/bold white]  # [bold black]features/tags-ignored-scenario.feature[/bold black]
-    [white]Radish shall support to ignore a
-    Scenario via Tags[/white]
+Feature: Ignore Scenario via Tag  # features/tags-ignored-scenario.feature
+    Radish shall support to ignore a
+    Scenario via Tags
 
-[cyan]    @foo
-[/cyan]    [bold white]Scenario[/bold white]: [bold white]Ignored Scenario[/bold white]
-        [bold yellow]Given I have a Step[/bold yellow]
-[A[K        [bold green]Given I have a Step[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    @foo
+    Scenario: Ignored Scenario
+        Given I have a Step
+[A[K        Given I have a Step
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-[cyan]    @bar
-[/cyan]    [bold white]Scenario[/bold white]: [bold white]Parsed Scenario[/bold white]
-        [bold yellow]Given I have a Step[/bold yellow]
-[A[K        [bold green]Given I have a Step[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    @bar
+    Scenario: Parsed Scenario
+        Given I have a Step
+[A[K        Given I have a Step
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-    [bold white]Scenario[/bold white]: [bold white]Another parsed Scenario[/bold white]
-        [bold yellow]Given I have a Step[/bold yellow]
-[A[K        [bold green]Given I have a Step[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    Scenario: Another parsed Scenario
+        Given I have a Step
+[A[K        Given I have a Step
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]3 scenarios ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
-[bold white]9 steps ([/bold white][bold green]9 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+3 scenarios (3 passed)
+9 steps (9 passed)
+Run test-marker finished within a moment

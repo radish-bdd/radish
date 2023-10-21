@@ -1,19 +1,19 @@
-[bold white]Feature[/bold white]: [bold white]Restricted site support[/bold white]  # [bold black]features/precondition-level-0.feature[/bold black]
-    [white]As a user of AwesomeSite
+Feature: Restricted site support  # features/precondition-level-0.feature
+    As a user of AwesomeSite
     I want to restrict my personal sites
-    to specific users.[/white]
+    to specific users.
 
-    [bold white]Scenario[/bold white]: [bold white]Have a multi user setup[/bold white]
-        [bold yellow]Given a user named Bruce[/bold yellow]
-[A[K        [bold green]Given a user named Bruce[/bold green]
-        [bold yellow]And a user named Peter[/bold yellow]
-[A[K        [bold green]And a user named Peter[/bold green]
-        [bold yellow]And a user named Tony[/bold yellow]
-[A[K        [bold green]And a user named Tony[/bold green]
-        [bold yellow]And a personal site owned by Bruce[/bold yellow]
-[A[K        [bold green]And a personal site owned by Bruce[/bold green]
+    Scenario: Have a multi user setup
+        Given a user named Bruce
+[A[K        Given a user named Bruce
+        And a user named Peter
+[A[K        And a user named Peter
+        And a user named Tony
+[A[K        And a user named Tony
+        And a personal site owned by Bruce
+[A[K        And a personal site owned by Bruce
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]4 steps ([/bold white][bold green]4 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+1 scenarios (1 passed)
+4 steps (4 passed)
+Run test-marker finished within a moment

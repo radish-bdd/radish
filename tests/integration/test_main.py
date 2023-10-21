@@ -334,6 +334,7 @@ def test_main_cli_calls(
     Printer().clear()
     Printer().set_size(208, 34)
     Printer().set_line_revoke_enabled(False)
+    Printer().out_to_file(io.StringIO())
     # given
     if "-m" not in given_cli_args and "--marker" not in given_cli_args:
         given_cli_args.extend(["--marker", "test-marker"])
@@ -363,7 +364,6 @@ def test_main_cli_calls(
     with tempfile.TemporaryFile() as tmp:
         tmp_stdout = io.open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
         # patch sys.stdout
-        Printer().out_to_file(tmp_stdout)
 
         try:
             actual_exitcode = main(args=cli_args)
@@ -371,7 +371,7 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = Printer().get_console_text()
+            actual_output = Printer().console.file.getvalue()
             # restore stdout
 
     # patch featurefile paths in actual output

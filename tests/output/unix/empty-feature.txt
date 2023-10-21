@@ -1,1 +1,1 @@
-[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
+Error: No feature or no scenario specified in at least one of the given feature files

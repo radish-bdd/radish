@@ -1,19 +1,19 @@
-[bold white]Feature[/bold white]: [bold white]Add some numbers[/bold white]  # [bold black]features/failing-scenario-middle.feature[/bold black][white][/white]
+Feature: Add some numbers  # features/failing-scenario-middle.feature
 
-    [bold white]Scenario[/bold white]: [bold white]Add some numbers[/bold white]
-        [bold yellow]Given I have the number 1[/bold yellow]
-[A[K        [bold green]Given I have the number 1[/bold green]
-        [bold yellow]And I have the number 2[/bold yellow]
-[A[K        [bold green]And I have the number 2[/bold green]
-        [bold yellow]When I add them up with failure[/bold yellow]
-[A[K        [bold red]When I add them up with failure[/bold red]
-          [bold red]AssertionError[/bold red]: [red]Unable to add numbers: [1, 2][/red]
-        [bold yellow]Then I expect the sum to be 42[/bold yellow]
-[A[K        [cyan]Then I expect the sum to be 42[/cyan]
+    Scenario: Add some numbers
+        Given I have the number 1
+[A[K        Given I have the number 1
+        And I have the number 2
+[A[K        And I have the number 2
+        When I add them up with failure
+[A[K        When I add them up with failure
+          AssertionError: Unable to add numbers: [1, 2]
+        Then I expect the sum to be 42
+[A[K        Then I expect the sum to be 42
 
-[bold white]1 features ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]
-[bold white]4 steps ([/bold white][bold green]2 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white], [/bold white][cyan]1 skipped[/cyan][bold white])[/bold white]
-[green]
+1 features (0 passed, 1 failed)
+1 scenarios (0 passed, 1 failed)
+4 steps (2 passed, 1 failed, 1 skipped)
+
 The --wip switch was used, so the failures were expected. All is good.
-[/green][cyan]Run test-marker finished within a moment[/cyan]
+Run test-marker finished within a moment

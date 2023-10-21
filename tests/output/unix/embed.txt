@@ -1,22 +1,22 @@
-[bold white]Feature[/bold white]: [bold white]A embed feature[/bold white]  # [bold black]features/embed.feature[/bold black][white][/white]
+Feature: A embed feature  # features/embed.feature
 
-    [bold white]Scenario[/bold white]: [bold white]Embed text[/bold white]
-        [bold yellow]When I embed a text "test text"[/bold yellow]
-[A[K        [bold green]When I embed a text "test text"[/bold green]
-        [bold yellow]Then step with embedded text should have following embedded data[/bold yellow]
-          [bold white]|[/bold white] [white]mime_type [/white] [bold white]|[/bold white] [white]data        [/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold yellow]text/plain[/bold yellow] [bold white]|[/bold white] [bold yellow]dGVzdCB0ZXh0[/bold yellow] [bold white]|[/bold white]
-[A[K[A[K[A[K        [bold green]Then step with embedded text should have following embedded data[/bold green]
-          [bold white]|[/bold white] [white]mime_type [/white] [bold white]|[/bold white] [white]data        [/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold green]text/plain[/bold green] [bold white]|[/bold white] [bold green]dGVzdCB0ZXh0[/bold green] [bold white]|[/bold white]
+    Scenario: Embed text
+        When I embed a text "test text"
+[A[K        When I embed a text "test text"
+        Then step with embedded text should have following embedded data
+          | mime_type  | data         |
+          | text/plain | dGVzdCB0ZXh0 |
+[A[K[A[K[A[K        Then step with embedded text should have following embedded data
+          | mime_type  | data         |
+          | text/plain | dGVzdCB0ZXh0 |
 
-    [bold white]Scenario[/bold white]: [bold white]Generate cucumber json report[/bold white]
-        [bold yellow]When generate cucumber report[/bold yellow]
-[A[K        [bold green]When generate cucumber report[/bold green]
-        [bold yellow]Then genreated cucumber json equals to "embed.json"[/bold yellow]
-[A[K        [bold green]Then genreated cucumber json equals to "embed.json"[/bold green]
+    Scenario: Generate cucumber json report
+        When generate cucumber report
+[A[K        When generate cucumber report
+        Then genreated cucumber json equals to "embed.json"
+[A[K        Then genreated cucumber json equals to "embed.json"
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]4 steps ([/bold white][bold green]4 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+4 steps (4 passed)
+Run test-marker finished within a moment

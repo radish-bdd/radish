@@ -1,38 +1,38 @@
-[bold cyan]1. [/bold cyan][bold white]Feature[/bold white]: [bold white]Simple Background[/bold white]  # [bold black]features/background.feature[/bold black]
-    [white]Radish shall support simple Scenario
+1. Feature: Simple Background  # features/background.feature
+    Radish shall support simple Scenario
     Backgrounds.
     The Background shall be assigned to
-    each Scenario.[/white]
+    each Scenario.
 
-    [bold white]Background[/bold white]: [bold white]A simple Background[/bold white]
-        [cyan]1. [/cyan][cyan]Given I have the number 5[/cyan]
-        [cyan]2. [/cyan][cyan]And I have the number 3[/cyan]
+    Background: A simple Background
+        1. Given I have the number 5
+        2. And I have the number 3
 
-    [bold cyan]1. [/bold cyan][bold white]Scenario[/bold white]: [bold white]Add numbers[/bold white]
-[italic white]      From Background: A simple Background
-[/italic white]        [bold yellow]1. [/bold yellow][bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
-        [bold yellow]2. [/bold yellow][bold yellow]And I have the number 3[/bold yellow]
-[A[K        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]3. [/bold yellow][bold yellow]When I add them up[/bold yellow]
-[A[K        [bold cyan]3. [/bold cyan][bold green]When I add them up[/bold green]
-        [bold yellow]4. [/bold yellow][bold yellow]Then I expect the sum to be 8[/bold yellow]
-[A[K        [bold cyan]4. [/bold cyan][bold green]Then I expect the sum to be 8[/bold green]
+    1. Scenario: Add numbers
+      From Background: A simple Background
+        1. Given I have the number 5
+[A[K        1. Given I have the number 5
+        2. And I have the number 3
+[A[K        2. And I have the number 3
+      From Scenario
+        3. When I add them up
+[A[K        3. When I add them up
+        4. Then I expect the sum to be 8
+[A[K        4. Then I expect the sum to be 8
 
-    [bold cyan]2. [/bold cyan][bold white]Scenario[/bold white]: [bold white]Subtract numbers[/bold white]
-[italic white]      From Background: A simple Background
-[/italic white]        [bold yellow]1. [/bold yellow][bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
-        [bold yellow]2. [/bold yellow][bold yellow]And I have the number 3[/bold yellow]
-[A[K        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]3. [/bold yellow][bold yellow]When I subtract them[/bold yellow]
-[A[K        [bold cyan]3. [/bold cyan][bold green]When I subtract them[/bold green]
-        [bold yellow]4. [/bold yellow][bold yellow]Then I expect the difference to be 2[/bold yellow]
-[A[K        [bold cyan]4. [/bold cyan][bold green]Then I expect the difference to be 2[/bold green]
+    2. Scenario: Subtract numbers
+      From Background: A simple Background
+        1. Given I have the number 5
+[A[K        1. Given I have the number 5
+        2. And I have the number 3
+[A[K        2. And I have the number 3
+      From Scenario
+        3. When I subtract them
+[A[K        3. When I subtract them
+        4. Then I expect the difference to be 2
+[A[K        4. Then I expect the difference to be 2
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]4 steps ([/bold white][bold green]4 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+4 steps (4 passed)
+Run test-marker finished within a moment

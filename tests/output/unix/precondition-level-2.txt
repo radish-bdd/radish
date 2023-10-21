@@ -1,34 +1,34 @@
-[bold white]Feature[/bold white]: [bold white]Restricted site support[/bold white]  # [bold black]features/precondition-level-2.feature[/bold black]
-    [white]As a user of AwesomeSite
+Feature: Restricted site support  # features/precondition-level-2.feature
+    As a user of AwesomeSite
     I want to restrict my personal sites
-    to specific users.[/white]
+    to specific users.
 
-[cyan]    @precondition(precondition-level-1.feature: Grant access to personal site)
-[/cyan]    [bold white]Scenario[/bold white]: [bold white]Deny access to personal site[/bold white]
-[italic white]      As Precondition from precondition-level-1.feature: Grant access to personal site
-[/italic white]        [bold yellow]Given a user named Bruce[/bold yellow]
-[A[K        [bold green]Given a user named Bruce[/bold green]
-        [bold yellow]And a user named Peter[/bold yellow]
-[A[K        [bold green]And a user named Peter[/bold green]
-        [bold yellow]And a user named Tony[/bold yellow]
-[A[K        [bold green]And a user named Tony[/bold green]
-        [bold yellow]And a personal site owned by Bruce[/bold yellow]
-[A[K        [bold green]And a personal site owned by Bruce[/bold green]
-        [bold yellow]Given Bruce grants access to Tony[/bold yellow]
-[A[K        [bold green]Given Bruce grants access to Tony[/bold green]
-        [bold yellow]When I'm logged in as Tony[/bold yellow]
-[A[K        [bold green]When I'm logged in as Tony[/bold green]
-        [bold yellow]Then I can access Bruce personal site[/bold yellow]
-[A[K        [bold green]Then I can access Bruce personal site[/bold green]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]Given Bruce grants access to Tony[/bold yellow]
-[A[K        [bold green]Given Bruce grants access to Tony[/bold green]
-        [bold yellow]When I'm logged in as Peter[/bold yellow]
-[A[K        [bold green]When I'm logged in as Peter[/bold green]
-        [bold yellow]Then I cannot access Bruce personal site[/bold yellow]
-[A[K        [bold green]Then I cannot access Bruce personal site[/bold green]
+    @precondition(precondition-level-1.feature: Grant access to personal site)
+    Scenario: Deny access to personal site
+      As Precondition from precondition-level-1.feature: Grant access to personal site
+        Given a user named Bruce
+[A[K        Given a user named Bruce
+        And a user named Peter
+[A[K        And a user named Peter
+        And a user named Tony
+[A[K        And a user named Tony
+        And a personal site owned by Bruce
+[A[K        And a personal site owned by Bruce
+        Given Bruce grants access to Tony
+[A[K        Given Bruce grants access to Tony
+        When I'm logged in as Tony
+[A[K        When I'm logged in as Tony
+        Then I can access Bruce personal site
+[A[K        Then I can access Bruce personal site
+      From Scenario
+        Given Bruce grants access to Tony
+[A[K        Given Bruce grants access to Tony
+        When I'm logged in as Peter
+[A[K        When I'm logged in as Peter
+        Then I cannot access Bruce personal site
+[A[K        Then I cannot access Bruce personal site
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within a moment

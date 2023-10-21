@@ -1,27 +1,27 @@
-[cyan]@foo
-[/cyan][cyan]@bar
-[/cyan][bold white]Feature[/bold white]: [bold white]Support Tags everywhere[/bold white]  # [bold black]features/tags-everywhere.feature[/bold black]
-    [white]Radish shall support tags everywhere![/white]
+@foo
+@bar
+Feature: Support Tags everywhere  # features/tags-everywhere.feature
+    Radish shall support tags everywhere!
 
-[cyan]    @scenario_outline
-[/cyan]    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline[/bold white]
-        [bold yellow]Given I have the number <x>[/bold yellow]
-[A[K        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
-        [bold yellow]And I have the number <y>[/bold yellow]
-[A[K        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
-        [bold yellow]When I add them up[/bold yellow]
-[A[K        [cyan]When I add them up[/cyan]
-        [bold yellow]Then I expect the sum to be <z>[/bold yellow]
-[A[K        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+    @scenario_outline
+    Scenario Outline: A Scenario Outline
+        Given I have the number <x>
+[A[K        Given I have the number <x>
+        And I have the number <y>
+[A[K        And I have the number <y>
+        When I add them up
+[A[K        When I add them up
+        Then I expect the sum to be <z>
+[A[K        Then I expect the sum to be <z>
 
-    [bold white]Examples[/bold white]:
-[bold white]        | x | y | z |[/bold white]
-        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white] [bold yellow]2[/bold yellow] [bold white]|[/bold white] [bold yellow]3[/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold yellow]4[/bold yellow] [bold white]|[/bold white] [bold yellow]5[/bold yellow] [bold white]|[/bold white] [bold yellow]9[/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
+    Examples:
+        | x | y | z |
+        | 1 | 2 | 3 |
+[A[K        | 1 | 2 | 3 |
+        | 4 | 5 | 9 |
+[A[K        | 4 | 5 | 9 |
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]8 steps ([/bold white][bold green]8 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+8 steps (8 passed)
+Run test-marker finished within a moment

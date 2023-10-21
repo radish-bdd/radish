@@ -67,8 +67,10 @@ class Printer(object):
             for _ in range(line_jumps):
                 if len(self.lines):
                     self.lines.pop()
-        self.lines.append(text)
-        self.live.update(self.get_console_text())
+            self.lines.append(text)
+            self.live.update(self.get_console_text())
+        else:
+            self.console.print(text)
             
             
             

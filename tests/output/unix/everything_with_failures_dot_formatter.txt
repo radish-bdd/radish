@@ -1,21 +1,21 @@
-[bold black]features/everything_with_failures.feature[/bold black]: 
+features/everything_with_failures.feature: 
 
-[bold red]Failures:[/bold red]
+Failures:
 features/everything_with_failures.feature: Subtract numbers wrongly
-    [red]Then I expect the difference to be 3[/red]
-      [bold red]AttributeError[/bold red]: [red]'int' object has no attribute 'step'[/red]
+    Then I expect the difference to be 3
+      AttributeError: 'int' object has no attribute 'step'
 
 features/everything_with_failures.feature: A Scenario Outline - row 0
-    [red]Then I expect the sum to be 3[/red]
-      [bold red]AssertionError[/bold red]: [red]The expected sum 3 does not match actual sum 11[/red]
+    Then I expect the sum to be 3
+      AssertionError: The expected sum 3 does not match actual sum 11
 
 features/everything_with_failures.feature: A Scenario Outline - row 1
-    [red]Then I expect the sum to be 9[/red]
-      [bold red]AssertionError[/bold red]: [red]The expected sum 9 does not match actual sum 17[/red]
+    Then I expect the sum to be 9
+      AssertionError: The expected sum 9 does not match actual sum 17
 
 
 
-[bold white]1 features ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]
-[bold white]7 scenarios ([/bold white][bold green]4 passed[/bold green][bold white], [/bold white][bold red]3 failed[/bold red][bold white])[/bold white]
-[bold white]20 steps ([/bold white][bold green]17 passed[/bold green][bold white], [/bold white][bold red]3 failed[/bold red][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (0 passed, 1 failed)
+7 scenarios (4 passed, 3 failed)
+20 steps (17 passed, 3 failed)
+Run test-marker finished within a moment

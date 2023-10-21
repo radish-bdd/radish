@@ -1,33 +1,33 @@
-[bold white]Feature[/bold white]: [bold white]Background for Scenario Outline[/bold white]  # [bold black]features/background-scenariooutline.feature[/bold black]
-    [white]Radish shall support Backgrounds for
+Feature: Background for Scenario Outline  # features/background-scenariooutline.feature
+    Radish shall support Backgrounds for
     Scenario Outlines.
     The Background shall be assigned to
-    each Example Scenario.[/white]
+    each Example Scenario.
 
-    [bold white]Background[/bold white]: [bold white]A simple Background[/bold white]
-        [cyan]Given I have the number 5[/cyan]
-        [cyan]And I have the number 3[/cyan]
+    Background: A simple Background
+        Given I have the number 5
+        And I have the number 3
 
-    [bold white]Scenario Outline[/bold white]: [bold white]Add numbers[/bold white]
-[italic white]      From Background: A simple Background
-[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
-[A[K        [cyan]Given I have the number 5[/cyan]
-        [bold yellow]And I have the number 3[/bold yellow]
-[A[K        [cyan]And I have the number 3[/cyan]
-[italic white]      From Scenario
-[/italic white]        [bold yellow]When I <operator> them up[/bold yellow]
-[A[K        [cyan]When I [/cyan][white]<operator>[/white][cyan] them up[/cyan]
-        [bold yellow]Then I expect the <result_name> to be <result>[/bold yellow]
-[A[K        [cyan]Then I expect the [/cyan][white]<result_name>[/white][cyan] to be [/cyan][white]<result>[/white][cyan][/cyan]
+    Scenario Outline: Add numbers
+      From Background: A simple Background
+        Given I have the number 5
+[A[K        Given I have the number 5
+        And I have the number 3
+[A[K        And I have the number 3
+      From Scenario
+        When I <operator> them up
+[A[K        When I <operator> them up
+        Then I expect the <result_name> to be <result>
+[A[K        Then I expect the <result_name> to be <result>
 
-    [bold white]Examples[/bold white]:
-[bold white]        | operator | result_name | result |[/bold white]
-        [bold white]|[/bold white] [bold yellow]add     [/bold yellow] [bold white]|[/bold white] [bold yellow]sum        [/bold yellow] [bold white]|[/bold white] [bold yellow]8     [/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]add     [/bold green] [bold white]|[/bold white] [bold green]sum        [/bold green] [bold white]|[/bold white] [bold green]8     [/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold yellow]subtract[/bold yellow] [bold white]|[/bold white] [bold yellow]difference [/bold yellow] [bold white]|[/bold white] [bold yellow]2     [/bold yellow] [bold white]|[/bold white]
-[A[K        [bold white]|[/bold white] [bold green]subtract[/bold green] [bold white]|[/bold white] [bold green]difference [/bold green] [bold white]|[/bold white] [bold green]2     [/bold green] [bold white]|[/bold white]
+    Examples:
+        | operator | result_name | result |
+        | add      | sum         | 8      |
+[A[K        | add      | sum         | 8      |
+        | subtract | difference  | 2      |
+[A[K        | subtract | difference  | 2      |
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]4 steps ([/bold white][bold green]4 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+4 steps (4 passed)
+Run test-marker finished within a moment

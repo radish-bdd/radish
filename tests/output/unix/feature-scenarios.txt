@@ -1,24 +1,24 @@
-[bold white]Feature[/bold white]: [bold white]Feature with multiple Scenarios and Steps[/bold white]  # [bold black]features/feature-scenarios.feature[/bold black]
-    [white]Radish shall support parsing a Feature containing
-    multiple Scenarios which contain multiple Steps[/white]
+Feature: Feature with multiple Scenarios and Steps  # features/feature-scenarios.feature
+    Radish shall support parsing a Feature containing
+    multiple Scenarios which contain multiple Steps
 
-    [bold white]Scenario[/bold white]: [bold white]One Scenario with multiple Steps[/bold white]
-        [bold yellow]Given I have a Step[/bold yellow]
-[A[K        [bold green]Given I have a Step[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    Scenario: One Scenario with multiple Steps
+        Given I have a Step
+[A[K        Given I have a Step
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-    [bold white]Scenario[/bold white]: [bold white]Another Scenario with multiple Steps[/bold white]
-        [bold yellow]Given I have a Step[/bold yellow]
-[A[K        [bold green]Given I have a Step[/bold green]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
-        [bold yellow]Then I expect something[/bold yellow]
-[A[K        [bold green]Then I expect something[/bold green]
+    Scenario: Another Scenario with multiple Steps
+        Given I have a Step
+[A[K        Given I have a Step
+        When I do something
+[A[K        When I do something
+        Then I expect something
+[A[K        Then I expect something
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]6 steps ([/bold white][bold green]6 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+6 steps (6 passed)
+Run test-marker finished within a moment

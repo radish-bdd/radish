@@ -1,25 +1,25 @@
-[cyan]@feature_tag
-[/cyan][bold white]Feature[/bold white]: [bold white]Cucumber json report generation[/bold white]  # [bold black]features/cucumber-json.feature[/bold black][white][/white]
+@feature_tag
+Feature: Cucumber json report generation  # features/cucumber-json.feature
 
-[cyan]    @scenario_tag
-[/cyan]    [bold white]Scenario[/bold white]: [bold white]Middle step failure - skipped step on the end[/bold white]
-        [bold yellow]Given I have the number 1[/bold yellow]
-[A[K        [bold green]Given I have the number 1[/bold green]
-        [bold yellow]And I have the number 2[/bold yellow]
-[A[K        [bold green]And I have the number 2[/bold green]
-        [bold yellow]When I add them up with failure[/bold yellow]
-[A[K        [bold red]When I add them up with failure[/bold red]
-          [bold red]AssertionError[/bold red]: [red]Unable to add numbers: [1, 2][/red]
-        [bold yellow]Then I expect the sum to be 42[/bold yellow]
-[A[K        [cyan]Then I expect the sum to be 42[/cyan]
+    @scenario_tag
+    Scenario: Middle step failure - skipped step on the end
+        Given I have the number 1
+[A[K        Given I have the number 1
+        And I have the number 2
+[A[K        And I have the number 2
+        When I add them up with failure
+[A[K        When I add them up with failure
+          AssertionError: Unable to add numbers: [1, 2]
+        Then I expect the sum to be 42
+[A[K        Then I expect the sum to be 42
 
-    [bold white]Scenario[/bold white]: [bold white]Generate cucumber json report in middle of scenario execution[/bold white]
-        [bold yellow]When generate cucumber report[/bold yellow]
-[A[K        [bold green]When generate cucumber report[/bold green]
-        [bold yellow]Then genreated cucumber json equals to "cucumber-json.json"[/bold yellow]
-[A[K        [bold green]Then genreated cucumber json equals to "cucumber-json.json"[/bold green]
+    Scenario: Generate cucumber json report in middle of scenario execution
+        When generate cucumber report
+[A[K        When generate cucumber report
+        Then genreated cucumber json equals to "cucumber-json.json"
+[A[K        Then genreated cucumber json equals to "cucumber-json.json"
 
-[bold white]1 features ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]1 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]
-[bold white]6 steps ([/bold white][bold green]4 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white], [/bold white][cyan]1 skipped[/cyan][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (0 passed, 1 failed)
+2 scenarios (1 passed, 1 failed)
+6 steps (4 passed, 1 failed, 1 skipped)
+Run test-marker finished within a moment

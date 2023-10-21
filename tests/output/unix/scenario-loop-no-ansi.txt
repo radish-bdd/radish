@@ -2,11 +2,11 @@ Feature: Support Scenario Loop  # features/scenario-loop.feature
     Radish shall support Scenario Loops.
 
     Scenario Loop: This is a looped Scenario
-        Given I have an instable function
         Given I have an instable function
-        When I execute it
+        Given I have an instable function
         When I execute it
-        Then I expect it to pass
+        When I execute it
+        Then I expect it to pass
         Then I expect it to pass
 
     Iterations: 2

@@ -1,21 +1,21 @@
-[bold white]Feature[/bold white]: [bold white]Support Scenario Loop[/bold white]  # [bold black]features/scenario-loop.feature[/bold black]
-    [white]Radish shall support Scenario Loops.[/white]
+Feature: Support Scenario Loop  # features/scenario-loop.feature
+    Radish shall support Scenario Loops.
 
-    [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario[/bold white]
-        [bold yellow]Given I have an instable function[/bold yellow]
-        [cyan]Given I have an instable function[/cyan]
-        [bold yellow]When I execute it[/bold yellow]
-        [cyan]When I execute it[/cyan]
-        [bold yellow]Then I expect it to pass[/bold yellow]
-        [cyan]Then I expect it to pass[/cyan]
+    Scenario Loop: This is a looped Scenario
+        Given I have an instable function
+        Given I have an instable function
+        When I execute it
+        When I execute it
+        Then I expect it to pass
+        Then I expect it to pass
 
-    [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
-        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
-        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+    Iterations: 2
+        | 0 |
+        | 0 |
+        | 1 |
+        | 1 |
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]
-[bold white]6 steps ([/bold white][bold green]6 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+2 scenarios (2 passed)
+6 steps (6 passed)
+Run test-marker finished within a moment

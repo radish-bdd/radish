@@ -1,28 +1,28 @@
-[bold white]Feature[/bold white]: [bold white]Step Tabular Data[/bold white]  # [bold black]features/step-tabular-data.feature[/bold black]
-    [white]Radish shall support tubular data
-    for a specific step[/white]
+Feature: Step Tabular Data  # features/step-tabular-data.feature
+    Radish shall support tubular data
+    for a specific step
 
-    [bold white]Scenario[/bold white]: [bold white]Tabular Data for a Step[/bold white]
-        [bold yellow]Given I have the following heros[/bold yellow]
-          [bold white]|[/bold white] [white]firstname[/white] [bold white]|[/bold white] [white]surname[/white] [bold white]|[/bold white] [white]heroname [/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold yellow]Bruce    [/bold yellow] [bold white]|[/bold white] [bold yellow]Wayne  [/bold yellow] [bold white]|[/bold white] [bold yellow]Batman   [/bold yellow] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold yellow]Peter    [/bold yellow] [bold white]|[/bold white] [bold yellow]Parker [/bold yellow] [bold white]|[/bold white] [bold yellow]Spiderman[/bold yellow] [bold white]|[/bold white]
-[A[K[A[K[A[K[A[K        [bold green]Given I have the following heros[/bold green]
-          [bold white]|[/bold white] [white]firstname[/white] [bold white]|[/bold white] [white]surname[/white] [bold white]|[/bold white] [white]heroname [/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold green]Bruce    [/bold green] [bold white]|[/bold white] [bold green]Wayne  [/bold green] [bold white]|[/bold white] [bold green]Batman   [/bold green] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold green]Peter    [/bold green] [bold white]|[/bold white] [bold green]Parker [/bold green] [bold white]|[/bold white] [bold green]Spiderman[/bold green] [bold white]|[/bold white]
-        [bold yellow]When I capitalize their first name[/bold yellow]
-[A[K        [bold green]When I capitalize their first name[/bold green]
-        [bold yellow]Then I have the following names[/bold yellow]
-          [bold white]|[/bold white] [white]cap_heroname[/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold yellow]BRUCE       [/bold yellow] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold yellow]PETER       [/bold yellow] [bold white]|[/bold white]
-[A[K[A[K[A[K[A[K        [bold green]Then I have the following names[/bold green]
-          [bold white]|[/bold white] [white]cap_heroname[/white] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold green]BRUCE       [/bold green] [bold white]|[/bold white]
-          [bold white]|[/bold white] [bold green]PETER       [/bold green] [bold white]|[/bold white]
+    Scenario: Tabular Data for a Step
+        Given I have the following heros
+          | firstname | surname | heroname  |
+          | Bruce     | Wayne   | Batman    |
+          | Peter     | Parker  | Spiderman |
+[A[K[A[K[A[K[A[K        Given I have the following heros
+          | firstname | surname | heroname  |
+          | Bruce     | Wayne   | Batman    |
+          | Peter     | Parker  | Spiderman |
+        When I capitalize their first name
+[A[K        When I capitalize their first name
+        Then I have the following names
+          | cap_heroname |
+          | BRUCE        |
+          | PETER        |
+[A[K[A[K[A[K[A[K        Then I have the following names
+          | cap_heroname |
+          | BRUCE        |
+          | PETER        |
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]3 steps ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within 3 seconds[/cyan]
+1 features (1 passed)
+1 scenarios (1 passed)
+3 steps (3 passed)
+Run test-marker finished within 3 seconds

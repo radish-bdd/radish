@@ -1,11 +1,11 @@
-[bold white]Feature[/bold white]: [bold white]Ignore comments in Parser[/bold white]  # [bold black]features/comments.feature[/bold black]
-    [white]Radish shall ignore comments in Feature Files[/white]
+Feature: Ignore comments in Parser  # features/comments.feature
+    Radish shall ignore comments in Feature Files
 
-    [bold white]Scenario[/bold white]: [bold white]A Scenario[/bold white]
-        [bold yellow]When I do something[/bold yellow]
-[A[K        [bold green]When I do something[/bold green]
+    Scenario: A Scenario
+        When I do something
+[A[K        When I do something
 
-[bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[bold white]1 steps ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
-[cyan]Run test-marker finished within a moment[/cyan]
+1 features (1 passed)
+1 scenarios (1 passed)
+1 steps (1 passed)
+Run test-marker finished within a moment

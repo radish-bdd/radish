@@ -22,7 +22,7 @@ from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
 from . import utils
 
-from radish.printer import Printer, ANSI_LINE_JUMP_SEQUENCE
+from radish.printer import Printer, styled_text
 
 printer = Printer()
 
@@ -194,12 +194,12 @@ Options:
 
     if not core.features or sum(len(f.scenarios) for f in core.features) == 0:
         printer.write(
-            utils.styled_text("Error: ", "bold red")
-            + utils.styled_text("No feature or no scenario specified in at least one of the given feature files", "red")
+            styled_text("Error: ", "bold red")
+            + styled_text("No feature or no scenario specified in at least one of the given feature files", "red")
         )
         if tag_expression:
             printer.write(
-                utils.styled_text(
+                styled_text(
                     "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run.",
                     "red",
                 )

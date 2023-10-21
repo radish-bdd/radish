@@ -17,6 +17,7 @@ import tempfile
 import pytest
 
 from radish.main import main
+from radish.printer import Printer
 
 
 @pytest.mark.parametrize(
@@ -355,12 +356,11 @@ def test_main_cli_calls(
         expected_output_string = output_file.read()
 
     # when
-    original_stdout = sys.stdout
 
     with tempfile.TemporaryFile() as tmp:
         tmp_stdout = io.open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
         # patch sys.stdout
-        sys.stdout = tmp_stdout
+        Printer().out_to_file(tmp_stdout)
 
         try:
             actual_exitcode = main(args=cli_args)
@@ -368,9 +368,8 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = tmp_stdout.read()
+            actual_output = Printer().get_console_text()
             # restore stdout
-            sys.stdout = original_stdout
 
     # patch featurefile paths in actual output
     feature_parent_dir = os.path.abspath(os.path.join(featurefiledir, ".."))

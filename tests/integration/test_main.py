@@ -331,6 +331,8 @@ def test_main_cli_calls(
     """
     Test calling main CLI
     """
+    Printer().clear()
+    Printer().set_size(208, 34)
     # given
     if "-m" not in given_cli_args and "--marker" not in given_cli_args:
         given_cli_args.extend(["--marker", "test-marker"])

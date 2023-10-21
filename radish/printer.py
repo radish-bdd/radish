@@ -21,6 +21,8 @@ class Printer(object):
 
     def __init__(self):
         self.out_file = None
+        self.width = None
+        self.height = None
         self.style_on = True
         self._init_consoles()
         self.lines = []
@@ -30,7 +32,7 @@ class Printer(object):
         self.live.update(self.get_console_text())
         
     def _init_consoles(self):
-        self.console = Console(file=self.out_file)
+        self.console = Console(file=self.out_file, width=self.width, height=self.height)
         self.live = Live(self.console)
         
     def set_style_on(self, on: bool):
@@ -38,6 +40,11 @@ class Printer(object):
     
     def out_to_file(self, file):
         self.out_file = file
+        self._init_consoles()
+        
+    def set_size(self, width, height):
+        self.width = width
+        self.height = height
         self._init_consoles()
         
     def get_console_text(self):

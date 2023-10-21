@@ -2,13 +2,18 @@
     [white]Radish shall support Scenario Loops.[/white]
 
     [bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario[/bold white]
-        [cyan]Given I have an instable function[/cyan]
-        [cyan]When I execute it[/cyan]
-        [cyan]Then I expect it to pass[/cyan]
+        [bold yellow]Given I have an instable function[/bold yellow]
+[A[K        [cyan]Given I have an instable function[/cyan]
+        [bold yellow]When I execute it[/bold yellow]
+[A[K        [cyan]When I execute it[/cyan]
+        [bold yellow]Then I expect it to pass[/bold yellow]
+[A[K        [cyan]Then I expect it to pass[/cyan]
 
     [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

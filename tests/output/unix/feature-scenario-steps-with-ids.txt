@@ -3,9 +3,12 @@
     a Scenario which contains multiple Steps[/white]
 
     [bold cyan]1. [/bold cyan][bold white]Scenario[/bold white]: [bold white]Scenario with multiple Steps[/bold white]
-        [bold cyan]1. [/bold cyan][bold green]Given I have a Step[/bold green]
-        [bold cyan]2. [/bold cyan][bold green]When I do something[/bold green]
-        [bold cyan]3. [/bold cyan][bold green]Then I expect something[/bold green]
+        [bold yellow]1. [/bold yellow][bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold cyan]1. [/bold cyan][bold green]Given I have a Step[/bold green]
+        [bold yellow]2. [/bold yellow][bold yellow]When I do something[/bold yellow]
+[A[K        [bold cyan]2. [/bold cyan][bold green]When I do something[/bold green]
+        [bold yellow]3. [/bold yellow][bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold cyan]3. [/bold cyan][bold green]Then I expect something[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]

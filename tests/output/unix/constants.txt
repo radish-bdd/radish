@@ -6,18 +6,27 @@
 
 [cyan]    @constant(ExpectedResult: 8)
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Sum two numbers[/bold white]
-        [bold green]Given I have the number ${SomeNumber}[/bold green]
-        [bold green]And I have the number 3[/bold green]
-        [bold green]When I add them up[/bold green]
-        [bold green]Then I expect the sum to be ${ExpectedResult}[/bold green]
+        [bold yellow]Given I have the number ${SomeNumber}[/bold yellow]
+[A[K        [bold green]Given I have the number ${SomeNumber}[/bold green]
+        [bold yellow]And I have the number 3[/bold yellow]
+[A[K        [bold green]And I have the number 3[/bold green]
+        [bold yellow]When I add them up[/bold yellow]
+[A[K        [bold green]When I add them up[/bold green]
+        [bold yellow]Then I expect the sum to be ${ExpectedResult}[/bold yellow]
+[A[K        [bold green]Then I expect the sum to be ${ExpectedResult}[/bold green]
 
 [cyan]    @constant(ExpectedResult: 10)
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Sum three numbers[/bold white]
-        [bold green]Given I have the number ${SomeNumber}[/bold green]
-        [bold green]And I have the number 3[/bold green]
-        [bold green]And I have the number 2[/bold green]
-        [bold green]When I add them up[/bold green]
-        [bold green]Then I expect the sum to be ${ExpectedResult}[/bold green]
+        [bold yellow]Given I have the number ${SomeNumber}[/bold yellow]
+[A[K        [bold green]Given I have the number ${SomeNumber}[/bold green]
+        [bold yellow]And I have the number 3[/bold yellow]
+[A[K        [bold green]And I have the number 3[/bold green]
+        [bold yellow]And I have the number 2[/bold yellow]
+[A[K        [bold green]And I have the number 2[/bold green]
+        [bold yellow]When I add them up[/bold yellow]
+[A[K        [bold green]When I add them up[/bold green]
+        [bold yellow]Then I expect the sum to be ${ExpectedResult}[/bold yellow]
+[A[K        [bold green]Then I expect the sum to be ${ExpectedResult}[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

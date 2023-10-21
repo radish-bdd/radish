@@ -3,9 +3,12 @@
     auch in Deutsch schreiben koennen.[/white]
 
     [bold white]Szenario[/bold white]: [bold white]Dies ist ein Szenario[/bold white]
-        [bold green]Gegeben sei etwas[/bold green]
-        [bold green]Wenn ich etwas mache[/bold green]
-        [bold green]Dann erwarte ich etwas[/bold green]
+        [bold yellow]Gegeben sei etwas[/bold yellow]
+[A[K        [bold green]Gegeben sei etwas[/bold green]
+        [bold yellow]Wenn ich etwas mache[/bold yellow]
+[A[K        [bold green]Wenn ich etwas mache[/bold green]
+        [bold yellow]Dann erwarte ich etwas[/bold yellow]
+[A[K        [bold green]Dann erwarte ich etwas[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]

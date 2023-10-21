@@ -9,16 +9,28 @@
         [cyan]2. [/cyan][cyan]And I have the number 3[/cyan]
 
     [bold cyan]1. [/bold cyan][bold white]Scenario[/bold white]: [bold white]Add numbers[/bold white]
-        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
-        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
-        [bold cyan]3. [/bold cyan][bold green]When I add them up[/bold green]
-        [bold cyan]4. [/bold cyan][bold green]Then I expect the sum to be 8[/bold green]
+[italic white]      From Background: A simple Background
+[/italic white]        [bold yellow]1. [/bold yellow][bold yellow]Given I have the number 5[/bold yellow]
+[A[K        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
+        [bold yellow]2. [/bold yellow][bold yellow]And I have the number 3[/bold yellow]
+[A[K        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
+[italic white]      From Scenario
+[/italic white]        [bold yellow]3. [/bold yellow][bold yellow]When I add them up[/bold yellow]
+[A[K        [bold cyan]3. [/bold cyan][bold green]When I add them up[/bold green]
+        [bold yellow]4. [/bold yellow][bold yellow]Then I expect the sum to be 8[/bold yellow]
+[A[K        [bold cyan]4. [/bold cyan][bold green]Then I expect the sum to be 8[/bold green]
 
     [bold cyan]2. [/bold cyan][bold white]Scenario[/bold white]: [bold white]Subtract numbers[/bold white]
-        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
-        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
-        [bold cyan]3. [/bold cyan][bold green]When I subtract them[/bold green]
-        [bold cyan]4. [/bold cyan][bold green]Then I expect the difference to be 2[/bold green]
+[italic white]      From Background: A simple Background
+[/italic white]        [bold yellow]1. [/bold yellow][bold yellow]Given I have the number 5[/bold yellow]
+[A[K        [bold cyan]1. [/bold cyan][bold green]Given I have the number 5[/bold green]
+        [bold yellow]2. [/bold yellow][bold yellow]And I have the number 3[/bold yellow]
+[A[K        [bold cyan]2. [/bold cyan][bold green]And I have the number 3[/bold green]
+[italic white]      From Scenario
+[/italic white]        [bold yellow]3. [/bold yellow][bold yellow]When I subtract them[/bold yellow]
+[A[K        [bold cyan]3. [/bold cyan][bold green]When I subtract them[/bold green]
+        [bold yellow]4. [/bold yellow][bold yellow]Then I expect the difference to be 2[/bold yellow]
+[A[K        [bold cyan]4. [/bold cyan][bold green]Then I expect the difference to be 2[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

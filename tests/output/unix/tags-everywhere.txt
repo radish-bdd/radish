@@ -5,31 +5,45 @@
 
 [cyan]    @regular_scenario
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Regular Scenario with Tags[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
 [cyan]    @scenario_outline
 [/cyan]    [bold white]Scenario Outline[/bold white]: [bold white]A Scenario Outline[/bold white]
-        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
-        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
-        [cyan]When I add them up[/cyan]
-        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+        [bold yellow]Given I have the number <x>[/bold yellow]
+[A[K        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
+        [bold yellow]And I have the number <y>[/bold yellow]
+[A[K        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [bold yellow]When I add them up[/bold yellow]
+[A[K        [cyan]When I add them up[/cyan]
+        [bold yellow]Then I expect the sum to be <z>[/bold yellow]
+[A[K        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
 
     [bold white]Examples[/bold white]:
 [bold white]        | x | y | z |[/bold white]
-        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white] [bold yellow]2[/bold yellow] [bold white]|[/bold white] [bold yellow]3[/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3[/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]4[/bold yellow] [bold white]|[/bold white] [bold yellow]5[/bold yellow] [bold white]|[/bold white] [bold yellow]9[/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold green]4[/bold green] [bold white]|[/bold white] [bold green]5[/bold green] [bold white]|[/bold white] [bold green]9[/bold green] [bold white]|[/bold white]
 
 [cyan]    @scenario_loop
 [/cyan]    [bold white]Scenario Loop[/bold white]: [bold white]Scenario Loop with Tags[/bold white]
-        [cyan]Given I have a Step[/cyan]
-        [cyan]When I do something[/cyan]
-        [cyan]Then I expect something[/cyan]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [cyan]Given I have a Step[/cyan]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [cyan]When I do something[/cyan]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [cyan]Then I expect something[/cyan]
 
     [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]5 scenarios ([/bold white][bold green]5 passed[/bold green][bold white])[/bold white]

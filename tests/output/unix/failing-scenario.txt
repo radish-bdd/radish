@@ -1,10 +1,14 @@
 [bold white]Feature[/bold white]: [bold white]Add some numbers[/bold white]  # [bold black]features/failing-scenario.feature[/bold black][white][/white]
 
     [bold white]Scenario[/bold white]: [bold white]Add some numbers[/bold white]
-        [bold green]Given I have the number 1[/bold green]
-        [bold green]And I have the number 2[/bold green]
-        [bold green]When I add them up[/bold green]
-        [bold red]Then I expect the sum to be 42[/bold red]
+        [bold yellow]Given I have the number 1[/bold yellow]
+[A[K        [bold green]Given I have the number 1[/bold green]
+        [bold yellow]And I have the number 2[/bold yellow]
+[A[K        [bold green]And I have the number 2[/bold green]
+        [bold yellow]When I add them up[/bold yellow]
+[A[K        [bold green]When I add them up[/bold green]
+        [bold yellow]Then I expect the sum to be 42[/bold yellow]
+[A[K        [bold red]Then I expect the sum to be 42[/bold red]
           [bold red]AssertionError[/bold red]: [red]The expected sum 42 does not match actual sum 3[/red]
 
 [bold white]1 features ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]

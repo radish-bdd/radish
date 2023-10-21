@@ -9,10 +9,16 @@
 [cyan]    @foo
 [/cyan][cyan]    @bar
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Add numbers[/bold white]
-        [bold green]Given I have the number 5[/bold green]
-        [bold green]And I have the number 3[/bold green]
-        [bold green]When I add them up[/bold green]
-        [bold green]Then I expect the sum to be 8[/bold green]
+[italic white]      From Background: A simple Background
+[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
+[A[K        [bold green]Given I have the number 5[/bold green]
+        [bold yellow]And I have the number 3[/bold yellow]
+[A[K        [bold green]And I have the number 3[/bold green]
+[italic white]      From Scenario
+[/italic white]        [bold yellow]When I add them up[/bold yellow]
+[A[K        [bold green]When I add them up[/bold green]
+        [bold yellow]Then I expect the sum to be 8[/bold yellow]
+[A[K        [bold green]Then I expect the sum to be 8[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]

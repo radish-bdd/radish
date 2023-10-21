@@ -2,13 +2,18 @@
     [white]Radish shall support Scenario Loops.[/white]
 
     [bold cyan]1. [/bold cyan][bold white]Scenario Loop[/bold white]: [bold white]This is a looped Scenario[/bold white]
-        [bold cyan]1. [/bold cyan][cyan]Given I have an instable function[/cyan]
-        [bold cyan]2. [/bold cyan][cyan]When I execute it[/cyan]
-        [bold cyan]3. [/bold cyan][cyan]Then I expect it to pass[/cyan]
+        [bold yellow]1. [/bold yellow][bold yellow]Given I have an instable function[/bold yellow]
+[A[K        [bold cyan]1. [/bold cyan][cyan]Given I have an instable function[/cyan]
+        [bold yellow]2. [/bold yellow][bold yellow]When I execute it[/bold yellow]
+[A[K        [bold cyan]2. [/bold cyan][cyan]When I execute it[/cyan]
+        [bold yellow]3. [/bold yellow][bold yellow]Then I expect it to pass[/bold yellow]
+[A[K        [bold cyan]3. [/bold cyan][cyan]Then I expect it to pass[/cyan]
 
     [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [bold cyan]  2. [/bold cyan][white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [bold cyan]  3. [/bold cyan][white]|[/white] [bold green]1[/bold green] [white]|[/white]
+        [bold yellow]  2. [/bold yellow][bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
+[A[K        [bold cyan]  2. [/bold cyan][white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [bold yellow]  3. [/bold yellow][bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
+[A[K        [bold cyan]  3. [/bold cyan][white]|[/white] [bold green]1[/bold green] [white]|[/white]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

@@ -1,11 +1,20 @@
 [bold white]Feature[/bold white]: [bold white]A embed feature[/bold white]  # [bold black]features/embed.feature[/bold black][white][/white]
-        [bold green]Then step with embedded text should have following embedded data[/bold green]
+
+    [bold white]Scenario[/bold white]: [bold white]Embed text[/bold white]
+        [bold yellow]When I embed a text "test text"[/bold yellow]
+[A[K        [bold green]When I embed a text "test text"[/bold green]
+        [bold yellow]Then step with embedded text should have following embedded data[/bold yellow]
+          [bold white]|[/bold white] [white]mime_type [/white] [bold white]|[/bold white] [white]data        [/white] [bold white]|[/bold white]
+          [bold white]|[/bold white] [bold yellow]text/plain[/bold yellow] [bold white]|[/bold white] [bold yellow]dGVzdCB0ZXh0[/bold yellow] [bold white]|[/bold white]
+[A[K[A[K[A[K        [bold green]Then step with embedded text should have following embedded data[/bold green]
           [bold white]|[/bold white] [white]mime_type [/white] [bold white]|[/bold white] [white]data        [/white] [bold white]|[/bold white]
           [bold white]|[/bold white] [bold green]text/plain[/bold green] [bold white]|[/bold white] [bold green]dGVzdCB0ZXh0[/bold green] [bold white]|[/bold white]
 
     [bold white]Scenario[/bold white]: [bold white]Generate cucumber json report[/bold white]
-        [bold green]When generate cucumber report[/bold green]
-        [bold green]Then genreated cucumber json equals to "embed.json"[/bold green]
+        [bold yellow]When generate cucumber report[/bold yellow]
+[A[K        [bold green]When generate cucumber report[/bold green]
+        [bold yellow]Then genreated cucumber json equals to "embed.json"[/bold yellow]
+[A[K        [bold green]Then genreated cucumber json equals to "embed.json"[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

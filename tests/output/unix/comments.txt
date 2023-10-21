@@ -2,7 +2,8 @@
     [white]Radish shall ignore comments in Feature Files[/white]
 
     [bold white]Scenario[/bold white]: [bold white]A Scenario[/bold white]
-        [bold green]When I do something[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]

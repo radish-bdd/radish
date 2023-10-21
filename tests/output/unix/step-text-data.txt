@@ -1,11 +1,55 @@
-        [bold green]When YAML specification is set to[/bold green][bold white]
+[bold white]Feature[/bold white]: [bold white]Step Text Data[/bold white]  # [bold black]features/step-text-data.feature[/bold black]
+    [white]Radish shall support Step Text Data[/white]
+
+    [bold white]Scenario[/bold white]: [bold white]A Step with Text[/bold white]
+        [bold yellow]Given I have the following quote[/bold yellow][bold white]
+            """[/bold white][cyan]
+                To be or not to be[/cyan][bold white]
+            """[/bold white]
+[A[K[A[K[A[K[A[K        [bold green]Given I have the following quote[/bold green][bold white]
+            """[/bold white][cyan]
+                To be or not to be[/cyan][bold cyan]
+            """[/bold cyan]
+        [bold yellow]When I look for it's author[/bold yellow]
+[A[K        [bold green]When I look for it's author[/bold green]
+        [bold yellow]Then I will find Shakespeare[/bold yellow]
+[A[K        [bold green]Then I will find Shakespeare[/bold green]
+
+    [bold white]Scenario[/bold white]: [bold white]YAML definition in Step with Text[/bold white]
+        [bold yellow]When YAML specification is set to[/bold yellow][bold white]
+            """[/bold white][cyan]
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir[/cyan][bold white]
+            """[/bold white]
+[A[K[A[K[A[K[A[K[A[K[A[K[A[K        [bold green]When YAML specification is set to[/bold green][bold white]
             """[/bold white][cyan]
                 version: '3'
                 services:
                   webapp:
                     build: ./dir[/cyan][bold cyan]
             """[/bold cyan]
-        [bold green]Then YAML specification contains proper data[/bold green]
+        [bold yellow]Then YAML specification contains proper data[/bold yellow]
+[A[K        [bold green]Then YAML specification contains proper data[/bold green]
+
+    [bold white]Scenario[/bold white]: [bold white]A step with text on endigs[/bold white]
+        [bold yellow]When YAML specification is set to[/bold yellow][bold white]
+            """[/bold white][cyan]
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir[/cyan][bold white]
+            """[/bold white]
+[A[K[A[K[A[K[A[K[A[K[A[K[A[K        [bold green]When YAML specification is set to[/bold green][bold white]
+            """[/bold white][cyan]
+                version: '3'
+                services:
+                  webapp:
+                    build: ./dir[/cyan][bold cyan]
+            """[/bold cyan]
+        [bold yellow]Then YAML specification contains proper data[/bold yellow]
+[A[K        [bold green]Then YAML specification contains proper data[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]3 scenarios ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]

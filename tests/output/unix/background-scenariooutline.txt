@@ -9,15 +9,23 @@
         [cyan]And I have the number 3[/cyan]
 
     [bold white]Scenario Outline[/bold white]: [bold white]Add numbers[/bold white]
-        [cyan]Given I have the number 5[/cyan]
-        [cyan]And I have the number 3[/cyan]
-        [cyan]When I [/cyan][white]<operator>[/white][cyan] them up[/cyan]
-        [cyan]Then I expect the [/cyan][white]<result_name>[/white][cyan] to be [/cyan][white]<result>[/white][cyan][/cyan]
+[italic white]      From Background: A simple Background
+[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
+[A[K        [cyan]Given I have the number 5[/cyan]
+        [bold yellow]And I have the number 3[/bold yellow]
+[A[K        [cyan]And I have the number 3[/cyan]
+[italic white]      From Scenario
+[/italic white]        [bold yellow]When I <operator> them up[/bold yellow]
+[A[K        [cyan]When I [/cyan][white]<operator>[/white][cyan] them up[/cyan]
+        [bold yellow]Then I expect the <result_name> to be <result>[/bold yellow]
+[A[K        [cyan]Then I expect the [/cyan][white]<result_name>[/white][cyan] to be [/cyan][white]<result>[/white][cyan][/cyan]
 
     [bold white]Examples[/bold white]:
 [bold white]        | operator | result_name | result |[/bold white]
-        [bold white]|[/bold white] [bold green]add     [/bold green] [bold white]|[/bold white] [bold green]sum        [/bold green] [bold white]|[/bold white] [bold green]8     [/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold green]subtract[/bold green] [bold white]|[/bold white] [bold green]difference [/bold green] [bold white]|[/bold white] [bold green]2     [/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]add     [/bold yellow] [bold white]|[/bold white] [bold yellow]sum        [/bold yellow] [bold white]|[/bold white] [bold yellow]8     [/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold green]add     [/bold green] [bold white]|[/bold white] [bold green]sum        [/bold green] [bold white]|[/bold white] [bold green]8     [/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]subtract[/bold yellow] [bold white]|[/bold white] [bold yellow]difference [/bold yellow] [bold white]|[/bold white] [bold yellow]2     [/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold green]subtract[/bold green] [bold white]|[/bold white] [bold green]difference [/bold green] [bold white]|[/bold white] [bold green]2     [/bold green] [bold white]|[/bold white]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

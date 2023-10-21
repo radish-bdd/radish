@@ -4,20 +4,29 @@
 
 [cyan]    @foo
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Ignored Scenario[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
 [cyan]    @bar
 [/cyan]    [bold white]Scenario[/bold white]: [bold white]Parsed Scenario[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
     [bold white]Scenario[/bold white]: [bold white]Another parsed Scenario[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]3 scenarios ([/bold white][bold green]3 passed[/bold green][bold white])[/bold white]

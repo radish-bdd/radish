@@ -1,15 +1,21 @@
 [bold white]Feature[/bold white]: [bold white]Add some numbers[/bold white]  # [bold black]features/failing-scenario-outline.feature[/bold black][white][/white]
 
     [bold white]Scenario Outline[/bold white]: [bold white]Add some numbers[/bold white]
-        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
-        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
-        [cyan]When I add them up[/cyan]
-        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
+        [bold yellow]Given I have the number <x>[/bold yellow]
+[A[K        [cyan]Given I have the number [/cyan][white]<x>[/white][cyan][/cyan]
+        [bold yellow]And I have the number <y>[/bold yellow]
+[A[K        [cyan]And I have the number [/cyan][white]<y>[/white][cyan][/cyan]
+        [bold yellow]When I add them up[/bold yellow]
+[A[K        [cyan]When I add them up[/cyan]
+        [bold yellow]Then I expect the sum to be <z>[/bold yellow]
+[A[K        [cyan]Then I expect the sum to be [/cyan][white]<z>[/white][cyan][/cyan]
 
     [bold white]Examples[/bold white]:
 [bold white]        | x | y | z  |[/bold white]
-        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3 [/bold green] [bold white]|[/bold white]
-        [bold white]|[/bold white] [bold red]4[/bold red] [bold white]|[/bold white] [bold red]5[/bold red] [bold white]|[/bold white] [bold red]42[/bold red] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white] [bold yellow]2[/bold yellow] [bold white]|[/bold white] [bold yellow]3 [/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold green]1[/bold green] [bold white]|[/bold white] [bold green]2[/bold green] [bold white]|[/bold white] [bold green]3 [/bold green] [bold white]|[/bold white]
+        [bold white]|[/bold white] [bold yellow]4[/bold yellow] [bold white]|[/bold white] [bold yellow]5[/bold yellow] [bold white]|[/bold white] [bold yellow]42[/bold yellow] [bold white]|[/bold white]
+[A[K        [bold white]|[/bold white] [bold red]4[/bold red] [bold white]|[/bold white] [bold red]5[/bold red] [bold white]|[/bold white] [bold red]42[/bold red] [bold white]|[/bold white]
           [bold red]AssertionError[/bold red]: [red]The expected sum 42 does not match actual sum 9[/red]
 
 [bold white]1 features ([/bold white][bold green]0 passed[/bold green][bold white], [/bold white][bold red]1 failed[/bold red][bold white])[/bold white]

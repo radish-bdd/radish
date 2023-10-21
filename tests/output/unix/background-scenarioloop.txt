@@ -9,14 +9,22 @@
         [cyan]And I have the number 3[/cyan]
 
     [bold white]Scenario Loop[/bold white]: [bold white]Add numbers[/bold white]
-        [cyan]Given I have the number 5[/cyan]
-        [cyan]And I have the number 3[/cyan]
-        [cyan]When I add them up[/cyan]
-        [cyan]Then I expect the sum to be 8[/cyan]
+[italic white]      From Background: A simple Background
+[/italic white]        [bold yellow]Given I have the number 5[/bold yellow]
+[A[K        [cyan]Given I have the number 5[/cyan]
+        [bold yellow]And I have the number 3[/bold yellow]
+[A[K        [cyan]And I have the number 3[/cyan]
+[italic white]      From Scenario
+[/italic white]        [bold yellow]When I add them up[/bold yellow]
+[A[K        [cyan]When I add them up[/cyan]
+        [bold yellow]Then I expect the sum to be 8[/bold yellow]
+[A[K        [cyan]Then I expect the sum to be 8[/cyan]
 
     [bold white]Iterations[/bold white]: [cyan]2[/cyan]
-        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
-        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]0[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]0[/bold green] [white]|[/white]
+        [bold white]|[/bold white] [bold yellow]1[/bold yellow] [bold white]|[/bold white]
+[A[K        [white]|[/white] [bold green]1[/bold green] [white]|[/white]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

@@ -23,6 +23,7 @@ class Printer(object):
         self.out_file = None
         self.width = None
         self.height = None
+        self.revoke_lines = True
         self.style_on = True
         self._init_consoles()
         self.lines = []
@@ -34,6 +35,9 @@ class Printer(object):
     def _init_consoles(self):
         self.console = Console(file=self.out_file, width=self.width, height=self.height, soft_wrap=True)
         self.live = Live(self.console)
+        
+    def set_line_revoke_enabled(self, on: bool):
+        self.revoke_lines = on
         
     def set_style_on(self, on: bool):
         self.style_on = on
@@ -57,11 +61,12 @@ class Printer(object):
 
         # so this is a work around to print the line jumps like normal
         # then remove them from the pretty string
-        line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
-        text = text.replace(ANSI_LINE_JUMP_SEQUENCE, "")
-        for _ in range(line_jumps):
-            if len(self.lines):
-                self.lines.pop()
+        if self.revoke_lines:
+            line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
+            text = text.replace(ANSI_LINE_JUMP_SEQUENCE, "")
+            for _ in range(line_jumps):
+                if len(self.lines):
+                    self.lines.pop()
         self.lines.append(text)
         self.live.update(self.get_console_text())
             

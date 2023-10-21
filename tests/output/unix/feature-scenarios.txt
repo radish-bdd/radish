@@ -3,14 +3,20 @@
     multiple Scenarios which contain multiple Steps[/white]
 
     [bold white]Scenario[/bold white]: [bold white]One Scenario with multiple Steps[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
     [bold white]Scenario[/bold white]: [bold white]Another Scenario with multiple Steps[/bold white]
-        [bold green]Given I have a Step[/bold green]
-        [bold green]When I do something[/bold green]
-        [bold green]Then I expect something[/bold green]
+        [bold yellow]Given I have a Step[/bold yellow]
+[A[K        [bold green]Given I have a Step[/bold green]
+        [bold yellow]When I do something[/bold yellow]
+[A[K        [bold green]When I do something[/bold green]
+        [bold yellow]Then I expect something[/bold yellow]
+[A[K        [bold green]Then I expect something[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]2 scenarios ([/bold white][bold green]2 passed[/bold green][bold white])[/bold white]

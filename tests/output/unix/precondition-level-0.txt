@@ -4,10 +4,14 @@
     to specific users.[/white]
 
     [bold white]Scenario[/bold white]: [bold white]Have a multi user setup[/bold white]
-        [bold green]Given a user named Bruce[/bold green]
-        [bold green]And a user named Peter[/bold green]
-        [bold green]And a user named Tony[/bold green]
-        [bold green]And a personal site owned by Bruce[/bold green]
+        [bold yellow]Given a user named Bruce[/bold yellow]
+[A[K        [bold green]Given a user named Bruce[/bold green]
+        [bold yellow]And a user named Peter[/bold yellow]
+[A[K        [bold green]And a user named Peter[/bold green]
+        [bold yellow]And a user named Tony[/bold yellow]
+[A[K        [bold green]And a user named Tony[/bold green]
+        [bold yellow]And a personal site owned by Bruce[/bold yellow]
+[A[K        [bold green]And a personal site owned by Bruce[/bold green]
 
 [bold white]1 features ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]
 [bold white]1 scenarios ([/bold white][bold green]1 passed[/bold green][bold white])[/bold white]

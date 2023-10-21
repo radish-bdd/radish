@@ -32,7 +32,7 @@ class Printer(object):
         self.live.update(self.get_console_text())
         
     def _init_consoles(self):
-        self.console = Console(file=self.out_file, width=self.width, height=self.height)
+        self.console = Console(file=self.out_file, width=self.width, height=self.height, soft_wrap=True)
         self.live = Live(self.console)
         
     def set_style_on(self, on: bool):

@@ -1,4 +1,3 @@
-[bold red]Error: [/bold red][red]No feature or no scenario specified in at least one of the given feature files[/red]
 [bold red]Error[/bold red]: [red]No Feature found in file features/empty.feature
 
 Error Oracle says:

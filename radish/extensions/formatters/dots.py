@@ -35,7 +35,7 @@ class DotOutputFormatter(object):
 
     def __init__(self):
         before.each_feature(self.dot_formatter_before_each_feature)
-        after.each_feature(lambda *args, **kwargs: sys.stdout.printer.write("\n"))
+        after.each_feature(lambda *args, **kwargs: sys.stdout.write("\n"))
         after.each_scenario(self.dot_formatter_after_each_scenario)
         after.each_step(self.dot_formatter_after_each_step)
         after.all(self.dot_formatter_failure_summary)

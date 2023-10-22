@@ -33,8 +33,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
                     float(cover_min_percentage)
                 ),
                 "magenta",
-            ),
-            end="",
+            )
         )
         return 3
 
@@ -48,8 +47,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         write(
             styled_text(
                 "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs), "magenta"
-            ),
-            end="",
+            )
         )
 
         return 4
@@ -157,8 +155,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
     write(
         '{0} STEP "{1}" SHOULD MATCH {2}    '.format(
             styled_text(">>", "yellow"), styled_text(sentence, "cyan"), styled_text(expected_step, "cyan")
-        ),
-        end="",
+        )
     )
 
     result = match_step(sentence, steps)
@@ -232,9 +229,9 @@ def output_failure(step_func, errors):
     """
     Write the given errors to stdout.
     """
-    write(styled_text("✘", "bold red"), end="")
+    write(styled_text("✘", "bold red"))
     if step_func is not None:
-        write(str(styled_text(" (at {0})".format(get_func_location(step_func)), "red")), end="")
+        write(str(styled_text(" (at {0})".format(get_func_location(step_func)), "red")))
 
     write("")
 

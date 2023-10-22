@@ -1,21 +1,28 @@
 # -*- coding: utf-8 -*-
 
 """
-    This module provides a registry for all hooks
+    This module provides an interface to work with the Rich library.
+    
 """
 
+from typing import IO
 from singleton import singleton
 from rich.console import Console
 from rich.live import Live
 from radish import world
 
+
+# The ansi line jump sequence will remove a line from the output
 ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K" 
 
 
 @singleton()
 class Printer(object):
     """
-    Represents an object with all registered hooks
+    An object responsible for maintaining the rich Live session
+    and any settings. It is a singleton because a single live session
+    is allowed to be active at one time, otherwise an exception will
+    be raised.
     """
 
 
@@ -23,45 +30,79 @@ class Printer(object):
         self.out_file = None
         self.width = None
         self.height = None
-        self.revoke_lines = True
         self.style_on = True
+        self.is_live = True
         self._init_consoles()
         self.lines = []
         
     def clear(self):
+        """
+        Clear the cached lines and update the live display. This is required to 
+        clear the data of the singleton between tests.
+        """
         self.lines = []
         self.live.update(self.get_console_text())
         
     def _init_consoles(self):
+        """
+        Recreate console and live session with current settings. 
+        """
         self.console = Console(file=self.out_file, width=self.width, height=self.height, soft_wrap=True)
         self.live = Live(self.console)
         
-    def set_line_revoke_enabled(self, on: bool):
-        self.revoke_lines = on
+    def set_live(self, on: bool):
+        """Toggle live status, if live status is off, then 
+        printing will go directly to the console. This is required 
+        to retrieve the output for tests as a live session.
+
+        Args:
+            on (bool): live is on(True) of off(False)
+        """
+        self.is_live = on
         
     def set_style_on(self, on: bool):
+        """Turn style on or off 
+
+        Args:
+            on (bool): style on(True) or off(False)
+        """
         self.style_on = on
     
-    def out_to_file(self, file):
+    def out_to_file(self, file: IO[str]):
+        """Set the out destination of the console
+
+        Args:
+            file (File): the write file or destination
+        """
         self.out_file = file
         self._init_consoles()
         
-    def set_size(self, width, height):
+    def set_size(self, width: int, height: int):
+        """Set the size of the console, Rich does this by default
+        based on environment variables, but for tests, this is
+        required for consistency
+
+        Args:
+            width (int): width of console
+            height (int): height of console
+        """
         self.width = width
         self.height = height
         self._init_consoles()
         
-    def get_console_text(self):
+    def get_console_text(self) -> str:
         return '\n'.join(self.lines)
     
-    def write(self, text, end="\n"):
-        # rich does not support the ansi line skip sequence
-        # and making gherkin use rich's live data stuff turned out
-        # to be pretty challanging
+    def write(self, text: str):
+        """Write to the live session OR directly to the console, support
+        existing line-replace mechanism by removing a line for each time the 
+        line jump sequence appears in the text. Then append the new text to 
+        existing lines and update the live display. 
 
-        # so this is a work around to print the line jumps like normal
-        # then remove them from the pretty string
-        if self.revoke_lines:
+        Args:
+            text (str): The new text to add. 
+        """
+        if self.is_live:
             line_jumps = text.count(ANSI_LINE_JUMP_SEQUENCE)
             text = text.replace(ANSI_LINE_JUMP_SEQUENCE, "")
             for _ in range(line_jumps):

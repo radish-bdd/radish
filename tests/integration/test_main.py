@@ -333,7 +333,7 @@ def test_main_cli_calls(
     """
     Printer().clear()
     Printer().set_size(208, 34)
-    Printer().set_line_revoke_enabled(False)
+    Printer().set_live(False)
     Printer().out_to_file(io.StringIO())
     # given
     if "-m" not in given_cli_args and "--marker" not in given_cli_args:

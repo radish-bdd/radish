@@ -22,10 +22,6 @@ from rich.console import Console
 # using direct rich.print word wraps without a way to turn it off.
 # This breaks tests with random line breaks
 
-ANSI_LINE_JUMP_SEQUENCE = "\r\033[A\033[K"
-STYLE_ON = True
-
-
 class Failure(object):  # pylint: disable=too-few-public-methods
     """
     Represents the fail reason for a step

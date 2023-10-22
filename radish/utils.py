@@ -185,16 +185,27 @@ def flattened_basedirs(basedirs):
 
 def split_unescape(s, delim, escape="\\", unescape=True):
     """
+    Split a string based on a delimiter and an escape character.
+
+    :param str s: The input string to split and unescape.
+    :param str delim: The delimiter used for splitting the string.
+    :param str escape: The escape character used to escape special characters (default is "\\").
+    :param bool unescape: A flag to control whether to unescape escaped characters (default is True).
+
+    :rtype: list
+    :returns: A list of split and unescaped strings.
+
+    Examples:
     >>> split_unescape('foo|bar', '|')
     ['foo', 'bar']
-    >>> split_unescape(r'foo\|bar', '|')
+    >>> split_unescape('foo\\|bar', '|')
     ['foo|bar']
     >>> split_unescape(r'foo\\|bar', '|', unescape=True)
-    [r'foo|', 'bar']
+    ['foo\\', 'bar']
     >>> split_unescape(r'foo\\|bar', '|', unescape=False)
-    [r'foo\\', 'bar']
-    >>> split_unescape(r'foo\', '|', unescape=True)
-    [r'foo\']
+    ['foo\\\\', 'bar']
+    >>> split_unescape('foo\\', '|', unescape=True)
+    ['foo\\']
     """
     ret = []
     current = []

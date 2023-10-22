@@ -371,7 +371,7 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = Printer().console.file.getvalue()
+            actual_output = printer.console.file.getvalue()
             # restore stdout
 
     # patch featurefile paths in actual output

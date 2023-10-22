@@ -17,7 +17,7 @@ import tempfile
 import pytest
 
 from radish.main import main
-from radish.printer import Printer
+from radish.printer import printer
 
 
 @pytest.mark.parametrize(
@@ -331,10 +331,9 @@ def test_main_cli_calls(
     """
     Test calling main CLI
     """
-    Printer().clear()
-    Printer().set_size(208, 34)
-    Printer().set_live(False)
-    Printer().out_to_file(io.StringIO())
+    printer.clear()
+    printer.set_live(False)
+    printer.out_to_file(io.StringIO())
     # given
     if "-m" not in given_cli_args and "--marker" not in given_cli_args:
         given_cli_args.extend(["--marker", "test-marker"])
@@ -371,7 +370,7 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = Printer().console.file.getvalue()
+            actual_output = printer.console.file.getvalue()
             # restore stdout
 
     # patch featurefile paths in actual output

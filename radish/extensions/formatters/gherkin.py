@@ -15,11 +15,7 @@ from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
 
-from radish.printer import Printer, ANSI_LINE_JUMP_SEQUENCE, styled_text
-
-printer = Printer()
-write = printer.write
-
+from radish.printer import printer, ANSI_LINE_JUMP_SEQUENCE, styled_text
 
 @extension
 class ConsoleWriter(object):
@@ -132,7 +128,7 @@ class ConsoleWriter(object):
             for step in feature.background.all_steps:
                 output += "\n" + self._get_step_before_output(step, "cyan")
 
-        write(output)
+        printer.write(output)
 
     def console_writer_before_each_scenario(self, scenario):
         """
@@ -184,7 +180,7 @@ class ConsoleWriter(object):
                 styled_text(scenario.keyword, "bold white"),
                 styled_text(scenario.sentence, "bold white"),
             )
-        write(output)
+        printer.write(output)
 
     def console_writer_before_each_step(self, step):
         """
@@ -233,7 +229,7 @@ class ConsoleWriter(object):
         self.last_background = step.as_background
         output += self._get_step_before_output(step)
 
-        write(output)
+        printer.write(output)
 
     def _get_step_before_output(self, step, style=None):
         if style is None:
@@ -348,7 +344,7 @@ class ConsoleWriter(object):
                 styled_text(step.failure.reason, "red"),
             )
 
-        write(output)
+        printer.write(output)
 
     def console_writer_after_each_scenario(self, scenario):
         """
@@ -429,7 +425,7 @@ class ConsoleWriter(object):
                 )
 
         if output:
-            write(output)
+            printer.write(output)
 
     def console_writer_after_each_feature(self, feature):  # pylint: disable=unused-argument
         """
@@ -437,4 +433,4 @@ class ConsoleWriter(object):
 
         :param Feature feature: the feature which was ran.
         """
-        write("")
+        printer.write("")

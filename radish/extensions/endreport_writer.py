@@ -18,9 +18,8 @@ from radish.extensionregistry import extension
 from radish.terrain import world
 from radish.stepregistry import StepRegistry
 
-from radish.printer import Printer, styled_text
+from radish.printer import printer, styled_text
 
-printer = Printer()
 write = printer.write
 
 

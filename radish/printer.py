@@ -41,7 +41,7 @@ class Printer(object):
         clear the data of the singleton between tests.
         """
         self.lines = []
-        self.live.update(self.get_console_text())
+        self.live.update(self._build_live_text())
         
     def _init_consoles(self):
         """
@@ -90,8 +90,11 @@ class Printer(object):
         self.height = height
         self._init_consoles()
         
-    def get_console_text(self) -> str:
+    def _build_live_text(self) -> str:
         return '\n'.join(self.lines)
+    
+    def get_console_output(self):
+        return self.console.file.getvalue()
     
     def write(self, text: str):
         """Write to the live session OR directly to the console, support
@@ -109,7 +112,7 @@ class Printer(object):
                 if len(self.lines):
                     self.lines.pop()
             self.lines.append(text)
-            self.live.update(self.get_console_text())
+            self.live.update(self._build_live_text())
         else:
             self.console.print(text)
             
@@ -125,7 +128,9 @@ def styled_text(text, style):
     :param str style: the style to inject.
     for reference: https://rich.readthedocs.io/en/latest/style.html
     """
-    if world.config.no_ansi or not Printer().style_on:
+    if world.config.no_ansi or not printer.style_on:
         return text
     else:
         return f"[{style}]{text}[/{style}]"
+    
+printer = Printer()

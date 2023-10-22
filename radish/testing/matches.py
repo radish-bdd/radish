@@ -15,9 +15,8 @@ from radish.loader import load_modules
 from radish.matcher import match_step
 from radish.stepregistry import StepRegistry
 from radish.utils import get_func_arg_names, get_func_location, locate
-from radish.printer import Printer, styled_text
+from radish.printer import printer, styled_text
 
-printer = Printer()
 write = printer.write
 
 
@@ -29,7 +28,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
     if cover_min_percentage is not None and float(cover_min_percentage) > 100:
         write(
             styled_text(
-                "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n".format(
+                "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%".format(
                     float(cover_min_percentage)
                 ),
                 "magenta",
@@ -63,7 +62,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
 
         if not match_config:
             # its like this is word wrapping and injecting newlines
-            write(styled_text(f"No sentences found in {match_config_file} to test against\n", "magenta"))
+            write(styled_text(f"No sentences found in {match_config_file} to test against", "magenta"))
             return 5
 
         write(

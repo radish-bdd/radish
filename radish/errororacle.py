@@ -18,8 +18,7 @@ from .exceptions import (
 )
 from .utils import Failure
 
-from .printer import Printer, styled_text
-printer = Printer()
+from .printer import printer, styled_text
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 

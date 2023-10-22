@@ -22,9 +22,7 @@ from .errororacle import error_oracle, catch_unhandled_exception
 from .terrain import world
 from . import utils
 
-from radish.printer import Printer, styled_text
-
-printer = Printer()
+from radish.printer import printer, styled_text
 
 # use only 8 ANSI colors
 # FIXME(TF): change to true colors!

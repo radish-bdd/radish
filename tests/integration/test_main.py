@@ -332,6 +332,7 @@ def test_main_cli_calls(
     Test calling main CLI
     """
     printer.clear()
+    printer.set_size(208, 34)
     printer.set_live(False)
     printer.out_to_file(io.StringIO())
     # given
@@ -370,7 +371,7 @@ def test_main_cli_calls(
             actual_exitcode = exc.code
         finally:
             tmp_stdout.seek(0)
-            actual_output = printer.console.file.getvalue()
+            actual_output = Printer().console.file.getvalue()
             # restore stdout
 
     # patch featurefile paths in actual output

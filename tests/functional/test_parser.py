@@ -254,6 +254,24 @@ def test_parse_feature_with_scenario_outline(parser):
     assert feature.scenarios[0].scenarios[1].steps[3].sentence == "Then I expect the sum to be 9"
 
 
+@pytest.mark.parametrize("parser", [("scenario-outline-tag",)], indirect=["parser"])
+def test_tags_are_propagated_to_example_scenarios(parser):
+    """
+    Test parsing a Feature with a simple Scenario Outline with tags
+    """
+    # when
+    feature = parser.parse()
+
+    # then
+    assert len(feature.scenarios) == 1
+    assert isinstance(feature.scenarios[0], ScenarioOutline)
+    assert len(feature.scenarios[0].scenarios) == 2
+
+    # then - expect tags are set from parent for each scenario
+    assert feature.scenarios[0].scenarios[0].tags == [Tag("arbitrary_tag")]
+    assert feature.scenarios[0].scenarios[1].tags == [Tag("arbitrary_tag")]
+
+
 @pytest.mark.parametrize("parser", [("scenario-outline-step-text",)], indirect=["parser"])
 def test_parse_scenario_outline_with_step_text(parser):
     """

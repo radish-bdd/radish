@@ -13,7 +13,9 @@ class ExampleScenario(Scenario):
     """
 
     def __init__(self, id, keyword, sentence, path, line, parent, example, background=None):
-        super(ExampleScenario, self).__init__(id, keyword, sentence, path, line, parent, background=background)
+        super(ExampleScenario, self).__init__(
+            id, keyword, sentence, path, line, parent, parent.tags, background=background
+        )
         self.example = example
 
     def has_to_run(self, scenario_choice):

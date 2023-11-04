@@ -365,6 +365,19 @@ def test_parse_feature_with_scenario_loop(parser):
     assert feature.scenarios[0].scenarios[1].steps[2].sentence == "Then I expect it to pass"
 
 
+@pytest.mark.parametrize("parser", [("scenario-loop-tag",)], indirect=["parser"])
+def test_tags_are_propagated_to_iterationscenario_scenarios(parser):
+    """
+    Test parsing a Feature with a simple Scenario Loop with tags
+    """
+    # when
+    feature = parser.parse()
+
+    # then - expect tags are set from parent for each scenario
+    assert feature.scenarios[0].scenarios[0].tags == [Tag("arbitrary_tag")]
+    assert feature.scenarios[0].scenarios[1].tags == [Tag("arbitrary_tag")]
+
+
 @pytest.mark.parametrize("parser", [("step-tabular-data",)], indirect=["parser"])
 def test_parse_step_tabular_data(parser):
     """

@@ -56,7 +56,7 @@ Please have a look at the [Contributing Guidelines](https://github.com/radish-bd
 
 ```
 vim CHANGELOG.md docs/conf.py radish/__init__.py
-git commit -am "release: vX.X.X" && git tag vX.X.X && git push --tags
+git commit -am "release: vX.X.X" && git tag vX.X.X && git push && git push --tags
 rm -rf dist
 python3 setup.py sdist bdist_wheel
 python3 -m twine upload dist/*

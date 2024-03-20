@@ -399,7 +399,8 @@ Per default the following *types* are supported:
 |                | False: 0, n, N, no, No, NO, false, False, FALSE, off, Off, OFF                |             |
 +----------------+-------------------------------------------------------------------------------+-------------+
 
-These standard types can be combined with the following cardinalities:
+These standard types (MathExpression, QuotedString and Boolean)
+can be combined with the following cardinalities:
 
 .. code:: text
 
@@ -408,12 +409,12 @@ These standard types can be combined with the following cardinalities:
     "{numbers:d*}"    #< Cardinality: 0..* (zero or more = many0)
     "{numbers:d+}"    #< Cardinality: 1..* (one  or more = many)
 
-If you accept one or more numbers for your step you could therefor do:
+If you accept one or more Boolean for your step you could therefor do:
 
 .. code:: python
 
-    @given('I have the numbers {numbers:d+}')
-    def have_numbers(step, numbers)
+    @given('I have the flags {flags:Boolean+}')
+    def have_flags(step, flags)
         ...
 
 By default the ``,`` (comma) is used as a separator, but you are able to specify your own.
@@ -432,6 +433,9 @@ Let's assume you want to use ``and`` instead of ``,``:
         parse_number, listsep='and'))
 
 Now you can use ``NumberList`` as the type in your step pattern.
+As of now (Mar-2024) parse does not support cardinality,
+if cardinality is required a custom type needs to be created or
+the folling issue needs to be adressed: https://github.com/r1chardj0n3s/parse/issues/181
 
 As you've seen you can use the ``custom_type`` decorator, the ``register_custom_type`` function
 and the ``TypeBuilder`` to extend the default types.

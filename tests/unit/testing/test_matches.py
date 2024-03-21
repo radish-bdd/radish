@@ -10,14 +10,14 @@
 """
 
 import os
+import io
 import re
 import tempfile
 
 import pytest
 
-import colorful
-
 import radish.testing.matches as matches
+from radish.printer import printer
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -25,9 +25,17 @@ def disable_colors():
     """
     Fixture to disable colors
     """
-    colorful.disable()
+    printer.set_live(False)
+    printer.set_style_on(False)
     yield
-    colorful.use_8_ansi_colors()
+    printer.set_style_on(True)
+    printer.set_live(True)
+
+
+@pytest.fixture(autouse=True)
+def reset_printer():
+    printer.out_to_file(io.StringIO())
+    printer.clear()
 
 
 def test_unreasonable_min_coverage(capsys):
@@ -40,7 +48,7 @@ def test_unreasonable_min_coverage(capsys):
 
     # when
     actual_returncode = matches.test_step_matches_configs(None, [], min_coverage)
-    _, err = capsys.readouterr()
+    err = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
@@ -57,17 +65,18 @@ def test_no_steps_found(mocker, capsys):
 
     # when
     actual_returncode = matches.test_step_matches_configs(None, [])
-    _, err = capsys.readouterr()
+    text = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
-    assert err == "No step implementations found in [], thus doesn't make sense to continue"
+    assert text == "No step implementations found in [], thus doesn't make sense to continue\n"
 
 
 def test_empty_matches_config(mocker, capsys):
     """
     Test empty matches config file
     """
+
     # given
     expected_returncode = 5
 
@@ -80,7 +89,7 @@ def test_empty_matches_config(mocker, capsys):
 
     # when
     actual_returncode = matches.test_step_matches_configs([tmpfile], [])
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
@@ -137,7 +146,7 @@ def test_sentence_no_step_match(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert "Expected sentence didn't match any step implementation" in out
@@ -159,7 +168,7 @@ def test_sentence_match_wrong_step(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert "Expected sentence matched foo instead of bar" in out
@@ -187,7 +196,7 @@ def test_sentence_argument_errors(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert 'Expected argument "foo" with value "foooooooo" does not match value "FOO"' in out
@@ -210,7 +219,7 @@ def test_sentence_not_match(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
@@ -231,7 +240,7 @@ def test_sentence_not_match_anything(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
@@ -255,7 +264,7 @@ def test_sentence_not_match_specific_step(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert actual_returncode == expected_returncode
@@ -276,7 +285,7 @@ def test_sentence_not_match_but_does(capsys):
 
     # when
     actual_returncode = matches.test_step_matches(config, steps)
-    out, _ = capsys.readouterr()
+    out = printer.get_console_output()
 
     # then
     assert "Expected sentence did match foo but it shouldn't" in out

@@ -116,7 +116,8 @@ The marker is also displayed in the summary of a test run:
 
   Run My Marker finished within 0:0.001272 minutes
 
-The marker is also passed into all the hooks defined in the terrain files.
+The marker is available in ``world.config.marker`` and also passed into all
+the hooks defined in the terrain files.
 To see example code please consult :ref:`terrain <tutorial#terrain_and_hooks>`.
 
 

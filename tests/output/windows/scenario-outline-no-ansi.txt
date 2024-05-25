@@ -3,16 +3,12 @@ Feature: Support Scenario Outlines  # features\scenario-outline.feature
     of Scenario Outlines with valid Examples
 
     Scenario Outline: A Scenario Outline
-
         Given I have the number <x>
         Given I have the number <x>
-
         And I have the number <y>
         And I have the number <y>
-
         When I add them up
         When I add them up
-
         Then I expect the sum to be <z>
         Then I expect the sum to be <z>
 

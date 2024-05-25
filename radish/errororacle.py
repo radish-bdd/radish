@@ -7,7 +7,6 @@ This module provides some functionality to diagnose thrown exceptions
 import sys
 from functools import wraps
 
-import colorful
 
 from .terrain import world
 from .exceptions import (
@@ -17,8 +16,9 @@ from .exceptions import (
     HookError,
     SameStepError,
 )
-from .utils import Failure, console_write
+from .utils import Failure
 
+from .printer import printer, styled_text
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 
@@ -27,14 +27,14 @@ def write_error(text):
     """
     Writes the given text to the console
     """
-    console_write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
+    printer.write("{0}: {1}".format(styled_text("Error", "bold red"), styled_text(text, "red")))
 
 
 def write_failure(failure):
     """
     Writes the failure to the console
     """
-    console_write("\n{0}".format(colorful.red(failure.traceback)))
+    printer.write("\n{0}".format(styled_text(failure.traceback, "red")))
 
 
 def abort(return_code):
@@ -85,7 +85,7 @@ def handle_exception(exception):
         write_error(exception)
         abort(1)
     elif isinstance(exception, KeyboardInterrupt):
-        console_write("Aborted by the user...")
+        printer.write("Aborted by the user...")
         abort(1)
     else:
         write_error(exception)

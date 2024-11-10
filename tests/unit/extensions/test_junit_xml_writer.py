@@ -11,7 +11,7 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 
 import pytest
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from radish.terrain import world
 from radish.exceptions import RadishError
@@ -33,8 +33,8 @@ def test_singel_feature_list(mocker):
     stub = mocker.patch("radish.extensions.junit_xml_writer.JUnitXMLWriter._write_xml_to_disk")
 
     first_feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
-    first_feature.starttime = datetime.utcnow()
-    first_feature.endtime = datetime.utcnow()
+    first_feature.starttime = datetime.now(timezone.utc)
+    first_feature.endtime = datetime.now(timezone.utc)
 
     features = [first_feature]
 
@@ -61,12 +61,12 @@ def test_normal_feature_list(mocker):
         preconditions=None,
         background=None,
     )
-    first_scenario.starttime = datetime.utcnow()
-    first_scenario.endtime = datetime.utcnow()
+    first_scenario.starttime = datetime.now(timezone.utc)
+    first_scenario.endtime = datetime.now(timezone.utc)
 
     first_feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
-    first_feature.starttime = datetime.utcnow()
-    first_feature.endtime = datetime.utcnow()
+    first_feature.starttime = datetime.now(timezone.utc)
+    first_feature.endtime = datetime.now(timezone.utc)
     first_feature.scenarios.append(first_scenario)
 
     features = [first_feature]
@@ -95,12 +95,12 @@ def test_relaxed_mode_adding_tags_to_junit(mocker):
         preconditions=None,
         background=None,
     )
-    first_scenario.starttime = datetime.utcnow()
-    first_scenario.endtime = datetime.utcnow()
+    first_scenario.starttime = datetime.now(timezone.utc)
+    first_scenario.endtime = datetime.now(timezone.utc)
 
     first_feature = Feature(1, "Feature", "I am a feature", "foo.feature", 1, tags=None)
-    first_feature.starttime = datetime.utcnow()
-    first_feature.endtime = datetime.utcnow()
+    first_feature.starttime = datetime.now(timezone.utc)
+    first_feature.endtime = datetime.now(timezone.utc)
     first_feature.scenarios.append(first_scenario)
 
     features = [first_feature]

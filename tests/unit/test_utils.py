@@ -9,7 +9,7 @@
     Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 import pytest
 from freezegun import freeze_time
@@ -46,7 +46,7 @@ def test_date_time_formatter():
     Test datetime to string format
     """
     # given
-    utc_dt = datetime.utcnow()
+    utc_dt = datetime.now(timezone.utc)
     expected_datetime_string = "2015-10-21T05:29:00"
     actual_datetime_string = utils.format_utc_to_local_tz(utc_dt)
 

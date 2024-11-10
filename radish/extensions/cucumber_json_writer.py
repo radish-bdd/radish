@@ -4,7 +4,7 @@
 This module provides a hook which generates a cucumber json result file at the end of the run.
 """
 
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, timezone
 import json
 
 from radish.terrain import world
@@ -44,7 +44,7 @@ class CucumberJSONWriter(object):
                 if feature.starttime is not None:
                     # feature file run not finished
                     if feature.endtime is None:
-                        duration += feature.starttime - datetime.utcnow()
+                        duration += feature.starttime - datetime.now(timezone.utc)
                     # feature file run finished
                     else:
                         duration += feature.duration

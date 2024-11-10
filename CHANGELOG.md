@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+### Changes
+- Drop Python 3.6 and Python 3.7
+
 ## [v0.17.1]
 
 ### Fixed

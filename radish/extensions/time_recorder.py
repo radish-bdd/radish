@@ -4,7 +4,7 @@
 This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 from radish.hookregistry import after, before
 from radish.extensionregistry import extension
@@ -33,34 +33,34 @@ class TimeRecorder(object):
         """
         Sets the starttime of the feature
         """
-        feature.starttime = datetime.utcnow()
+        feature.starttime = datetime.now(timezone.utc)
 
     def time_recorder_before_each_scenario(self, scenario):
         """
         Sets the starttime of the scenario
         """
-        scenario.starttime = datetime.utcnow()
+        scenario.starttime = datetime.now(timezone.utc)
 
     def time_recorder_before_each_step(self, step):
         """
         Sets the starttime of the step
         """
-        step.starttime = datetime.utcnow()
+        step.starttime = datetime.now(timezone.utc)
 
     def time_recorder_after_each_feature(self, feature):
         """
         Sets the endtime of the feature
         """
-        feature.endtime = datetime.utcnow()
+        feature.endtime = datetime.now(timezone.utc)
 
     def time_recorder_after_each_scenario(self, scenario):
         """
         Sets the endtime of the scenario
         """
-        scenario.endtime = datetime.utcnow()
+        scenario.endtime = datetime.now(timezone.utc)
 
     def time_recorder_after_each_step(self, step):
         """
         Sets the endtime of the step
         """
-        step.endtime = datetime.utcnow()
+        step.endtime = datetime.now(timezone.utc)

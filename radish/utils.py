@@ -13,7 +13,7 @@ import warnings
 import pydoc
 import itertools
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 
 class Failure(object):  # pylint: disable=too-few-public-methods
@@ -110,7 +110,7 @@ def format_utc_to_local_tz(utc_dt, fmt="%Y-%m-%dT%H:%M:%S"):
 
     def utc_to_local(utc_dt):
         timestamp = calendar.timegm(utc_dt.timetuple())
-        local_dt = datetime.fromtimestamp(timestamp)
+        local_dt = datetime.fromtimestamp(timestamp, tz=timezone.utc)
         assert utc_dt.resolution >= timedelta(microseconds=1)
         return local_dt.replace(microsecond=utc_dt.microsecond)
 

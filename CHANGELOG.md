@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 *Stay tuned...*
+### Fixed
+- utcnow deprecation
 
 ### Changes
 - Drop Python 3.6 and Python 3.7

@@ -1,9 +1,0 @@
-# Configuration for https://pyup.io
-
-# create PR for all updates
-update: all
-
-# specify requirements file
-requirements:
-    - requirements.txt
-    - requirements-dev.txt

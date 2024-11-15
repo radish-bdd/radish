@@ -1152,7 +1152,7 @@ example:
 
 Cucumber json Report
 --------------------
-Radish can write cucumber json result file after run using --cucumber-json=<ccjson>.
+Radish can write cucumber json result file after run using ``--cucumber-json=<ccjson>``.
 
 With local tools like `Cucumber json report generator
 <https://github.com/damianszczepanik/cucumber-sandwich>`_

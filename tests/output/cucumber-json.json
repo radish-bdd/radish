@@ -15,6 +15,8 @@
                         "name": "Given I have the number 1",
                         "result": {
                             "duration": 343000.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "status": "passed"
                         }
                     },
@@ -24,6 +26,8 @@
                         "name": "And I have the number 2",
                         "result": {
                             "duration": 156000.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "status": "passed"
                         }
                     },
@@ -33,6 +37,8 @@
                         "name": "When I add them up with failure",
                         "result": {
                             "duration": 850000.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "error_message": "Unable to add numbers: [1, 2]",
                             "status": "failed"
                         }
@@ -43,6 +49,8 @@
                         "name": "Then I expect the sum to be 42",
                         "result": {
                             "duration": 73000.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "status": "skipped"
                         }
                     }
@@ -68,6 +76,8 @@
                         "name": "When generate cucumber report",
                         "result": {
                             "duration": 0.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "status": "skipped"
                         }
                     },
@@ -77,6 +87,8 @@
                         "name": "Then genreated cucumber json equals to \"cucumber-json.json\"",
                         "result": {
                             "duration": 0.0,
+                            "endtime": "2024-11-20 08:37:18.133736+00:00",
+                            "starttime": "2024-11-20 08:37:17.255751+00:00",
                             "status": "pending"
                         }
                     }

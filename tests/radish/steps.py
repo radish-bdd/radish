@@ -162,7 +162,7 @@ def generate_cucumber_report(step):
 @then("genreated cucumber json equals to {expected_json_file:QuotedString}")
 def proper_cucumber_json_is_generated(step, expected_json_file):
     def remove_changing(d):
-        return {k: v for k, v in d.items() if k not in ["duration", "uri"]}
+        return {k: v for k, v in d.items() if k not in ["duration", "uri","endtime", "starttime"]}
 
     with open(world.config.cucumber_json, "r") as f_cucumber_json:
         cucumber_json = json.load(f_cucumber_json, object_hook=remove_changing)

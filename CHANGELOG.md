@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - utcnow deprecation
 
 ### Changes
+- Adding start and end time in cucumber json
 - Drop Python 3.6 and Python 3.7
 - Drop the `--profile` option, please use `--user-data`
 - Change default marker from unix timestamp to UUIDv4

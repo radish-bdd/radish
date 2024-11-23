@@ -121,28 +121,6 @@ the hooks defined in the terrain files.
 To see example code please consult :ref:`terrain <tutorial#terrain_and_hooks>`.
 
 
-Run - Profile
--------------
-
-Radish allows you to pass custom data to a Terrain hook code or to the Step implementations
-using the ``-p`` or ``--profile`` command line option. This can be used to
-customize your test runs as needed.
-
-The value specified to the ``-p`` / ``--profile`` command line option is made
-available in ``world.config.profile``. Please see :ref:`tutorial#world` for
-for an example.
-
-A common usage of ``profile`` s setting it to some environment value such as
-``stage`` or ``production``.
-
-.. code:: bash
-
-  radish SomeFeature.feature -p stage
-  radish SomeFeature.feature --profile stage
-
-Note: ``-p`` / ``--profile`` is being deprecated and will be removed in a future version of Radish. Please use ``-u`` / ``--user-data`` instead.  See :ref:`Arbitrary User Data <commandline#user_data>` for details.
-
-
 Run - Dry run
 -------------
 
@@ -557,7 +535,6 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
              [--debug-steps]
              [-t | --with-traceback]
              [-m=<marker> | --marker=<marker>]
-             [-p=<profile> | --profile=<profile>]
              [-d | --dry-run]
              [-s=<scenarios> | --scenarios=<scenarios>]
              [--shuffle]
@@ -595,7 +572,6 @@ Use the ``--help`` or ``-h`` option to show the following help screen:
       --debug-steps                               debugs each step
       -t --with-traceback                         show the Exception traceback when a step fails
       -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
-      -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation
       -b=<basedir> --basedir=<basedir>...         set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
                                                   You can specify -b|--basedir multiple times. All files will be imported.
       -d --dry-run                                make dry run for the given feature files

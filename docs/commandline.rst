@@ -101,8 +101,8 @@ Run - Use custom marker to uniquely identify test run
 -----------------------------------------------------
 
 Radish supports marker functionality which is used to uniquely identify a
-specific test run. By default the marker is set to the number of seconds from
-the epoch (01/01/1970). You can specify your own marker using the ``-m`` or
+specific test run. By default the marker is set to a random UUID Version 4.
+You can specify your own marker using the ``-m`` or
 ``--marker`` command line option.
 
 The marker is also displayed in the summary of a test run:

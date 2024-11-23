@@ -2,8 +2,8 @@
 
 import os
 import sys
+import uuid
 import warnings
-from time import time
 
 from docopt import docopt
 import colorful
@@ -66,8 +66,8 @@ def run_features(core):
     merge_steps(core.features, StepRegistry().steps)
 
     # run parsed features
-    if world.config.marker == "time.time()":
-        world.config.marker = int(time())
+    if world.config.marker == "str(uuid.uuid4())":
+        world.config.marker = str(uuid.uuid4())
 
     # scenario choice
     amount_of_scenarios = sum(len(f.scenarios) for f in core.features_to_run)
@@ -123,7 +123,7 @@ Options:
     -e --early-exit                             stop the run after the first failed step
     --debug-steps                               debugs each step
     -t --with-traceback                         show the Exception traceback when a step fails
-    -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
+    -m=<marker> --marker=<marker>               specify the marker for this run [default: str(uuid.uuid4())]
     -b=<basedir> --basedir=<basedir>...         set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
                                                 You can specify -b|--basedir multiple times or split multiple paths with a colon (:) similar to $PATH. All files will be imported.
     -d --dry-run                                make dry run for the given feature files

@@ -10,6 +10,7 @@
 """
 
 import os
+import uuid
 
 import pytest
 
@@ -55,7 +56,7 @@ def mock_world_config():
         "--inspect-after-failure": False,
         "--junit-xml": None,
         "--junit-relaxed": False,
-        "--marker": "time.time()",
+        "--marker": "str(uuid.uuid4())",
         "--no-ansi": False,
         "--no-line-jump": False,
         "--scenarios": None,

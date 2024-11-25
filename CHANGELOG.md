@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changes
 - Drop Python 3.6 and Python 3.7
+- Drop the `--profile` option, please use `--user-data`
 
 ## [v0.17.1]
 

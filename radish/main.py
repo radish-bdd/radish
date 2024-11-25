@@ -104,7 +104,6 @@ Usage:
            [--debug-steps]
            [-t | --with-traceback]
            [-m=<marker> | --marker=<marker>]
-           [-p=<profile> | --profile=<profile>]
            [-d | --dry-run]
            [-s=<scenarios> | --scenarios=<scenarios>]
            [--shuffle]
@@ -125,7 +124,6 @@ Options:
     --debug-steps                               debugs each step
     -t --with-traceback                         show the Exception traceback when a step fails
     -m=<marker> --marker=<marker>               specify the marker for this run [default: time.time()]
-    -p=<profile> --profile=<profile>            specify the profile which can be used in the step/hook implementation
     -b=<basedir> --basedir=<basedir>...         set base dir from where the step.py and terrain.py will be loaded. [default: $PWD/radish]
                                                 You can specify -b|--basedir multiple times or split multiple paths with a colon (:) similar to $PATH. All files will be imported.
     -d --dry-run                                make dry run for the given feature files
@@ -167,13 +165,6 @@ Options:
     extensions.load(world.config)
 
     core = Core()
-
-    if world.config.profile:
-        msg = (
-            "Command line argument -p/--profile will be removed in a future version.  Please "
-            "use -u/--user-data instead."
-        )
-        warnings.warn(msg, DeprecationWarning, stacklevel=1)
 
     feature_files = []
     for given_feature in world.config.features:

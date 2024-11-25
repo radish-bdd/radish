@@ -58,7 +58,6 @@ def mock_world_config():
         "--marker": "time.time()",
         "--no-ansi": False,
         "--no-line-jump": False,
-        "--profile": None,
         "--scenarios": None,
         "--shuffle": False,
         "--syslog": False,

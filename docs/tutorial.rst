@@ -902,9 +902,6 @@ For example ``--bdd-xml`` argument can be accessed using
    # print basedir
    print(world.config.basedir)
 
-   # print profile
-   print(world.config.profile)
-
 
 Sometimes it's useful to have specific variables and functions available during
 a whole test run. These variables and functions can be added to the ``world``

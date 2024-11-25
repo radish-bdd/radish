@@ -89,7 +89,7 @@ class CucumberJSONWriter(object):
                         "keyword": step.sentence.split()[0],
                         "name": step.sentence,
                         "line": step.line,
-                        "result": {"status": step.state, "duration": duration},
+                        "result": {"status": step.state, "duration": duration,"starttime": str( step.starttime if step.starttime else 0.0), "endtime": str( step.endtime if step.endtime else 0.0)},
                     }
                     if step.state is Step.State.FAILED:
                         step_json["result"]["error_message"] = step.failure.reason

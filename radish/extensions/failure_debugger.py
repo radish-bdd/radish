@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides an extension which starts a debugger when a step fails
 """

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module is a REQUIRED extension to record the time of Features, Scenarios and Steps
 """

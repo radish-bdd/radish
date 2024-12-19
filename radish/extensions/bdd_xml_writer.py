@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides a hook which generates a BDD XML result file at the end of the run.
 """

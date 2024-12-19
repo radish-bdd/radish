@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from radish.stepregistry import step
 from radish import given, when, then
 

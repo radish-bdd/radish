@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Feature file parser.
 One Feature file parser instance is able to parse one feature file.

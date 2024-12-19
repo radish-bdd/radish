@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provide Python 3 compatability
 """

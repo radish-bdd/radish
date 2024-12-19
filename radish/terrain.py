@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Terrain module providing step overlapping data containers
 """

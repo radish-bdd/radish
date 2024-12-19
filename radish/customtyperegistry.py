@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides the Argument-Expression Registry
 """

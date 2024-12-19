@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides a class to match the feature file steps with the registered steps from the registry
 """
@@ -11,7 +9,6 @@ from parse_type.cfparse import Parser
 
 from .customtyperegistry import CustomTypeRegistry
 from .exceptions import StepDefinitionNotFoundError, StepPatternError
-from .compat import re_pattern
 
 StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
@@ -89,7 +86,7 @@ def match_step(sentence, steps):
     """
     potentional_matches = []
     for pattern, func in steps.items():
-        if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
+        if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
             match = pattern.search(sentence)
             argument_match = RegexStepArguments(match)
             if match:

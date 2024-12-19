@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Providing radish core functionality like the feature file Runner.
 """

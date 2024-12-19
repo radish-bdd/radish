@@ -44,8 +44,6 @@ Let's write our first feature file called *radish/steps.py*:
 
 .. code:: python
 
-   # -*- coding: utf-8 -*-
-
    from radish import given, when, then
 
    @given("I have the numbers {number1:g} and {number2:g}")
@@ -72,8 +70,6 @@ In addition to the Step implementations is possible to implement *hooks* which a
 For our *calculator* tests we use the *radish/terrain.py* file to instantiate the calculator object:
 
 .. code:: python
-
-   # -*- coding: utf-8 -*-
 
    from radish import before, after
 

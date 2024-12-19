@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This radish extension module provide the functionality to write the end report
 """

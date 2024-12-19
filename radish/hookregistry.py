@@ -1,7 +1,5 @@
-# -*- coding: utf-8 -*-
-
 """
-    This module provides a registry for all hooks
+This module provides a registry for all hooks
 """
 
 from singleton import singleton
@@ -127,8 +125,8 @@ class HookRegistry(object):
         """
         for _, on_tags, func in sorted(self._hooks[what][when], key=lambda h: h[0], reverse=not ascending):
             if not self.__has_to_run(model, on_tags):
-                # # this hook does not have to run because
-                # # it was excluded due to the tags for this model
+                # this hook does not have to run because
+                # it was excluded due to the tags for this model
                 continue
 
             try:

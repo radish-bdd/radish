@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import re
 from radish.terrain import world
 from radish.stepregistry import step

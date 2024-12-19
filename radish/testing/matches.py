@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 This module provides functionaliy to test
 if some sentences are matched with the expected

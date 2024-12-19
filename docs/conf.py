@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # radish documentation build configuration file, created by
 # sphinx-quickstart on Sat Jun 13 21:58:55 2015.
 #

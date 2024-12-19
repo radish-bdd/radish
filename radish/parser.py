@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 Feature file parser.
 One Feature file parser instance is able to parse one feature file.
@@ -13,7 +11,6 @@ import filecmp
 import copy
 import string
 
-from .compat import RecursionError
 from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
 from .feature import Feature
 from .scenario import Scenario
@@ -519,7 +516,7 @@ class FeatureParser(object):
             try:
                 current_tags = self._current_tags + self.feature.tags + self._inherited_tags
                 feature = self._core.parse_feature(feature_file, self._tag_expr, inherited_tags=current_tags)
-            except (RuntimeError, RecursionError) as e:
+            except RecursionError as e:
                 if str(e).startswith("maximum recursion depth exceeded"):  # precondition cycling
                     raise FeatureFileSyntaxError(
                         "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(

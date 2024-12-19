@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from radish import before
 from radish import custom_type, register_custom_type, TypeBuilder
 

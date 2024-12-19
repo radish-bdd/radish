@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 *Stay tuned...*
+
+## [v0.18.0]
+
 ### Fixed
 - utcnow deprecation
 
@@ -308,7 +311,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.17.1...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.18.0...HEAD
+[v0.18.0]: https://github.com/radish-bdd/radish/compare/v0.17.1...v0.18.0
 [v0.17.1]: https://github.com/radish-bdd/radish/compare/v0.17.0...v0.17.1
 [v0.17.0]: https://github.com/radish-bdd/radish/compare/v0.16.2...v0.17.0
 [v0.16.2]: https://github.com/radish-bdd/radish/compare/v0.16.1...v0.16.2

@@ -7,7 +7,6 @@ import inspect
 from singleton import singleton
 
 from .exceptions import RadishError, SameStepError, StepRegexError
-from .compat import re_pattern
 
 
 @singleton()
@@ -139,7 +138,7 @@ def given(pattern):
     """
     Step decorator prefixed with the Given-keyword.
     """
-    if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
         return step(re.compile(r"Given {0}".format(pattern.pattern)))
     return step("Given {0}".format(pattern))
 
@@ -148,7 +147,7 @@ def when(pattern):
     """
     Step decorator prefixed with the When-keyword.
     """
-    if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
         return step(re.compile(r"When {0}".format(pattern.pattern)))
     return step("When {0}".format(pattern))
 
@@ -157,6 +156,6 @@ def then(pattern):
     """
     Step decorator prefixed with the Then-keyword.
     """
-    if isinstance(pattern, re_pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
         return step(re.compile(r"Then {0}".format(pattern.pattern)))
     return step("Then {0}".format(pattern))

@@ -13,7 +13,6 @@ import pytest
 
 from radish.stepregistry import step, steps
 from radish.stepregistry import given, when, then
-from radish.compat import re_pattern
 import radish.exceptions as errors
 
 
@@ -173,7 +172,7 @@ def test_registering_step_function_via_step_decorator(pattern, stepregistry):
 
     # then
     assert len(stepregistry.steps) == 1
-    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
+    if not isinstance(pattern, re.Pattern):  # doesn't work for re.Pattern.
         assert stepregistry.steps[pattern] == step_a
 
 
@@ -197,7 +196,7 @@ def test_registering_step_function_via_given_decorator(pattern, expected_pattern
 
     # then
     assert len(stepregistry.steps) == 1
-    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
+    if not isinstance(pattern, re.Pattern):  # doesn't work for re.Pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 
@@ -221,7 +220,7 @@ def test_registering_step_function_via_when_decorator(pattern, expected_pattern,
 
     # then
     assert len(stepregistry.steps) == 1
-    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
+    if not isinstance(pattern, re.Pattern):  # doesn't work for re.Pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 
@@ -245,7 +244,7 @@ def test_registering_step_function_via_then_decorator(pattern, expected_pattern,
 
     # then
     assert len(stepregistry.steps) == 1
-    if not isinstance(pattern, re_pattern):  # doesn't work for re_pattern.
+    if not isinstance(pattern, re.Pattern):  # doesn't work for re.Pattern.
         assert stepregistry.steps[expected_pattern] == step_a
 
 

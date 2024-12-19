@@ -3,6 +3,7 @@ This module provides a hook which processes user specified data on the command-l
 and provides this data as a dictionary attached to the world.config object
 as per Enhancement #124.
 """
+
 import re
 
 from radish.terrain import world

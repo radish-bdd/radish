@@ -56,7 +56,7 @@ extra_requirements = {
 }
 
 setup(
-    name="radish-bdd",
+    name="radish_bdd",
     version=get_meta("version"),
     license=get_meta("license"),
     description=get_meta("description"),

@@ -6,6 +6,7 @@
 ***
 
 [![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/master/LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/radish/badge/?version=stable)](https://radish.readthedocs.io/en/stable/?badge=stable)
 <br>
 [![Actions Status](https://github.com/radish-bdd/radish/workflows/CI/badge.svg)](https://github.com/radish-bdd/radish/actions?branch=stable)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)

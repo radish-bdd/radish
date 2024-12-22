@@ -6,6 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.18.1]
+
+### Changes
+- Fix sphinx docs build
+- Normalize project name
+- Automatic deployment from github
+
 ## [v0.18.0]
 
 ### Fixed
@@ -311,7 +318,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 Please see `git log`
 
-[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/radish-bdd/radish/compare/v0.18.1...HEAD
+[v0.18.1]: https://github.com/radish-bdd/radish/compare/v0.18.0...v0.18.1
 [v0.18.0]: https://github.com/radish-bdd/radish/compare/v0.17.1...v0.18.0
 [v0.17.1]: https://github.com/radish-bdd/radish/compare/v0.17.0...v0.17.1
 [v0.17.0]: https://github.com/radish-bdd/radish/compare/v0.16.2...v0.17.0

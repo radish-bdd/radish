@@ -57,6 +57,7 @@ Please have a look at the [Contributing Guidelines](https://github.com/radish-bd
 ```
 vim CHANGELOG.md docs/conf.py radish/__init__.py
 git commit -am "release: vX.X.X" && git tag vX.X.X && git push && git push --tags
+# Create release on Github
 ```
 
 # Special Thanks

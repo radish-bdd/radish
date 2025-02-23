@@ -30,19 +30,12 @@ We are very happy to receive Pull Requests considering:
 
 ## Development
 
-radish uses the *extra* requirements feature of `setuptools` to specify all
-the dependencies needed to develop radish.
-A set of extra requirements can be installed with the following `pip` syntax:
+radish can be installed as [editable install](https://setuptools.pypa.io/en/latest/userguide/development_mode.html).
 
 ```bash
-pip install -e '.[<extras>]'
+pip install -r requirements-dev.txt
+pip install -e .
 ```
-
-whereas `<extras>` can be one of:
-
-* `tests`: all dependencies required to run the radish unit and integration tests
-* `docs`: all dependencies required to build the radish documentation
-* `dev`: all dependencies required to develop radish. This group includes the `tests` and `docs` dependencies. [recommended]
 
 ### tox: linting, testing, docs & more
 
@@ -52,12 +45,7 @@ like linting, testing, building the docs and creating the changelog.
 The radish tox setup provides the following automated tasks:
 
 * `lint`: formats and lints the code base using [`black`](https://black.readthedocs.io/en/stable/) and [`flake8`](https://flake8.readthedocs.io/en/stable/).
-* `manifest`: checks if the `MANIFEST.in` content is consistent with the repository content.
-* `py<ver>`: runs unit tests with the Python Version from `<ver>`.
-* `integration`: runs integration tests.
-* `coverage-report`: generates a coverage report. Make sure that you've run some tests before.
-* `docs`: builds the sphinx documentation.
-* `news`: generates the ChangeLog from the newsfragments in `changelog/`. Use `towncrier --draft` directly to generate a ChangeLog draft.
+* `py<ver>`: runs tests with the Python Version from `<ver>`.
 
 Before commiting your changes, it's a good practice to run `tox`.
 So that it'll run all the preconfigured tasks.

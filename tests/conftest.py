@@ -8,7 +8,6 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
 import os
-import uuid
 
 import pytest
 

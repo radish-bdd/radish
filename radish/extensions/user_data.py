@@ -42,7 +42,7 @@ class UserData(object):
             for pair in self._cli_user_data:
                 try:
                     key, value = map(str.strip, self._kv_regex.split(pair, maxsplit=1))
-                except ValueError as e:
+                except ValueError:
                     msg = "-u/--user-data: User data is invalid. Expecting: 'key=value' Got: '{0}'"
                     raise RadishError(msg.format(pair))
 

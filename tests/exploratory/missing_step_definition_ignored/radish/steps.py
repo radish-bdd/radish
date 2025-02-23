@@ -1,5 +1,5 @@
 from radish.stepregistry import step
-from radish import given, when, then
+from radish import when, then
 
 
 @step("I have the number {number:g}")

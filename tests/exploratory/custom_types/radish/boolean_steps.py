@@ -1,4 +1,4 @@
-from radish import given, when, then
+from radish import when, then
 
 
 @when("I have the value {:Boolean}")

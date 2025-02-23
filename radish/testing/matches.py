@@ -264,7 +264,7 @@ def check_step_arguments(expected_arguments, arguments):
 
                 try:
                     value = obj_type(value)
-                except Exception as exc:
+                except Exception:
                     errors.append('Failed to cast "{0}" to given type "{1}"'.format(value, type))
                     continue
         else:

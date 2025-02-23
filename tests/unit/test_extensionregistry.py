@@ -10,7 +10,6 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 import pytest
 
 from radish.extensionregistry import extension
-import radish.exceptions as errors
 
 
 def test_register_simple_extension_class(extensionregistry):

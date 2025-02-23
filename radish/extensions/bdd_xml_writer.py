@@ -15,7 +15,6 @@ from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 from radish.extensionregistry import extension
-from radish.exceptions import RadishError
 import radish.utils as utils
 
 

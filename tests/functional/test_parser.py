@@ -11,7 +11,6 @@ import pytest
 
 import tagexpressions
 
-from radish.core import Core
 from radish.parser import FeatureParser
 from radish.model import Tag
 from radish.scenariooutline import ScenarioOutline

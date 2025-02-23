@@ -1,6 +1,6 @@
 import re
 from radish.stepregistry import step
-from radish import given, when, then
+from radish import when, then
 
 
 @step(re.compile(r"I have the number ([0-9]+)"))

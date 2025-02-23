@@ -4,9 +4,10 @@ This module provides the Argument-Expression Registry
 
 from singleton import singleton
 
-from .exceptions import RadishError
+# Keep for backwards compat:
+from parse_type import TypeBuilder  # noqa: F401
 
-from parse_type import TypeBuilder
+from .exceptions import RadishError
 
 
 @singleton()

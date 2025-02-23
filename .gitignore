@@ -9,6 +9,7 @@
 
 # python virtualenv
 env*
+.env*
 
 # python tox files
 .tox

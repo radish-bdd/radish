@@ -1,4 +1,4 @@
-from radish import given, when, then
+from radish import then, when
 
 
 @when("I have the value {:Boolean}")
@@ -12,5 +12,5 @@ def expect_true(step):
 
 
 @then("I expect it to be parsed as False")
-def expect_true(step):
+def expect_false(step):
     assert step.context.boolean is False

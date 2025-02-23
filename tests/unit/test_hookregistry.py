@@ -9,9 +9,9 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 
 import pytest
 
-from radish.model import Tag
-from radish.hookregistry import before, after
 import radish.exceptions as errors
+from radish.hookregistry import after, before
+from radish.model import Tag
 
 
 def test_available_hooks():

@@ -7,10 +7,10 @@ Behavior Driven Development tool for Python - the root from red to green
 Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-import os
 import json
+import os
 
-from radish import given, when, then, world
+from radish import given, then, when, world
 from radish.extensions.cucumber_json_writer import CucumberJSONWriter
 
 
@@ -48,7 +48,7 @@ def sum_numbers(step):
 
 
 @when("I add them up with failure")
-def sum_numbers(step):
+def sum_numbers_failure(step):
     "When I add them up with failure"
     assert False, "Unable to add numbers: {0}".format(step.context.numbers)
 
@@ -71,11 +71,13 @@ def expect_sum(step, expected_sum):
 
 
 @then("I expect the difference to be {expected_diff:d}")
-def expect_sum(step, expected_diff):
+def expect_diff(step, expected_diff):
     "Then I expect the difference to be <n>"
-    assert (
-        step.context.difference == expected_diff
-    ), "The expected difference {0} does not match actual difference {1}".format(expected_diff.step.context.difference)
+    assert step.context.difference == expected_diff, (
+        "The expected difference {0} does not match actual difference {1}".format(
+            expected_diff, step.context.difference
+        )
+    )
 
 
 @given("I have an instable function")
@@ -141,11 +143,11 @@ def embed_a_text(step, test_text):
 
 
 @then("step with embedded text should have following embedded data")
-def embed_a_text(step):
+def embed_a_text_data(step):
     "Then step with embedded text should have following embedded data"
-    assert hasattr(
-        step.context, "step_with_embedded_data"
-    ), "step_embeddings is missing in context - please check if step with text embedding has been executed"
+    assert hasattr(step.context, "step_with_embedded_data"), (
+        "step_embeddings is missing in context - please check if step with text embedding has been executed"
+    )
     test_step_embeddings = step.context.step_with_embedded_data.embeddings
     for embeddings in step.table:
         assert embeddings in test_step_embeddings, "{0} not found in {1}".format(embeddings, test_step_embeddings)

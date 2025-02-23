@@ -11,9 +11,8 @@ import os
 import re
 import tempfile
 
-import pytest
-
 import colorful
+import pytest
 
 import radish.testing.matches as matches
 

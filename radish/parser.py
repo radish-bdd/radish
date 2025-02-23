@@ -3,23 +3,23 @@ Feature file parser.
 One Feature file parser instance is able to parse one feature file.
 """
 
-import os
-import io
-import re
-import json
-import filecmp
 import copy
+import filecmp
+import io
+import json
+import os
+import re
 import string
 
-from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
-from .feature import Feature
-from .scenario import Scenario
-from .scenariooutline import ScenarioOutline
-from .scenarioloop import ScenarioLoop
-from .stepmodel import Step
-from .background import Background
-from .model import Tag
 from . import utils
+from .background import Background
+from .exceptions import FeatureFileSyntaxError, LanguageNotSupportedError, RadishError
+from .feature import Feature
+from .model import Tag
+from .scenario import Scenario
+from .scenarioloop import ScenarioLoop
+from .scenariooutline import ScenarioOutline
+from .stepmodel import Step
 
 
 class Keywords(object):
@@ -292,7 +292,7 @@ class FeatureParser(object):
                         "The parser expected a scenario or a tag on this line. Given: '{0}'".format(line)
                     )
 
-                detected_scenario, iterations = detected_scenario  # pylint: disable=unpacking-non-sequence
+                detected_scenario, iterations = detected_scenario
                 scenario_type = ScenarioLoop
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 
@@ -749,7 +749,7 @@ class FeatureParser(object):
             # If a tag is detected we split on @ and try to parse
             # each part as tag (also for constant)
             # this is required for @foo @bar @baz
-            for line in [l.strip() for l in line.split("@") if l]:
+            for line in [li.strip() for li in line.split("@") if li]:
                 match = re.search(r"^([^\s]+)\((.*)\)", line)
                 if match:
                     tag = Tag(match.group(1), match.group(2))

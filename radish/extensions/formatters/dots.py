@@ -3,14 +3,15 @@ This radish extension provides the functionality to write the feature file run t
 """
 
 import sys
+
 import colorful as cf
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension
@@ -74,7 +75,7 @@ class DotOutputFormatter(object):
             output += "{}: {}\n    {}\n".format(step.path, step.parent.sentence, cf.red(step.sentence))
             if world.config.with_traceback:
                 output += "      {}\n".format(
-                    "\n      ".join([str(cf.red(l)) for l in step.failure.traceback.split("\n")[:-2]])
+                    "\n      ".join([str(cf.red(li)) for li in step.failure.traceback.split("\n")[:-2]])
                 )
             output += "      {}: {}\n\n".format(cf.bold_red(step.failure.name), cf.red(step.failure.reason))
 

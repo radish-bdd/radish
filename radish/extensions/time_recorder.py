@@ -4,8 +4,8 @@ This module is a REQUIRED extension to record the time of Features, Scenarios an
 
 from datetime import datetime, timezone
 
-from radish.hookregistry import after, before
 from radish.extensionregistry import extension
+from radish.hookregistry import after, before
 
 __REQUIRED__ = True
 

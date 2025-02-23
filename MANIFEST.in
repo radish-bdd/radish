@@ -4,7 +4,6 @@ include *.rst
 include *.txt
 include AUTHORS
 include LICENSE
-include pylintrc
 include tox.ini
 recursive-include doc *.png
 recursive-include doc *.py

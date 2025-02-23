@@ -8,9 +8,9 @@ __DOWNLOAD_URL__ = "https://github.com/radish-bdd/radish"
 __BUGTRACK_URL__ = "https://github.com/radish-bdd/radish/issues"
 
 # export some functions for users
-from .terrain import world, pick
-from .hookregistry import before, after
-from .stepregistry import step, given, when, then, steps
-from .customtyperegistry import custom_type, register_custom_type, TypeBuilder
-from .extensionregistry import extension
+from .customtyperegistry import TypeBuilder, custom_type, register_custom_type
 from .exceptions import ValidationError
+from .extensionregistry import extension
+from .hookregistry import after, before
+from .stepregistry import given, step, steps, then, when
+from .terrain import pick, world

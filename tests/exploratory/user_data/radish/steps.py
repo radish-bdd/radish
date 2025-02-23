@@ -1,7 +1,7 @@
 import re
 
+from radish import then, when
 from radish.stepregistry import step
-from radish import when, then
 from radish.terrain import world
 
 
@@ -29,6 +29,6 @@ def expect_result(step, result_variable):
             assert step.context.result == int(world.config.user_data[result_variable])
         else:
             msg = "Variable [{0}] is not in the user data (-u/--user-data) specified on the command-line."
-            assert False, msg.format(input_variable)
+            assert False, msg.format(result_variable)
     else:
         assert False, "There is no user data (-u/--user-data) specified on the command-line."

@@ -2,17 +2,17 @@
 This module provides a hook which generates a JUnit XML result file at the end of the run.
 """
 
-from datetime import timedelta
 import re
+from datetime import timedelta
 
-from radish.terrain import world
-from radish.hookregistry import after
-from radish.exceptions import RadishError
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
-from radish.extensionregistry import extension
 import radish.utils as utils
+from radish.exceptions import RadishError
+from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension
@@ -158,7 +158,6 @@ class JUnitXMLWriter(object):
                 if scenario.state is Step.State.FAILED:
                     steps_sentence = []
                     for step in scenario.all_steps:
-                        step_element = self._get_element_from_model("step", step)
                         steps_sentence.append(step.sentence)
                         if step.state is Step.State.FAILED:
                             failure_element = etree.Element("failure", type=step.failure.name, message=step.sentence)

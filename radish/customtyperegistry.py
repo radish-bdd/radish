@@ -2,11 +2,11 @@
 This module provides the Argument-Expression Registry
 """
 
+# Keep for backwards compat:
+from parse_type import TypeBuilder  # noqa: F401
 from singleton import singleton
 
 from .exceptions import RadishError
-
-from parse_type import TypeBuilder
 
 
 @singleton()

@@ -2,8 +2,8 @@
 Providing radish core functionality.
 """
 
-from threading import Lock
 from collections import OrderedDict
+from threading import Lock
 
 from .parser import FeatureParser
 

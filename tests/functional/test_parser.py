@@ -8,16 +8,14 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
 import pytest
-
 import tagexpressions
 
-from radish.core import Core
-from radish.parser import FeatureParser
-from radish.model import Tag
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.background import Background
 import radish.exceptions as errors
+from radish.background import Background
+from radish.model import Tag
+from radish.parser import FeatureParser
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
 
 
 @pytest.mark.parametrize("parser", [("empty-feature",)], indirect=["parser"])
@@ -290,7 +288,7 @@ def test_parse_scenario_outline_with_step_text(parser):
 
 
 @pytest.mark.parametrize("parser", [("scenario-outline-step-text-example",)], indirect=["parser"])
-def test_parse_scenario_outline_with_step_text(parser):
+def test_parse_scenario_outline_with_step_text_example(parser):
     """
     Test parsing a Scenario Outline with a Step with Text
     """
@@ -694,7 +692,7 @@ def test_parse_scenario_sentence_duplicate(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith("Scenario with name 'A great name for a Scenario' " "defined twice in feature")
+    assert str(exc.value).startswith("Scenario with name 'A great name for a Scenario' defined twice in feature")
 
 
 @pytest.mark.parametrize("parser", [("precondition-level-2",)], indirect=["parser"])

@@ -5,10 +5,10 @@ This module provides an extension to write all features, scenarios and steps to 
 import os
 import sys
 
-from radish.terrain import world
-from radish.feature import Feature
-from radish.hookregistry import before, after
 from radish.extensionregistry import extension
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.terrain import world
 
 
 @extension
@@ -31,7 +31,6 @@ class SyslogWriter(object):
 
         # import syslog only if the extension got loaded
         # but not if the module got loaded.
-        import syslog
 
         before.all(self.syslog_writer_before_all)
         before.each_feature(self.syslog_writer_before_each_feature)
@@ -61,7 +60,7 @@ class SyslogWriter(object):
 
         syslog.syslog(syslog.LOG_INFO, message)
 
-    def syslog_writer_before_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_before_all(self, features, marker):
         """
         Opens the syslog
         """
@@ -70,7 +69,7 @@ class SyslogWriter(object):
         syslog.openlog("radish")
         self.log("begin run {0}".format(marker))
 
-    def syslog_writer_after_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_after_all(self, features, marker):
         """
         Closes the syslog
         """

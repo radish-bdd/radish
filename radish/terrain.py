@@ -4,7 +4,7 @@ Terrain module providing step overlapping data containers
 
 import threading
 
-world = threading.local()  # pylint: disable=invalid-name
+world = threading.local()
 
 
 def pick(func):

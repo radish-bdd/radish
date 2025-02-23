@@ -1,5 +1,5 @@
+from radish import then, when
 from radish.stepregistry import step
-from radish import given, when, then
 
 
 @step("I have the following users")

@@ -7,9 +7,9 @@ Behavior Driven Development tool for Python - the root from red to green
 Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-from radish.scenarioloop import ScenarioLoop
-from radish.iterationscenario import IterationScenario
 from radish.background import Background
+from radish.iterationscenario import IterationScenario
+from radish.scenarioloop import ScenarioLoop
 from radish.stepmodel import Step
 
 

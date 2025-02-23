@@ -1,6 +1,7 @@
 import re
-from radish.terrain import world
+
 from radish.stepregistry import step
+from radish.terrain import world
 
 world.number = 0
 
@@ -50,9 +51,9 @@ def add_user(step):
 @step(re.compile(r"I expect the user \"(.*?)\" in the database"))
 def expect_user_in_database(step, name):
     forename, surname = name.split()
-    assert any(
-        u for u in world.users if u["forename"] == forename and u["surname"] == surname
-    ), "No such user in the db"
+    assert any(u for u in world.users if u["forename"] == forename and u["surname"] == surname), (
+        "No such user in the db"
+    )
 
 
 @step("I have the numeric expression {expression:MathExpression}")
@@ -103,45 +104,45 @@ def expect_data(step, expected_data):
 
 
 @step("Given I install the database server")
-def demo(step):
+def demo0(step):
     pass
 
 
 @step("When I add all default users")
-def demo(step):
+def demo1(step):
     pass
 
 
 @step("And I add all default types")
-def demo(step):
+def demo2(step):
     pass
 
 
 @step("And I initialize the database error handlers")
-def demo(step):
+def demo3(step):
     pass
 
 
 @step("And I set the permissions for the administrator tables")
-def demo(step):
+def demo4(step):
     pass
 
 
 @step("And I index imported fields")
-def demo(step):
+def demo5(step):
     pass
 
 
 @step("Then I expect my installation to be complete")
-def demo(step):
+def demo6(step):
     pass
 
 
 @step('I add the user "Timo furrer"')
-def demo(step):
+def demo7(step):
     pass
 
 
 @step('I expect the user "Timo Furrer" in the databas')
-def demo(step):
+def demo8(step):
     pass

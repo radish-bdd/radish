@@ -7,8 +7,8 @@ Behavior Driven Development tool for Python - the root from red to green
 Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-import os
 import io
+import os
 import sys
 import tempfile
 

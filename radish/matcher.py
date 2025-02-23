@@ -13,7 +13,7 @@ from .exceptions import StepDefinitionNotFoundError, StepPatternError
 StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
 
-class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
+class RegexStepArguments(object):
     """Class to represent the argument groups matched by a regex step pattern"""
 
     def __init__(self, match):
@@ -24,7 +24,7 @@ class RegexStepArguments(object):  # pylint: disable=too-few-public-methods
         return self.match.groups(), self.match.groupdict()
 
 
-class ParseStepArguments(object):  # pylint: disable=too-few-public-methods
+class ParseStepArguments(object):
     """Class to represent the argument groups matched by a parse step pattern"""
 
     def __init__(self, match):
@@ -86,7 +86,7 @@ def match_step(sentence, steps):
     """
     potentional_matches = []
     for pattern, func in steps.items():
-        if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
+        if isinstance(pattern, re.Pattern):
             match = pattern.search(sentence)
             argument_match = RegexStepArguments(match)
             if match:

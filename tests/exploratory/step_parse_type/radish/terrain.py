@@ -1,5 +1,4 @@
-from radish import before
-from radish import custom_type, register_custom_type, TypeBuilder
+from radish import TypeBuilder, before, custom_type, register_custom_type
 
 
 @before.each_scenario

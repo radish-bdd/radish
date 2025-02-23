@@ -1,4 +1,4 @@
-from radish import given, when, then
+from radish import given, then, when
 
 
 @given("I have the numbers {numbers:Number+}")
@@ -7,7 +7,7 @@ def have_number(step, numbers):
 
 
 @given("I have the following numbers {numbers:NumberList}")
-def have_number(step, numbers):
+def have_number_list(step, numbers):
     step.context.numbers.extend(numbers)
 
 

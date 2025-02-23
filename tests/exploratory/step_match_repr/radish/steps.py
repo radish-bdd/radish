@@ -1,7 +1,4 @@
-from radish import given, when, then
-from radish import world
-
-from example.model import Hero
+from radish import given, then, when
 
 
 @given("I setup the hero database")

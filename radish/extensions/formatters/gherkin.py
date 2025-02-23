@@ -2,20 +2,18 @@
 This radish extension provides the functionality to write the feature file run to the console.
 """
 
-# disable no-member lint error because of dynamic method from colorful
-# pylint: disable=no-member
-
 import os
 import re
+
 import colorful
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.feature import Feature
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 from radish.utils import console_write as write
 
 
@@ -99,7 +97,7 @@ class ConsoleWriter(object):
         """
         Returns the width for every column of a table (lists in list)
         """
-        return [max(len(str(col)) for col in row) for row in zip(*table)]  # pylint: disable=star-args
+        return [max(len(str(col)) for col in row) for row in zip(*table)]
 
     def console_writer_before_each_feature(self, feature):
         """
@@ -238,7 +236,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
-            output += colorful.cyan("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
+            output += colorful.cyan(
+                "".join(["\n                {0}{1}".format(id_padding, li) for li in step.raw_text])
+            )
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
 
         if step.table_header:
@@ -300,7 +300,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
-            output += colorful.cyan("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
+            output += colorful.cyan(
+                "".join(["\n                {0}{1}".format(id_padding, li) for li in step.raw_text])
+            )
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
 
         if step.table_header:
@@ -330,7 +332,7 @@ class ConsoleWriter(object):
             if world.config.with_traceback:
                 output += "\n          {0}{1}".format(
                     self.get_id_padding(len(step.parent.steps) - 2),
-                    "\n          ".join([str(colorful.red(l)) for l in step.failure.traceback.split("\n")[:-2]]),
+                    "\n          ".join([str(colorful.red(li)) for li in step.failure.traceback.split("\n")[:-2]]),
                 )
             output += "\n          {0}{1}: {2}".format(
                 self.get_id_padding(len(step.parent.steps) - 2),
@@ -384,7 +386,7 @@ class ConsoleWriter(object):
                     output += "\n          {0}{1}".format(
                         self.get_id_padding(len(scenario.parent.scenarios)),
                         "\n          ".join(
-                            [str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]
+                            [str(colorful.red(li)) for li in failed_step.failure.traceback.split("\n")[:-2]]
                         ),
                     )
                 output += "\n          {0}{1}: {2}".format(
@@ -408,7 +410,7 @@ class ConsoleWriter(object):
                     output += "\n          {0}{1}".format(
                         self.get_id_padding(len(scenario.parent.scenarios)),
                         "\n          ".join(
-                            [str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]
+                            [str(colorful.red(li)) for li in failed_step.failure.traceback.split("\n")[:-2]]
                         ),
                     )
                 output += "\n          {0}{1}: {2}".format(
@@ -420,7 +422,7 @@ class ConsoleWriter(object):
         if output:
             write(output)
 
-    def console_writer_after_each_feature(self, feature):  # pylint: disable=unused-argument
+    def console_writer_after_each_feature(self, feature):
         """
         Writes a newline after each feature
 

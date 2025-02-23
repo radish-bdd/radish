@@ -3,23 +3,21 @@ import sys
 import uuid
 import warnings
 
-from docopt import docopt
 import colorful
 import tagexpressions
+from docopt import docopt
 
-from . import __VERSION__
-from .core import Core
-from .core import Configuration
+from . import __VERSION__, utils
+from .core import Configuration, Core
+from .errororacle import catch_unhandled_exception, error_oracle
+from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
+from .extensionregistry import ExtensionRegistry
+from .hookregistry import HookRegistry
 from .loader import load_modules
 from .matcher import merge_steps
-from .stepregistry import StepRegistry
-from .hookregistry import HookRegistry
 from .runner import Runner
-from .extensionregistry import ExtensionRegistry
-from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
-from .errororacle import error_oracle, catch_unhandled_exception
+from .stepregistry import StepRegistry
 from .terrain import world
-from . import utils
 
 # use only 8 ANSI colors
 # FIXME(TF): change to true colors!

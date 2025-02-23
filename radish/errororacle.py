@@ -7,16 +7,11 @@ from functools import wraps
 
 import colorful
 
-from .terrain import world
 from .exceptions import (
-    RadishError,
-    FeatureFileSyntaxError,
-    StepDefinitionNotFoundError,
     HookError,
-    SameStepError,
+    RadishError,
 )
 from .utils import Failure, console_write
-
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 
@@ -54,7 +49,7 @@ def error_oracle(func):
         """
         try:
             return func(*args, **kwargs)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             handle_exception(e)
 
     return _decorator

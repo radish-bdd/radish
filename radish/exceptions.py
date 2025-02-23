@@ -1,6 +1,5 @@
 from .terrain import world
 
-
 __DOCS__ = "https://github.com/radish-bdd/radish"
 
 

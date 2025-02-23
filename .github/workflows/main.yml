@@ -12,10 +12,11 @@ jobs:
         with:
           python-version: 3.13
       - name: Setup and install tools
-        run: |
-          python -m pip install --upgrade black
-      - name: black format check
-        run: black --check --line-length 120 radish/ tests/ setup.py
+        run: python -m pip install ruff
+      - name: ruff format check
+        run: ruff format --check
+      - name: ruff check
+        run: ruff check
 
   test:
     strategy:
@@ -23,7 +24,7 @@ jobs:
       max-parallel: 8
       matrix:
         python-version: [3.7, 3.13]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ubuntu-22.04, windows-latest, macos-latest]
         exclude:
         - os: macos-latest
           python-version: 3.7

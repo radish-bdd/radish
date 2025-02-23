@@ -2,10 +2,10 @@
 This module provides an extension which starts a python shell after a step failed
 """
 
-from radish.hookregistry import after
-from radish.stepmodel import Step
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.stepmodel import Step
 
 
 @extension
@@ -30,7 +30,7 @@ class FailureInspector(object):
 
         try:
             from IPython import embed
-        except ImportError as e:
+        except ImportError:
             raise RadishError(
                 'if you want to use the failure inspector extension you have to "pip install radish-bdd[ipython-debugger]"'
             )

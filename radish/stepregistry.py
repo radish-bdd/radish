@@ -2,8 +2,9 @@
 This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
 
-import re
 import inspect
+import re
+
 from singleton import singleton
 
 from .exceptions import RadishError, SameStepError, StepRegexError
@@ -138,7 +139,7 @@ def given(pattern):
     """
     Step decorator prefixed with the Given-keyword.
     """
-    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):
         return step(re.compile(r"Given {0}".format(pattern.pattern)))
     return step("Given {0}".format(pattern))
 
@@ -147,7 +148,7 @@ def when(pattern):
     """
     Step decorator prefixed with the When-keyword.
     """
-    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):
         return step(re.compile(r"When {0}".format(pattern.pattern)))
     return step("When {0}".format(pattern))
 
@@ -156,6 +157,6 @@ def then(pattern):
     """
     Step decorator prefixed with the Then-keyword.
     """
-    if isinstance(pattern, re.Pattern):  # pylint: disable=protected-access
+    if isinstance(pattern, re.Pattern):
         return step(re.compile(r"Then {0}".format(pattern.pattern)))
     return step("Then {0}".format(pattern))

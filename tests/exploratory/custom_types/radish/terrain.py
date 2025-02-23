@@ -1,6 +1,4 @@
-from radish import before
-from radish import world
-from radish import custom_type
+from radish import before, custom_type, world
 
 
 @before.each_scenario

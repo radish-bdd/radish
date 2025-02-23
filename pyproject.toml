@@ -1,17 +1,14 @@
-[tool.black]
-line-length = 88
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-)/
-'''
+[tool.ruff]
+line-length = 120
+# Rule descriptions: https://docs.astral.sh/ruff/rules/
+# TODO enable more linter
+#lint.select = ["E", "B", "N", "C4", "C90", "ARG", "PL", "RUF", "UP"]
+lint.select = ["F", "W", "I"]
+
+[tool.ruff.lint.per-file-ignores]
+# Example ignore for all tests (Magic value used in comparison)
+# We use magic values in tests
+"tests/*" = ["PLR2004"]
+# There is a loot to look at with this rule,
+# not enforced yet
+"*" = ["F401"]

@@ -1,7 +1,7 @@
 import re
 
+from radish import then, when
 from radish.stepregistry import step
-from radish import given, when, then
 
 
 @step("I have the number {number:g}")
@@ -10,7 +10,7 @@ def have_number(step, number):
 
 
 @step(re.compile("I have the numbers (.*)"))
-def have_number(step, numbers):
+def have_numbers(step, numbers):
     numbers = [x.strip() for x in numbers.split(",")]
 
     for n in numbers:

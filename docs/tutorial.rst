@@ -1140,7 +1140,7 @@ example:
    <failure message="hello" type="Exception">
       <![CDATA[Traceback (most recent call last):
         File "/tmp/bdd/_env36/lib/python3.6/site-packages/radish/stepmodel.py", line 91, in run
-            self.definition_func(self, \*self.arguments)  # pylint: disable=not-callable
+            self.definition_func(self, \*self.arguments)
         File "/tmp/bdd/radish/radish/example.py", line 34, in step_when_switch_blender_on
           raise Exception("show off radish error handling")
       Exception: show off radish error handling

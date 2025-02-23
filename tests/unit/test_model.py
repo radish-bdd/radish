@@ -11,8 +11,8 @@ import time
 
 import pytest
 
-from radish.model import Model, Tag
 from radish.exceptions import RadishError
+from radish.model import Model, Tag
 
 
 def test_creating_simple_model():

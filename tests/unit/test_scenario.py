@@ -9,9 +9,9 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 
 import pytest
 
+from radish.background import Background
 from radish.feature import Feature
 from radish.scenario import Scenario
-from radish.background import Background
 from radish.stepmodel import Step
 
 

@@ -2,9 +2,6 @@
 This radish extension module provide the functionality to write the end report
 """
 
-# disable no-member lint error because of dynamic method from colorful
-# pylint: disable=no-member
-
 from datetime import timedelta
 
 import colorful

@@ -292,7 +292,7 @@ class FeatureParser(object):
                         "The parser expected a scenario or a tag on this line. Given: '{0}'".format(line)
                     )
 
-                detected_scenario, iterations = detected_scenario  # pylint: disable=unpacking-non-sequence
+                detected_scenario, iterations = detected_scenario
                 scenario_type = ScenarioLoop
                 keywords = (self.keywords.scenario_loop, self.keywords.iterations)
 

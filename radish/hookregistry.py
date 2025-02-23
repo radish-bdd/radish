@@ -55,7 +55,7 @@ class HookRegistry(object):
                 if len(args) == 1 and len(kwargs) == 0 and callable(args[0]):
                     func = args[0]
                     # hook was called without argument -> legacy!
-                    HookRegistry().register(self._when, what, func)  # pylint: disable=protected-access
+                    HookRegistry().register(self._when, what, func)
                 else:
                     # hook was called with argument
                     on_tags = kwargs.get("on_tags")
@@ -137,5 +137,5 @@ class HookRegistry(object):
 
 
 HookRegistry()
-before = HookRegistry.Hook("before")  # pylint: disable=invalid-name
-after = HookRegistry.Hook("after")  # pylint: disable=invalid-name
+before = HookRegistry.Hook("before")
+after = HookRegistry.Hook("after")

@@ -14,7 +14,7 @@ import calendar
 from datetime import datetime, timedelta, timezone
 
 
-class Failure(object):  # pylint: disable=too-few-public-methods
+class Failure(object):
     """
     Represents the fail reason for a step
     """

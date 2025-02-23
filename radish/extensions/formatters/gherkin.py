@@ -2,9 +2,6 @@
 This radish extension provides the functionality to write the feature file run to the console.
 """
 
-# disable no-member lint error because of dynamic method from colorful
-# pylint: disable=no-member
-
 import os
 import re
 import colorful
@@ -99,7 +96,7 @@ class ConsoleWriter(object):
         """
         Returns the width for every column of a table (lists in list)
         """
-        return [max(len(str(col)) for col in row) for row in zip(*table)]  # pylint: disable=star-args
+        return [max(len(str(col)) for col in row) for row in zip(*table)]
 
     def console_writer_before_each_feature(self, feature):
         """
@@ -420,7 +417,7 @@ class ConsoleWriter(object):
         if output:
             write(output)
 
-    def console_writer_after_each_feature(self, feature):  # pylint: disable=unused-argument
+    def console_writer_after_each_feature(self, feature):
         """
         Writes a newline after each feature
 

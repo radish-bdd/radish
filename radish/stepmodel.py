@@ -111,10 +111,10 @@ class Step(Model):
 
         try:
             if kwargs:
-                self.definition_func(self, **kwargs)  # pylint: disable=not-callable
+                self.definition_func(self, **kwargs)
             else:
-                self.definition_func(self, *args)  # pylint: disable=not-callable
-        except Exception as e:  # pylint: disable=broad-except
+                self.definition_func(self, *args)
+        except Exception as e:
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
         else:
@@ -139,7 +139,7 @@ class Step(Model):
 
         try:
             pdb.runcall(self.definition_func, self, *args, **kwargs)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             self.state = Step.State.FAILED
             self.failure = utils.Failure(e)
         else:

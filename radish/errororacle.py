@@ -54,7 +54,7 @@ def error_oracle(func):
         """
         try:
             return func(*args, **kwargs)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:
             handle_exception(e)
 
     return _decorator

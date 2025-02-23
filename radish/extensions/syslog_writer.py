@@ -61,7 +61,7 @@ class SyslogWriter(object):
 
         syslog.syslog(syslog.LOG_INFO, message)
 
-    def syslog_writer_before_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_before_all(self, features, marker):
         """
         Opens the syslog
         """
@@ -70,7 +70,7 @@ class SyslogWriter(object):
         syslog.openlog("radish")
         self.log("begin run {0}".format(marker))
 
-    def syslog_writer_after_all(self, features, marker):  # pylint: disable=unused-argument
+    def syslog_writer_after_all(self, features, marker):
         """
         Closes the syslog
         """

@@ -1,5 +1,3 @@
-# pylint: disable=missing-docstring
-
 import os
 import re
 import codecs

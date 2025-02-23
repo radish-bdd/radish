@@ -15,7 +15,7 @@ class Runner(object):
     Represents a class which is able to run features.
     """
 
-    def handle_exit(func):  # pylint: disable=no-self-argument
+    def handle_exit(func):
         """
         Handles an runner exit
         """
@@ -24,14 +24,14 @@ class Runner(object):
             """
             Actual decorator
             """
-            if self._required_exit:  # pylint: disable=protected-access
+            if self._required_exit:
                 return 1
 
-            return func(self, *args, **kwargs)  # pylint: disable=not-callable
+            return func(self, *args, **kwargs)
 
         return _decorator
 
-    def call_hooks(model):  # pylint: disable=no-self-argument
+    def call_hooks(model):
         """
         Call hooks for a specific model
         """
@@ -45,11 +45,11 @@ class Runner(object):
                 """
                 Decorator wrapper
                 """
-                self._hooks.call("before", model, True, model_instance, *args, **kwargs)  # pylint: disable=protected-access
+                self._hooks.call("before", model, True, model_instance, *args, **kwargs)
                 try:
                     return func(self, model_instance, *args, **kwargs)
                 finally:
-                    self._hooks.call("after", model, False, model_instance, *args, **kwargs)  # pylint: disable=protected-access
+                    self._hooks.call("after", model, False, model_instance, *args, **kwargs)
 
             return _wrapper
 

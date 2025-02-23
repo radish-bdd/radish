@@ -4,10 +4,10 @@ Providing radish core functionality like the feature file Runner.
 
 from random import shuffle
 
-from .terrain import world
-from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
+from .scenariooutline import ScenarioOutline
 from .stepmodel import Step
+from .terrain import world
 
 
 class Runner(object):

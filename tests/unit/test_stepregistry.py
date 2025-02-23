@@ -11,9 +11,8 @@ import re
 
 import pytest
 
-from radish.stepregistry import step, steps
-from radish.stepregistry import given, when, then
 import radish.exceptions as errors
+from radish.stepregistry import given, step, steps, then, when
 
 
 def test_registering_simple_steps(stepregistry):

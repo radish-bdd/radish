@@ -7,10 +7,10 @@ Behavior Driven Development tool for Python - the root from red to green
 Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-import os
 import json
+import os
 
-from radish import given, when, then, world
+from radish import given, then, when, world
 from radish.extensions.cucumber_json_writer import CucumberJSONWriter
 
 

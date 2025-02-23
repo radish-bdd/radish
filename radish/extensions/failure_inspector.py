@@ -2,10 +2,10 @@
 This module provides an extension which starts a python shell after a step failed
 """
 
-from radish.hookregistry import after
-from radish.stepmodel import Step
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.stepmodel import Step
 
 
 @extension

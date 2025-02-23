@@ -3,15 +3,14 @@ This module provides a radish extension to make
 coverage measurements.
 """
 
-import sys
 import re
-
+import sys
 from io import StringIO
 
-from radish.extensionregistry import extension
-from radish.hookregistry import before, after
-from radish.terrain import world
 from radish.exceptions import RadishError
+from radish.extensionregistry import extension
+from radish.hookregistry import after, before
+from radish.terrain import world
 
 
 @extension

@@ -4,8 +4,8 @@ This module provides a Scenario type which represents a Scenario loop
 
 import copy
 
-from .scenario import Scenario
 from .iterationscenario import IterationScenario
+from .scenario import Scenario
 from .stepmodel import Step
 
 

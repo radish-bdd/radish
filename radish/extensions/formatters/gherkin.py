@@ -4,15 +4,16 @@ This radish extension provides the functionality to write the feature file run t
 
 import os
 import re
+
 import colorful
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.feature import Feature
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 from radish.utils import console_write as write
 
 

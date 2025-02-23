@@ -10,8 +10,8 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 import pytest
 
 from radish.feature import Feature
-from radish.scenariooutline import ScenarioOutline
 from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
 from radish.stepmodel import Step
 
 

@@ -2,8 +2,9 @@
 This module provides a registry for all custom steps which were decorated with the @step-decorator.
 """
 
-import re
 import inspect
+import re
+
 from singleton import singleton
 
 from .exceptions import RadishError, SameStepError, StepRegexError

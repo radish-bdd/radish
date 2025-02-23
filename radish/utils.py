@@ -2,15 +2,15 @@
 This module provides several utility functions
 """
 
+import calendar
+import fnmatch
+import itertools
 import os
+import pydoc
 import re
 import sys
-import fnmatch
 import traceback
 import warnings
-import pydoc
-import itertools
-import calendar
 from datetime import datetime, timedelta, timezone
 
 

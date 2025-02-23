@@ -1,8 +1,6 @@
-from radish import before
-from radish import world
-from radish import custom_type
-
 from example.model import Hero
+
+from radish import before, custom_type, world
 
 world.heros = [Hero("Peter", "Parker", "Spiderman"), Hero("Bruce", "Wayne", "Batman")]
 

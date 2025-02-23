@@ -3,8 +3,8 @@ This module provides a class to represent a Feature from a parsed feature file.
 """
 
 from .model import Model
-from .scenariooutline import ScenarioOutline
 from .scenarioloop import ScenarioLoop
+from .scenariooutline import ScenarioOutline
 from .stepmodel import Step
 from .terrain import world
 

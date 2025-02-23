@@ -2,8 +2,8 @@
 This module contains a class to load the step and terrain files
 """
 
-import os
 import fnmatch
+import os
 
 
 def load_modules(location):

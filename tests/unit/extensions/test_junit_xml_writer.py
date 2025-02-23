@@ -7,16 +7,16 @@ Behavior Driven Development tool for Python - the root from red to green
 Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
-import pytest
-
 from datetime import datetime, timezone
 
-from radish.terrain import world
+import pytest
+
 from radish.exceptions import RadishError
-from radish.feature import Feature
-from radish.scenario import Scenario
-from radish.model import Tag
 from radish.extensions.junit_xml_writer import JUnitXMLWriter
+from radish.feature import Feature
+from radish.model import Tag
+from radish.scenario import Scenario
+from radish.terrain import world
 
 
 def test_empty_feature_list():

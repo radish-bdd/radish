@@ -8,11 +8,10 @@ from functools import wraps
 import colorful
 
 from .exceptions import (
-    RadishError,
     HookError,
+    RadishError,
 )
 from .utils import Failure, console_write
-
 
 __RADISH_DOC__ = "https://github.com/radish-bdd/radish"
 

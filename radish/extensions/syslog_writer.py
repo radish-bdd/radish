@@ -5,10 +5,10 @@ This module provides an extension to write all features, scenarios and steps to 
 import os
 import sys
 
-from radish.terrain import world
-from radish.feature import Feature
-from radish.hookregistry import before, after
 from radish.extensionregistry import extension
+from radish.feature import Feature
+from radish.hookregistry import after, before
+from radish.terrain import world
 
 
 @extension

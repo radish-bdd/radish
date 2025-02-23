@@ -7,14 +7,15 @@ from datetime import timedelta
 import colorful
 import humanize
 
-from radish.hookregistry import after
-from radish.stepmodel import Step
-from radish.utils import console_write as write, make_unique_obj_list, get_func_code
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
 from radish.extensionregistry import extension
-from radish.terrain import world
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
 from radish.stepregistry import StepRegistry
+from radish.terrain import world
+from radish.utils import console_write as write
+from radish.utils import get_func_code, make_unique_obj_list
 
 
 @extension

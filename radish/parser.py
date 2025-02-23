@@ -3,23 +3,23 @@ Feature file parser.
 One Feature file parser instance is able to parse one feature file.
 """
 
-import os
-import io
-import re
-import json
-import filecmp
 import copy
+import filecmp
+import io
+import json
+import os
+import re
 import string
 
-from .exceptions import RadishError, FeatureFileSyntaxError, LanguageNotSupportedError
-from .feature import Feature
-from .scenario import Scenario
-from .scenariooutline import ScenarioOutline
-from .scenarioloop import ScenarioLoop
-from .stepmodel import Step
-from .background import Background
-from .model import Tag
 from . import utils
+from .background import Background
+from .exceptions import FeatureFileSyntaxError, LanguageNotSupportedError, RadishError
+from .feature import Feature
+from .model import Tag
+from .scenario import Scenario
+from .scenarioloop import ScenarioLoop
+from .scenariooutline import ScenarioOutline
+from .stepmodel import Step
 
 
 class Keywords(object):

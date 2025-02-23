@@ -1,4 +1,4 @@
-from radish import step, when, then
+from radish import step, then, when
 
 
 @step("a user named {:w}")

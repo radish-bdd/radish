@@ -8,15 +8,14 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
 import pytest
-
 import tagexpressions
 
-from radish.parser import FeatureParser
-from radish.model import Tag
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.background import Background
 import radish.exceptions as errors
+from radish.background import Background
+from radish.model import Tag
+from radish.parser import FeatureParser
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
 
 
 @pytest.mark.parametrize("parser", [("empty-feature",)], indirect=["parser"])

@@ -9,11 +9,11 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 
 import pytest
 
-from radish.scenariooutline import ScenarioOutline
-from radish.examplescenario import ExampleScenario
 from radish.background import Background
-from radish.stepmodel import Step
+from radish.examplescenario import ExampleScenario
 from radish.exceptions import RadishError
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
 
 
 def test_creating_simple_scenariooutline():

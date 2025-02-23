@@ -4,10 +4,10 @@ This module provides a class to represent a Scenario Outline
 
 import copy
 
-from .scenario import Scenario
 from .examplescenario import ExampleScenario
-from .stepmodel import Step
 from .exceptions import RadishError
+from .scenario import Scenario
+from .stepmodel import Step
 
 
 class ScenarioOutline(Scenario):

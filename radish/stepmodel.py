@@ -5,12 +5,12 @@ This module provides a class to represent a Step
 import base64
 import re
 
-from .model import Model
-from .exceptions import RadishError
-from .terrain import world
-from .stepregistry import StepRegistry
-from .matcher import merge_step
 from . import utils
+from .exceptions import RadishError
+from .matcher import merge_step
+from .model import Model
+from .stepregistry import StepRegistry
+from .terrain import world
 
 
 class Step(Model):

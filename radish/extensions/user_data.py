@@ -6,9 +6,9 @@ as per Enhancement #124.
 
 import re
 
-from radish.terrain import world
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
+from radish.terrain import world
 
 
 @extension

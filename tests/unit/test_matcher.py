@@ -10,11 +10,10 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 import re
 
 import pytest
-
 from parse_type.cfparse import Parser
 
-import radish.matcher as matcher
 import radish.exceptions as errors
+import radish.matcher as matcher
 
 
 @pytest.mark.parametrize(

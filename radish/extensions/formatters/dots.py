@@ -3,14 +3,15 @@ This radish extension provides the functionality to write the feature file run t
 """
 
 import sys
+
 import colorful as cf
 
-from radish.terrain import world
-from radish.hookregistry import before, after
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.hookregistry import after, before
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension

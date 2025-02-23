@@ -1,4 +1,4 @@
-from radish import given, when, then
+from radish import given, then, when
 
 
 @given("I have the numbers {numbers:Number+}")

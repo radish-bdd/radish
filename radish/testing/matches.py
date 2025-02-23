@@ -4,11 +4,11 @@ if some sentences are matched with the expected
 step implementations.
 """
 
-import sys
 import codecs
+import sys
 
-import yaml
 import colorful
+import yaml
 
 from radish.loader import load_modules
 from radish.matcher import match_step

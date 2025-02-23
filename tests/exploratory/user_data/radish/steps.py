@@ -1,7 +1,7 @@
 import re
 
+from radish import then, when
 from radish.stepregistry import step
-from radish import when, then
 from radish.terrain import world
 
 

@@ -2,10 +2,10 @@
 This module provides an extension which starts a debugger when a step fails
 """
 
+import radish.utils as utils
+from radish.extensionregistry import extension
 from radish.hookregistry import after
 from radish.stepmodel import Step
-from radish.extensionregistry import extension
-import radish.utils as utils
 
 
 @extension

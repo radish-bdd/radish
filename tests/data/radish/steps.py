@@ -1,6 +1,7 @@
 import re
-from radish.terrain import world
+
 from radish.stepregistry import step
+from radish.terrain import world
 
 world.number = 0
 

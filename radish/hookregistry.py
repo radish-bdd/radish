@@ -2,12 +2,11 @@
 This module provides a registry for all hooks
 """
 
+import tagexpressions
 from singleton import singleton
 
 from . import utils
 from .exceptions import HookError
-
-import tagexpressions
 
 
 @singleton()

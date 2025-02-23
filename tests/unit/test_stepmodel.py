@@ -9,8 +9,8 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 
 import pytest
 
-from radish.stepmodel import Step
 from radish.exceptions import RadishError
+from radish.stepmodel import Step
 
 
 def test_creating_simple_step():

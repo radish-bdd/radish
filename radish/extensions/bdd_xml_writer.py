@@ -2,20 +2,20 @@
 This module provides a hook which generates a BDD XML result file at the end of the run.
 """
 
-from os import getlogin
-from getpass import getuser
-from socket import gethostname
-from datetime import timedelta
 import re
+from datetime import timedelta
+from getpass import getuser
+from os import getlogin
+from socket import gethostname
 
-from radish.terrain import world
-from radish.hookregistry import after
-from radish.exceptions import RadishError
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
-from radish.extensionregistry import extension
 import radish.utils as utils
+from radish.exceptions import RadishError
+from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension

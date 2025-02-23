@@ -2,16 +2,16 @@
 This module provides a hook which generates a cucumber json result file at the end of the run.
 """
 
-from datetime import timedelta, datetime, timezone
 import json
+from datetime import datetime, timedelta, timezone
 
-from radish.terrain import world
-from radish.hookregistry import after
 from radish.exceptions import RadishError
-from radish.scenariooutline import ScenarioOutline
-from radish.scenarioloop import ScenarioLoop
-from radish.stepmodel import Step
 from radish.extensionregistry import extension
+from radish.hookregistry import after
+from radish.scenarioloop import ScenarioLoop
+from radish.scenariooutline import ScenarioOutline
+from radish.stepmodel import Step
+from radish.terrain import world
 
 
 @extension

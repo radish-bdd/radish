@@ -1,4 +1,4 @@
-from radish import given, when, then
+from radish import given, then, when
 
 
 @given("the device is {is_plugged_in:is_plugged_in}")

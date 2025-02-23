@@ -11,12 +11,12 @@ import os
 
 import pytest
 
-from radish.terrain import world
-from radish.core import Core, Configuration
+from radish.core import Configuration, Core
+from radish.extensionregistry import ExtensionRegistry
+from radish.hookregistry import HookRegistry
 from radish.parser import FeatureParser
 from radish.stepregistry import StepRegistry
-from radish.hookregistry import HookRegistry
-from radish.extensionregistry import ExtensionRegistry
+from radish.terrain import world
 
 #: Holds the path to the Feature file resources
 __TEST_BASE_DIR__ = os.path.dirname(__file__)

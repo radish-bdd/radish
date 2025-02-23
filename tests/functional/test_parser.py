@@ -694,7 +694,7 @@ def test_parse_scenario_sentence_duplicate(parser):
         parser.parse()
 
     # then
-    assert str(exc.value).startswith("Scenario with name 'A great name for a Scenario' " "defined twice in feature")
+    assert str(exc.value).startswith("Scenario with name 'A great name for a Scenario' defined twice in feature")
 
 
 @pytest.mark.parametrize("parser", [("precondition-level-2",)], indirect=["parser"])

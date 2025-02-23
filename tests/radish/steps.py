@@ -73,9 +73,9 @@ def expect_sum(step, expected_sum):
 @then("I expect the difference to be {expected_diff:d}")
 def expect_sum(step, expected_diff):
     "Then I expect the difference to be <n>"
-    assert (
-        step.context.difference == expected_diff
-    ), "The expected difference {0} does not match actual difference {1}".format(expected_diff.step.context.difference)
+    assert step.context.difference == expected_diff, (
+        "The expected difference {0} does not match actual difference {1}".format(expected_diff.step.context.difference)
+    )
 
 
 @given("I have an instable function")
@@ -143,9 +143,9 @@ def embed_a_text(step, test_text):
 @then("step with embedded text should have following embedded data")
 def embed_a_text(step):
     "Then step with embedded text should have following embedded data"
-    assert hasattr(
-        step.context, "step_with_embedded_data"
-    ), "step_embeddings is missing in context - please check if step with text embedding has been executed"
+    assert hasattr(step.context, "step_with_embedded_data"), (
+        "step_embeddings is missing in context - please check if step with text embedding has been executed"
+    )
     test_step_embeddings = step.context.step_with_embedded_data.embeddings
     for embeddings in step.table:
         assert embeddings in test_step_embeddings, "{0} not found in {1}".format(embeddings, test_step_embeddings)

@@ -50,9 +50,9 @@ def add_user(step):
 @step(re.compile(r"I expect the user \"(.*?)\" in the database"))
 def expect_user_in_database(step, name):
     forename, surname = name.split()
-    assert any(
-        u for u in world.users if u["forename"] == forename and u["surname"] == surname
-    ), "No such user in the db"
+    assert any(u for u in world.users if u["forename"] == forename and u["surname"] == surname), (
+        "No such user in the db"
+    )
 
 
 @step("I have the numeric expression {expression:MathExpression}")

@@ -45,15 +45,11 @@ class Runner(object):
                 """
                 Decorator wrapper
                 """
-                self._hooks.call(
-                    "before", model, True, model_instance, *args, **kwargs
-                )  # pylint: disable=protected-access
+                self._hooks.call("before", model, True, model_instance, *args, **kwargs)  # pylint: disable=protected-access
                 try:
                     return func(self, model_instance, *args, **kwargs)
                 finally:
-                    self._hooks.call(
-                        "after", model, False, model_instance, *args, **kwargs
-                    )  # pylint: disable=protected-access
+                    self._hooks.call("after", model, False, model_instance, *args, **kwargs)  # pylint: disable=protected-access
 
             return _wrapper
 

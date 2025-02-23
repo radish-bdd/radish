@@ -158,7 +158,6 @@ class JUnitXMLWriter(object):
                 if scenario.state is Step.State.FAILED:
                     steps_sentence = []
                     for step in scenario.all_steps:
-                        step_element = self._get_element_from_model("step", step)
                         steps_sentence.append(step.sentence)
                         if step.state is Step.State.FAILED:
                             failure_element = etree.Element("failure", type=step.failure.name, message=step.sentence)

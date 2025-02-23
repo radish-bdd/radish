@@ -12,5 +12,5 @@ def expect_true(step):
 
 
 @then("I expect it to be parsed as False")
-def expect_true(step):
+def expect_false(step):
     assert step.context.boolean is False

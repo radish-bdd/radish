@@ -63,7 +63,7 @@ class HookRegistry(object):
 
                     if on_tags:
                         expr = tagexpressions.parse(on_tags)
-                        on_tags = lambda tags: expr.evaluate(tags)
+                        on_tags = lambda tags: expr.evaluate(tags)  # noqa: E731
 
                     def func(f):
                         HookRegistry().register(self._when, what, f, order, on_tags)
@@ -88,8 +88,9 @@ class HookRegistry(object):
         if order is None:
             order = self.DEFAULT_HOOK_ORDER
 
+        # if no tags are specified we always return True
         if on_tags is None:
-            on_tags = lambda _: True  # if no tags are specified we always return True
+            on_tags = lambda _: True  # noqa: E731
 
         self._hooks[what][when].append((order, on_tags, func))
 

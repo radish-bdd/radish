@@ -48,7 +48,7 @@ def sum_numbers(step):
 
 
 @when("I add them up with failure")
-def sum_numbers(step):
+def sum_numbers_failure(step):
     "When I add them up with failure"
     assert False, "Unable to add numbers: {0}".format(step.context.numbers)
 
@@ -71,10 +71,12 @@ def expect_sum(step, expected_sum):
 
 
 @then("I expect the difference to be {expected_diff:d}")
-def expect_sum(step, expected_diff):
+def expect_diff(step, expected_diff):
     "Then I expect the difference to be <n>"
     assert step.context.difference == expected_diff, (
-        "The expected difference {0} does not match actual difference {1}".format(expected_diff.step.context.difference)
+        "The expected difference {0} does not match actual difference {1}".format(
+            expected_diff, step.context.difference
+        )
     )
 
 
@@ -141,7 +143,7 @@ def embed_a_text(step, test_text):
 
 
 @then("step with embedded text should have following embedded data")
-def embed_a_text(step):
+def embed_a_text_data(step):
     "Then step with embedded text should have following embedded data"
     assert hasattr(step.context, "step_with_embedded_data"), (
         "step_embeddings is missing in context - please check if step with text embedding has been executed"

@@ -13,7 +13,7 @@ def sum_numbres(step):
 
 
 @then("I expect the result to be {result:g}")
-def expect_result(step, result):
+def expect_result_to_be(step, result):
     assert step.context.result == result
 
 

@@ -235,7 +235,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
-            output += colorful.cyan("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
+            output += colorful.cyan(
+                "".join(["\n                {0}{1}".format(id_padding, li) for li in step.raw_text])
+            )
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
 
         if step.table_header:
@@ -297,7 +299,9 @@ class ConsoleWriter(object):
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
-            output += colorful.cyan("".join(["\n                {0}{1}".format(id_padding, l) for l in step.raw_text]))
+            output += colorful.cyan(
+                "".join(["\n                {0}{1}".format(id_padding, li) for li in step.raw_text])
+            )
             output += colorful.bold_white('\n            {0}"""'.format(id_padding))
 
         if step.table_header:
@@ -327,7 +331,7 @@ class ConsoleWriter(object):
             if world.config.with_traceback:
                 output += "\n          {0}{1}".format(
                     self.get_id_padding(len(step.parent.steps) - 2),
-                    "\n          ".join([str(colorful.red(l)) for l in step.failure.traceback.split("\n")[:-2]]),
+                    "\n          ".join([str(colorful.red(li)) for li in step.failure.traceback.split("\n")[:-2]]),
                 )
             output += "\n          {0}{1}: {2}".format(
                 self.get_id_padding(len(step.parent.steps) - 2),
@@ -381,7 +385,7 @@ class ConsoleWriter(object):
                     output += "\n          {0}{1}".format(
                         self.get_id_padding(len(scenario.parent.scenarios)),
                         "\n          ".join(
-                            [str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]
+                            [str(colorful.red(li)) for li in failed_step.failure.traceback.split("\n")[:-2]]
                         ),
                     )
                 output += "\n          {0}{1}: {2}".format(
@@ -405,7 +409,7 @@ class ConsoleWriter(object):
                     output += "\n          {0}{1}".format(
                         self.get_id_padding(len(scenario.parent.scenarios)),
                         "\n          ".join(
-                            [str(colorful.red(l)) for l in failed_step.failure.traceback.split("\n")[:-2]]
+                            [str(colorful.red(li)) for li in failed_step.failure.traceback.split("\n")[:-2]]
                         ),
                     )
                 output += "\n          {0}{1}: {2}".format(

@@ -103,45 +103,45 @@ def expect_data(step, expected_data):
 
 
 @step("Given I install the database server")
-def demo(step):
+def demo0(step):
     pass
 
 
 @step("When I add all default users")
-def demo(step):
+def demo1(step):
     pass
 
 
 @step("And I add all default types")
-def demo(step):
+def demo2(step):
     pass
 
 
 @step("And I initialize the database error handlers")
-def demo(step):
+def demo3(step):
     pass
 
 
 @step("And I set the permissions for the administrator tables")
-def demo(step):
+def demo4(step):
     pass
 
 
 @step("And I index imported fields")
-def demo(step):
+def demo5(step):
     pass
 
 
 @step("Then I expect my installation to be complete")
-def demo(step):
+def demo6(step):
     pass
 
 
 @step('I add the user "Timo furrer"')
-def demo(step):
+def demo7(step):
     pass
 
 
 @step('I expect the user "Timo Furrer" in the databas')
-def demo(step):
+def demo8(step):
     pass

@@ -749,7 +749,7 @@ class FeatureParser(object):
             # If a tag is detected we split on @ and try to parse
             # each part as tag (also for constant)
             # this is required for @foo @bar @baz
-            for line in [l.strip() for l in line.split("@") if l]:
+            for line in [li.strip() for li in line.split("@") if li]:
                 match = re.search(r"^([^\s]+)\((.*)\)", line)
                 if match:
                     tag = Tag(match.group(1), match.group(2))

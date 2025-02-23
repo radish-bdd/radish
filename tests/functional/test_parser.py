@@ -289,7 +289,7 @@ def test_parse_scenario_outline_with_step_text(parser):
 
 
 @pytest.mark.parametrize("parser", [("scenario-outline-step-text-example",)], indirect=["parser"])
-def test_parse_scenario_outline_with_step_text(parser):
+def test_parse_scenario_outline_with_step_text_example(parser):
     """
     Test parsing a Scenario Outline with a Step with Text
     """

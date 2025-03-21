@@ -127,12 +127,17 @@ class JUnitXMLWriter(object):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
-                testcase_element = etree.Element(
-                    "testcase",
-                    classname=feature.sentence,
-                    name=scenario.sentence,
-                    time="%.3f" % scenario.duration.total_seconds(),
-                )
+                if scenario.state not in [
+                    Step.State.UNTESTED,
+                    Step.State.PENDING,
+                    Step.State.SKIPPED,
+                ]:
+                    testcase_element = etree.Element(
+                        "testcase",
+                        classname=feature.sentence,
+                        name=scenario.sentence,
+                        time="%.3f" % scenario.duration.total_seconds(),
+                    )
 
                 if world.config.junit_relaxed:
                     properties_element = etree.Element("properties")

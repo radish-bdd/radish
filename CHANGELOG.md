@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 *Stay tuned...*
+
+## [v0.18.2]
+
 ### Fixed
 - Fix junit when using --early-exit
 

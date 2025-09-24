@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 import pytest
 from freezegun import freeze_time
 
-import radish.utils as utils
+from radish import utils
 
 
 @pytest.mark.parametrize(

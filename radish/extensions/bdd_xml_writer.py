@@ -8,7 +8,7 @@ from getpass import getuser
 from os import getlogin
 from socket import gethostname
 
-import radish.utils as utils
+from radish import utils
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
 from radish.hookregistry import after

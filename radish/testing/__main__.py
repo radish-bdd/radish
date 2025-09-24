@@ -8,8 +8,7 @@ import sys
 import colorful
 from docopt import docopt
 
-import radish.utils as utils
-from radish import __VERSION__
+from radish import __VERSION__, utils
 from radish.testing.matches import test_step_matches_configs
 
 # use only 8 ANSI colors

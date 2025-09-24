@@ -5,7 +5,7 @@ This module provides a hook which generates a JUnit XML result file at the end o
 import re
 from datetime import timedelta
 
-import radish.utils as utils
+from radish import utils
 from radish.exceptions import RadishError
 from radish.extensionregistry import extension
 from radish.hookregistry import after

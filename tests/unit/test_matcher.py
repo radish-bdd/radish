@@ -13,7 +13,7 @@ import pytest
 from parse_type.cfparse import Parser
 
 import radish.exceptions as errors
-import radish.matcher as matcher
+from radish import matcher
 
 
 @pytest.mark.parametrize(

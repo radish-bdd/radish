@@ -14,7 +14,7 @@ import tempfile
 import colorful
 import pytest
 
-import radish.testing.matches as matches
+from radish.testing import matches
 
 
 @pytest.fixture(scope="module", autouse=True)

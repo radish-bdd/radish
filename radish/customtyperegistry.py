@@ -91,4 +91,4 @@ def boolean_type(text):
     Plus 0 and 1
     """
     text = text.lower()
-    return text == "1" or text.startswith("y") or text == "true" or text == "on"
+    return text in {"1", "true", "on"} or text.startswith("y")

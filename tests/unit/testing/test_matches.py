@@ -89,15 +89,18 @@ def test_empty_matches_config(mocker, capsys):
     [
         (
             [{"sentence": None}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{"should_match": None}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{"foo": None}],

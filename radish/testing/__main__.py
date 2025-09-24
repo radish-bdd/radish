@@ -42,7 +42,7 @@ def main():
         --cover-show-missing                           show steps which are not tested
 
     (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
-    """
+    """  # noqa: E501
 
     arguments = docopt("radish-test {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__)
 

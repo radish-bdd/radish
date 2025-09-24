@@ -33,7 +33,8 @@ class BDDXMLWriter(object):
             from lxml import etree
         except ImportError:
             raise RadishError(
-                'if you want to use the BDD xml writer you have to install extra packages: "pip install radish-bdd[bddxml]"'
+                "if you want to use the BDD xml writer you have to install extra packages: "
+                '"pip install radish-bdd[bddxml]"'
             )
 
         after.all(self.generate_bdd_xml)

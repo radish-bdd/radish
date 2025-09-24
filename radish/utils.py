@@ -86,7 +86,8 @@ def get_debugger():
             pdb = Pdb()
         except ImportError:
             warnings.warn(
-                'pdb was selected as a debugger. If you want to use ipython as a debugger you have to "pip install radish-bdd[ipython-debugger]"'
+                "pdb was selected as a debugger. If you want to use ipython as a debugger you have to "
+                '"pip install radish-bdd[ipython-debugger]"'
             )
             import pdb
 

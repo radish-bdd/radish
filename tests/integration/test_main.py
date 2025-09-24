@@ -113,7 +113,8 @@ from radish.main import main
             ["--tags", "scenario_loop or scenario_outline"],
             0,
             "tags-everywhere-scenario-loop-and-outline",
-            id="Feature and Scenario, Scenario Outline and Loop with Tags filtered by scenario_loop or scenario_outline",
+            id="Feature and Scenario, Scenario Outline and Loop with Tags filtered by "
+            "scenario_loop or scenario_outline",
         ),
         pytest.param(["tags-arguments"], [], 0, "tags-arguments", id="Tag Arguments for Feature and Scenario Tags"),
         pytest.param(

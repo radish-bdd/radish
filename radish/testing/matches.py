@@ -212,7 +212,8 @@ def validate_config_item(config):
 
     if "sentence" not in config or ("should_match" not in config and "should_not_match" not in config):
         raise ValueError(
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)"
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)"
         )
 
 
@@ -273,9 +274,8 @@ def check_step_arguments(expected_arguments, arguments):
 
         if not use_repr and _type != type(value).__name__:
             errors.append(
-                'Conflicting argument configuration: given value is actually of type "{0}" although it should match a value of type "{1}"'.format(
-                    type(value).__name__, _type
-                )
+                'Conflicting argument configuration: given value is actually of type "{0}" '
+                'although it should match a value of type "{1}"'.format(type(value).__name__, _type)
             )
             continue
 

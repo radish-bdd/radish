@@ -134,7 +134,8 @@ class EndreportWriter(object):
             sr = StepRegistry()
             pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
             output += colorful.white(
-                "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\nNote: this could be the reason for some failing subsequent steps".format(
+                "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\n"
+                "Note: this could be the reason for some failing subsequent steps".format(
                     len(pending_step_implementations),
                     "s" if len(pending_step_implementations) != 1 else "",
                     len(pending_steps),

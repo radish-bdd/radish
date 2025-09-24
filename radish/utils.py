@@ -182,7 +182,7 @@ def flattened_basedirs(basedirs):
     single element split by a colon.
     """
     separator = ";" if os.name == "nt" else ":"
-    return list(x for x in itertools.chain(*(x.split(separator) for x in basedirs)) if x)
+    return [x for x in itertools.chain(*(x.split(separator) for x in basedirs)) if x]
 
 
 def split_unescape(s, delim, escape="\\", unescape=True):

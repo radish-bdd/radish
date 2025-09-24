@@ -443,7 +443,7 @@ class FeatureParser(object):
         if not current_step.table_header:  # it's the table heading
             current_step.table_header = table_columns
         else:  # it's a table data row
-            table_data = {k: v for k, v in zip(current_step.table_header, table_columns)}
+            table_data = dict(zip(current_step.table_header, table_columns))
             current_step.table_data.append(table_columns)
             current_step.table.append(table_data)
         return True

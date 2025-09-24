@@ -51,7 +51,7 @@ class Core(object):
         """
         Return all parsed features which are to run
         """
-        return [f for f in self._features_to_run.values()]
+        return list(self._features_to_run.values())
 
     @property
     def next_feature_id(self):

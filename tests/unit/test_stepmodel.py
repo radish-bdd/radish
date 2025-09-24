@@ -261,7 +261,7 @@ def test_run_debug_step_function_with_kwargs(debug_or_run, mocker, mock_utils_de
     )
     step.definition_func = StepHelper.step_func
     step.argument_match = mocker.MagicMock()
-    step.argument_match.evaluate.return_value = (tuple(), {"foo": "1", "bar": "2"})
+    step.argument_match.evaluate.return_value = ((), {"foo": "1", "bar": "2"})
 
     # when
     method = getattr(step, debug_or_run)
@@ -320,7 +320,7 @@ def test_run_debug_step_function_mark_pending(debug_or_run, mocker, mock_utils_d
     )
     step.definition_func = StepHelper.step_pending_func
     step.argument_match = mocker.MagicMock()
-    step.argument_match.evaluate.return_value = (tuple(), {})
+    step.argument_match.evaluate.return_value = ((), {})
 
     # when
     method = getattr(step, debug_or_run)
@@ -347,7 +347,7 @@ def test_run_debug_step_function_mark_skipped(debug_or_run, mocker, mock_utils_d
     )
     step.definition_func = StepHelper.step_skip_func
     step.argument_match = mocker.MagicMock()
-    step.argument_match.evaluate.return_value = (tuple(), {})
+    step.argument_match.evaluate.return_value = ((), {})
 
     # when
     method = getattr(step, debug_or_run)
@@ -374,7 +374,7 @@ def test_run_debug_step_function_with_exception(debug_or_run, mocker, mock_utils
     )
     step.definition_func = StepHelper.step_fail_func
     step.argument_match = mocker.MagicMock()
-    step.argument_match.evaluate.return_value = (tuple(), {})
+    step.argument_match.evaluate.return_value = ((), {})
 
     # when
     method = getattr(step, debug_or_run)

@@ -114,7 +114,7 @@ def cap_first_name(step):
 @then("I have the following names")
 def have_names(step):
     "Then I have the following names"
-    assert list(x["firstname"] for x in step.context.heros) == list(x["cap_heroname"] for x in step.table)
+    assert [x["firstname"] for x in step.context.heros] == [x["cap_heroname"] for x in step.table]
 
 
 @given("I have the following quote")

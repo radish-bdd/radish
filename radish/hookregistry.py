@@ -111,10 +111,8 @@ class HookRegistry(object):
         """
         if isinstance(model, list):
             return any(
-                [
-                    on_tags([t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in m.all_tags])
-                    for m in model
-                ]
+                on_tags([t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in m.all_tags])
+                for m in model
             )
 
         return on_tags([t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in model.all_tags])

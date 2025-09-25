@@ -15,7 +15,7 @@ from radish.terrain import world
 
 
 @extension
-class DotOutputFormatter(object):
+class DotOutputFormatter:
     """
     Output formatter in the dot style.
     """

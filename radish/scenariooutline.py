@@ -15,7 +15,7 @@ class ScenarioOutline(Scenario):
     Represents a Scenario
     """
 
-    class Example(object):
+    class Example:
         """
         Represents the ScenarioOutline examples
         """
@@ -38,7 +38,7 @@ class ScenarioOutline(Scenario):
         preconditions=None,
         background=None,
     ):
-        super(ScenarioOutline, self).__init__(
+        super().__init__(
             id, keyword, sentence, path, line, parent, tags, preconditions, background
         )
         self.example_keyword = example_keyword
@@ -60,7 +60,7 @@ class ScenarioOutline(Scenario):
             scenario = ExampleScenario(
                 scenario_id,
                 self.keyword,
-                "{0} - row {1}".format(self.sentence, row_id),
+                "{} - row {}".format(self.sentence, row_id),
                 self.path,
                 self.line,
                 self,
@@ -104,7 +104,7 @@ class ScenarioOutline(Scenario):
         :rtype: string
         """
         for key, value in examples.items():
-            sentence = sentence.replace("<{0}>".format(key), value)
+            sentence = sentence.replace("<{}>".format(key), value)
         return sentence
 
     @staticmethod
@@ -137,7 +137,7 @@ class ScenarioOutline(Scenario):
                 len(self.examples_header[column_index]),
             )
         except IndexError:
-            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{0}'".format(self.sentence))
+            raise RadishError("Invalid colum_index to get column width for ScenarioOutline '{}'".format(self.sentence))
 
     def after_parse(self):
         """

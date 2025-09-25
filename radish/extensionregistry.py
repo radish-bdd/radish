@@ -6,7 +6,7 @@ from singleton import singleton
 
 
 @singleton()
-class ExtensionRegistry(object):
+class ExtensionRegistry:
     """
     Registers all extensions
     """
@@ -54,7 +54,7 @@ class ExtensionRegistry(object):
                 options.extend(opt[0] for opt in ext.OPTIONS)
             except AttributeError:
                 pass
-        return "\n           ".join("[{0}]".format(x) for x in options)
+        return "\n           ".join("[{}]".format(x) for x in options)
 
     def get_option_description(self):
         """
@@ -63,7 +63,7 @@ class ExtensionRegistry(object):
         options = []
         for ext in self.extensions:
             try:
-                options.extend("{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
+                options.extend("{} {}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
             except AttributeError:
                 pass
         return "\n    ".join(options)

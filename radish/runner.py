@@ -10,7 +10,7 @@ from .stepmodel import Step
 from .terrain import world
 
 
-class Runner(object):
+class Runner:
     """
     Represents a class which is able to run features.
     """

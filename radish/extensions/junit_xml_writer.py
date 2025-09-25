@@ -16,7 +16,7 @@ from radish.terrain import world
 
 
 @extension
-class JUnitXMLWriter(object):
+class JUnitXMLWriter:
     """
     JUnit XML Writer radish extension
     """

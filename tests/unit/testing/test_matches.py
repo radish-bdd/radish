@@ -81,7 +81,7 @@ def test_empty_matches_config(mocker, capsys):
 
     # then
     assert actual_returncode == expected_returncode
-    assert out == "No sentences found in {0} to test against\n".format(tmpfile)
+    assert out == "No sentences found in {} to test against\n".format(tmpfile)
 
 
 @pytest.mark.parametrize(

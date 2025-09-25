@@ -22,7 +22,7 @@ from .scenariooutline import ScenarioOutline
 from .stepmodel import Step
 
 
-class Keywords(object):
+class Keywords:
     """
     Represent config object for gherkin keywords.
     """
@@ -46,7 +46,7 @@ class Keywords(object):
         self.iterations = iterations
 
 
-class FeatureParser(object):
+class FeatureParser:
     """
     Class to parse a feature file.
     A feature file contains just one feature.
@@ -56,7 +56,7 @@ class FeatureParser(object):
     DEFAULT_LANGUAGE = "en"
     CONTEXT_CLASSES = ["given", "when", "then", "but"]
 
-    class State(object):
+    class State:
         """
         Represents the parser state
         """
@@ -81,7 +81,7 @@ class FeatureParser(object):
         language="en",
     ):
         if not os.path.exists(featurefile):
-            raise OSError("Feature file at '{0}' does not exist".format(featurefile))
+            raise OSError("Feature file at '{}' does not exist".format(featurefile))
 
         self._core = core
         self._featureid = featureid
@@ -127,9 +127,9 @@ class FeatureParser(object):
 
         language_path = os.path.join(self.LANGUAGE_LOCATION, language + ".json")
         try:
-            with io.open(language_path, "r", encoding="utf-8") as f:
+            with open(language_path, encoding="utf-8") as f:
                 language_pkg = json.load(f)
-        except IOError:
+        except OSError:
             raise LanguageNotSupportedError(language)
 
         self.keywords = Keywords(**language_pkg["keywords"])
@@ -141,7 +141,7 @@ class FeatureParser(object):
         :returns: if the parsing was successful or not
         :rtype: bool
         """
-        with io.open(self._featurefile, "r", encoding="utf-8") as f:
+        with open(self._featurefile, encoding="utf-8") as f:
             for line in f.readlines():
                 self._current_line += 1
                 line_strip = line.strip()
@@ -172,11 +172,11 @@ class FeatureParser(object):
                 result = self._parse_context(line)
                 if result is False:
                     raise FeatureFileSyntaxError(
-                        "Syntax error in feature file {0} on line {1}".format(self._featurefile, self._current_line)
+                        "Syntax error in feature file {} on line {}".format(self._featurefile, self._current_line)
                     )
 
         if not self.feature:
-            raise FeatureFileSyntaxError("No Feature found in file {0}".format(self._featurefile))
+            raise FeatureFileSyntaxError("No Feature found in file {}".format(self._featurefile))
 
         if not self.feature.scenarios:
             return None
@@ -194,7 +194,7 @@ class FeatureParser(object):
         """
         parse_context_func = getattr(self, "_parse_" + self._current_state, None)
         if not parse_context_func:
-            raise RadishError("FeatureParser state {0} is not supported".format(self._current_state))
+            raise RadishError("FeatureParser state {} is not supported".format(self._current_state))
 
         return parse_context_func(line)
 
@@ -289,7 +289,7 @@ class FeatureParser(object):
                     if tags:
                         return True
                     raise FeatureFileSyntaxError(
-                        "The parser expected a scenario or a tag on this line. Given: '{0}'".format(line)
+                        "The parser expected a scenario or a tag on this line. Given: '{}'".format(line)
                     )
 
                 detected_scenario, iterations = detected_scenario
@@ -298,7 +298,7 @@ class FeatureParser(object):
 
         if detected_scenario in self.feature:
             raise FeatureFileSyntaxError(
-                "Scenario with name '{0}' defined twice in feature '{1}'".format(detected_scenario, self.feature.path)
+                "Scenario with name '{}' defined twice in feature '{}'".format(detected_scenario, self.feature.path)
             )
 
         scenario_id = 1
@@ -316,7 +316,7 @@ class FeatureParser(object):
             # inherited tags given to the parser. This tags are coming from precondition scenarios
             current_tags = self._current_tags + self.feature.tags + self._inherited_tags
             scenario_in_tags = self._tag_expr.evaluate(
-                [t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in current_tags]
+                [t.name if t.arg is None else "{}({})".format(t.name, t.arg) for t in current_tags]
             )
             if not scenario_in_tags:  # this scenario does not match the given tag expression
                 self._current_tags = []
@@ -435,7 +435,7 @@ class FeatureParser(object):
         line = line.strip()
         if not self._current_scenario.steps:
             raise FeatureFileSyntaxError(
-                "Found step table without previous step definition on line {0}".format(self._current_line)
+                "Found step table without previous step definition on line {}".format(self._current_line)
             )
 
         current_step = self._current_scenario.steps[-1]
@@ -505,7 +505,7 @@ class FeatureParser(object):
         if filecmp.cmp(self._featurefile, feature_file):
             if scenario_sentence not in self.feature:
                 raise FeatureFileSyntaxError(
-                    "Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(
+                    "Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(
                         scenario_sentence, feature_file
                     )
                 )
@@ -519,7 +519,7 @@ class FeatureParser(object):
             except RecursionError as e:
                 if str(e).startswith("maximum recursion depth exceeded"):  # precondition cycling
                     raise FeatureFileSyntaxError(
-                        "Your feature '{0}' has cycling preconditions with '{1}: {2}' starting at line {3}".format(
+                        "Your feature '{}' has cycling preconditions with '{}: {}' starting at line {}".format(
                             self._featurefile,
                             feature_file_name,
                             scenario_sentence,
@@ -533,7 +533,7 @@ class FeatureParser(object):
 
         if scenario_sentence not in feature:
             raise FeatureFileSyntaxError(
-                "Cannot import precondition scenario '{0}' from feature '{1}': No such scenario".format(
+                "Cannot import precondition scenario '{}' from feature '{}': No such scenario".format(
                     scenario_sentence, feature_file
                 )
             )
@@ -669,7 +669,7 @@ class FeatureParser(object):
         :returns: if a scenario loop was found on the given line
         :rtype: string
         """
-        match = re.search(r"^{0} (\d+):(.*)".format(self.keywords.scenario_loop), line)
+        match = re.search(r"^{} (\d+):(.*)".format(self.keywords.scenario_loop), line)
         if match:
             return match.group(2).strip(), int(match.group(1))
 

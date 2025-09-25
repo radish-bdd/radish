@@ -9,7 +9,7 @@ from radish.stepmodel import Step
 
 
 @extension
-class FailureDebugger(object):
+class FailureDebugger:
     """
     Failure debugger radish extension
     """

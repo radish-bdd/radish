@@ -14,7 +14,7 @@ import warnings
 from datetime import datetime, timedelta, timezone
 
 
-class Failure(object):
+class Failure:
     """
     Represents the fail reason for a step
     """
@@ -149,7 +149,7 @@ def get_func_location(func):
     Get the location where the given function is implemented.
     """
     func_code = get_func_code(func)
-    return "{0}:{1}".format(func_code.co_filename, func_code.co_firstlineno)
+    return "{}:{}".format(func_code.co_filename, func_code.co_firstlineno)
 
 
 def str_lreplace(pattern, replacement, string, escape_pattern=False, flags=0):
@@ -160,7 +160,7 @@ def str_lreplace(pattern, replacement, string, escape_pattern=False, flags=0):
     if escape_pattern:
         pattern = re.escape(pattern)
 
-    return re.sub(r"^{0}".format(pattern), replacement, string, flags=flags)
+    return re.sub(r"^{}".format(pattern), replacement, string, flags=flags)
 
 
 def locate(name):

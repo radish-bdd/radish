@@ -20,14 +20,14 @@ def write_error(text):
     """
     Writes the given text to the console
     """
-    console_write("{0}: {1}".format(colorful.bold_red("Error"), colorful.red(text)))
+    console_write("{}: {}".format(colorful.bold_red("Error"), colorful.red(text)))
 
 
 def write_failure(failure):
     """
     Writes the failure to the console
     """
-    console_write("\n{0}".format(colorful.red(failure.traceback)))
+    console_write("\n{}".format(colorful.red(failure.traceback)))
 
 
 def abort(return_code):

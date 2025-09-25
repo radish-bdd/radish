@@ -8,7 +8,7 @@ from threading import Lock
 from .parser import FeatureParser
 
 
-class Configuration(object):
+class Configuration:
     """
     Manage configuration. Attributes of the class are created from the
     names of the command line options and are set to the command line
@@ -33,7 +33,7 @@ class Configuration(object):
 
 
 # FIXME: rename
-class Core(object):
+class Core:
     """
     Provide some core functionalities like parsing and storing of the feature files
     """

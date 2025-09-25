@@ -22,7 +22,7 @@ def add_to_number(step, addition):
 
 @step("I expect the number to be {:MathExpression}")
 def expect_number(step, number):
-    assert world.number == int(number), "Expected number to be {0}. Actual number is: {1}".format(number, world.number)
+    assert world.number == int(number), "Expected number to be {}. Actual number is: {}".format(number, world.number)
 
 
 @step("I prepare users in world object")
@@ -68,7 +68,7 @@ def add_to_result(step, addition):
 
 @step("I expect the result to be {result:MathExpression}")
 def expect_result(step, result):
-    assert world.result == result, "Result is {0} but expected {1}".format(world.result, result)
+    assert world.result == result, "Result is {} but expected {}".format(world.result, result)
 
 
 @step("I have the float number {:g}")
@@ -83,7 +83,7 @@ def add_to_float_number(step, number):
 
 @step("I expect the float result to be {result:g}")
 def expect_float_number(step, result):
-    assert world.float_number == result, "Result is {0} but expected {1}".format(world.float_number, result)
+    assert world.float_number == result, "Result is {} but expected {}".format(world.float_number, result)
 
 
 @step("I have the following data:")
@@ -98,7 +98,7 @@ def ignore_step(step):
 
 @step('I expect the data to be "{}"')
 def expect_data(step, expected_data):
-    assert step.context.some_data == expected_data, "Data is: '{0}'. Expected was: '{1}'".format(
+    assert step.context.some_data == expected_data, "Data is: '{}'. Expected was: '{}'".format(
         step.context.some_data, expected_data
     )
 

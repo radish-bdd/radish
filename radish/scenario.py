@@ -23,7 +23,7 @@ class Scenario(Model):
         preconditions=None,
         background=None,
     ):
-        super(Scenario, self).__init__(id, keyword, sentence, path, line, parent, tags)
+        super().__init__(id, keyword, sentence, path, line, parent, tags)
         self.absolute_id = None
         self.preconditions = preconditions or []
         self.background = background

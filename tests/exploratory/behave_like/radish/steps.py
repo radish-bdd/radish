@@ -14,7 +14,7 @@ def have_numbers(step, numbers):
     numbers = [x.strip() for x in numbers.split(",")]
 
     for n in numbers:
-        step.behave_like("I have the number {0}".format(n))
+        step.behave_like("I have the number {}".format(n))
 
 
 @when("I sum them")

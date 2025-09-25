@@ -19,7 +19,7 @@ from radish.utils import get_func_code, make_unique_obj_list
 
 
 @extension
-class EndreportWriter(object):
+class EndreportWriter:
     """
     Endreport writer radish extension
     """
@@ -98,7 +98,7 @@ class EndreportWriter(object):
         skipped_word = colorful.cyan("{0} skipped")
         pending_word = colorful.bold_yellow("{0} pending")
 
-        output = colorful.bold_white("{0} features (".format(stats["features"]["amount"]))
+        output = colorful.bold_white("{} features (".format(stats["features"]["amount"]))
         output += passed_word.format(stats["features"]["passed"])
         if stats["features"]["failed"]:
             output += colored_comma + failed_word.format(stats["features"]["failed"])
@@ -134,7 +134,7 @@ class EndreportWriter(object):
             sr = StepRegistry()
             pending_step_implementations = make_unique_obj_list(pending_steps, lambda x: x.definition_func)
             output += colorful.white(
-                "\nYou have {0} pending step implementation{1} affecting {2} step{3}:\n  {4}\n\n"
+                "\nYou have {} pending step implementation{} affecting {} step{}:\n  {}\n\n"
                 "Note: this could be the reason for some failing subsequent steps".format(
                     len(pending_step_implementations),
                     "s" if len(pending_step_implementations) != 1 else "",
@@ -142,7 +142,7 @@ class EndreportWriter(object):
                     "s" if len(pending_steps) != 1 else "",
                     "\n  ".join(
                         [
-                            "-  '{0}' @ {1}".format(
+                            "-  '{}' @ {}".format(
                                 sr.get_pattern(s.definition_func),
                                 get_func_code(s.definition_func).co_filename,
                             )
@@ -177,6 +177,6 @@ class EndreportWriter(object):
             else:
                 output += colorful.green("\nThe --wip switch was used, so the failures were expected. All is good.\n")
 
-        output += colorful.cyan("Run {0} finished within {1}".format(marker, humanize.naturaldelta(duration)))
+        output += colorful.cyan("Run {} finished within {}".format(marker, humanize.naturaldelta(duration)))
 
         write(output)

@@ -10,7 +10,7 @@ from .exceptions import RadishError
 
 
 @singleton()
-class CustomTypeRegistry(object):
+class CustomTypeRegistry:
     """
     Registry for all custom argument expressions
     """
@@ -23,7 +23,7 @@ class CustomTypeRegistry(object):
         Registers a custom type
         """
         if name in self.custom_types:
-            raise RadishError("Cannot register custom type with name {0} because it already exists".format(name))
+            raise RadishError("Cannot register custom type with name {} because it already exists".format(name))
 
         self.custom_types[name] = func
 

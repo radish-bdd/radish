@@ -10,7 +10,7 @@ from .exceptions import HookError
 
 
 @singleton()
-class HookRegistry(object):
+class HookRegistry:
     """
     Represents an object with all registered hooks
     """
@@ -29,7 +29,7 @@ class HookRegistry(object):
         """
         return self._hooks
 
-    class Hook(object):
+    class Hook:
         """
         Represents a hook object
 
@@ -111,11 +111,11 @@ class HookRegistry(object):
         """
         if isinstance(model, list):
             return any(
-                on_tags([t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in m.all_tags])
+                on_tags([t.name if t.arg is None else "{}({})".format(t.name, t.arg) for t in m.all_tags])
                 for m in model
             )
 
-        return on_tags([t.name if t.arg is None else "{0}({1})".format(t.name, t.arg) for t in model.all_tags])
+        return on_tags([t.name if t.arg is None else "{}({})".format(t.name, t.arg) for t in model.all_tags])
 
     def call(self, when, what, ascending, model, *args, **kwargs):
         """

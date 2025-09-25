@@ -146,7 +146,7 @@ Options:
     sys.excepthook = catch_unhandled_exception
 
     # add version to the usage
-    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__)
+    arguments = docopt("radish {}\n{}".format(__VERSION__, usage), argv=args, version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)

@@ -19,7 +19,7 @@ from radish.terrain import world
 
 
 @extension
-class BDDXMLWriter(object):
+class BDDXMLWriter:
     """
     BDD XML Writer radish extension
     """
@@ -96,7 +96,7 @@ class BDDXMLWriter(object):
             starttime=utils.format_utc_to_local_tz(features[0].starttime),
             endtime=utils.format_utc_to_local_tz(features[-1].endtime),
             duration=str(duration.total_seconds()),
-            agent="{0}@{1}".format(user, gethostname()),
+            agent="{}@{}".format(user, gethostname()),
         )
 
         for feature in features:
@@ -129,7 +129,7 @@ class BDDXMLWriter(object):
                     tag_element = etree.Element("tag")
                     tag_element.text = tag.name
                     if tag.arg:
-                        tag_element.text += "({0})".format(tag.arg)
+                        tag_element.text += "({})".format(tag.arg)
                     scenario_tags_element.append(tag_element)
 
                 for step in scenario.all_steps:

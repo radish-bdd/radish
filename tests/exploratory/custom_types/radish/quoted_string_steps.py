@@ -13,6 +13,6 @@ def capitalize_string(step):
 
 @then("I expect the string to be {:QuotedString}")
 def expect_string(step, expected_string):
-    assert step.context.string == expected_string, 'Expected "{0}" got "{1}"'.format(
+    assert step.context.string == expected_string, 'Expected "{}" got "{}"'.format(
         expected_string, step.context.string
     )

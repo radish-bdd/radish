@@ -11,7 +11,7 @@ class IterationScenario(Scenario):
     """
 
     def __init__(self, id, keyword, sentence, path, line, parent, iteration, background=None):
-        super(IterationScenario, self).__init__(
+        super().__init__(
             id, keyword, sentence, path, line, parent, parent.tags, background=background
         )
         self.iteration = iteration

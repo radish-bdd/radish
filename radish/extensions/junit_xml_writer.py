@@ -96,32 +96,33 @@ class JUnitXMLWriter(object):
         for feature in features:
             if not feature.has_to_run(world.config.scenarios):
                 continue
+            
+            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
+                testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
 
-            testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
+                for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+                    if not scenario.has_to_run(world.config.scenarios):
+                        continue
 
-            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
-                if not scenario.has_to_run(world.config.scenarios):
-                    continue
+                    testsuite_states["tests"] += 1
+                    if scenario.state in [
+                        Step.State.UNTESTED,
+                        Step.State.PENDING,
+                        Step.State.SKIPPED,
+                    ]:
+                        testsuite_states["skipped"] += 1
+                    if scenario.state is Step.State.FAILED:
+                        testsuite_states["failures"] += 1
 
-                testsuite_states["tests"] += 1
-                if scenario.state in [
-                    Step.State.UNTESTED,
-                    Step.State.PENDING,
-                    Step.State.SKIPPED,
-                ]:
-                    testsuite_states["skipped"] += 1
-                if scenario.state is Step.State.FAILED:
-                    testsuite_states["failures"] += 1
-
-            testsuite_element = etree.Element(
-                "testsuite",
-                name=feature.sentence,
-                failures=str(testsuite_states["failures"]),
-                errors=str(testsuite_states["errors"]),
-                skipped=str(testsuite_states["skipped"]),
-                tests=str(testsuite_states["tests"]),
-                time="%.3f" % feature.duration.total_seconds(),
-            )
+                testsuite_element = etree.Element(
+                    "testsuite",
+                    name=feature.sentence,
+                    failures=str(testsuite_states["failures"]),
+                    errors=str(testsuite_states["errors"]),
+                    skipped=str(testsuite_states["skipped"]),
+                    tests=str(testsuite_states["tests"]),
+                    time="%.3f" % feature.duration.total_seconds(),
+                )
 
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):

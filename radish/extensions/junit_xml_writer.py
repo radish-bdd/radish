@@ -96,11 +96,13 @@ class JUnitXMLWriter(object):
         for feature in features:
             if not feature.has_to_run(world.config.scenarios):
                 continue
-            
+
             if feature.state in [Step.State.PASSED, Step.State.FAILED]:
                 testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
 
-                for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+                for scenario in (
+                    s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))
+                ):
                     if not scenario.has_to_run(world.config.scenarios):
                         continue
 

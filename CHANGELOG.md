@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.18.3]
+- Test Python 3.14 support
+
 ## [v0.18.2]
 
 ### Fixed

@@ -61,9 +61,7 @@ class StepRegistry:
         """
         docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:
-            raise RadishError(
-                "Step definition '{}' from class must have step regex in docstring".format(func.__name__)
-            )
+            raise RadishError("Step definition '{}' from class must have step regex in docstring".format(func.__name__))
 
         regex = docstr.splitlines()[0]
         try:

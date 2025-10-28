@@ -38,9 +38,7 @@ class ScenarioOutline(Scenario):
         preconditions=None,
         background=None,
     ):
-        super().__init__(
-            id, keyword, sentence, path, line, parent, tags, preconditions, background
-        )
+        super().__init__(id, keyword, sentence, path, line, parent, tags, preconditions, background)
         self.example_keyword = example_keyword
         self.scenarios = []
         self.examples_header = []

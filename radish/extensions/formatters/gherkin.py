@@ -172,9 +172,7 @@ class ConsoleWriter:
                         "    # @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else "")
                     )
                 else:
-                    output += colorful.cyan(
-                        "    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else "")
-                    )
+                    output += colorful.cyan("    @{}{}\n".format(tag.name, "({})".format(tag.arg) if tag.arg else ""))
             output += "    {}{}: {}".format(
                 id_prefix,
                 colorful.bold_white(scenario.keyword),
@@ -236,9 +234,7 @@ class ConsoleWriter:
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {}"""'.format(id_padding))
-            output += colorful.cyan(
-                "".join(["\n                {}{}".format(id_padding, li) for li in step.raw_text])
-            )
+            output += colorful.cyan("".join(["\n                {}{}".format(id_padding, li) for li in step.raw_text]))
             output += colorful.bold_white('\n            {}"""'.format(id_padding))
 
         if step.table_header:
@@ -300,9 +296,7 @@ class ConsoleWriter:
         if step.text:
             id_padding = self.get_id_padding(len(step.parent.steps))
             output += colorful.bold_white('\n            {}"""'.format(id_padding))
-            output += colorful.cyan(
-                "".join(["\n                {}{}".format(id_padding, li) for li in step.raw_text])
-            )
+            output += colorful.cyan("".join(["\n                {}{}".format(id_padding, li) for li in step.raw_text]))
             output += colorful.bold_white('\n            {}"""'.format(id_padding))
 
         if step.table_header:

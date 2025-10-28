@@ -45,9 +45,7 @@ features radish supports and how you could use them:
 Link: {docs_link}"""
 
     def __init__(self, msg):
-        super().__init__(
-            FeatureFileSyntaxError.MESSAGE_TEMPLATE.format(msg=msg, docs_link=__DOCS__)
-        )
+        super().__init__(FeatureFileSyntaxError.MESSAGE_TEMPLATE.format(msg=msg, docs_link=__DOCS__))
 
 
 class StepRegexError(RadishError, SyntaxError):
@@ -59,9 +57,7 @@ class StepRegexError(RadishError, SyntaxError):
         self.regex = regex
         self.step_func_name = step_func_name
         self.re_error = re_error
-        super().__init__(
-            "Cannot compile regex '{}' from step '{}': {}".format(regex, step_func_name, re_error)
-        )
+        super().__init__("Cannot compile regex '{}' from step '{}': {}".format(regex, step_func_name, re_error))
 
 
 class StepPatternError(RadishError, SyntaxError):
@@ -73,9 +69,7 @@ class StepPatternError(RadishError, SyntaxError):
         self.pattern = pattern
         self.step_func_name = step_func_name
         self.error = error
-        super().__init__(
-            "Cannot compile pattern '{}' of step '{}': {}".format(pattern, step_func_name, error)
-        )
+        super().__init__("Cannot compile pattern '{}' of step '{}': {}".format(pattern, step_func_name, error))
 
 
 class SameStepError(RadishError):
@@ -95,9 +89,7 @@ you may want to add a $ to mark the sentence's end - take care of the code order
         self.regex = regex
         self.func1 = func1
         self.func2 = func2
-        super().__init__(
-            SameStepError.MESSAGE_TEMPLATE.format(func2.__name__, regex, func1.__name__)
-        )
+        super().__init__(SameStepError.MESSAGE_TEMPLATE.format(func2.__name__, regex, func1.__name__))
 
 
 class StepDefinitionNotFoundError(RadishError):

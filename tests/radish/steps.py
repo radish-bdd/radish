@@ -74,9 +74,7 @@ def expect_sum(step, expected_sum):
 def expect_diff(step, expected_diff):
     "Then I expect the difference to be <n>"
     assert step.context.difference == expected_diff, (
-        "The expected difference {} does not match actual difference {}".format(
-            expected_diff, step.context.difference
-        )
+        "The expected difference {} does not match actual difference {}".format(expected_diff, step.context.difference)
     )
 
 

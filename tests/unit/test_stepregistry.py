@@ -67,7 +67,7 @@ def test_registering_steps_via_object(stepregistry):
     """
 
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """When I call some step"""
 
@@ -94,7 +94,7 @@ def test_ignore_methods_registering_object(stepregistry):
     """
 
     # given
-    class MySteps(object):
+    class MySteps:
         ignore = ["some_method"]
 
         def some_step(self):
@@ -118,7 +118,7 @@ def test_error_if_no_step_regex_given_for_object(stepregistry):
     """
 
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             pass
 
@@ -138,7 +138,7 @@ def test_invalid_regex_step_pattern_in_method_docstring(stepregistry):
     """
 
     # given
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """
             So (( invalid )(
@@ -254,7 +254,7 @@ def test_registering_steps_from_object_via_steps_decorator(stepregistry):
 
     # given & when
     @steps
-    class MySteps(object):
+    class MySteps:
         def some_step(self):
             """When I call some step"""
 

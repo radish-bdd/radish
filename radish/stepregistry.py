@@ -11,7 +11,7 @@ from .exceptions import RadishError, SameStepError, StepRegexError
 
 
 @singleton()
-class StepRegistry(object):
+class StepRegistry:
     """
     Represents the step registry
     """
@@ -61,9 +61,7 @@ class StepRegistry(object):
         """
         docstr = func.__doc__.strip() if func.__doc__ else None
         if not docstr:
-            raise RadishError(
-                "Step definition '{0}' from class must have step regex in docstring".format(func.__name__)
-            )
+            raise RadishError("Step definition '{}' from class must have step regex in docstring".format(func.__name__))
 
         regex = docstr.splitlines()[0]
         try:
@@ -140,8 +138,8 @@ def given(pattern):
     Step decorator prefixed with the Given-keyword.
     """
     if isinstance(pattern, re.Pattern):
-        return step(re.compile(r"Given {0}".format(pattern.pattern)))
-    return step("Given {0}".format(pattern))
+        return step(re.compile(r"Given {}".format(pattern.pattern)))
+    return step("Given {}".format(pattern))
 
 
 def when(pattern):
@@ -149,8 +147,8 @@ def when(pattern):
     Step decorator prefixed with the When-keyword.
     """
     if isinstance(pattern, re.Pattern):
-        return step(re.compile(r"When {0}".format(pattern.pattern)))
-    return step("When {0}".format(pattern))
+        return step(re.compile(r"When {}".format(pattern.pattern)))
+    return step("When {}".format(pattern))
 
 
 def then(pattern):
@@ -158,5 +156,5 @@ def then(pattern):
     Step decorator prefixed with the Then-keyword.
     """
     if isinstance(pattern, re.Pattern):
-        return step(re.compile(r"Then {0}".format(pattern.pattern)))
-    return step("Then {0}".format(pattern))
+        return step(re.compile(r"Then {}".format(pattern.pattern)))
+    return step("Then {}".format(pattern))

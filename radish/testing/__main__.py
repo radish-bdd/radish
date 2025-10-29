@@ -8,8 +8,7 @@ import sys
 import colorful
 from docopt import docopt
 
-import radish.utils as utils
-from radish import __VERSION__
+from radish import __VERSION__, utils
 from radish.testing.matches import test_step_matches_configs
 
 # use only 8 ANSI colors
@@ -42,9 +41,9 @@ def main():
         --cover-show-missing                           show steps which are not tested
 
     (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
-    """
+    """  # noqa: E501
 
-    arguments = docopt("radish-test {0}\n{1}".format(__VERSION__, main.__doc__), version=__VERSION__)
+    arguments = docopt("radish-test {}\n{}".format(__VERSION__, main.__doc__), version=__VERSION__)
 
     if arguments["matches"]:
         return test_step_matches_configs(

@@ -12,7 +12,7 @@ from radish.terrain import world
 
 
 @extension
-class SyslogWriter(object):
+class SyslogWriter:
     """
     Syslog Writer radish extension. This extension is only supported on
     systems where the Python standard library supports the system logger
@@ -67,7 +67,7 @@ class SyslogWriter(object):
         import syslog
 
         syslog.openlog("radish")
-        self.log("begin run {0}".format(marker))
+        self.log("begin run {}".format(marker))
 
     def syslog_writer_after_all(self, features, marker):
         """
@@ -75,27 +75,27 @@ class SyslogWriter(object):
         """
         import syslog
 
-        self.log("end run {0}".format(marker))
+        self.log("end run {}".format(marker))
         syslog.closelog()
 
     def syslog_writer_before_each_feature(self, feature):
         """
         Writes the feature to the syslog
         """
-        self.log("begin feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
+        self.log("begin feature {}:{} {}".format(world.config.marker, feature.id, feature.sentence))
 
     def syslog_writer_after_each_feature(self, feature):
         """
         Writes the feature to the syslog
         """
-        self.log("end feature {0}:{1} {2}".format(world.config.marker, feature.id, feature.sentence))
+        self.log("end feature {}:{} {}".format(world.config.marker, feature.id, feature.sentence))
 
     def syslog_writer_before_each_scenario(self, scenario):
         """
         Writes the scenario to the syslog
         """
         self.log(
-            "begin scenario {0}:{1}.{2} {3}".format(
+            "begin scenario {}:{}.{} {}".format(
                 world.config.marker,
                 self.get_scenario_feature(scenario).id,
                 scenario.id,
@@ -108,7 +108,7 @@ class SyslogWriter(object):
         Writes the scenario to the syslog
         """
         self.log(
-            "end scenario {0}:{1}.{2} {3}".format(
+            "end scenario {}:{}.{} {}".format(
                 world.config.marker,
                 self.get_scenario_feature(scenario).id,
                 scenario.id,
@@ -121,7 +121,7 @@ class SyslogWriter(object):
         Writes the step to the syslog
         """
         self.log(
-            "begin step {0}:{1}.{2}.{3} {4}".format(
+            "begin step {}:{}.{}.{} {}".format(
                 world.config.marker,
                 self.get_scenario_feature(step.parent).id,
                 step.parent.id,
@@ -135,7 +135,7 @@ class SyslogWriter(object):
         Writes the step to the syslog
         """
         self.log(
-            "{0} step {1}:{2}.{3}.{4} {5}".format(
+            "{} step {}:{}.{}.{} {}".format(
                 step.state,
                 world.config.marker,
                 self.get_scenario_feature(step.parent).id,

@@ -15,7 +15,7 @@ class Feature(Model):
     """
 
     def __init__(self, id, keyword, sentence, path, line, tags=None):
-        super(Feature, self).__init__(id, keyword, sentence, path, line, None, tags)
+        super().__init__(id, keyword, sentence, path, line, None, tags)
         self.description = []
         self.background = None
         self.scenarios = []
@@ -42,10 +42,10 @@ class Feature(Model):
         return self.context.constants
 
     def __str__(self):
-        return "Feature: {0} from {1}:{2}".format(self.sentence, self.path, self.line)
+        return "Feature: {} from {}:{}".format(self.sentence, self.path, self.line)
 
     def __repr__(self):
-        return "<Feature: {0} from {1}:{2}>".format(self.sentence, self.path, self.line)
+        return "<Feature: {} from {}:{}>".format(self.sentence, self.path, self.line)
 
     def __iter__(self):
         """

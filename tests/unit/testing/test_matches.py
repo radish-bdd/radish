@@ -14,7 +14,7 @@ import tempfile
 import colorful
 import pytest
 
-import radish.testing.matches as matches
+from radish.testing import matches
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -81,7 +81,7 @@ def test_empty_matches_config(mocker, capsys):
 
     # then
     assert actual_returncode == expected_returncode
-    assert out == "No sentences found in {0} to test against\n".format(tmpfile)
+    assert out == "No sentences found in {} to test against\n".format(tmpfile)
 
 
 @pytest.mark.parametrize(
@@ -89,15 +89,18 @@ def test_empty_matches_config(mocker, capsys):
     [
         (
             [{"sentence": None}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{"should_match": None}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{}],
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)",
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)",
         ),
         (
             [{"foo": None}],

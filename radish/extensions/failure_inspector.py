@@ -9,7 +9,7 @@ from radish.stepmodel import Step
 
 
 @extension
-class FailureInspector(object):
+class FailureInspector:
     """
     Failure inspector radish extension
     """
@@ -32,7 +32,8 @@ class FailureInspector(object):
             from IPython import embed
         except ImportError:
             raise RadishError(
-                'if you want to use the failure inspector extension you have to "pip install radish-bdd[ipython-debugger]"'
+                "if you want to use the failure inspector extension you have to "
+                '"pip install radish-bdd[ipython-debugger]"'
             )
 
         embed()

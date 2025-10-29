@@ -18,7 +18,7 @@ class Step(Model):
     Represents a step
     """
 
-    class State(object):
+    class State:
         """
         Represents the step state
 
@@ -32,7 +32,7 @@ class Step(Model):
         PENDING = "pending"
 
     def __init__(self, id, sentence, path, line, parent, runable, context_class=None):
-        super(Step, self).__init__(id, None, sentence, path, line, parent)
+        super().__init__(id, None, sentence, path, line, parent)
         self.context_class = context_class
         self.table_header = None
         self.table_data = []
@@ -96,7 +96,7 @@ class Step(Model):
         """
 
         if not self.definition_func or not callable(self.definition_func):
-            raise RadishError("The step '{0}' does not have a step definition".format(self.sentence))
+            raise RadishError("The step '{}' does not have a step definition".format(self.sentence))
 
     def run(self):
         """
@@ -186,7 +186,7 @@ class Step(Model):
 
         # re-raise exception if the failed
         if new_step.state is Step.State.FAILED:
-            new_step.failure.exception.args = ("Step '{0}' failed: '{1}'".format(sentence, new_step.failure.reason),)
+            new_step.failure.exception.args = ("Step '{}' failed: '{}'".format(sentence, new_step.failure.reason),)
             raise new_step.failure.exception
 
     def embed(self, data, mime_type="text/plain", encode_data_to_base64=True):

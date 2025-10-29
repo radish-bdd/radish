@@ -25,7 +25,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         sys.stderr.write(
             str(
                 colorful.magenta(
-                    "You are a little cocky to think you can reach a minimum coverage of {0:.2f}%\n".format(
+                    "You are a little cocky to think you can reach a minimum coverage of {:.2f}%\n".format(
                         float(cover_min_percentage)
                     )
                 )
@@ -43,7 +43,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         sys.stderr.write(
             str(
                 colorful.magenta(
-                    "No step implementations found in {0}, thus doesn't make sense to continue".format(basedirs)
+                    "No step implementations found in {}, thus doesn't make sense to continue".format(basedirs)
                 )
             )
         )
@@ -59,10 +59,10 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
             match_config = yaml.safe_load(f)
 
         if not match_config:
-            print(colorful.magenta("No sentences found in {0} to test against".format(match_config_file)))
+            print(colorful.magenta("No sentences found in {} to test against".format(match_config_file)))
             return 5
 
-        print(colorful.yellow("Testing sentences from {0}:".format(colorful.bold_yellow(match_config_file))))
+        print(colorful.yellow("Testing sentences from {}:".format(colorful.bold_yellow(match_config_file))))
         failed_sentences, passed_senteces = test_step_matches(match_config, steps)
         failed += failed_sentences
         passed += passed_senteces
@@ -72,21 +72,21 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         # newline
         sys.stdout.write("\n")
 
-    report = colorful.bold_white("{0} sentences (".format(failed + passed))
+    report = colorful.bold_white("{} sentences (".format(failed + passed))
     if passed > 0:
-        report += colorful.bold_green("{0} passed".format(passed))
+        report += colorful.bold_green("{} passed".format(passed))
 
     if passed > 0 and failed > 0:
         report += colorful.bold_white(", ")
 
     if failed > 0:
-        report += colorful.bold_red("{0} failed".format(failed))
+        report += colorful.bold_red("{} failed".format(failed))
     report += colorful.bold_white(")")
     print(report)
 
     step_coverage = 100.0 / len(steps) * len(covered_steps)
     coverage_report = colorful.bold_white(
-        "Covered {0} of {1} step implementations".format(len(covered_steps), len(steps))
+        "Covered {} of {} step implementations".format(len(covered_steps), len(steps))
     )
 
     ret = 0 if failed == 0 else 1
@@ -94,10 +94,10 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
     if cover_min_percentage:
         coverage_color = colorful.bold_green if step_coverage >= float(cover_min_percentage) else colorful.bold_red
         coverage_report += colorful.bold_white(" (coverage: ")
-        coverage_report += coverage_color("{0:.2f}%".format(step_coverage))
+        coverage_report += coverage_color("{:.2f}%".format(step_coverage))
         if float(cover_min_percentage) > step_coverage:
             coverage_report += colorful.bold_white(
-                ", expected a minimum of {0}".format(colorful.bold_green(cover_min_percentage + "%"))
+                ", expected a minimum of {}".format(colorful.bold_green(cover_min_percentage + "%"))
             )
             if failed == 0:
                 ret = 2
@@ -111,7 +111,7 @@ def test_step_matches_configs(match_config_files, basedirs, cover_min_percentage
         if missing_steps:
             missing_step_report = colorful.bold_yellow("Missing steps:\n")
             for step in missing_steps:
-                missing_step_report += "- {0} at ".format(colorful.cyan(step[0]))
+                missing_step_report += "- {} at ".format(colorful.cyan(step[0]))
                 missing_step_report += colorful.cyan(step[1]) + "\n"
             sys.stdout.write(str(missing_step_report))
 
@@ -146,7 +146,7 @@ def test_step_matches(match_config, steps):
 
 def test_step_match(sentence, expected_step, expected_arguments, steps):
     sys.stdout.write(
-        '{0} STEP "{1}" SHOULD MATCH {2}    '.format(
+        '{} STEP "{}" SHOULD MATCH {}    '.format(
             colorful.yellow(">>"), colorful.cyan(sentence), colorful.cyan(expected_step)
         )
     )
@@ -159,7 +159,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
     if expected_step != result.func.__name__:
         output_failure(
             result.func,
-            ["Expected sentence matched {0} instead of {1}".format(result.func.__name__, expected_step)],
+            ["Expected sentence matched {} instead of {}".format(result.func.__name__, expected_step)],
         )
         return False
 
@@ -178,7 +178,7 @@ def test_step_match(sentence, expected_step, expected_arguments, steps):
 def test_step_not_match(sentence, expected_not_matching_step, steps):
     step_to_print = colorful.cyan(expected_not_matching_step) if expected_not_matching_step else "ANY"
     sys.stdout.write(
-        '{0} STEP "{1}" SHOULD NOT MATCH {2}    '.format(colorful.yellow(">>"), colorful.cyan(sentence), step_to_print)
+        '{} STEP "{}" SHOULD NOT MATCH {}    '.format(colorful.yellow(">>"), colorful.cyan(sentence), step_to_print)
     )
 
     result = match_step(sentence, steps)
@@ -186,7 +186,7 @@ def test_step_not_match(sentence, expected_not_matching_step, steps):
         if not expected_not_matching_step or result.func.__name__ == expected_not_matching_step:
             output_failure(
                 None,
-                ["Expected sentence did match {0} but it shouldn't".format(expected_not_matching_step)],
+                ["Expected sentence did match {} but it shouldn't".format(expected_not_matching_step)],
             )
             return False
 
@@ -204,7 +204,7 @@ def validate_config_item(config):
     given_attributes = set(config.keys())
     if not given_attributes.issubset(VALID_CONFIG_ITEMS):
         raise ValueError(
-            "The config attributes {0} are invalid. Use only {1}".format(
+            "The config attributes {} are invalid. Use only {}".format(
                 ", ".join(sorted(given_attributes.difference(VALID_CONFIG_ITEMS))),
                 ", ".join(sorted(VALID_CONFIG_ITEMS)),
             )
@@ -212,7 +212,8 @@ def validate_config_item(config):
 
     if "sentence" not in config or ("should_match" not in config and "should_not_match" not in config):
         raise ValueError(
-            "You have to provide a sentence and the function name which should (not) be matched (should_match, should_not_match)"
+            "You have to provide a sentence and the function name which "
+            "should (not) be matched (should_match, should_not_match)"
         )
 
 
@@ -222,12 +223,12 @@ def output_failure(step_func, errors):
     """
     sys.stdout.write(str(colorful.bold_red("✘")))
     if step_func is not None:
-        sys.stdout.write(str(colorful.red(" (at {0})".format(get_func_location(step_func)))))
+        sys.stdout.write(str(colorful.red(" (at {})".format(get_func_location(step_func)))))
 
     sys.stdout.write("\n")
 
     for error in errors:
-        print(str(colorful.red("  - {0}".format(error))))
+        print(str(colorful.red("  - {}".format(error))))
 
 
 def check_step_arguments(expected_arguments, arguments):
@@ -239,7 +240,7 @@ def check_step_arguments(expected_arguments, arguments):
     for arg_name, arg_value in expected_arguments.items():
         if arg_name not in arguments:
             errors.append(
-                'Expected argument "{0}" is not in matched arguments {1}'.format(arg_name, list(arguments.keys()))
+                'Expected argument "{}" is not in matched arguments {}'.format(arg_name, list(arguments.keys()))
             )
             continue
 
@@ -259,13 +260,13 @@ def check_step_arguments(expected_arguments, arguments):
             if "cast" in arg_value and arg_value["cast"] is True:
                 obj_type = locate(_type)
                 if obj_type is None:
-                    errors.append('Cannot cast to type "{0}" because it is unknown'.format(_type))
+                    errors.append('Cannot cast to type "{}" because it is unknown'.format(_type))
                     continue
 
                 try:
                     value = obj_type(value)
                 except Exception:
-                    errors.append('Failed to cast "{0}" to given type "{1}"'.format(value, type))
+                    errors.append('Failed to cast "{}" to given type "{}"'.format(value, type))
                     continue
         else:
             _type = type(arg_value).__name__
@@ -273,15 +274,14 @@ def check_step_arguments(expected_arguments, arguments):
 
         if not use_repr and _type != type(value).__name__:
             errors.append(
-                'Conflicting argument configuration: given value is actually of type "{0}" although it should match a value of type "{1}"'.format(
-                    type(value).__name__, _type
-                )
+                'Conflicting argument configuration: given value is actually of type "{}" '
+                'although it should match a value of type "{}"'.format(type(value).__name__, _type)
             )
             continue
 
         if type(arguments[arg_name]).__name__ != _type:
             errors.append(
-                'Expected argument "{0}" is of type "{1}" instead "{2}"'.format(
+                'Expected argument "{}" is of type "{}" instead "{}"'.format(
                     arg_name, type(arguments[arg_name]).__name__, _type
                 )
             )
@@ -295,7 +295,7 @@ def check_step_arguments(expected_arguments, arguments):
 
         if matched:
             errors.append(
-                'Expected argument "{0}" with value "{1}" does not match value "{2}"'.format(
+                'Expected argument "{}" with value "{}" does not match value "{}"'.format(
                     arg_name, value, arguments[arg_name]
                 )
             )

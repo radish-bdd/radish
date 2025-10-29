@@ -12,7 +12,7 @@ class Background(Scenario):
     """
 
     def __init__(self, keyword, sentence, path, line, parent):
-        super(Background, self).__init__(None, keyword, sentence, path, line, parent)
+        super().__init__(None, keyword, sentence, path, line, parent)
 
     def create_instance(self, parent=None, steps_runable=False):
         """

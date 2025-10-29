@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+### Changes
+- Test Python 3.14 support
+- Update lxml to support Python 3.14
+
 ## [v0.18.2]
 
 ### Fixed

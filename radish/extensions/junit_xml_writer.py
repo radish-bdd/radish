@@ -97,50 +97,50 @@ class JUnitXMLWriter(object):
             if not feature.has_to_run(world.config.scenarios):
                 continue
 
-            if feature.state in [Step.State.PASSED, Step.State.FAILED]:
-                testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
-
-                for scenario in (
-                    s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))
-                ):
-                    if not scenario.has_to_run(world.config.scenarios):
-                        continue
-
-                    testsuite_states["tests"] += 1
-                    if scenario.state in [
-                        Step.State.UNTESTED,
-                        Step.State.PENDING,
-                        Step.State.SKIPPED,
-                    ]:
-                        testsuite_states["skipped"] += 1
-                    if scenario.state is Step.State.FAILED:
-                        testsuite_states["failures"] += 1
-
-                testsuite_element = etree.Element(
-                    "testsuite",
-                    name=feature.sentence,
-                    failures=str(testsuite_states["failures"]),
-                    errors=str(testsuite_states["errors"]),
-                    skipped=str(testsuite_states["skipped"]),
-                    tests=str(testsuite_states["tests"]),
-                    time="%.3f" % feature.duration.total_seconds(),
-                )
+            testsuite_states = {"failures": 0, "errors": 0, "skipped": 0, "tests": 0}
 
             for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
                 if not scenario.has_to_run(world.config.scenarios):
                     continue
 
-                if scenario.state not in [
+                testsuite_states["tests"] += 1
+                if scenario.state in [
                     Step.State.UNTESTED,
                     Step.State.PENDING,
                     Step.State.SKIPPED,
                 ]:
-                    testcase_element = etree.Element(
-                        "testcase",
-                        classname=feature.sentence,
-                        name=scenario.sentence,
-                        time="%.3f" % scenario.duration.total_seconds(),
-                    )
+                    testsuite_states["skipped"] += 1
+                if scenario.state is Step.State.FAILED:
+                    testsuite_states["failures"] += 1
+
+            if feature.starttime and feature.endtime:
+                feature_duration = feature.duration.total_seconds()
+            else:
+                feature_duration = 0
+            testsuite_element = etree.Element(
+                "testsuite",
+                name=feature.sentence,
+                failures=str(testsuite_states["failures"]),
+                errors=str(testsuite_states["errors"]),
+                skipped=str(testsuite_states["skipped"]),
+                tests=str(testsuite_states["tests"]),
+                time=f"{feature_duration:.3f}",
+            )
+
+            for scenario in (s for s in feature.all_scenarios if not isinstance(s, (ScenarioOutline, ScenarioLoop))):
+                if not scenario.has_to_run(world.config.scenarios):
+                    continue
+
+                if scenario.starttime and scenario.endtime:
+                    testcase_duration = scenario.duration.total_seconds()
+                else:
+                    testcase_duration = 0
+                testcase_element = etree.Element(
+                    "testcase",
+                    classname=feature.sentence,
+                    name=scenario.sentence,
+                    time=f"{testcase_duration:.3f}",
+                )
 
                 if world.config.junit_relaxed:
                     properties_element = etree.Element("properties")
@@ -182,10 +182,5 @@ class JUnitXMLWriter(object):
 
             testsuites_element.append(testsuite_element)
 
-        content = etree.tostring(
-            testsuites_element,
-            pretty_print=True,
-            xml_declaration=True,
-            encoding="utf-8",
-        )
+        content = etree.tostring(testsuites_element, pretty_print=True, xml_declaration=True, encoding="utf-8")
         self._write_xml_to_disk(content)

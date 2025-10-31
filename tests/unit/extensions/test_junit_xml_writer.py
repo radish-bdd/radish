@@ -119,7 +119,6 @@ def test_early_exit_feature_list(mocker):
     first_feature.starttime = datetime.now(timezone.utc)
     first_feature.endtime = datetime.now(timezone.utc)
     second_feature = Feature(2, "Feature", "Did not run", "foo.feature", 1, tags=None)
-    # second_feature.state = Step.State.UNTESTED
     scenario = Scenario(
         1, "Scenario", "Did not run", "foo.feature", 1, parent=None, tags=None, preconditions=None, background=None
     )

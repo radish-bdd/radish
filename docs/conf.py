@@ -45,8 +45,8 @@ source_suffix = {".rst": "restructuredtext"}
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
 
-# The master toctree document.
-master_doc = "index"
+# The index toctree document.
+index_doc = "index"
 
 # General information about the project.
 project = "radish"
@@ -231,7 +231,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, "radish.tex", "radish Documentation", "Timo Furrer", "manual"),
+    (index_doc, "radish.tex", "radish Documentation", "Timo Furrer", "manual"),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -259,7 +259,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, "radish", "radish Documentation", [author], 1)]
+man_pages = [(index_doc, "radish", "radish Documentation", [author], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -272,7 +272,7 @@ man_pages = [(master_doc, "radish", "radish Documentation", [author], 1)]
 #  dir menu entry, description, category)
 texinfo_documents = [
     (
-        master_doc,
+        index_doc,
         "radish",
         "radish Documentation",
         author,

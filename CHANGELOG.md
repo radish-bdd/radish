@@ -6,6 +6,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.18.3]
+### Fixed
+- Early abort will still generate a correct junit xml file
+
 ### Changes
 - Test Python 3.14 support
 - Update lxml to support Python 3.14

@@ -3,6 +3,7 @@ name = "radish_bdd"
 version = "0.18.2"
 authors = [{ name = "Timo Furrer", email = "tuxtimo+radish@gmail.com" }]
 description = "Behaviour-Driven-Development tool for Python"
+license = { file = "LICENSE" }
 readme = "README.md"
 requires-python = ">=3.7,<4.0"
 classifiers = [

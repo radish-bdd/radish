@@ -25,28 +25,44 @@ or the Feature you have in mind.
 
 We are very happy to receive Pull Requests considering:
 
-* Style Guide. Follow the rules of [PEP8](http://legacy.python.org/dev/peps/pep-0008/) and make sure `tox -e lint` passes on your changes.
+* Style Guide. Follow the rules of [PEP8](http://legacy.python.org/dev/peps/pep-0008/) and make sure `ruff format` and `ruff check --fix` passes on your changes.
 * Tests. Make sure your code is covered by an automated test case. Make sure all tests pass.
 
 ## Development
 
-radish can be installed as [editable install](https://setuptools.pypa.io/en/latest/userguide/development_mode.html).
+Install the development dependencies with [uv](https://docs.astral.sh/uv/getting-started/installation/) this will create a virtual environment for you and install all dependencies there.
+Make sure to install with `--all-extras` so that all optional dependencies are installed as well.
 
 ```bash
-pip install -r requirements-dev.txt
-pip install -e .
+uv sync --all-extras
 ```
 
-### tox: linting, testing, docs & more
+### Linting & Formatting
 
-radish uses [`tox`](https://tox.readthedocs.io/en/latest/) to automate development tasks,
-like linting, testing, building the docs and creating the changelog.
+Radish uses [ruff](https://docs.astral.sh/ruff/) for linting and formatting the code base.
 
-The radish tox setup provides the following automated tasks:
+```bash
+uv run ruff check --fix
+uv run format .
+```
 
-* `lint`: formats and lints the code base using [`ruff`](https://docs.astral.sh/ruff/)
-* `py<ver>`: runs tests with the Python Version from `<ver>`.
+### Testing
 
-Before commiting your changes, it's a good practice to run `tox`.
-So that it'll run all the preconfigured tasks.
-If they all pass - you are good to go for a Pull Request! :tada:
+To run the tests you can use pytest.
+
+```bash
+uv run pytest
+```
+
+If you want to run the tests for a specific Python version you can use `uv` to do so:
+
+Make sure you have installed the development dependencies with that specific Python version first.
+
+```bash
+uv python install 3.10
+```
+Then you can run the tests like this (`--all-extras` since some tests require optional dependencies) (`--isolated` to avoid interference with the current environment):
+
+```bash
+uv run --isolated --python=3.11 --all-extras pytest
+```

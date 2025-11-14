@@ -10,9 +10,9 @@ assignees: ''
 **Important notices**
 Before you add a new request, we ask you kindly to acknowledge the following:
 
-[-] I have read the contributing guide lines at https://github.com/radish-bdd/radish/blob/master/.github/CONTRIBUTING.md
+[-] I have read the contributing guide lines at https://github.com/radish-bdd/radish/blob/main/.github/CONTRIBUTING.md
 
-[-] I have read and respect the code of conduct at https://github.com/radish-bdd/radish/blob/master/.github/CODE_OF_CONDUCT.md
+[-] I have read and respect the code of conduct at https://github.com/radish-bdd/radish/blob/main/.github/CODE_OF_CONDUCT.md
 
 [-] I have searched the existing issues and I'm convinced that mine is new.
 

@@ -27,7 +27,7 @@ class ScenarioLoop(Scenario):
         preconditions=None,
         background=None,
     ):
-        super(ScenarioLoop, self).__init__(
+        super().__init__(
             id,
             keyword,
             sentence,
@@ -55,7 +55,7 @@ class ScenarioLoop(Scenario):
             scenario = IterationScenario(
                 scenario_id,
                 self.keyword,
-                "{0} - iteration {1}".format(self.sentence, i),
+                "{} - iteration {}".format(self.sentence, i),
                 self.path,
                 self.line,
                 self,

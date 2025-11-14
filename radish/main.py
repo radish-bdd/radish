@@ -80,7 +80,7 @@ def run_features(core):
 @error_oracle
 def main(args=None):
     """
-    Entrypont to radish.
+    Entrypoint to radish.
     Setup up configuration, loads extensions, reads feature files and runs
     radish
     """
@@ -88,7 +88,7 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
 
-    # note: using doc string for usage, messes up Sphinx documantation
+    # note: using doc string for usage, messes up Sphinx documentation
     usage = """
 Usage:
     radish show <features>
@@ -132,7 +132,7 @@ Options:
     {1}
 
 (C) Copyright by Timo Furrer <tuxtimo@gmail.com>
-    """
+    """  # noqa: E501
 
     warnings.simplefilter("always", DeprecationWarning)
 
@@ -146,7 +146,7 @@ Options:
     sys.excepthook = catch_unhandled_exception
 
     # add version to the usage
-    arguments = docopt("radish {0}\n{1}".format(__VERSION__, usage), argv=args, version=__VERSION__)
+    arguments = docopt("radish {}\n{}".format(__VERSION__, usage), argv=args, version=__VERSION__)
 
     # store all arguments to configuration dict in terrain.world
     setup_config(arguments)
@@ -188,7 +188,8 @@ Options:
         if tag_expression:
             utils.console_write(
                 colorful.red(
-                    "You have specified a tag expression. Make sure those are valid and actually yield some Scenarios to run."
+                    "You have specified a tag expression. "
+                    "Make sure those are valid and actually yield some Scenarios to run."
                 )
             )
         return 1

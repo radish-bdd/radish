@@ -13,7 +13,7 @@ import pytest
 from parse_type.cfparse import Parser
 
 import radish.exceptions as errors
-import radish.matcher as matcher
+from radish import matcher
 
 
 @pytest.mark.parametrize(
@@ -62,7 +62,7 @@ def test_regex_step_arguments_object(regex, string, expected_args, expected_kwar
         (
             "Given I have the number {number:d}",
             "Given I have the number 5",
-            tuple(),
+            (),
             {"number": 5},
         ),
         (
@@ -259,7 +259,7 @@ def test_invalid_parse_pattern():
             "Given I have a number",
             {re.compile(r"Given I have a number"): 1},
             1,
-            tuple(),
+            (),
             {},
         ),
         (
@@ -269,7 +269,7 @@ def test_invalid_parse_pattern():
             ("4", "2"),
             {"number": "4"},
         ),
-        ("Given I have a number", {"Given I have a number": 1}, 1, tuple(), {}),
+        ("Given I have a number", {"Given I have a number": 1}, 1, (), {}),
         (
             "Given I have the number 4 and 2",
             {"Given I have the number {number:d} and {:d}": 1},

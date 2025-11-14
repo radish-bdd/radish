@@ -15,7 +15,7 @@ def load_modules(location):
 
     location = os.path.expanduser(os.path.expandvars(location))
     if not os.path.exists(location):
-        raise OSError("Location '{0}' to load modules does not exist".format(location))
+        raise OSError("Location '{}' to load modules does not exist".format(location))
 
     for p, _, f in os.walk(location):
         for filename in fnmatch.filter(f, "*.py"):
@@ -36,4 +36,4 @@ def load_module(path):
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
     except Exception as e:
-        raise ImportError("Unable to import module '{0}' from '{1}': {2}".format(module_name, path, e))
+        raise ImportError("Unable to import module '{}' from '{}': {}".format(module_name, path, e))

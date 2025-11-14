@@ -22,7 +22,7 @@ class CustomTypeRegistry(object, metaclass=Singleton):
         Registers a custom type
         """
         if name in self.custom_types:
-            raise RadishError("Cannot register custom type with name {0} because it already exists".format(name))
+            raise RadishError("Cannot register custom type with name {} because it already exists".format(name))
 
         self.custom_types[name] = func
 
@@ -90,4 +90,4 @@ def boolean_type(text):
     Plus 0 and 1
     """
     text = text.lower()
-    return text == "1" or text.startswith("y") or text == "true" or text == "on"
+    return text in {"1", "true", "on"} or text.startswith("y")

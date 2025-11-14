@@ -11,7 +11,7 @@ __REQUIRED__ = True
 
 
 @extension
-class TimeRecorder(object):
+class TimeRecorder:
     """
     Time Recorder radish plugin
     """

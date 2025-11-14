@@ -14,7 +14,7 @@ from radish.terrain import world
 
 
 @extension
-class CodeCoverage(object):
+class CodeCoverage:
     """
     Code Coverage radish extension
     """
@@ -118,7 +118,7 @@ class CodeCoverage(object):
             total_percentage = int(match.groups()[0].split()[-1][:-1])
             if total_percentage < int(world.config.cover_min_percentage):
                 raise RadishError(
-                    "Failed to reach minimum expected coverage of {0}% (reached: {1}%)".format(
+                    "Failed to reach minimum expected coverage of {}% (reached: {}%)".format(
                         world.config.cover_min_percentage, total_percentage
                     )
                 )

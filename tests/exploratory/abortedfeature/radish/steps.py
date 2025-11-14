@@ -1,4 +1,4 @@
-import re
+import sys
 
 from radish import then, when
 from radish.stepregistry import step
@@ -6,15 +6,7 @@ from radish.stepregistry import step
 
 @step("I have the number {number:g}")
 def have_number(step, number):
-    step.context.numbers.append(number)
-
-
-@step(re.compile("I have the numbers (.*)"))
-def have_numbers(step, numbers):
-    numbers = [x.strip() for x in numbers.split(",")]
-
-    for n in numbers:
-        step.behave_like("I have the number {}".format(n))
+    step.context.numbers.append(int(number))
 
 
 @when("I sum them")
@@ -25,3 +17,8 @@ def sum_numbers(step):
 @then("I expect the result to be {result:g}")
 def expect_result(step, result):
     assert step.context.result == result
+
+
+@then("I crash")
+def crash(step):
+    sys.exit(1)

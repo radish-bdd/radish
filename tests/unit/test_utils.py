@@ -13,7 +13,7 @@ from threading import Lock, Thread
 import pytest
 from freezegun import freeze_time
 
-import radish.utils as utils
+from radish import utils
 
 
 @pytest.mark.parametrize(
@@ -64,7 +64,7 @@ def test_make_unique_obj_list():
     ]
 
     value_list = utils.make_unique_obj_list(object_list, lambda x: x.propertyName)
-    value_list = list(map(lambda x: x.propertyName, value_list))
+    value_list = [x.propertyName for x in value_list]
     value_list.sort()
 
     assert value_list == ["1", "2"]

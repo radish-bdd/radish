@@ -1,11 +1,11 @@
-<img align="right" src="https://raw.githubusercontent.com/radish-bdd/radish/master/artwork/radish-bdd-logo-trans-bg.png">
+<img align="right" src="https://raw.githubusercontent.com/radish-bdd/radish/main/artwork/radish-bdd-logo-trans-bg.png">
 
 # radish - the root from red to green
 > Awesome python BDD tool https://radish-bdd.github.io
 
 ***
 
-[![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/master/LICENSE)
+[![PyPI License](https://img.shields.io/pypi/l/radish-bdd.svg)](https://github.com/radish-bdd/radish/blob/main/LICENSE)
 [![Documentation Status](https://readthedocs.org/projects/radish/badge/?version=stable)](https://radish.readthedocs.io/en/stable/?badge=stable)
 <br>
 [![Actions Status](https://github.com/radish-bdd/radish/workflows/CI/badge.svg)](https://github.com/radish-bdd/radish/actions?branch=stable)
@@ -50,7 +50,7 @@ The whole documentation of radish is available on [Read The Docs](http://radish.
 Yes, we are looking for some contributors and people who spread out a word about radish.
 Help us to improve these piece of software. You don't know what to do?
 Just have a look at the Issues or create a new one.
-Please have a look at the [Contributing Guidelines](https://github.com/radish-bdd/radish/blob/master/CONTRIBUTING.md), too.
+Please have a look at the [Contributing Guidelines](https://github.com/radish-bdd/radish/blob/main/CONTRIBUTING.md), too.
 
 # Release
 

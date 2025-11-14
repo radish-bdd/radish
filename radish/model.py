@@ -11,7 +11,7 @@ Models:
 from .exceptions import RadishError
 
 
-class Tag(object):
+class Tag:
     """
     Represents a tag for a model
     """
@@ -30,16 +30,16 @@ class Tag(object):
         return self.name == other.name and self.arg == other.arg
 
     def __repr__(self):
-        return "Tag name='%s' value='%s'" % (self.name, self.arg)
+        return "Tag name='{}' value='{}'".format(self.name, self.arg)
 
 
 # FIXME: make ABC
-class Model(object):
+class Model:
     """
     Represents a base model
     """
 
-    class Context(object):
+    class Context:
         """
         Represents a Models context.
         For every feature/scenario a new Context object is created
@@ -76,7 +76,7 @@ class Model(object):
         """
         if not self.starttime or not self.endtime:
             raise RadishError(
-                "Cannot get duration of {0} '{1}' because either starttime or endtime is not set".format(
+                "Cannot get duration of {} '{}' because either starttime or endtime is not set".format(
                     self.keyword, self.sentence
                 )
             )

@@ -13,7 +13,7 @@ from .exceptions import StepDefinitionNotFoundError, StepPatternError
 StepMatch = namedtuple("StepMatch", ["argument_match", "func"])
 
 
-class RegexStepArguments(object):
+class RegexStepArguments:
     """Class to represent the argument groups matched by a regex step pattern"""
 
     def __init__(self, match):
@@ -24,7 +24,7 @@ class RegexStepArguments(object):
         return self.match.groups(), self.match.groupdict()
 
 
-class ParseStepArguments(object):
+class ParseStepArguments:
     """Class to represent the argument groups matched by a parse step pattern"""
 
     def __init__(self, match):

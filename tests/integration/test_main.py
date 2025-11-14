@@ -113,7 +113,8 @@ from radish.main import main
             ["--tags", "scenario_loop or scenario_outline"],
             0,
             "tags-everywhere-scenario-loop-and-outline",
-            id="Feature and Scenario, Scenario Outline and Loop with Tags filtered by scenario_loop or scenario_outline",
+            id="Feature and Scenario, Scenario Outline and Loop with Tags filtered by "
+            "scenario_loop or scenario_outline",
         ),
         pytest.param(["tags-arguments"], [], 0, "tags-arguments", id="Tag Arguments for Feature and Scenario Tags"),
         pytest.param(
@@ -382,14 +383,14 @@ def test_main_cli_calls(
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
 
-    with io.open(expected_output_file, "r", encoding="utf-8") as output_file:
+    with open(expected_output_file, encoding="utf-8") as output_file:
         expected_output_string = output_file.read()
 
     # when
     original_stdout = sys.stdout
 
     with tempfile.TemporaryFile() as tmp:
-        tmp_stdout = io.open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
+        tmp_stdout = open(tmp.fileno(), mode="w+", encoding="utf-8", closefd=False)
         # patch sys.stdout
         sys.stdout = tmp_stdout
 

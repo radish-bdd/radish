@@ -5,7 +5,7 @@ Provide plugin interface for radish extensions
 from .utils import Singleton
 
 
-class ExtensionRegistry(object, metaclass=Singleton):
+class ExtensionRegistry(metaclass=Singleton):
     """
     Registers all extensions
     """
@@ -53,7 +53,7 @@ class ExtensionRegistry(object, metaclass=Singleton):
                 options.extend(opt[0] for opt in ext.OPTIONS)
             except AttributeError:
                 pass
-        return "\n           ".join("[{0}]".format(x) for x in options)
+        return "\n           ".join("[{}]".format(x) for x in options)
 
     def get_option_description(self):
         """
@@ -62,7 +62,7 @@ class ExtensionRegistry(object, metaclass=Singleton):
         options = []
         for ext in self.extensions:
             try:
-                options.extend("{0} {1}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
+                options.extend("{} {}".format(opt[0].ljust(43), opt[1]) for opt in ext.OPTIONS)
             except AttributeError:
                 pass
         return "\n    ".join(options)

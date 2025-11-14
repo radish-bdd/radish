@@ -12,7 +12,7 @@ from radish.terrain import world
 
 
 @extension
-class UserData(object):
+class UserData:
     """
     User Data radish extension
     """

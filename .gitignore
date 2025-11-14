@@ -44,3 +44,5 @@ README.rst
 .idea/
 .venv/
 .vscode/
+# junit test result files
+junit/

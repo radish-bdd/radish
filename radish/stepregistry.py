@@ -5,21 +5,8 @@ This module provides a registry for all custom steps which were decorated with t
 import inspect
 import re
 
-# from singleton import singleton
 from .exceptions import RadishError, SameStepError, StepRegexError
-
-
-class Singleton(type):
-    """
-    Metaclass for singleton classes
-    """
-
-    _instances = {}
-
-    def __call__(cls, *args, **kwargs):
-        if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
-        return cls._instances[cls]
+from .utils import Singleton
 
 
 class StepRegistry(object, metaclass=Singleton):

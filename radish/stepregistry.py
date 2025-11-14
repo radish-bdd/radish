@@ -5,13 +5,11 @@ This module provides a registry for all custom steps which were decorated with t
 import inspect
 import re
 
-from singleton import singleton
-
 from .exceptions import RadishError, SameStepError, StepRegexError
+from .utils import Singleton
 
 
-@singleton()
-class StepRegistry:
+class StepRegistry(metaclass=Singleton):
     """
     Represents the step registry
     """

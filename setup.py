@@ -37,7 +37,6 @@ __README_CONTENTS__ = open("README.md").read()
 # mandatory requirements for the radish base features
 requirements = [
     "docopt",
-    "pysingleton",
     "colorful>=0.3.11",
     "tag-expressions>=2.0.0",
     "parse_type>0.4.0",

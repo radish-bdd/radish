@@ -12,6 +12,7 @@ import sys
 import traceback
 import warnings
 from datetime import datetime, timedelta, timezone
+from threading import Lock
 
 
 class Failure:
@@ -230,3 +231,35 @@ def split_unescape(s, delim, escape="\\", unescape=True):
             current.append(ch)
     ret.append("".join(current))
     return ret
+
+
+class Singleton(type):
+    """
+    Metaclass for singleton classes. To create a singleton class use this metaclass:
+
+    class MySingletonClass(metaclass=Singleton):
+        pass
+
+    Now Singleton will ensure that only one instance of MySingletonClass is created.
+    """
+
+    _instances = {}
+    _lock = Lock()
+
+    def __call__(cls, *args, **kwargs):
+        """
+        Called when you create a new instance of a class with this metaclass.
+
+        It ensures that only one instance of the class is created (singleton pattern).
+
+        When you call `MySingletonClass(args, kwargs)`, python calls
+        `Singleton.__call__(MySingletonClass, args, kwargs)`.
+
+        This method in turn check if an instance of `MySingletonClass` already exists.
+        If not, it creates one and stores it in the `_instances` dictionary.
+        """
+        if cls not in cls._instances:  # Only grab the lock if the instance is not in the dict
+            with cls._lock:  # Ensure thread-safety
+                if cls not in cls._instances:  # in case instance was added while waiting for lock
+                    cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+        return cls._instances[cls]

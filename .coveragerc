@@ -1,9 +1,0 @@
-[paths]
-source =
-    radish/
-    .tox/py*/lib/python*/site-packages/radish/
-
-[run]
-omit =
-    radish/vendor/*
-    tests/*

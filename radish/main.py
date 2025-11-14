@@ -3,11 +3,17 @@ import sys
 import uuid
 import warnings
 
+try:
+    from importlib.metadata import version
+except ImportError:
+    # for Python<3.8
+    from importlib_metadata import version
+
 import colorful
 import tagexpressions
 from docopt import docopt
 
-from . import __VERSION__, utils
+from . import utils
 from .core import Configuration, Core
 from .errororacle import catch_unhandled_exception, error_oracle
 from .exceptions import FeatureFileNotFoundError, ScenarioNotFoundError
@@ -22,6 +28,7 @@ from .terrain import world
 # use only 8 ANSI colors
 # FIXME(TF): change to true colors!
 colorful.use_8_ansi_colors()
+__VERSION__ = version("radish-bdd")
 
 
 def setup_config(arguments):

@@ -9,7 +9,7 @@ from .exceptions import RadishError
 from .utils import Singleton
 
 
-class CustomTypeRegistry(object, metaclass=Singleton):
+class CustomTypeRegistry(metaclass=Singleton):
     """
     Registry for all custom argument expressions
     """

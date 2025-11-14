@@ -9,7 +9,7 @@ from .exceptions import RadishError, SameStepError, StepRegexError
 from .utils import Singleton
 
 
-class StepRegistry(object, metaclass=Singleton):
+class StepRegistry(metaclass=Singleton):
     """
     Represents the step registry
     """

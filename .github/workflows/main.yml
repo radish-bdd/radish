@@ -9,14 +9,13 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/ruff-action@v3
 
-
   test:
     strategy:
       fail-fast: false
       max-parallel: 8
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
-        # python-version: [3.7, 3.13]
+        # python-version: [3.7, 3.13] # Switch back to this once we validate everything works
         os: [ubuntu-22.04, windows-latest, macos-latest]
         exclude:
         - os: macos-latest

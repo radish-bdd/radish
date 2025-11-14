@@ -8,6 +8,7 @@ Copyright: MIT, Timo Furrer <tuxtimo@gmail.com>
 """
 
 from datetime import datetime, timezone
+from threading import Lock, Thread
 
 import pytest
 from freezegun import freeze_time
@@ -67,3 +68,46 @@ def test_make_unique_obj_list():
     value_list.sort()
 
     assert value_list == ["1", "2"]
+
+
+def test_singleton_behavior():
+    """Test that Singleton metaclass enforces singleton behavior"""
+
+    class MySingletonClass(metaclass=utils.Singleton):
+        def __init__(self):
+            self.value = 42
+
+    instance1 = MySingletonClass()
+    instance1.value = 100  # Modify value to test singleton behavior
+    instance2 = MySingletonClass()
+
+    assert instance1 is instance2  # They should be the same instance
+    assert instance1.value == instance2.value  # Value should be the same changed value
+
+
+def test_singleton_thread_safety():
+    """
+    Test that Singleton metaclass is thread-safe by creating multiple instances in parallel threads
+    """
+
+    class MyThreadSafeSingleton(metaclass=utils.Singleton):
+        def __init__(self):
+            self.value = 0
+
+    instances = []
+    lock = Lock()
+
+    def create_instance():
+        instance = MyThreadSafeSingleton()
+        with lock:  # Ensure thread-safe appending
+            instances.append(instance)
+
+    threads = [Thread(target=create_instance) for _ in range(10)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    first_instance = instances[0]
+    for instance in instances:
+        assert instance is first_instance

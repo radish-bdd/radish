@@ -4,13 +4,12 @@ This module provides the Argument-Expression Registry
 
 # Keep for backwards compat:
 from parse_type import TypeBuilder  # noqa: F401
-from singleton import singleton
 
 from .exceptions import RadishError
+from .utils import Singleton
 
 
-@singleton()
-class CustomTypeRegistry:
+class CustomTypeRegistry(metaclass=Singleton):
     """
     Registry for all custom argument expressions
     """

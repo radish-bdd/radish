@@ -6,8 +6,8 @@ import inspect
 import re
 
 # from singleton import singleton
-
 from .exceptions import RadishError, SameStepError, StepRegexError
+
 
 class Singleton(type):
     """
@@ -20,7 +20,8 @@ class Singleton(type):
         if cls not in cls._instances:
             cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
         return cls._instances[cls]
-    
+
+
 class StepRegistry(object, metaclass=Singleton):
     """
     Represents the step registry

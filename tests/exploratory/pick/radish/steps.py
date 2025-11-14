@@ -19,12 +19,12 @@ def add_pick_step(step):
 
 @then("I expect the pick step to be in the world")
 def expect_pick_step(step):
-    assert hasattr(world, "pick_decorated"), f"World is missing the decorated method pick_decorated"
+    assert hasattr(world, "pick_decorated"), "World is missing the decorated method pick_decorated"
 
 
 @then("I expect the pick step not to be in the world")
 def expect_pick_step_missing(step):
-    assert not hasattr(world, "pick_decorated"), f"World has the decorated method pick_decorated"
+    assert not hasattr(world, "pick_decorated"), "World has the decorated method pick_decorated"
 
 
 @when("I call the pick decorated method")

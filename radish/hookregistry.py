@@ -3,14 +3,13 @@ This module provides a registry for all hooks
 """
 
 import tagexpressions
-from singleton import singleton
 
 from . import utils
 from .exceptions import HookError
+from .utils import Singleton
 
 
-@singleton()
-class HookRegistry(object):
+class HookRegistry(object, metaclass=Singleton):
     """
     Represents an object with all registered hooks
     """

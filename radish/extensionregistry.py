@@ -2,11 +2,10 @@
 Provide plugin interface for radish extensions
 """
 
-from singleton import singleton
+from .utils import Singleton
 
 
-@singleton()
-class ExtensionRegistry(object):
+class ExtensionRegistry(object, metaclass=Singleton):
     """
     Registers all extensions
     """

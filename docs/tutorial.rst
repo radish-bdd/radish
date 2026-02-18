@@ -589,7 +589,7 @@ To access this text data you can use the ``text`` attribute on the ``step`` obje
           step.context.database.quotes.append(step.context.quote)
 
 
-  @then("I expect {number:g} quote in the database")
+  @then("I expect {number:g} quotes in the database")
   def expect_amount_of_quotes(step, number):
       assert len(step.context.database.quotes) == number
 

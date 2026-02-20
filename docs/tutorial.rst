@@ -1317,14 +1317,15 @@ For the ``radish-test`` call above we would get the following output:
 
 .. code:: text
 
-    Testing sentences from tests/step-matches.yml:
-    >> STEP "Given I have the number 5" SHOULD MATCH have_number ✔
-    >> STEP "When I sum them" SHOULD MATCH sum_numbers ✔
-    >> STEP "When I divide them" SHOULD NOT MATCH sum_numbers ✔
-    >> STEP "Then I expect the result to be 8" SHOULD MATCH expect_result ✔
+   Testing sentences from tests/step-matches.yml:
+   >> STEP "Given I have the number 5" SHOULD MATCH have_number    ✔
+   >> STEP "When I sum them" SHOULD MATCH sum_numbers    ✔
+   >> STEP "When I divide them" SHOULD NOT MATCH sum_numbers    ✔
+   >> STEP "When I do some weird stuff" SHOULD NOT MATCH ANY    ✔
+   >> STEP "Then I expect the result to be 8" SHOULD MATCH expect_result    ✔
 
-    4 sentences (4 passed)
-    Covered 3 of 3 step implementations
+   5 sentences (5 passed)
+   Covered 3 of 3 step implementations
 
 In case of success we get the exit code **0** and in case of failure we'd get an exit code which is greater than **0**.
 

@@ -6,6 +6,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 *Stay tuned...*
 
+## [v0.18.4]
+### Fixed
+- Tutorial example code thanks @abreumateus
+
+### Changes
+- Test @pick better thanks @alexandrehassan
+- Replace unmainted pysingleton thanks @alexandrehassan
+
 ## [v0.18.3]
 ### Fixed
 - Early abort will still generate a correct junit xml file

@@ -636,15 +636,17 @@ To skip the step if `To be or not to be` quote could not be found:
    def found_n_quotes_in_the_db(step, number):
         if not hasattr(step.context, "result"):
             step.skip()
+            return
 
         assert len(step.context.result) == number
 
         step.context.database.delete_id = step.context.result[0]['id']
 
-   @then("I expect {number:g} quote in the database")
-   def expect_amount_of_quotes(step, number):
+   @then("I delete one of them")
+   def delete_one_quote(step):
        if not hasattr(step.context, "result"):
            step.skip()
+           return
 
        assert an_internal_function_to_delete_db_row(step.context.database.delete_id) is True
 

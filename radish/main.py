@@ -55,8 +55,9 @@ def run_features(core):
     world.config.expand = True
 
     # load user's custom python files
+    loaded_files = set()
     for basedir in utils.flattened_basedirs(world.config.basedir):
-        load_modules(basedir)
+        load_modules(basedir, loaded_files=loaded_files)
 
     # match feature file steps with user's step definitions
     merge_steps(core.features, StepRegistry().steps)

@@ -6,10 +6,17 @@ import fnmatch
 import os
 
 
-def load_modules(location):
+def load_modules(location, loaded_files=None):
     """
     Loads all modules in the `location` folder
+
+    :param str location: the base directory to recursively load modules from
+    :param set[tuple[int, int]] loaded_files: device and inode nr of files already
+        loaded from another directory, used to avoid loading the same file twice.
     """
+    if loaded_files is None:
+        loaded_files = set()
+
     if os.name == "nt":
         location = location.replace("$PWD", os.getcwd())
 
@@ -19,7 +26,13 @@ def load_modules(location):
 
     for p, _, f in os.walk(location):
         for filename in fnmatch.filter(f, "*.py"):
-            load_module(os.path.join(p, filename))
+            path = os.path.join(p, filename)
+            stat = os.stat(path)
+            file_id = (stat.st_dev, stat.st_ino)
+            if file_id in loaded_files:
+                continue
+            loaded_files.add(file_id)
+            load_module(path)
 
 
 def load_module(path):

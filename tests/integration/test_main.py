@@ -53,9 +53,16 @@ from radish.main import main
         ),
         pytest.param(["step-text-data"], "", [], 0, "step-text-data", id="Step with Text data"),
         pytest.param(["tags-feature"], "", [], 0, "tags-feature", id="Feature with Tags"),
-        pytest.param(["tags-feature"], "", ["--tags", "foo"], 0, "tags-feature", id="Feature with Tags filtered by Foo"),
         pytest.param(
-            ["tags-feature"], "", ["--tags", "foo or bar"], 0, "tags-feature", id="Feature with Tags filtered by Foo or Bar"
+            ["tags-feature"], "", ["--tags", "foo"], 0, "tags-feature", id="Feature with Tags filtered by Foo"
+        ),
+        pytest.param(
+            ["tags-feature"],
+            "",
+            ["--tags", "foo or bar"],
+            0,
+            "tags-feature",
+            id="Feature with Tags filtered by Foo or Bar",
         ),
         pytest.param(
             ["tags-feature"], "",
@@ -65,7 +72,14 @@ from radish.main import main
             id="Feature with Tags filtered by Foo and Bar",
         ),
         pytest.param(["tags-scenario"], "", [], 0, "tags-scenario", id="Scenario with Tags"),
-        pytest.param(["tags-scenario"], "", ["--tags", "foo"], 0, "tags-scenario", id="Scenario with Tags filtered by Foo"),
+        pytest.param(
+            ["tags-scenario"],
+            "",
+            ["--tags", "foo"],
+            0,
+            "tags-scenario",
+            id="Scenario with Tags filtered by Foo",
+        ),
         pytest.param(
             ["tags-scenario"], "",
             ["--tags", "foo or bar"],
@@ -150,14 +164,28 @@ from radish.main import main
         ),
         pytest.param(["background"], "", [], 0, "background", id="Background"),
         pytest.param(
-            ["background-scenariooutline"], "", [], 0, "background-scenariooutline", id="Background for Scenario Outline"
+            ["background-scenariooutline"],
+            "",
+            [],
+            0,
+            "background-scenariooutline",
+            id="Background for Scenario Outline",
         ),
-        pytest.param(["background-scenarioloop"], "", [], 0, "background-scenarioloop", id="Background for Scenario Loop"),
+        pytest.param(
+            ["background-scenarioloop"],
+            "",
+            [],
+            0,
+            "background-scenarioloop",
+            id="Background for Scenario Loop",
+        ),
         pytest.param(
             ["background-subsequent-tag"], "", [], 0, "background-subsequent-tag", id="Background with subsequent Tag"
         ),
         pytest.param(["background-misplaced"], "", [], 1, "background-misplaced", id="Background which is misplaced"),
-        pytest.param(["background-multiple"], "", [], 1, "background-multiple", id="Multiple Background in one Feature"),
+        pytest.param(
+            ["background-multiple"], "", [], 1, "background-multiple", id="Multiple Background in one Feature"
+        ),
         pytest.param(["constants"], "", [], 0, "constants", id="Feature and Scenario Constants"),
         pytest.param(
             ["scenario-sentence-duplicate"], "", [], 1, "scenario-sentence-duplicate", id="Scenario Sentence Duplicate"
@@ -175,12 +203,21 @@ from radish.main import main
             "precondition-unknown-scenario-same-feature",
             id="Precondition with unknown Scenario from same Feature",
         ),
-        pytest.param(["precondition-malformed"], "", [], 1, "precondition-malformed", id="Precondition which is malformed"),
+        pytest.param(
+            ["precondition-malformed"],
+            "",
+            [],
+            1,
+            "precondition-malformed",
+            id="Precondition which is malformed",
+        ),
         pytest.param(["failing-scenario"], "", [], 1, "failing-scenario", id="Failing Scenario"),
         pytest.param(
             ["failing-scenario-middle"], "", [], 1, "failing-scenario-middle", id="Failing Scenario in the middle"
         ),
-        pytest.param(["failing-scenario-outline"], "", [], 1, "failing-scenario-outline", id="Failing Scenario Outline"),
+        pytest.param(
+            ["failing-scenario-outline"], "", [], 1, "failing-scenario-outline", id="Failing Scenario Outline"
+        ),
         pytest.param(
             ["failing-scenario-outline-middle"], "",
             [],
@@ -262,7 +299,12 @@ from radish.main import main
             id="Scenario Outline with no line jump",
         ),
         pytest.param(
-            ["scenario-loop"], "", ["--no-line-jump"], 0, "scenario-loop-no-line-jump", id="Scenario Loop with no line jump"
+            ["scenario-loop"],
+            "",
+            ["--no-line-jump"],
+            0,
+            "scenario-loop-no-line-jump",
+            id="Scenario Loop with no line jump",
         ),
         pytest.param(
             ["feature-scenario-steps"], "",
@@ -348,6 +390,22 @@ from radish.main import main
             "filter-when-using-tags-with-args",
             id="Filter by multiple tags containing variables",
         ),
+        pytest.param(
+            ["feature-scenario-steps"],
+            "show",
+            [],
+            0,
+            "show-feature-scenario-steps",
+            id="Show Feature with one Scenario and Steps",
+        ),
+        pytest.param(["empty-feature"], "show", [], 1, "show-empty-feature", id="Show Empty Feature"),
+        pytest.param(
+            ["feature-scenario-steps"], "show",
+            [],
+            0,
+            "show-feature-scenario-steps",
+            id="Show Feature with single Scenario and Steps producing BDD XML",
+        )
     ],
 )
 def test_main_cli_calls(
@@ -363,17 +421,20 @@ def test_main_cli_calls(
     """
     Test calling main CLI
     """
+    LEARN = False  # Set to True to update the expected output file.
     # given
-    if "-m" not in given_cli_args and "--marker" not in given_cli_args:
-        given_cli_args.extend(["--marker", "test-marker"])
 
-    if "-b" not in given_cli_args and "--basedir" not in given_cli_args:
-        given_cli_args.extend(["-b", radishdir])
-    else:
-        # fixup basedir paths
-        base_dir_idx = [i for i, x in enumerate(given_cli_args) if x in ("-b", "--basedir")]
-        for idx in base_dir_idx:
-            given_cli_args[idx + 1] = os.path.join(radishdir, given_cli_args[idx + 1])
+    if given_command != "show":
+        if "-m" not in given_cli_args and "--marker" not in given_cli_args:
+            given_cli_args.extend(["--marker", "test-marker"])
+
+        if "-b" not in given_cli_args and "--basedir" not in given_cli_args:
+            given_cli_args.extend(["-b", radishdir])
+        else:
+            # fixup basedir paths
+            base_dir_idx = [i for i, x in enumerate(given_cli_args) if x in ("-b", "--basedir")]
+            for idx in base_dir_idx:
+                given_cli_args[idx + 1] = os.path.join(radishdir, given_cli_args[idx + 1])
 
     featurefiles = [os.path.join(featurefiledir, x + ".feature") for x in given_featurefiles]
 
@@ -388,9 +449,6 @@ def test_main_cli_calls(
         expected_output_file_win = os.path.join(outputdir, "windows", expected_output + ".txt")
         if os.path.exists(expected_output_file_win):
             expected_output_file = expected_output_file_win
-
-    with open(expected_output_file, encoding="utf-8") as output_file:
-        expected_output_string = output_file.read()
 
     # when
     original_stdout = sys.stdout
@@ -415,6 +473,15 @@ def test_main_cli_calls(
     for featurefile in featurefiles:
         rel_featurefile = os.path.relpath(featurefile, feature_parent_dir)
         actual_output = actual_output.replace(featurefile, rel_featurefile)
+
+    if LEARN:
+        os.makedirs(os.path.dirname(expected_output_file), exist_ok=True)
+        with io.open(expected_output_file, "w", encoding="utf-8") as output_file:
+            output_file.write(actual_output)
+
+    with io.open(expected_output_file, "r", encoding="utf-8") as output_file:
+        expected_output_string = output_file.read()
+
     # then
     assert actual_output == expected_output_string
     assert actual_exitcode == expected_exitcode

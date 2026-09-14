@@ -117,7 +117,7 @@ class Runner:
         """
         Runs the given scenario
 
-        :param Scenario scenario: the scnenario to run
+        :param Scenario scenario: the scenario to run
         """
         returncode = 0
         steps = scenario.all_steps if world.config.expand else scenario.steps

@@ -1,0 +1,9 @@
+[1m[37mFeature[22m[39m[26m: [1m[37mFeature with a Scenario and Steps[22m[39m[26m  # [1m[30mfeatures\feature-scenario-steps.feature[22m[39m[26m
+    [37mRadish shall support parsing a Feature containing
+    a Scenario which contains multiple Steps[39m[26m
+
+    [1m[37mScenario[22m[39m[26m: [1m[37mScenario with multiple Steps[22m[39m[26m
+        [36mGiven I have a Step[39m[26m
+        [36mWhen I do something[39m[26m
+        [36mThen I expect something[39m[26m
+

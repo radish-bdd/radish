@@ -436,14 +436,6 @@ from radish.main import main
             id="Show Feature with one Scenario and Steps",
         ),
         pytest.param(["empty-feature"], "show", [], 1, "show-empty-feature", id="Show Empty Feature"),
-        pytest.param(
-            ["feature-scenario-steps"],
-            "show",
-            [],
-            0,
-            "show-feature-scenario-steps",
-            id="Show Feature with single Scenario and Steps producing BDD XML",
-        ),
     ],
 )
 def test_main_cli_calls(

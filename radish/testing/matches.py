@@ -1,5 +1,5 @@
 """
-This module provides functionaliy to test
+This module provides functionality to test
 if some sentences are matched with the expected
 step implementations.
 """

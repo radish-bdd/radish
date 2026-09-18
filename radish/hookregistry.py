@@ -94,7 +94,7 @@ class HookRegistry(metaclass=Singleton):
 
     def reset(self):
         """
-        Resets all registerd hooks
+        Resets all registered hooks
         """
         self._hooks = {
             "all": {"before": [], "after": []},

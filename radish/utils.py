@@ -22,9 +22,9 @@ class Failure:
 
     def __init__(self, exception):
         """
-        Initalizes the Step failure with a given Exception
+        Initializes the Step failure with a given Exception
 
-        :param Exception exception: the exception shrown in the step
+        :param Exception exception: the exception thrown in the step
         """
         self.exception = exception
         self.reason = str(exception)

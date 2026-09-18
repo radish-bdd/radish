@@ -47,6 +47,6 @@ The radish tox setup provides the following automated tasks:
 * `lint`: formats and lints the code base using [`ruff`](https://docs.astral.sh/ruff/)
 * `py<ver>`: runs tests with the Python Version from `<ver>`.
 
-Before commiting your changes, it's a good practice to run `tox`.
-So that it'll run all the preconfigured tasks.
+Before committing your changes, it's a good practice to run `tox`.
+So that it'll run all the pre-configured tasks.
 If they all pass - you are good to go for a Pull Request! :tada:

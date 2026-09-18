@@ -99,7 +99,7 @@ class FeatureParser:
         self._current_scenario = None
         #: Holds the current context class for a Step.
         #  eg. If a step is: 'And I have the number'
-        #  and this step was preceeded by 'Given I have the number
+        #  and this step was preceded by 'Given I have the number
         #  it's context class is 'Given'. This is used to correctly
         #  match the 'And' sentences
         self._current_context_class = None
@@ -114,7 +114,7 @@ class FeatureParser:
         """
         Loads all keywords of the given language
 
-        :param string language: the lanugage to use for the feature files.
+        :param string language: the language to use for the feature files.
                                 if None is given `radish` tries to detect the language.
 
         :returns: if the language could be loaded or not
@@ -312,7 +312,7 @@ class FeatureParser:
         # all tags of this scenario have been consumed so we can
         # check if this scenario has to be evaluated or not
         if self._tag_expr:
-            # inherit the tags from the current feature and the explicitely
+            # inherit the tags from the current feature and the explicitly
             # inherited tags given to the parser. This tags are coming from precondition scenarios
             current_tags = self._current_tags + self.feature.tags + self._inherited_tags
             scenario_in_tags = self._tag_expr.evaluate(

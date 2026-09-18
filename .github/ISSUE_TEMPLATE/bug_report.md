@@ -27,7 +27,7 @@ A clear and concise description of what the bug is.
 **To Reproduce**
 A clear and concise description of steps to reproduce the behavior
 you are experiencing.
-This might also include a minial Feature File and Step Implementations.
+This might also include a minimal Feature File and Step Implementations.
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.

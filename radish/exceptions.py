@@ -33,7 +33,7 @@ class FeatureFileNotFoundError(RadishError):
 
 class FeatureFileSyntaxError(RadishError, SyntaxError):
     """
-    If a a syntax error occured in a feature file
+    If a a syntax error occurred in a feature file
     """
 
     MESSAGE_TEMPLATE = """{msg}

@@ -110,7 +110,7 @@ def match_step(sentence, steps):
             step_match = StepMatch(argument_match=argument_match, func=func)
             if len(sentence) == longest_group:
                 # if perfect match can be made we return it no
-                # matter of the other potentional matches
+                # matter of the other potential matches
                 return step_match
 
             distance_to_perfect = abs(len(sentence) - longest_group)

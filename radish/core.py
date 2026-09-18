@@ -87,7 +87,7 @@ class Core:
     def parse_feature(self, featurefile, tag_expr, inherited_tags=None, featureid=0):
         """
         Parses the given feature file
-        If the feature is alreay parsed then it will just return it
+        If the feature is already parsed then it will just return it
 
         :returns: the parsed feature
         :rtype: Feature

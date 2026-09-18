@@ -87,7 +87,7 @@ class Feature(Model):
 
     def has_to_run(self, scenario_choice):
         """
-        Returns wheiter the feature has to run or not
+        Returns whether the feature has to run or not
         """
         if not scenario_choice:
             return True

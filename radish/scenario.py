@@ -93,7 +93,7 @@ class Scenario(Model):
 
     def has_to_run(self, scenario_choice):
         """
-        Returns wheiter the scenario has to run or not
+        Returns whether the scenario has to run or not
 
         :param list scenario_choice: the scenarios to run. If None all will run
         """

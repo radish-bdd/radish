@@ -57,7 +57,7 @@ class ExtensionRegistry(metaclass=Singleton):
 
     def get_option_description(self):
         """
-        Returns all option descriptions registerd by plugins
+        Returns all option descriptions registered by plugins
         """
         options = []
         for ext in self.extensions:

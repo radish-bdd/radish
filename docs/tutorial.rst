@@ -435,7 +435,7 @@ Let's assume you want to use ``and`` instead of ``,``:
 Now you can use ``NumberList`` as the type in your step pattern.
 As of now (Mar-2024) parse does not support cardinality,
 if cardinality is required a custom type needs to be created or
-the folling issue needs to be adressed: https://github.com/r1chardj0n3s/parse/issues/181
+the following issue needs to be adressed: https://github.com/r1chardj0n3s/parse/issues/181
 
 As you've seen you can use the ``custom_type`` decorator, the ``register_custom_type`` function
 and the ``TypeBuilder`` to extend the default types.
